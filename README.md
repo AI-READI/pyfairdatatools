@@ -35,7 +35,7 @@ If you would like to update the package, please follow the instructions below.
 2. Install the dependencies for this package. We use [Poetry](https://poetry.eustace.io/) to manage the dependencies:
 
    ```text
-   pip install poetry
+   pip install poetry==1.3.2
    poetry install
    ```
 
