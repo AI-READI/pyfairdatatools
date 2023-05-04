@@ -28,7 +28,7 @@ If you would like to update the package, please follow the instructions below.
    If you are using Anaconda, you can create a virtual environment with:
 
    ```text
-   conda create -n fairdatatools-env python=3.8
+   conda create -n fairdatatools-env python
    conda activate fairdatatools-env
    ```
 
