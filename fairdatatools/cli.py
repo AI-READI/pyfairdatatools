@@ -1,6 +1,7 @@
 """A sample CLI."""
 
 import click
+
 # import log
 
 from art import tprint
@@ -19,6 +20,7 @@ from art import tprint
 #         click.echo(meters)
 
 
+@click.command()
 def main():
     """CLI entrypoint."""
     tprint("Fair Data Tools")
