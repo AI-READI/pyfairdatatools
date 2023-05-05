@@ -54,7 +54,7 @@ If you would like to update the package, please follow the instructions below.
 4. Format the code:
 
    ```text
-   poetry run black fairdatatools tests
+   poe format
    ```
 
 5. Check the code quality:
@@ -63,10 +63,11 @@ If you would like to update the package, please follow the instructions below.
    poetry run flake8 fairdatatools tests
    ```
 
-6. Check the code coverage:
+6. Run the tests and check the code coverage:
 
    ```text
-   poetry run pytest --cov=fairdatatools
+   poe test
+   poe test --cov=fairdatatools
    ```
 
 7. Build the package:

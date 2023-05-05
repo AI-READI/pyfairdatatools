@@ -1,22 +1,22 @@
 """A sample CLI."""
 
 import click
-import log
+# import log
 
 from art import tprint
 
-from . import utils
+# from . import utils
 
 
-@click.command()
-@click.argument("feet")
-def cli(feet: str):
-    log.init()
+# @click.command()
+# @click.argument("feet")
+# def cli(feet: str):
+#     log.init()
 
-    meters = utils.feet_to_meters(feet)
+#     meters = utils.feet_to_meters(feet)
 
-    if meters is not None:
-        click.echo(meters)
+#     if meters is not None:
+#         click.echo(meters)
 
 
 def main():
@@ -25,6 +25,8 @@ def main():
 
     click.echo("Refer to the documentation for usage instructions.")
     click.echo("https://fairdatatools.github.io/fairdatatools/")
+
+    return None
 
 
 if __name__ == "__main__":  # pragma: no cover

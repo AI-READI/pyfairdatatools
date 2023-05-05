@@ -78,7 +78,15 @@ ipython = "^7.12.0"
 [tool.poetry.scripts]
 
 fairdatatools = "fairdatatools.cli:main"
-format = "python black fairdatatools tests"
+
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.20.0"
+
+[tool.poe.tasks]
+
+format = "black fairdatatools tests"
+test = "pytest"
 
 [tool.black]
 
