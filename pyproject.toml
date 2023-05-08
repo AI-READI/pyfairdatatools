@@ -38,6 +38,7 @@ urllib3="<2.0"
 click = "*"
 minilog = "*"
 art = "^5.9"
+jsonschema = "^4.17.3"
 
 
 [tool.poetry.dev-dependencies]
