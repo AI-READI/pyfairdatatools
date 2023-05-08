@@ -23,10 +23,10 @@ from art import tprint
 @click.command()
 def main():
     """CLI entrypoint."""
-    tprint("Fair Data Tools")
+    tprint("Pyfairdatatools")
 
     click.echo("Refer to the documentation for usage instructions.")
-    click.echo("https://fairdatatools.github.io/fairdatatools/")
+    click.echo("https://aireadi.github.io/pyfairdatatools/")
 
     return None
 

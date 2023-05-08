@@ -1,5 +1,5 @@
-PROJECT := fairdatatools
-PACKAGE := fairdatatools
+PROJECT := pyfairdatatools
+PACKAGE := pyfairdatatools
 MODULES := $(wildcard $(PACKAGE)/*.py)
 
 # MAIN TASKS ##################################################################

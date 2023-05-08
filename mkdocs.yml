@@ -1,9 +1,9 @@
-site_name: fairdatatools
+site_name: pyfairdatatools
 site_description: Tools for AI-READI
 site_author: FAIR Data Innovations Hub
 
-repo_url: https://github.com/AI-READI/fairdatatools
-edit_uri: https://github.com/AI-READI/fairdatatools/edit/main/docs
+repo_url: https://github.com/AI-READI/pyfairdatatools
+edit_uri: https://github.com/AI-READI/pyfairdatatools/edit/main/docs
 
 theme: readthedocs
 

@@ -4,7 +4,7 @@
 
 <br />
 
-<h1>fairdatatools</h1>
+<h1>pyfairdatatools</h1>
 
 <p>
 Python package for working with FAIR data
@@ -13,52 +13,52 @@ Python package for working with FAIR data
 <br />
 
 <p>
-  <a href="https://github.com/AI-READI/fairdatatools/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/AI-READI/fairdatatools.svg?style=flat-square" alt="contributors" />
+  <a href="https://github.com/AI-READI/pyfairdatatools/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/AI-READI/pyfairdatatools.svg?style=flat-square" alt="contributors" />
   </a>
-  <a href="https://github.com/AI-READI/fairdatatools/stargazers">
-    <img src="https://img.shields.io/github/stars/AI-READI/fairdatatools.svg?style=flat-square" alt="stars" />
+  <a href="https://github.com/AI-READI/pyfairdatatools/stargazers">
+    <img src="https://img.shields.io/github/stars/AI-READI/pyfairdatatools.svg?style=flat-square" alt="stars" />
   </a>
-  <a href="https://github.com/AI-READI/fairdatatools/issues/">
-    <img src="https://img.shields.io/github/issues/AI-READI/fairdatatools.svg?style=flat-square" alt="open issues" />
+  <a href="https://github.com/AI-READI/pyfairdatatools/issues/">
+    <img src="https://img.shields.io/github/issues/AI-READI/pyfairdatatools.svg?style=flat-square" alt="open issues" />
   </a>
-  <a href="https://github.com/AI-READI/fairdatatools/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/AI-READI/fairdatatools.svg?style=flat-square" alt="license" />
+  <a href="https://github.com/AI-READI/pyfairdatatools/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/AI-READI/pyfairdatatools.svg?style=flat-square" alt="license" />
   </a>
   <a href="https://fairdataihub.org/fairshare">
     <img src="https://raw.githubusercontent.com/fairdataihub/FAIRshare/main/badge.svg" alt="Curated with FAIRshare" />
   </a>
 </p>
 <p>
-  <a href="https://github.com/AI-READI/fairdatatools/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/AI-READI/fairdatatools/main.yml?branch=main&label=linux" alt="Unix Build Status" />
+  <a href="https://github.com/AI-READI/pyfairdatatools/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/AI-READI/pyfairdatatools/main.yml?branch=main&label=linux" alt="Unix Build Status" />
   </a>
-  <a href="https://ci.appveyor.com/project/AI-READI/fairdatatools">
-    <img src="https://img.shields.io/appveyor/ci/AI-READI/fairdatatools.svg?label=windows" alt="Windows Build Status" />
+  <a href="https://ci.appveyor.com/project/AI-READI/pyfairdatatools">
+    <img src="https://img.shields.io/appveyor/ci/AI-READI/pyfairdatatools.svg?label=windows" alt="Windows Build Status" />
   </a>
-  <a href="https://codecov.io/gh/AI-READI/fairdatatools">
-    <img src="https://img.shields.io/codecov/c/gh/AI-READI/fairdatatools" alt="Coverage Status" />
+  <a href="https://codecov.io/gh/AI-READI/pyfairdatatools">
+    <img src="https://img.shields.io/codecov/c/gh/AI-READI/pyfairdatatools" alt="Coverage Status" />
   </a>
-  <a href="https://scrutinizer-ci.com/g/AI-READI/fairdatatools">
-    <img src="https://img.shields.io/scrutinizer/g/AI-READI/fairdatatools.svg" alt="Scrutinizer Code Quality" />
+  <a href="https://scrutinizer-ci.com/g/AI-READI/pyfairdatatools">
+    <img src="https://img.shields.io/scrutinizer/g/AI-READI/pyfairdatatools.svg" alt="Scrutinizer Code Quality" />
   </a>
-  <a href="https://pypi.org/project/fairdatatools">
-    <img src="https://img.shields.io/pypi/l/fairdatatools.svg" alt="PyPI License" />
+  <a href="https://pypi.org/project/pyfairdatatools">
+    <img src="https://img.shields.io/pypi/l/pyfairdatatools.svg" alt="PyPI License" />
   </a>
-  <a href="https://pypi.org/project/fairdatatools">
-    <img src="https://img.shields.io/pypi/v/fairdatatools.svg" alt="PyPI Version" />
+  <a href="https://pypi.org/project/pyfairdatatools">
+    <img src="https://img.shields.io/pypi/v/pyfairdatatools.svg" alt="PyPI Version" />
   </a>
-  <a href="https://pypistats.org/packages/fairdatatools">
-    <img src="https://img.shields.io/pypi/dm/fairdatatools.svg?color=orange" alt="PyPI Downloads" />
+  <a href="https://pypistats.org/packages/pyfairdatatools">
+    <img src="https://img.shields.io/pypi/dm/pyfairdatatools.svg?color=orange" alt="PyPI Downloads" />
   </a>
 </p>
 
 <h4>
-    <a href="https://ai-readi.github.io/fairdatatools/">Documentation</a>
+    <a href="https://ai-readi.github.io/pyfairdatatools/">Documentation</a>
   <span> · </span>
-    <a href="https://ai-readi.github.io/fairdatatools/about/changelog/">Changelog</a>
+    <a href="https://ai-readi.github.io/pyfairdatatools/about/changelog/">Changelog</a>
   <span> · </span>
-    <a href="https://github.com/AI-READI/fairdatatools/issues/">Report Bug</a>
+    <a href="https://github.com/AI-READI/pyfairdatatools/issues/">Report Bug</a>
   <span> · </span>
     <a href="#">Request Feature</a>
   </h4>
@@ -70,7 +70,7 @@ Python package for working with FAIR data
 
 ## Description
 
-fairdatatools is a Python package for working with FAIR data. A collection of helpful functions for extracting, transforming raw data, generating relevant metadata files and validating the data and metadata files against the FAIR data principles.
+pyfairdatatools is a Python package for working with FAIR data. A collection of helpful functions for extracting, transforming raw data, generating relevant metadata files and validating the data and metadata files against the FAIR data principles.
 
 ## Getting started
 
@@ -87,13 +87,13 @@ You will need the following installed on your system:
 Install it directly into an activated virtual environment:
 
 ```text
-pip install fairdatatools
+pip install pyfairdatatools
 ```
 
 or add it to your [Poetry](https://poetry.eustace.io/) project:
 
 ```text
-poetry add fairdatatools
+poetry add pyfairdatatools
 ```
 
 ### Inputs and Outputs
@@ -104,16 +104,16 @@ After installation, the package can be imported:
 
 ```text
 $ python
->>> import fairdatatools
->>> fairdatatools.__version__
+>>> import pyfairdatatools
+>>> pyfairdatatools.__version__
 ```
 
 - Describe the inputs and outputs of your application. Include code snippets and screenshots if needed.
 
 ## Contributing
 
-<a href="https://github.com/AI-READI/fairdatatools/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=AI-READI/fairdatatools" />
+<a href="https://github.com/AI-READI/pyfairdatatools/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=AI-READI/pyfairdatatools" />
 </a>
 
 Contributions are always welcome!
@@ -124,7 +124,7 @@ For any developmental standards to follow, add them directly to the [CONTRIBUTIN
 
 ## Issues and Feedback
 
-To report any issues with the software, suggest improvements, or request a new feature, please open a new issue via the [Issues](https://github.com/AI-READI/fairdatatools/issues) tab. Provide adequate information (operating system, steps leading to error, screenshots) so we can help you efficiently.
+To report any issues with the software, suggest improvements, or request a new feature, please open a new issue via the [Issues](https://github.com/AI-READI/pyfairdatatools/issues) tab. Provide adequate information (operating system, steps leading to error, screenshots) so we can help you efficiently.
 
 ### Setup
 
@@ -140,8 +140,8 @@ If you would like to update the package, please follow the instructions below.
    If you are using Anaconda, you can create a virtual environment with:
 
    ```text
-   conda create -n fairdatatools-env python
-   conda activate fairdatatools-env
+   conda create -n pyfairdatatools-env python
+   conda activate pyfairdatatools-env
    ```
 
 2. Install the dependencies for this package. We use [Poetry](https://poetry.eustace.io/) to manage the dependencies:
@@ -172,19 +172,19 @@ If you would like to update the package, please follow the instructions below.
 5. Check the code quality:
 
    ```text
-   poetry run flake8 fairdatatools tests
+   poetry run flake8 pyfairdatatools tests
    ```
 
 6. Run the tests and check the code coverage:
 
    ```text
    poe test
-   poe test --cov=fairdatatools
+   poe test --cov=pyfairdatatools
    ```
 
 7. Build the package:
 
-   Update the version number in `pyproject.toml` and `fairdatatools/__init__.py` and then run:
+   Update the version number in `pyproject.toml` and `pyfairdatatools/__init__.py` and then run:
 
    ```text
    poetry build
@@ -199,7 +199,7 @@ If you would like to update the package, please follow the instructions below.
 ## License
 
 This work is licensed under
-[MIT](https://opensource.org/licenses/mit). See [LICENSE](https://github.com/AI-READI/fairdatatools/blob/main/LICENSE) for more information.
+[MIT](https://opensource.org/licenses/mit). See [LICENSE](https://github.com/AI-READI/pyfairdatatools/blob/main/LICENSE) for more information.
 
 <a href="https://aireadi.org" >
   <img src="https://www.channelfutures.com/files/2017/04/3_0.png" height="30" />

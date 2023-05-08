@@ -6,7 +6,7 @@ from expecter import expect
 
 from click.testing import CliRunner
 
-from fairdatatools.cli import main
+from pyfairdatatools.cli import main
 
 
 @pytest.fixture

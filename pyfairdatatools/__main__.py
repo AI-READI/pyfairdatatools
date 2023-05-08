@@ -3,7 +3,7 @@
 """Package entry point."""
 
 
-from fairdatatools.cli import main
+from pyfairdatatools.cli import main
 
 
 if __name__ == "__main__":  # pragma: no cover

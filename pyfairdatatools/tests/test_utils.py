@@ -1,7 +1,7 @@
 """Sample unit test module using pytest-describe and expecter."""
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison # noqa: E501
 
-from fairdatatools import utils
+from pyfairdatatools import utils
 
 
 def describe_feet_to_meters():

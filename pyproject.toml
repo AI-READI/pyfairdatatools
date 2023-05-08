@@ -4,15 +4,15 @@ name = "fairdatatools"
 version = "0.0"
 description = "Tools for AI-READI"
 
-packages = [{ include = "fairdatatools" }]
+packages = [{ include = "pyfairdatatools" }]
 
 license = "MIT"
 authors = ["FAIR Data Innovations Hub <contact@fairdataihub.org>"]
 
 readme = "README.md"
-homepage = "https://pypi.org/project/fairdatatools"
-documentation = "https://fairdatatools.readthedocs.io"
-repository = "https://github.com/AI-READI/fairdatatools"
+homepage = "https://pypi.org/project/pyfairdatatools"
+documentation = "https://pyfairdatatools.readthedocs.io"
+repository = "https://github.com/AI-READI/pyfairdatatools"
 
 keywords = [
 ]
@@ -78,7 +78,7 @@ ipython = "^7.12.0"
 
 [tool.poetry.scripts]
 
-fairdatatools = "fairdatatools.cli:main"
+pyfairdatatools = "pyfairdatatools.cli:main"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -86,7 +86,7 @@ poethepoet = "^0.20.0"
 
 [tool.poe.tasks]
 
-format = "black fairdatatools tests"
+format = "black pyfairdatatools tests"
 test = "pytest"
 
 [tool.black]

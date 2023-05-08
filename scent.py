@@ -13,7 +13,7 @@ else:
     notify = Notifier.notify
 
 
-watch_paths = ["fairdatatools", "tests"]
+watch_paths = ["pyfairdatatools", "tests"]
 
 
 class Options:
