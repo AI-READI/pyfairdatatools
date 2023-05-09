@@ -1,10 +1,10 @@
 """A sample CLI."""
 
 import click
+from art import tprint
 
 # import log
 
-from art import tprint
 
 # from . import utils
 

@@ -86,7 +86,9 @@ poethepoet = "^0.20.0"
 
 [tool.poe.tasks]
 
-format = "black pyfairdatatools tests"
+format_with_isort = "isort pyfairdatatools tests notebooks"
+format_with_black = "black pyfairdatatools tests notebooks"
+format = ["format_with_isort", "format_with_black"]
 test = "pytest"
 
 [tool.black]
