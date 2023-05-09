@@ -28,8 +28,6 @@ def main():
     click.echo("Refer to the documentation for usage instructions.")
     click.echo("https://aireadi.github.io/pyfairdatatools/")
 
-    return None
-
 
 if __name__ == "__main__":  # pragma: no cover
     main()  # pylint: disable=no-value-for-parameter
