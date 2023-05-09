@@ -19,8 +19,11 @@ jobs:
 
       - uses: Gr1N/setup-poetry@v7
 
+      - name: Change executable permissions for files in the bin folder
+        run: chmod +x ./bin/*
+
       - name: Check dependencies
-        run: ./bin/verchew
+        run: make doctor
 
       - uses: actions/cache@v2
         with:
