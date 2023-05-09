@@ -7,7 +7,7 @@
 <h1>pyfairdatatools</h1>
 
 <p>
-Python package for working with FAIR data
+Python package for the FAIR tools of fairhub.io
 </p>
 
 <br />
@@ -70,7 +70,7 @@ Python package for working with FAIR data
 
 ## Description
 
-pyfairdatatools is a Python package for working with FAIR data. A collection of helpful functions for extracting, transforming raw data, generating relevant metadata files and validating the data and metadata files against the FAIR data principles.
+pyfairdatatools is a Python package that includes functions of fairhub.io for making data FAIR. This consists of a collection of helpful functions for extracting, transforming raw data, generating relevant metadata files and validating the data and metadata files against the FAIR guidelines adopted by the AI-READI project. Beside supporting fairhub.io, our aim is that the package can be used by anyone wanting to make their data FAIR according to the AI-READI FAIR guidelines.
 
 ## Getting started
 
@@ -96,9 +96,7 @@ or add it to your [Poetry](https://poetry.eustace.io/) project:
 poetry add pyfairdatatools
 ```
 
-### Inputs and Outputs
-
-#### Usage
+### Usage
 
 After installation, the package can be imported:
 
@@ -108,7 +106,14 @@ $ python
 >>> pyfairdatatools.__version__
 ```
 
-- Describe the inputs and outputs of your application. Include code snippets and screenshots if needed.
+### Inputs and Outputs
+
+The input of most functions will be a json format schema (see "Standards followed" sections) that contain data and metadata related information. The outputs of most functions will be standards metadata files, structured data, etc.
+
+## Standards followed
+This software is being developed following the [Software Development Best Practices of the AI-READI Project](https://github.com/AI-READI/software-development-best-practices), which include following the [FAIR-BioRS guidelines](https://github.com/FAIR-BioRS/Guidelines). Amongs other, we are following closely the [PEP 8 Style Guide for Python Code](https://peps.python.org/pep-0008/).
+
+The input structure of the function is currently being developed but anticipated to follow existing schemas such as schema.org and bioschemas.org.
 
 ## Contributing
 
@@ -119,8 +124,6 @@ $ python
 Contributions are always welcome!
 
 If you are interested in reporting/fixing issues and contributing directly to the code base, please see [CONTRIBUTING.md](CONTRIBUTING.md) for more information on what we're looking for and how to get started.
-
-For any developmental standards to follow, add them directly to the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ## Issues and Feedback
 
@@ -207,10 +210,10 @@ This work is licensed under
 
 ## How to cite
 
-If you are using this software or reusing the source code from this repository for any purpose, please cite:
+If you are using this package or reusing the source code from this repository for any purpose, please cite:
 
 ```bash
-    ADD Citation here
+    Coming soon...
 ```
 
 ## Acknowledgements
