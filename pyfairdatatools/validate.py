@@ -1,7 +1,7 @@
 import json
 from os import path
 
-from jsonschema import validate
+from jsonschema import ValidationError, validate
 
 
 def validate_dataset_description(data):
@@ -24,6 +24,9 @@ def validate_dataset_description(data):
     try:
         validate(instance=data, schema=schema)
         return True
-    except Exception as e:
-        print(e)
+    except ValidationError as e:
+        print(e.schema["error_msg"] if "error_msg" in e.schema else e.message)
         return False
+    except Exception as error:
+        print(error)
+        raise error
