@@ -45,8 +45,7 @@
                 "type": "object",
                 "properties": {
                     "ContributorName": {
-                        "type": "string",
-                        "pattern": "^([\\p{L}'\\s-]+), ([\\p{L}'\\s-]+)$"
+                        "type": "string"
                     },
                     "NameType": {
                         "type": "string",

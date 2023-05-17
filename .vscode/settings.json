@@ -27,8 +27,8 @@
   "python.linting.mypyEnabled": true,
   "python.linting.mypyArgs": ["--config-file", ".mypy.ini"],
   "python.linting.pydocstyleEnabled": true,
-  "python.formatting.provider": "none",
-  "python.formatting.blackPath": ".venv/bin/black",
+  "python.formatting.provider": "black",
+  "python.formatting.blackPath": "",
   "cSpell.words": [
     "asdf",
     "builtins",
@@ -49,6 +49,7 @@
     "verchew"
   ],
   "[python]": {
-    "editor.defaultFormatter": "ms-python.black-formatter"
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true
   }
 }
