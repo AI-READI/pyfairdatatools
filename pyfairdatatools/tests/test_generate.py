@@ -4,7 +4,7 @@
 import json
 from os import path
 
-from pyfairdatatools.generate import generate_dataset_description
+from pyfairdatatools.generate import generate_dataset_description, generate_readme
 
 
 class TestGenerateDatasetDescription:
@@ -31,3 +31,19 @@ class TestGenerateDatasetDescription:
         file_type = "xml"
 
         generate_dataset_description(data, file, file_type)
+
+
+class TestGenerateReadme:
+    def test_minimal_valid_readme(self, tmp_path):
+        data = {
+            "Title": "Test Title",
+        }
+
+        file = tmp_path / "readme.md"
+        file_type = "md"
+
+        print(file)
+
+        generate_readme(data, file, file_type)
+
+        assert path.exists(file) is True

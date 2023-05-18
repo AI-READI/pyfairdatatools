@@ -1,4 +1,6 @@
 import json
+from os import path
+from string import Template
 from xml.dom.minidom import parseString
 
 import dicttoxml
@@ -55,6 +57,69 @@ def generate_dataset_description(data, folder_path, file_type):
             pass
         elif file_type == "csv":
             pass
+        else:
+            print("File type is invalid.")
+            raise ValueError("Invalid file type")
+
+    except ValueError as error:
+        print(error)
+        raise ValueError("Invalid input") from error
+    except Exception as error:
+        print(error)
+        raise error
+
+
+def generate_readme(data, folder_path, file_type):
+    """Generate a readme file.
+
+    Args:
+        data (dict): The readme to generate
+        folder_path (str): The path to the folder to save the readme in
+        file_type (str): The type of file to save the readme as
+    Returns:
+        A readme file
+    """
+    ALLOWED_FILE_TYPES = ["txt", "md"]
+
+    try:
+        if file_type not in ALLOWED_FILE_TYPES:
+            print("File type is invalid.")
+            raise ValueError("Invalid file type")
+
+        if not validate.validate_readme(data):
+            print("Readme is invalid.")
+            raise ValueError("Invalid input data")
+
+        if file_type in ["txt", "md"]:
+            with open(
+                path.join(path.dirname(__file__), "templates", "readme.mdtxt.template"),
+                encoding="utf-8",
+            ) as template_file:
+                try:
+                    with open(folder_path, "w", encoding="utf8") as output_file:
+                        template = Template(template_file.read())
+
+                        substitutions = {
+                            "title": data.get("Title"),
+                            "identifier": data.get("Identifier") or "",
+                            "version": data.get("Version") or "",
+                            "publication_date": data.get("PublicationDate") or "",
+                            "about": data.get("About") or "",
+                            "dataset_description": data.get("DatasetDescription") or "",
+                            "dataset_access": data.get("DatasetAccess") or "",
+                            "standards_followed": data.get("StandardsFollowed") or "",
+                            "resources": data.get("Resources") or "",
+                            "license": data.get("License") or "",
+                            "how_to_cite": data.get("HowToCite") or "",
+                            "acknowledgement": data.get("Acknowledgement") or "",
+                        }
+
+                        output_file.write(template.substitute(substitutions))
+
+                except Exception as error:
+                    print(error)
+                    raise error
+
         else:
             print("File type is invalid.")
             raise ValueError("Invalid file type")

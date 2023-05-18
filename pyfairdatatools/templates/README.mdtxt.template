@@ -1,0 +1,33 @@
+# $title - $version
+
+$about
+
+This version of the dataset was published on $publication_date. It is archived at $identifier.
+
+--------------------------------
+
+## Description
+
+$dataset_description
+
+## Standards and formats
+
+$standards_followed
+
+## Resources
+
+$resources
+
+## License
+
+$license
+
+## How to cite
+
+If you are using this dataset, please cite it as:
+
+$how_to_cite
+
+## Acknowledgements
+
+$acknowledgement

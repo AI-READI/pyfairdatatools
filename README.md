@@ -111,6 +111,7 @@ $ python
 The input of most functions will be a json format schema (see "Standards followed" sections) that contain data and metadata related information. The outputs of most functions will be standards metadata files, structured data, etc.
 
 ## Standards followed
+
 This software is being developed following the [Software Development Best Practices of the AI-READI Project](https://github.com/AI-READI/software-development-best-practices), which include following the [FAIR-BioRS guidelines](https://github.com/FAIR-BioRS/Guidelines). Amongs other, we are following closely the [PEP 8 Style Guide for Python Code](https://peps.python.org/pep-0008/).
 
 The input structure of the function is currently being developed but anticipated to follow existing schemas such as schema.org and bioschemas.org.
@@ -153,6 +154,8 @@ If you would like to update the package, please follow the instructions below.
    pip install poetry==1.3.2
    poetry install
    ```
+
+   You can also use version 1.2.0 of Poetry, but you will need to run `poetry lock` after installing the dependencies.
 
 3. Add your modifications and run the tests:
 
