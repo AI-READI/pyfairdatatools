@@ -80,3 +80,31 @@ def validate_license(identifier):
         "licenseId" in item and identifier == item["licenseId"]
         for item in list_of_licenses
     )
+
+
+def validate_participants(data):
+    """Validate a participants file against the schema.
+
+    Args:
+        data (dict): The participants file to validate
+    Returns:
+        bool: True if the participants file is valid, False otherwise
+    """
+    schema = {}
+
+    # Import the schema from the schemas folder
+    with open(
+        path.join(path.dirname(__file__), "schemas", "participants.schema.json"),
+        encoding="utf-8",
+    ) as f:
+        schema = json.load(f)
+
+    try:
+        validate(instance=data, schema=schema)
+        return True
+    except ValidationError as e:
+        print(e.schema["error_msg"] if "error_msg" in e.schema else e.message)
+        return False
+    except Exception as error:
+        print(error)
+        raise error

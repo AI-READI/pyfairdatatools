@@ -1,0 +1,77 @@
+{
+  "$id": "https://schema.fairhub.org/participants.json",
+  "title": "README",
+  "description": "Additional text here",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "participant_id": {
+        "type": "string",
+        "description": "A participant identifier of the form sub-<label>, matching a participant entity found in the dataset. Values in participant_id MUST be unique.",
+        "pattern": "^sub-[a-zA-Z0-9]+$"
+      },
+      "species": {
+        "type": "string",
+        "description": "The species column SHOULD be a binomial species name from the NCBI Taxonomy (for example, homo sapiens, mus musculus, rattus norvegicus). For backwards compatibility, if species is absent, the participant is assumed to be homo sapiens."
+      },
+      "age": {
+        "type": "number",
+        "description": "Numeric value in years (float or integer value)",
+        "exclusiveMinimum": 0
+      },
+      "sex": {
+        "type": "string",
+        "enum": [
+          "male",
+          "m",
+          "M",
+          "MALE",
+          "Male",
+          "female",
+          "f",
+          "F",
+          "FEMALE",
+          "Female",
+          "other",
+          "o",
+          "O",
+          "OTHER",
+          "Other"
+        ]
+      },
+      "handedness": {
+        "type": "string",
+        "enum": [
+          "left",
+          "l",
+          "L",
+          "LEFT",
+          "Left",
+          "right",
+          "r",
+          "R",
+          "RIGHT",
+          "Right",
+          "ambidextrous",
+          "a",
+          "A",
+          "AMBIDEXTROUS",
+          "Ambidextrous"
+        ]
+      },
+      "strain": {
+        "type": "string",
+        "description": "For species different from homo sapiens, string value indicating the strain of the species, for example: C57BL/6J."
+      },
+      "strain_rrid": {
+        "type": "string",
+        "description": "For species different from homo sapiens, research resource identifier (RRID) of the strain of the species, for example: RRID:IMSR_JAX:000664"
+      }
+    },
+    "required": [
+      "participant_id"
+    ]
+  },
+  "minItems": 1
+}

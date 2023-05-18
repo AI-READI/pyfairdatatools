@@ -1,5 +1,5 @@
 {
-  "$id": "https://schema.fairhub.org/dataset_description.json",
+  "$id": "https://schema.fairhub.org/readme.json",
   "title": "README",
   "description": "Additional text here",
   "type": "object",
