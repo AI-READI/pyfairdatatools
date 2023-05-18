@@ -39,6 +39,7 @@ click = "*"
 minilog = "*"
 art = "^5.9"
 jsonschema = "^4.17.3"
+dicttoxml = "^1.7.16"
 
 
 [tool.poetry.dev-dependencies]
