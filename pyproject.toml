@@ -98,7 +98,7 @@ pylint = "pylint pyfairdatatools tests --rcfile=.pylint.ini"
 
 precommit = ["format", "typecheck", "pylint"]
 
-test = "pytest -rx"
+test = "pytest -rx" 
 
 [tool.black]
 

@@ -1,7 +1,7 @@
 import json
 
 import dicttoxml
-
+from xml.dom.minidom import parseString
 from . import validate
 
 
@@ -37,14 +37,15 @@ def generate_dataset_description(data, folder_path, file_type):
         elif file_type == "xml":
             try:
                 with open(folder_path, "w", encoding="utf8") as f:
-                    f.write(
-                        dicttoxml.dicttoxml(
-                            data,
-                            custom_root="dataset_description",
-                            attr_type=False,
-                            item_func=lambda x: "variable",
-                        ).decode("utf-8")
-                    )
+                    xml = dicttoxml.dicttoxml(
+                        data,
+                        custom_root="dataset_description",
+                        attr_type=False,
+                        item_func=lambda x: "variable",
+                    ).decode("utf-8")
+                    dom = parseString(xml)
+                    f.write(dom.toprettyxml())
+
             except Exception as error:
                 print(error)
                 raise error
