@@ -1,7 +1,8 @@
 import json
+from xml.dom.minidom import parseString
 
 import dicttoxml
-from xml.dom.minidom import parseString
+
 from . import validate
 
 

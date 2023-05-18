@@ -1,9 +1,8 @@
 """Unit tests for pyfairdatatools.generate module."""
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison # noqa: E501
 
-from os import path
 import json
-
+from os import path
 
 from pyfairdatatools.generate import generate_dataset_description
 
