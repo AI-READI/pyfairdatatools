@@ -14,12 +14,7 @@ def feet_to_meters(feet):
 
 def requestJSON(url):
     try:
-        payload = {}
-        headers = {}
-
-        response = requests.request(
-            "GET", url, headers=headers, data=payload, timeout=5
-        )
+        response = requests.request("GET", url, headers={}, data={}, timeout=5)
 
         return response.json()
     except Exception as e:

@@ -40,6 +40,7 @@ minilog = "*"
 art = "^5.9"
 jsonschema = "^4.17.3"
 dicttoxml = "^1.7.16"
+types-requests = "^2.30.0.0"
 
 
 [tool.poetry.dev-dependencies]

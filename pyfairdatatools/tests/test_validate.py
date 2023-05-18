@@ -3,8 +3,9 @@
 
 from pyfairdatatools.validate import (
     validate_dataset_description,
-    validate_readme,
     validate_license,
+    validate_participants,
+    validate_readme,
 )
 
 
@@ -449,5 +450,93 @@ class TestValidateLicense:
         }
 
         output = validate_license(data)
+
+        assert output is False
+
+
+class TestValidateParticipants:
+    def test_minimal_valid_participant(self):
+        data = [
+            {
+                "participant_id": "sub-user1",
+            }
+        ]
+
+        output = validate_participants(data)
+
+        assert output is True
+
+    def test_valid_participant_with_all_fields(self):
+        data = [
+            {
+                "participant_id": "sub-user1",
+                "species": "homo sapiens",
+                "age": 0.5,
+                "sex": "Female",
+                "handedness": "Right",
+                "strain": "C57BL/6J",
+                "strain_rrid": "RRID:IMSR_JAX:000664",
+            }
+        ]
+
+        output = validate_participants(data)
+
+        assert output is True
+
+    def test_invalid_participant_id(self):
+        data = [{}]
+
+        output = validate_participants(data)
+
+        assert output is False
+
+        data = [{"participant_id": "bus-asd"}]
+
+        output = validate_participants(data)
+
+        assert output is False
+
+    def test_invalid_age(self):
+        data = [{"participant_id": "sub-sample1", "age": 0}]
+
+        output = validate_participants(data)
+
+        assert output is False
+
+        data = [{"participant_id": "sub-sample1", "age": -5}]
+
+        output = validate_participants(data)
+
+        assert output is False
+
+        data = [{"participant_id": "sub-sample1", "age": "5"}]
+
+        output = validate_participants(data)
+
+        assert output is False
+
+    def test_invalid_sex(self):
+        data = [{"participant_id": "sub-sample1", "sex": 0}]
+
+        output = validate_participants(data)
+
+        assert output is False
+
+        data = [{"participant_id": "sub-sample1", "sex": "Invalid"}]
+
+        output = validate_participants(data)
+
+        assert output is False
+
+    def test_invalid_handedness(self):
+        data = [{"participant_id": "sub-sample1", "handedness": 0}]
+
+        output = validate_participants(data)
+
+        assert output is False
+
+        data = [{"participant_id": "sub-sample1", "handedness": "Invalid"}]
+
+        output = validate_participants(data)
 
         assert output is False

@@ -5,8 +5,7 @@ from xml.dom.minidom import parseString
 
 import dicttoxml
 
-from . import validate
-from . import utils
+from . import utils, validate
 
 
 def generate_dataset_description(data, file_path, file_type):
@@ -170,7 +169,8 @@ def generate_license_file(
 
     Args:
         identifier (str): The identifier of the license
-        data (str): License text if the identifier is not provided (takes precedence over identifier) # noqa: E501
+        data (str): License text if the identifier is not provided (takes precedence
+            over identifier)
         file_path (str): The path to the folder to save the license in
         file_type (str): The type of file to save the license as
     Returns:

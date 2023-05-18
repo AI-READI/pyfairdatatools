@@ -5,10 +5,10 @@ import json
 from os import path
 
 from pyfairdatatools.generate import (
-    generate_dataset_description,
-    generate_readme,
     generate_changelog_file,
+    generate_dataset_description,
     generate_license_file,
+    generate_readme,
 )
 
 
