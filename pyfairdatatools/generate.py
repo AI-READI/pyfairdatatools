@@ -8,12 +8,12 @@ import dicttoxml
 from . import validate
 
 
-def generate_dataset_description(data, folder_path, file_type):
+def generate_dataset_description(data, file_path, file_type):
     """Generate a dataset description file.
 
     Args:
         data (dict): The dataset description to generate
-        folder_path (str): The path to the folder to save the dataset description in
+        file_path (str): The path to the folder to save the dataset description in
         file_type (str): The type of file to save the dataset description as
     Returns:
         A dataset description file
@@ -31,7 +31,7 @@ def generate_dataset_description(data, folder_path, file_type):
 
         if file_type == "json":
             try:
-                with open(folder_path, "w", encoding="utf8") as f:
+                with open(file_path, "w", encoding="utf8") as f:
                     json.dump(data, f, indent=4)
             except Exception as error:
                 print(error)
@@ -39,7 +39,7 @@ def generate_dataset_description(data, folder_path, file_type):
 
         elif file_type == "xml":
             try:
-                with open(folder_path, "w", encoding="utf8") as f:
+                with open(file_path, "w", encoding="utf8") as f:
                     xml = dicttoxml.dicttoxml(
                         data,
                         custom_root="dataset_description",
@@ -69,12 +69,12 @@ def generate_dataset_description(data, folder_path, file_type):
         raise error
 
 
-def generate_readme(data, folder_path, file_type):
+def generate_readme(data, file_path, file_type):
     """Generate a readme file.
 
     Args:
         data (dict): The readme to generate
-        folder_path (str): The path to the folder to save the readme in
+        file_path (str): The path to the folder to save the readme in
         file_type (str): The type of file to save the readme as
     Returns:
         A readme file
@@ -96,7 +96,7 @@ def generate_readme(data, folder_path, file_type):
                 encoding="utf-8",
             ) as template_file:
                 try:
-                    with open(folder_path, "w", encoding="utf8") as output_file:
+                    with open(file_path, "w", encoding="utf8") as output_file:
                         template = Template(template_file.read())
 
                         substitutions = {
@@ -130,3 +130,29 @@ def generate_readme(data, folder_path, file_type):
     except Exception as error:
         print(error)
         raise error
+
+
+def generate_changelog_file(data, file_path, file_type):
+    """Generate a changelog file.
+
+    Args:
+        data (dict): The changelog to generate
+        file_path (str): The path to the folder to save the changelog in
+        file_type (str): The type of file to save the changelog as
+    Returns:
+        A changelog file
+    """
+    ALLOWED_FILE_TYPES = ["txt", "md"]
+
+    if file_type not in ALLOWED_FILE_TYPES:
+        print("File type is invalid.")
+        raise ValueError("Invalid file type")
+
+    if file_type in ["txt", "md"]:
+        try:
+            with open(file_path, "w", encoding="utf8") as f:
+                f.write(data)
+
+        except Exception as error:
+            print(error)
+            raise error
