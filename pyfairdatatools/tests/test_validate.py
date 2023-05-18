@@ -1,7 +1,11 @@
 """Unit tests for pyfairdatatools.validate module."""
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison # noqa: E501
 
-from pyfairdatatools.validate import validate_dataset_description, validate_readme
+from pyfairdatatools.validate import (
+    validate_dataset_description,
+    validate_readme,
+    validate_license,
+)
 
 
 class TestValidateDatasetDescription:
@@ -427,5 +431,23 @@ class TestValidateReadme:
         data = {"Title": "Test Title", "PublicationDate": "Invalid"}
 
         output = validate_readme(data)
+
+        assert output is False
+
+
+class TestValidateLicense:
+    def test_valid_license(self):
+        data = "CC-BY-4.0"
+
+        output = validate_license(data)
+
+        assert output is True
+
+    def test_fail_invalid_license(self):
+        data = {
+            "License": "Invalid",
+        }
+
+        output = validate_license(data)
 
         assert output is False

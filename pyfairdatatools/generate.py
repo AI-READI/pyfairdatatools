@@ -6,6 +6,7 @@ from xml.dom.minidom import parseString
 import dicttoxml
 
 from . import validate
+from . import utils
 
 
 def generate_dataset_description(data, file_path, file_type):
@@ -136,7 +137,7 @@ def generate_changelog_file(data, file_path, file_type):
     """Generate a changelog file.
 
     Args:
-        data (dict): The changelog to generate
+        data (str): The changelog to generate
         file_path (str): The path to the folder to save the changelog in
         file_type (str): The type of file to save the changelog as
     Returns:
@@ -156,3 +157,78 @@ def generate_changelog_file(data, file_path, file_type):
         except Exception as error:
             print(error)
             raise error
+
+
+def generate_license_file(
+    file_path,
+    file_type,
+    identifier="",
+    data="",
+):
+    # sourcery skip: low-code-quality
+    """Generate a license file.
+
+    Args:
+        identifier (str): The identifier of the license
+        data (str): License text if the identifier is not provided (takes precedence over identifier) # noqa: E501
+        file_path (str): The path to the folder to save the license in
+        file_type (str): The type of file to save the license as
+    Returns:
+        A license file
+    """
+    ALLOWED_FILE_TYPES = ["txt", "md"]
+
+    if identifier == "" and data == "":
+        print("Identifier or data must be provided.")
+        raise ValueError("Invalid input")
+
+    if file_type not in ALLOWED_FILE_TYPES:
+        print("File type is invalid.")
+        raise ValueError("Invalid file type")
+
+    if file_type in ["txt", "md"]:
+        # if data is provided, use that
+        if data != "":
+            try:
+                with open(file_path, "w", encoding="utf8") as f:
+                    f.write(data)
+
+            except Exception as error:
+                print(error)
+                raise error
+        # if data is not provided, use identifier
+        else:
+            with open(
+                path.join(path.dirname(__file__), "assets", "licenses.json"),
+                encoding="utf-8",
+            ) as f:
+                list_of_licenses = json.load(f)["licenses"]
+
+                license_text = ""
+                for item in list_of_licenses:
+                    if "licenseId" in item and item["licenseId"] == identifier:
+                        if "detailsUrl" in item:
+                            try:
+                                response = utils.requestJSON(item["detailsUrl"])
+
+                                if "licenseText" in response:
+                                    license_text = response["licenseText"]
+                                else:
+                                    print("Could not get text for license.")
+                                    raise NotImplementedError(
+                                        "License text not available"
+                                    )
+
+                                with open(file_path, "w", encoding="utf8") as f:
+                                    f.write(license_text)
+                                    print("License file generated.")
+
+                                return
+
+                            except Exception as error:
+                                print(error)
+                                raise error
+
+                        else:
+                            print("Could not get text for license.")
+                            raise NotImplementedError("License text not available")

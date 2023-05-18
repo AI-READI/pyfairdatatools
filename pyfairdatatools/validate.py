@@ -58,3 +58,25 @@ def validate_readme(data):
     except Exception as error:
         print(error)
         raise error
+
+
+def validate_license(identifier):
+    """Validate a license identifier against a list of valid  identifiers.
+
+    Args:
+        identifier (str): The license identifier to validate
+    Returns:
+        bool: True if the license identifier is valid, False otherwise
+    """
+
+    # Import the schema from the schemas folder
+    with open(
+        path.join(path.dirname(__file__), "assets", "licenses.json"),
+        encoding="utf-8",
+    ) as f:
+        list_of_licenses = json.load(f)["licenses"]
+
+    return any(
+        "licenseId" in item and identifier == item["licenseId"]
+        for item in list_of_licenses
+    )

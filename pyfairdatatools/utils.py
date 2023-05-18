@@ -1,4 +1,4 @@
-"""A sample module."""
+import requests
 
 
 def feet_to_meters(feet):
@@ -10,3 +10,17 @@ def feet_to_meters(feet):
         raise ValueError(f"Invalid input: {feet}") from error
 
     return (0.3048 * value * 10000.0 + 0.5) / 10000.0
+
+
+def requestJSON(url):
+    try:
+        payload = {}
+        headers = {}
+
+        response = requests.request(
+            "GET", url, headers=headers, data=payload, timeout=5
+        )
+
+        return response.json()
+    except Exception as e:
+        raise e
