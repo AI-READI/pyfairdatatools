@@ -5,13 +5,18 @@ site_author: FAIR Data Innovations Hub
 repo_url: https://github.com/AI-READI/pyfairdatatools
 edit_uri: https://github.com/AI-READI/pyfairdatatools/edit/main/docs
 
+dev_addr: 127.0.0.1:3000
+
 theme: readthedocs
 
 markdown_extensions:
   - codehilite
+  - admonition
 
 nav:
   - Home: index.md
+  - Modules:
+      - Validate: modules/validate.md
   - Advanced: advanced.md
   - About:
       - Release Notes: about/changelog.md

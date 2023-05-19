@@ -88,6 +88,8 @@ poethepoet = "^0.20.0"
 
 [tool.poe.tasks]
 
+docs = "mkdocs serve"
+
 format_with_isort = "isort pyfairdatatools tests notebooks"
 format_with_black = "black pyfairdatatools tests notebooks"
 
