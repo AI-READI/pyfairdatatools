@@ -1,6 +1,7 @@
 """Unit tests for pyfairdatatools.validate module."""
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison # noqa: E501
 
+
 from pyfairdatatools.validate import (
     validate_dataset_description,
     validate_license,
@@ -484,7 +485,7 @@ class TestValidateParticipants:
         assert output is True
 
     def test_invalid_participant_id(self):
-        data = [{}]
+        data: list[dict[str, str]] = [{}]
 
         output = validate_participants(data)
 
