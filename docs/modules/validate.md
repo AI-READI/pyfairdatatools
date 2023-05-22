@@ -30,6 +30,8 @@ Provide the data required for your `dataset_description` file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
+More information about the required data can be found in the [dataset_description](../schemas/dataset_description.md) schema.
+
 You can the hosted validator [here](https://www.jsonschemavalidator.net/s/aNSmlcv1) if you want a better understanding or visualization of the schema for the input.
 
 #### Returns

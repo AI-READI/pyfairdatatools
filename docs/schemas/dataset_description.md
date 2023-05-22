@@ -351,6 +351,8 @@ The web URL of the metadata schema used for the dataset or study.
 
 The full JSON schema for the dataset metadata is as follows.
 
+You can also use the JSON validator hosted at [https://www.jsonschemavalidator.net/s/aNSmlcv1](https://www.jsonschemavalidator.net/s/aNSmlcv1) to validate your JSON data against this schema.
+
 !!! warning
 
     There is additional validation performed within the method itself. This schema is only used for validation of the JSON data before it is sent to the method.

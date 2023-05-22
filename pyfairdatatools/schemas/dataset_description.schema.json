@@ -5,39 +5,51 @@
   "type": "object",
   "properties": {
     "Title": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1,
+      "description": "The title of the dataset."
     },
     "Identifier": {
       "type": "string",
-      "pattern": "^10\\.\\d{4,9}/[-._;()/:A-Za-z0-9]+$"
+      "pattern": "^10\\.\\d{4,9}/[-._;()/:A-Za-z0-9]+$",
+      "description": "The DOI of the dataset."
     },
     "IdentifierType": {
       "type": "string",
       "pattern": "DOI",
       "minLength": 3,
-      "maxLength": 3
+      "maxLength": 3,
+      "description": "The type of identifier used to identify the dataset."
     },
     "Subject": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "minItems": 1
+      "minItems": 1,
+      "description": "The subject of the dataset. This is a list of keywords."
     },
     "Description": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1,
+      "description": "A description of the dataset."
     },
     "Language": {
       "type": "string",
       "pattern": "^[a-z]{2}$",
       "minLength": 2,
-      "maxLength": 2
+      "maxLength": 2,
+      "description": "The language of the dataset. This is a two letter code from ISO 639-1."
     },
     "StudyTitle": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1,
+      "description": "The title of the overall study."
     },
     "StudyID": {
-      "type": "string"
+      "type": "string",
+      "minLength": 1,
+      "description": "The identifier of the overall study."
     },
     "Creator": {
       "type": "array",
@@ -45,7 +57,8 @@
         "type": "object",
         "properties": {
           "ContributorName": {
-            "type": "string"
+            "type": "string",
+            "description": "The name of the contributor."
           },
           "NameType": {
             "type": "string",
