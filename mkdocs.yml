@@ -17,6 +17,8 @@ nav:
   - Home: index.md
   - Modules:
       - Validate: modules/validate.md
+  - Schemas:
+    - Dataset Description: schemas/dataset_description.md
   - Advanced: advanced.md
   - About:
       - Release Notes: about/changelog.md
