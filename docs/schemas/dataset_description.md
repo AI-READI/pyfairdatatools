@@ -6,7 +6,7 @@ This page details the input schema required for the `validate_dataset_descriptio
 
 The keys required for this parameter are detailed below:
 
-#### Title
+### Title
 
 The title of the dataset or study.
 
@@ -14,7 +14,7 @@ The title of the dataset or study.
 | ------ | ------------- | -------- | --------------- |
 | String | None          | yes      | Any string      |
 
-#### Identifier
+### Identifier
 
 The identifier of the dataset or study. Only DOIs are currently supported.
 
@@ -24,7 +24,7 @@ The identifier of the dataset or study. Only DOIs are currently supported.
 
 A regex expression is used to validate the DOI. The expression is `^10\.\d{4,9}/[-._;()/:A-Za-z0-9]+$`.
 
-#### IdentifierType
+### IdentifierType
 
 The type of identifier used. Only DOIs are currently supported.
 
@@ -32,7 +32,7 @@ The type of identifier used. Only DOIs are currently supported.
 | ------ | ------------- | -------- | --------------- |
 | String | None          | yes      | "DOI"           |
 
-#### Subject
+### Subject
 
 A list of keywords or phrases describing the dataset or study.
 
@@ -42,7 +42,7 @@ A list of keywords or phrases describing the dataset or study.
 
 Empty arrays are not allowed. At least one keyword or phrase is required if this key is present in the data object.
 
-#### Description
+### Description
 
 A description of the dataset or study.
 
@@ -50,7 +50,7 @@ A description of the dataset or study.
 | ------ | ------------- | -------- | --------------- |
 | String | None          | no       | Any string      |
 
-#### Language
+### Language
 
 The language of the dataset or study. Only two letter ISO 639-1 language codes are currently supported.
 
@@ -58,7 +58,7 @@ The language of the dataset or study. Only two letter ISO 639-1 language codes a
 | ------ | ------------- | -------- | ----------------------- |
 | String | None          | no       | Any valid language code |
 
-#### StudyTitle
+### StudyTitle
 
 The title of the study.
 
@@ -66,7 +66,7 @@ The title of the study.
 | ------ | ------------- | -------- | --------------- |
 | String | None          | no       | Any string      |
 
-#### StudyID
+### StudyID
 
 The ID of the study.
 
@@ -74,7 +74,7 @@ The ID of the study.
 | ------ | ------------- | -------- | --------------- |
 | String | None          | no       | Any string      |
 
-#### Creator
+### Creator
 
 A list of contributors to the dataset or study.
 
@@ -133,7 +133,7 @@ The type of contributor. The following values are accepted:
 
 The ORCID of the contributor.
 
-#### RelatedItem
+### RelatedItem
 
 A list of related items.
 
@@ -245,7 +245,7 @@ The type of relation between the dataset or study and the related item. The foll
 - Requires
 - IsObsoletedBy
 
-#### FundingReference
+### FundingReference
 
 A list of funding references.
 
@@ -277,7 +277,7 @@ The type of identifier used for the funder. The following values are accepted:
 - ROR
 - Other
 
-#### Version
+### Version
 
 The version of the dataset or study.
 
@@ -287,7 +287,7 @@ The version of the dataset or study.
 
 We recommend using [Semantic Versioning](https://semver.org/) for this field.
 
-#### Date
+### Date
 
 Date of publication of the current version.
 
@@ -301,7 +301,7 @@ The valid formats for this field are:
 - YYYY-MM-DD
 - YYYYMM-DDThh:mm:ssTZD
 
-#### AccessType
+### AccessType
 
 The type of access to the dataset or study.
 
@@ -311,7 +311,7 @@ The type of access to the dataset or study.
 
 The lookup table for this field can be found here: [http://ecrin-mdr.online/index.php/Object_access_types](http://ecrin-mdr.online/index.php/Object_access_types)
 
-#### Rights
+### Rights
 
 The license or rights statement for the dataset or study.
 
@@ -343,9 +343,9 @@ The scheme used for the rights identifier.
 
 The web URL of the metadata schema used for the dataset or study.
 
-| Type   | Default value | Required | Accepted values            |
-| ------ | ------------- | -------- | -------------------------- |
-| String | None          | no       | https://spdx.org/licenses/ |
+| Type   | Default value | Required | Accepted values              |
+| ------ | ------------- | -------- | ---------------------------- |
+| String | None          | no       | <https://spdx.org/licenses/> |
 
 ## Data Schema
 

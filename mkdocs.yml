@@ -12,6 +12,12 @@ theme: readthedocs
 markdown_extensions:
   - codehilite
   - admonition
+  - toc:
+        permalink: '
+  - pymdownx.betterem
+  - pymdownx.tilde
+  - pymdownx.details
+  - pymdownx.smartsymbols
 
 nav:
   - Home: index.md
@@ -19,7 +25,7 @@ nav:
       - Validate: modules/validate.md
   - Schemas:
     - Dataset Description: schemas/dataset_description.md
-  - Advanced: advanced.md
+    - Readme: schemas/readme.md
   - About:
       - Release Notes: about/changelog.md
       - Contributor Guide: about/contributing.md

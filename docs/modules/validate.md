@@ -55,3 +55,43 @@ output = validate.validate_dataset_description(data)
 
 print(output)  # True
 ```
+
+### Validate Readme
+
+You can call the `validate_readme` method to validate the data needed to create a README file.
+
+#### Parameters
+
+##### data
+
+Provide the data required for your `README` file in this paramater.
+
+| Type   | Default value | Required | Accepted values                            |
+| ------ | ------------- | -------- | ------------------------------------------ |
+| Object | {}            | yes      | Data object following the required schemas |
+
+More information about the required data can be found in the [README](../schemas/README.md) schema.
+
+You can the hosted validator [here](https://www.jsonschemavalidator.net/s/aNSmlcv1) if you want a better understanding or visualization of the schema for the input.
+
+#### Returns
+
+| Type    | Description                                             |
+| ------- | ------------------------------------------------------- |
+| Boolean | Returns `True` if the data is valid, `False` otherwise. |
+
+#### How to use
+
+```python
+from pyfairdatatools import validate
+
+data  = {
+    "Title": "My Dataset",
+    "Identifier": "10.5281/zenodo.1234567",
+    "Version": "1.0.0",
+}
+
+output = validate.validate_readme(data)
+
+print(output)  # True
+```

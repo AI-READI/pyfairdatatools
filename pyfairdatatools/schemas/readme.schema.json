@@ -40,7 +40,7 @@
     },
     "Resources": {
       "type": "string",
-      "description": "Any external resources that may be either required to use the data or useful when using the data (e.g. the project website aireadi.org, the documentation of fairhub.io at docs.fairhub.io, etc.). Make sure to include identifiers and/or links to the resources.."
+      "description": "Any external resources that may be either required to use the data or useful when using the data (e.g. the project website aireadi.org, the documentation of fairhub.io at docs.fairhub.io, etc.). Make sure to include identifiers and/or links to the resources."
     },
     "License": {
       "type": "string",
@@ -55,7 +55,5 @@
       "description": "Brief description of how to acknowledge the dataset, in APA format (refer to the ACKNOWLEDGEMENT.txt file for additional details)."
     }
   },
-  "required": [
-    "Title"
-  ]
+  "required": ["Title"]
 }
