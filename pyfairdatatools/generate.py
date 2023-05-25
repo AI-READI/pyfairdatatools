@@ -44,8 +44,7 @@ def generate_dataset_description(data, file_path, file_type):
                         data,
                         custom_root="dataset_description",
                         attr_type=False,
-                        item_func=lambda x: "variable",
-                    ).decode("utf-8")
+                    )
                     dom = parseString(xml)
                     f.write(dom.toprettyxml())
 

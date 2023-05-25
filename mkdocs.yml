@@ -13,7 +13,7 @@ markdown_extensions:
   - codehilite
   - admonition
   - toc:
-        permalink: '
+      permalink: '
   - pymdownx.betterem
   - pymdownx.tilde
   - pymdownx.details
@@ -23,9 +23,11 @@ nav:
   - Home: index.md
   - Modules:
       - Validate: modules/validate.md
+      - Generate: modules/generate.md
   - Schemas:
-    - Dataset Description: schemas/dataset_description.md
-    - Readme: schemas/readme.md
+      - Dataset Description: schemas/dataset_description.md
+      - Readme: schemas/readme.md
+      - Participants: schemas/participants.md
   - About:
       - Release Notes: about/changelog.md
       - Contributor Guide: about/contributing.md

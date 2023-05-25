@@ -51,7 +51,7 @@ data  = {
     "IdentifierType": "DOI"
 }
 
-output = validate.validate_dataset_description(data)
+output = validate.validate_dataset_description(data = data)
 
 print(output)  # True
 ```
@@ -91,7 +91,81 @@ data  = {
     "Version": "1.0.0",
 }
 
-output = validate.validate_readme(data)
+output = validate.validate_readme(data = data)
+
+print(output)  # True
+```
+
+### Validate License
+
+You can call the `validate_license` method to validate the data needed to create a LICENSE file.
+
+#### Parameters
+
+##### identifier
+
+Provide the identifier of the license you want to validate.
+
+| Type   | Default value | Required | Accepted values         |
+| ------ | ------------- | -------- | ----------------------- |
+| String | ""            | yes      | SPDX license identifier |
+
+For a list of all SPDX license identifiers, see [here](https://spdx.org/licenses/).
+
+#### Returns
+
+| Type    | Description                                             |
+| ------- | ------------------------------------------------------- |
+| Boolean | Returns `True` if the data is valid, `False` otherwise. |
+
+#### How to use
+
+```python
+from pyfairdatatools import validate
+
+identifier = "CC-BY-4.0"
+
+output = validate.validate_license(identifier = identifier)
+
+print(output)  # True
+```
+
+### Validate Participants
+
+You can call the `validate_participants` method to validate the data needed to create a participants.tsv file.
+
+#### Parameters
+
+##### data
+
+Provide the data required for your `participants.tsv` file in this paramater.
+
+| Type   | Default value | Required | Accepted values                            |
+| ------ | ------------- | -------- | ------------------------------------------ |
+| Object | {}            | yes      | Data object following the required schemas |
+
+More information about the required data can be found in the [participants](../schemas/participants.md) schema.
+
+You can the hosted validator [here](https://www.jsonschemavalidator.net/s/aNSmlcv1) if you want a better understanding or visualization of the schema for the input.
+
+#### Returns
+
+| Type    | Description                                             |
+| ------- | ------------------------------------------------------- |
+| Boolean | Returns `True` if the data is valid, `False` otherwise. |
+
+#### How to use
+
+```python
+from pyfairdatatools import validate
+
+data = {
+    "participant_id": 'sub-id1',
+    "species": 'rattus norvegicus',
+    "age": 2
+}
+
+output = validate.validate_participants(data = data)
 
 print(output)  # True
 ```
