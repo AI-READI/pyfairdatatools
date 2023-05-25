@@ -14,7 +14,6 @@ markdown_extensions:
   - admonition
   - toc:
       permalink: '
-  - pymdownx.betterem
   - pymdownx.tilde
   - pymdownx.details
   - pymdownx.smartsymbols
