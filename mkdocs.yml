@@ -14,9 +14,6 @@ markdown_extensions:
   - admonition
   - toc:
       permalink: '
-  - pymdownx.tilde
-  - pymdownx.details
-  - pymdownx.smartsymbols
 
 nav:
   - Home: index.md
