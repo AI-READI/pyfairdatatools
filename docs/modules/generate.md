@@ -250,7 +250,19 @@ Further resources on the MIT License
 - [HTML](https://spdx.org/licenses/MIT.html)
 """
 
-output = generate.generate_license(identifier = "MIT", data = data, file_path = "license.md", file_type = "md")
+output = generate.generate_license(identifier = "MIT", data = data, file_path = "LICENSE.md", file_type = "md")
 
-print(output)  # license.md
+print(output)  # LICENSE.md
+```
+
+To create a license file using a SPDX license identifier:
+
+```python
+from pyfairdatatools import generate
+
+identifier = "MIT"
+
+output = generate.generate_license(identifier = identifier, file_path = "LICENSE.md", file_type = "md")
+
+print(output)  # LICENSE.md
 ```

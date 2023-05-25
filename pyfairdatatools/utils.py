@@ -1,3 +1,5 @@
+import os
+
 import requests
 
 
@@ -19,3 +21,24 @@ def requestJSON(url):
         return response.json()
     except Exception as e:
         raise e
+
+
+def validate_file_path(file_path, preexisting_file=False, writable=False):
+    if file_path == "":
+        print("File path is empty.")
+        raise ValueError("Invalid input")
+
+    if preexisting_file:
+        if not os.path.exists(file_path):
+            print("File path does not exist.")
+            raise FileNotFoundError("File not found")
+
+        if not os.path.isfile(file_path):
+            print("File path is not a file.")
+            raise ValueError("Invalid input")
+
+    if writable and os.access(file_path, os.W_OK):
+        print("File path is not writable.")
+        raise PermissionError("Permission denied")
+
+    return True

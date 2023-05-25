@@ -25,6 +25,10 @@ def generate_dataset_description(data, file_path, file_type):
             print("File type is invalid.")
             raise ValueError("Invalid file type")
 
+        if not utils.validate_file_path(file_path, writable=True):
+            print("File path is invalid.")
+            raise ValueError("Invalid file path")
+
         if not validate.validate_dataset_description(data):
             print("Dataset description is invalid.")
             raise ValueError("Invalid input data")
@@ -45,7 +49,8 @@ def generate_dataset_description(data, file_path, file_type):
                         custom_root="dataset_description",
                         attr_type=False,
                     )
-                    dom = parseString(xml)
+
+                    dom = parseString(xml)  # type: ignore
                     f.write(dom.toprettyxml())
 
             except Exception as error:
@@ -84,6 +89,10 @@ def generate_readme(data, file_path, file_type):
         if file_type not in ALLOWED_FILE_TYPES:
             print("File type is invalid.")
             raise ValueError("Invalid file type")
+
+        if not utils.validate_file_path(file_path, writable=True):
+            print("File path is invalid.")
+            raise ValueError("Invalid file path")
 
         if not validate.validate_readme(data):
             print("Readme is invalid.")
@@ -147,6 +156,10 @@ def generate_changelog_file(data, file_path, file_type):
         print("File type is invalid.")
         raise ValueError("Invalid file type")
 
+    if not utils.validate_file_path(file_path, writable=True):
+        print("File path is invalid.")
+        raise ValueError("Invalid file path")
+
     if file_type in ["txt", "md"]:
         try:
             with open(file_path, "w", encoding="utf8") as f:
@@ -180,6 +193,10 @@ def generate_license_file(
     if identifier == "" and data == "":
         print("Identifier or data must be provided.")
         raise ValueError("Invalid input")
+
+    if not utils.validate_file_path(file_path, writable=True):
+        print("File path is invalid.")
+        raise ValueError("Invalid file path")
 
     if file_type not in ALLOWED_FILE_TYPES:
         print("File type is invalid.")
