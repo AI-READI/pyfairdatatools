@@ -1,6 +1,8 @@
 import os
 
 import requests
+import validators
+from validators import ValidationFailure
 
 
 def feet_to_meters(feet):
@@ -42,3 +44,9 @@ def validate_file_path(file_path, preexisting_file=False, writable=False):
         raise PermissionError("Permission denied")
 
     return True
+
+
+def validate_url(url_string):
+    result = validators.url(url_string)
+
+    return False if isinstance(result, ValidationFailure) else result

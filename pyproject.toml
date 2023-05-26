@@ -42,6 +42,7 @@ jsonschema = "^4.17.3"
 dicttoxml = "^1.7.16"
 types-requests = "^2.30.0.0"
 pymdown-extensions = "^10.0.1"
+validators = "^0.20.0"
 
 
 [tool.poetry.dev-dependencies]

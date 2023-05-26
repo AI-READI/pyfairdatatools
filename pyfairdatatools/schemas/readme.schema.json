@@ -6,7 +6,8 @@
   "properties": {
     "Title": {
       "type": "string",
-      "description": "Name of the dataset"
+      "description": "Name of the dataset",
+      "minLength": 1
     },
     "Identifier": {
       "type": "string",
@@ -15,7 +16,8 @@
     },
     "Version": {
       "type": "string",
-      "description": "The version of the resource. This property is used to capture the version of the resource being described. It is recommended to use the Semantic Versioning (SemVer) convention (https://semver.org/)."
+      "description": "The version of the resource. This property is used to capture the version of the resource being described. It is recommended to use the Semantic Versioning (SemVer) convention (https://semver.org/).",
+      "minLength": 1
     },
     "PublicationDate": {
       "type": "string",
@@ -24,35 +26,43 @@
     },
     "About": {
       "type": "string",
-      "description": "A short high-level description of the resource. This property is used to capture a short description of the resource being described."
+      "description": "A short high-level description of the resource. This property is used to capture a short description of the resource being described.",
+      "minLength": 1
     },
     "DatasetDescription": {
       "type": "string",
-      "description": "Describe the number of study participants and their characteristics (refer to the participants.json file described in a later section for additional information), the data types collected, the overall number of files and total size of the dataset."
+      "description": "Describe the number of study participants and their characteristics (refer to the participants.json file described in a later section for additional information), the data types collected, the overall number of files and total size of the dataset.",
+      "minLength": 1
     },
     "DatasetAccess": {
       "type": "string",
-      "description": "Describe how the dataset can be accessed and any conditions/restrictions for accessing it."
+      "description": "Describe how the dataset can be accessed and any conditions/restrictions for accessing it.",
+      "minLength": 1
     },
     "StandardsFollowed": {
       "type": "string",
-      "description": "Mention the standards followed to structure the dataset, format the data files, etc. Make sure to include identifiers of the standards when available and/or link to the associated documentation."
+      "description": "Mention the standards followed to structure the dataset, format the data files, etc. Make sure to include identifiers of the standards when available and/or link to the associated documentation.",
+      "minLength": 1
     },
     "Resources": {
       "type": "string",
-      "description": "Any external resources that may be either required to use the data or useful when using the data (e.g. the project website aireadi.org, the documentation of fairhub.io at docs.fairhub.io, etc.). Make sure to include identifiers and/or links to the resources."
+      "description": "Any external resources that may be either required to use the data or useful when using the data (e.g. the project website aireadi.org, the documentation of fairhub.io at docs.fairhub.io, etc.). Make sure to include identifiers and/or links to the resources.",
+      "minLength": 1
     },
     "License": {
       "type": "string",
-      "description": "Brief description of the terms for reusing the data with full name and abbreviation of the license (refer to the LICENSE.txt file for additional details)."
+      "description": "Brief description of the terms for reusing the data with full name and abbreviation of the license (refer to the LICENSE.txt file for additional details).",
+      "minLength": 1
     },
     "HowToCite": {
       "type": "string",
-      "description": "Brief description of how to cite the dataset, in APA format (refer to the CITATION.txt file for additional details)."
+      "description": "Brief description of how to cite the dataset, in APA format (refer to the CITATION.txt file for additional details).",
+      "minLength": 1
     },
     "Acknowledgement": {
       "type": "string",
-      "description": "Brief description of how to acknowledge the dataset, in APA format (refer to the ACKNOWLEDGEMENT.txt file for additional details)."
+      "description": "Brief description of how to acknowledge the dataset, in APA format (refer to the ACKNOWLEDGEMENT.txt file for additional details).",
+      "minLength": 1
     }
   },
   "required": ["Title"]

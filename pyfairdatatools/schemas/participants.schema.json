@@ -13,7 +13,8 @@
       },
       "species": {
         "type": "string",
-        "description": "The species column SHOULD be a binomial species name from the NCBI Taxonomy (for example, homo sapiens, mus musculus, rattus norvegicus). For backwards compatibility, if species is absent, the participant is assumed to be homo sapiens."
+        "description": "The species column SHOULD be a binomial species name from the NCBI Taxonomy (for example, homo sapiens, mus musculus, rattus norvegicus). For backwards compatibility, if species is absent, the participant is assumed to be homo sapiens.",
+        "minLength": 1
       },
       "age": {
         "type": "number",
@@ -69,9 +70,7 @@
         "description": "For species different from homo sapiens, research resource identifier (RRID) of the strain of the species, for example: RRID:IMSR_JAX:000664"
       }
     },
-    "required": [
-      "participant_id"
-    ]
+    "required": ["participant_id"]
   },
   "minItems": 1
 }

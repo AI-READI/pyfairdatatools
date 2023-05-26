@@ -57,11 +57,7 @@ def generate_dataset_description(data, file_path, file_type):
                 print(error)
                 raise error
 
-        elif file_type == "xlsx":
-            pass
-        elif file_type == "csv":
-            pass
-        else:
+        elif file_type not in ["xlsx", "csv"]:
             print("File type is invalid.")
             raise ValueError("Invalid file type")
 
