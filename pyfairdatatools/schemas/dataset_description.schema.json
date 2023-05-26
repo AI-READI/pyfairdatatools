@@ -24,7 +24,8 @@
     "Subject": {
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "string",
+        "minLength": 1
       },
       "minItems": 1,
       "description": "The subject of the dataset. This is a list of keywords."
@@ -58,6 +59,7 @@
         "properties": {
           "ContributorName": {
             "type": "string",
+            "minLength": 1,
             "description": "The name of the contributor."
           },
           "NameType": {
@@ -65,7 +67,8 @@
             "enum": ["Personal", "Organizational"]
           },
           "Affiliation": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "ContributorType": {
             "type": "string",
@@ -94,7 +97,8 @@
             ]
           },
           "ORCID": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           }
         },
         "required": ["ContributorName", "NameType", "ContributorType"]
@@ -219,10 +223,12 @@
         "type": "object",
         "properties": {
           "FunderName": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "FunderIdentifier": {
-            "type": "string"
+            "type": "string",
+            "minLength": 1
           },
           "FunderIdentifierType": {
             "type": "string",
@@ -235,7 +241,8 @@
     },
     "Version": {
       "type": "string",
-      "description": "The version of the resource. This property is used to capture the version of the resource being described. It is recommended to use the Semantic Versioning (SemVer) convention (https://semver.org/)."
+      "description": "The version of the resource. This property is used to capture the version of the resource being described. It is recommended to use the Semantic Versioning (SemVer) convention (https://semver.org/).",
+      "minLength": 1
     },
     "Date": {
       "type": "string",

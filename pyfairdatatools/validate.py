@@ -23,6 +23,12 @@ def validate_dataset_description(data):
 
     try:
         validate(instance=data, schema=schema)
+
+        # TODO: Validate the language codes
+        # TODO: Validate the creator orcid if present
+        # TODO: Validate the rights uri
+        # TODO: Validate the rights identifier
+
         return True
     except ValidationError as e:
         print(e.schema["error_msg"] if "error_msg" in e.schema else e.message)
