@@ -74,11 +74,8 @@
       "uniqueItems": true
     },
     "PublicationYear": {
-      "type": "string",
-      "minLength": 4,
-      "maxLength": 4,
-      "description": "The year in which the dataset was published.",
-      "examples": ["2018"]
+      "$ref": "#/definitions/publicationYear",
+      "description": "The year in which the dataset was published."
     },
     "Date": {
       "type": "array",
@@ -640,15 +637,8 @@
       "uniqueItems": true
     },
     "Publisher": {
-      "type": "string",
-      "minLength": 1,
-      "description": "The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the dataset. This property will be used to formulate the citation, so consider the prominence of the role.",
-      "examples": [
-        "World Data Center for Climate (WDCC)",
-        "GeoForschungsZentrum Potsdam (GFZ)",
-        "Geological Institute, University of Tokyo",
-        "GitHub"
-      ]
+      "$ref": "#/definitions/publisher",
+      "description": "The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the dataset. This property will be used to formulate the citation, so consider the prominence of the role."
     },
     "Size": {
       "type": "array",
@@ -751,10 +741,156 @@
             "description": "The type of the related item, e.g., journal article; book or chapter"
           },
           "relationType": {
-            "$ref": "#/definitions/resourceItemType",
+            "$ref": "#/definitions/relationType",
             "description": "The general type of the related resource."
           },
-          "relatedItemIdentifier": {}
+          "relatedItemIdentifier": {
+            "type": "array",
+            "description": "The identifier for the related item.",
+            "items": {
+              "type": "object",
+              "description": "",
+              "additionalProperties": false,
+              "properties": {
+                "relatedItemIdentifierValue": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The identifier for the related item."
+                },
+                "relatedItemIdentifierType": {
+                  "$ref": "#/definitions/identifierType",
+                  "description": "The type of the related item identifier."
+                },
+                "relatedMetadataScheme": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The name of the scheme. Use only with this relationType pair: (HasMetadata/ IsMetadataFor)"
+                },
+                "schemeURI": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The URI of the relatedMetadataScheme. Use only with this relationType pair: (HasMetadata/ IsMetadataFor)"
+                },
+                "schemeType": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The type of the relatedMetadataScheme, linked with the schemeURI. Use only with this relationType pair: (HasMetadata/ IsMetadataFor)",
+                  "examples": ["XSD", "DDT", "Turtle"]
+                }
+              },
+              "required": ["relatedItemIdentifierValue"]
+            },
+            "uniqueItems": true
+          },
+          "creator": {
+            "type": "array",
+            "description": "The institution or person responsible for creating the related resource",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "",
+              "properties": {
+                "creatorName": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The full name of the creator. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
+                },
+                "nameType": {
+                  "$ref": "#/definitions/typeOfNameOfPersonOrOrganization",
+                  "description": "The type of name."
+                }
+              },
+              "required": ["creatorName", "nameType"]
+            },
+            "uniqueItems": true
+          },
+          "title": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/titleItem"
+            },
+            "description": "The main title of the item is mandatory. Others are optional",
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "publicationYear": {
+            "$ref": "#/definitions/publicationYear",
+            "description": "The year when the item was or will be made publicly available"
+          },
+          "volume": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The volume of the related item."
+          },
+          "issue": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Issue number or name of the related item"
+          },
+          "number": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "",
+            "properties": {
+              "numberValue": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Number of the related item, e.g., report number of article number"
+              },
+              "numberType": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Type of the related item's number, e.g., report number or article number",
+                "enum": ["Article", "Chapter", "Report", "Other"]
+              }
+            },
+            "required": ["numberValue"]
+          },
+          "firstPage": {
+            "type": "string",
+            "minLength": 1,
+            "description": "First page of the related item, e.g., of the chapter, article, or conference paper in proceedings"
+          },
+          "lastPage": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Last page of the related item, e.g., of the chapter, article, or conference paper in proceedings"
+          },
+          "publisher": {
+            "$ref": "#/definitions/publisher",
+            "description": "The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource."
+          },
+          "edition": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The edition of the related item, e.g., the edition of a book"
+          },
+          "contributor": {
+            "type": "array",
+            "description": "The institution or person responsible for contributing to the related resource",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "description": "",
+              "properties": {
+                "contributorType": {
+                  "$ref": "#/definitions/contributorType",
+                  "description": "The type of contributor of the resource"
+                },
+                "contributorName": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The full name of the contributor. Should be in the format: `family name, given name`. If the contributor is an organization, the name should be in the format: `Organization name`."
+                },
+                "nameType": {
+                  "$ref": "#/definitions/typeOfNameOfPersonOrOrganization",
+                  "description": "The type of name."
+                }
+              },
+              "required": ["contributorName", "contributorType"]
+            },
+            "uniqueItems": true
+          }
         },
         "required": ["relatedItemType", "relationType"]
       },
@@ -898,6 +1034,19 @@
         }
       ]
     },
+    "typeOfNameOfPersonOrOrganization": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "Personal",
+          "description": "Personal name"
+        },
+        {
+          "const": "Organizational",
+          "description": "Organizational name"
+        }
+      ]
+    },
     "creatorItem": {
       "type": "object",
       "additionalProperties": false,
@@ -909,18 +1058,8 @@
           "description": "The full name of the creator. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
         },
         "nameType": {
-          "type": "string",
-          "description": "The type of name.",
-          "oneOf": [
-            {
-              "const": "Personal",
-              "description": "Personal name"
-            },
-            {
-              "const": "Organizational",
-              "description": "Organizational name"
-            }
-          ]
+          "$ref": "#/definitions/typeOfNameOfPersonOrOrganization",
+          "description": "The type of name."
         },
         "nameIdentifier": {
           "type": "array",
@@ -985,182 +1124,8 @@
       "description": "",
       "properties": {
         "contributorType": {
-          "type": "string",
-          "description": "The type of contributor of the resource",
-          "oneOf": [
-            {
-              "const": "ContactPerson",
-              "description": "Person with knowledge of how to access, troubleshoot, or otherwise field issues related to the resource"
-            },
-            {
-              "const": "DataCollector",
-              "description": "Person/institution responsible for finding or gathering/collecting data under the guidelines of the author(s) or Principal Investigator (PI)"
-            },
-            {
-              "const": "DataCurator",
-              "description": "Person tasked with reviewing, enhancing, cleaning, or standardizing metadata and the associated data submitted for storage, use, and maintenance within a data centre or repository"
-            },
-            {
-              "const": "DataManager",
-              "description": "Person (or organisation with a staff of data managers, such as a data centre) responsible for maintaining the finished resource"
-            },
-            {
-              "const": "Distributor",
-              "description": "Institution tasked with responsibility to generate/disseminate copies of the resource in either electronic or print form"
-            },
-            {
-              "const": "Editor",
-              "description": "A person who oversees the details related to the publication format of the resource"
-            },
-            {
-              "const": "HostingInstitution",
-              "description": "Typically, the organisation allowing the resource to be available on the internet through the provision of its hardware/software/operating support"
-            },
-            {
-              "const": "Producer",
-              "description": "Typically, a person or organisation responsible for the artistry and form of a media product"
-            },
-            {
-              "const": "ProjectLeader",
-              "description": "Person officially designated as head of project team or sub-project team instrumental in the work necessary to development of the resource"
-            },
-            {
-              "const": "ProjectManager",
-              "description": "Person officially designated as manager of a project. Project may consist of one or many project teams and sub-teams."
-            },
-            {
-              "const": "ProjectMember",
-              "description": "Person on the membership list of a designated project/project team"
-            },
-            {
-              "const": "RegistrationAgency",
-              "description": "Institution/organisation officially appointed by a Registration Authority to handle specific tasks within a defined area of responsibility"
-            },
-            {
-              "const": "RegistrationAuthority",
-              "description": "A standards-setting body from which Registration Agencies obtain official recognition and guidance"
-            },
-            {
-              "const": "RelatedPerson",
-              "description": "A person without a specifically defined role in the development of the resource, but who is someone the author wishes to recognize"
-            },
-            {
-              "const": "Researcher",
-              "description": "A person involved in analysing data or the results of an experiment or formal study. May indicate an intern or assistant to one of the authors who helped with research but who was not so “key” as to be listed as an author."
-            },
-            {
-              "const": "ResearchGroup",
-              "description": "Typically refers to a group of individuals with a lab, department, or division that has a specifically defined focus of activity."
-            },
-            {
-              "const": "RightsHolder",
-              "description": "Person or institution owning or managing property rights, including intellectual property rights over the resource"
-            },
-            {
-              "const": "Sponsor",
-              "description": "Person or organisation that issued a contract or under the auspices of which a work has been written, printed, published, developed, etc."
-            },
-            {
-              "const": "Supervisor",
-              "description": "Designated administrator over one or more groups/teams working to produce a resource, or over one or more steps of a development process"
-            },
-            {
-              "const": "WorkPackageLeader",
-              "description": "A Work Package is a recognized data product, not all of which is included in publication. The package, instead, may include notes, discarded documents, etc. The Work Package Leader is"
-            },
-            {
-              "const": "Other",
-              "description": "Any person or institution making a significant contribution to the development and/or maintenance of the resource, but whose contribution is not adequately described by any of the other values for contributorType"
-            },
-            {
-              "const": "Study lead",
-              "description": "The individual who, if not the sponsor themselves, leads and co-ordinates the scientific and clinical activity within a clinical study, including co-ordinating the work of principal investigators at clinical sites. May be known as the Co-ordinating Investigator, the Study Chair, Study Director or similar terms."
-            },
-            {
-              "const": "CTSitePrincipalInvestigator",
-              "description": "The individual responsible for the safe conduct of a clinical trial at a particular clinical site."
-            },
-            {
-              "const": "ClinicalStudyManager",
-              "description": "An individual responsible for the operational management of a clinical study. Similar to a Project Manager but a study manager is heavily involved in the management of data and data collection."
-            },
-            {
-              "const": "TrialSponsor",
-              "description": "The organisation or individual that has the formal, legal role of a clinical trial sponsor, and is legally responsible for all aspects of a clinical trial."
-            },
-            {
-              "const": "SponsorContact",
-              "description": "An individual representing the sponsor and acting as an initial contact point."
-            },
-            {
-              "const": "PublicContact",
-              "description": "An individual designated as dealing with non-scientific queries from the public or press."
-            },
-            {
-              "const": "RecruitmentContact",
-              "description": "An individual designated as providing periodic updates on recruitment information or status, at all sites, usually for monitoring purposes."
-            },
-            {
-              "const": "StudyFunder",
-              "description": "An organisation providing some or all of the additional funds required for the study."
-            },
-            {
-              "const": "FunderContact",
-              "description": "An individual representing the funder and acting as an initial contact point."
-            },
-            {
-              "const": "IndependentMonitoringCommitteeMember",
-              "description": "A member of a safety monitoring committee for a clinical trial, independent of the researchers and research activity."
-            },
-            {
-              "const": "MedicinalProductSupplier",
-              "description": "Organisation that provides one or more of the medicines investigated in a clinical study."
-            },
-            {
-              "const": "MedicalDeviceSupplier",
-              "description": "Organisation that provides one or more of the medical devices in a clinical study."
-            },
-            {
-              "const": "LogisticsSupportOrganisation",
-              "description": "Organisation that provides logistical input, e.g. provides a drug distribution service."
-            },
-            {
-              "const": "ScientificSupportOrganisation",
-              "description": "Organisation that provides scientific support, e.g. a national or international research network."
-            },
-            {
-              "const": "CentralLaboratory",
-              "description": "Organisation that provides a central specialist laboratory testing facility.."
-            },
-            {
-              "const": "CentralImagingFacility",
-              "description": "Organisation that provides a central specialist imaging or scanning facility."
-            },
-            {
-              "const": "ClinicalOrganisation",
-              "description": "Organisation, usually a primary or secondary health care organisation, that manages one or more of the sites where a clinical study takes place."
-            },
-            {
-              "const": "ClinicalSite",
-              "description": "Organisation or location, usually in a primary or secondary health care organisation, that is one of the sites where a clinical study takes place."
-            },
-            {
-              "const": "CollaboratingOrganisation",
-              "description": "May be listed as a secondary sponsor, an organisation other than the lead sponsor involved in supporting a study."
-            },
-            {
-              "const": "SponsorInvestigator",
-              "description": "An individual with the role of sponsor as well as being the co-ordinating investigator for the study."
-            },
-            {
-              "const": "ResultsContact",
-              "description": "The individual, occasionally organisation, to be contacted for further information on the study results."
-            },
-            {
-              "const": "ResearchGroupMember",
-              "description": "From PubMed, an 'investigator' is an individual (e.g., collaborator or investigator) who is not an author of a paper but is listed as a member of a collective/corporate group that is an author of the paper."
-            }
-          ]
+          "$ref": "#/definitions/contributorType",
+          "description": "The type of contributor of the resource"
         },
         "contributorName": {
           "type": "string",
@@ -1168,18 +1133,8 @@
           "description": "The full name of the contributor. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
         },
         "nameType": {
-          "type": "string",
-          "description": "The type of name.",
-          "oneOf": [
-            {
-              "const": "Personal",
-              "description": "Personal name"
-            },
-            {
-              "const": "Organizational",
-              "description": "Organizational name"
-            }
-          ]
+          "$ref": "#/definitions/typeOfNameOfPersonOrOrganization",
+          "description": "The type of name."
         },
         "nameIdentifier": {
           "type": "array",
@@ -1237,6 +1192,183 @@
         }
       },
       "required": ["contributorType", "contributorName", "nameType"]
+    },
+    "contributorType": {
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "ContactPerson",
+          "description": "Person with knowledge of how to access, troubleshoot, or otherwise field issues related to the resource"
+        },
+        {
+          "const": "DataCollector",
+          "description": "Person/institution responsible for finding or gathering/collecting data under the guidelines of the author(s) or Principal Investigator (PI)"
+        },
+        {
+          "const": "DataCurator",
+          "description": "Person tasked with reviewing, enhancing, cleaning, or standardizing metadata and the associated data submitted for storage, use, and maintenance within a data centre or repository"
+        },
+        {
+          "const": "DataManager",
+          "description": "Person (or organisation with a staff of data managers, such as a data centre) responsible for maintaining the finished resource"
+        },
+        {
+          "const": "Distributor",
+          "description": "Institution tasked with responsibility to generate/disseminate copies of the resource in either electronic or print form"
+        },
+        {
+          "const": "Editor",
+          "description": "A person who oversees the details related to the publication format of the resource"
+        },
+        {
+          "const": "HostingInstitution",
+          "description": "Typically, the organisation allowing the resource to be available on the internet through the provision of its hardware/software/operating support"
+        },
+        {
+          "const": "Producer",
+          "description": "Typically, a person or organisation responsible for the artistry and form of a media product"
+        },
+        {
+          "const": "ProjectLeader",
+          "description": "Person officially designated as head of project team or sub-project team instrumental in the work necessary to development of the resource"
+        },
+        {
+          "const": "ProjectManager",
+          "description": "Person officially designated as manager of a project. Project may consist of one or many project teams and sub-teams."
+        },
+        {
+          "const": "ProjectMember",
+          "description": "Person on the membership list of a designated project/project team"
+        },
+        {
+          "const": "RegistrationAgency",
+          "description": "Institution/organisation officially appointed by a Registration Authority to handle specific tasks within a defined area of responsibility"
+        },
+        {
+          "const": "RegistrationAuthority",
+          "description": "A standards-setting body from which Registration Agencies obtain official recognition and guidance"
+        },
+        {
+          "const": "RelatedPerson",
+          "description": "A person without a specifically defined role in the development of the resource, but who is someone the author wishes to recognize"
+        },
+        {
+          "const": "Researcher",
+          "description": "A person involved in analysing data or the results of an experiment or formal study. May indicate an intern or assistant to one of the authors who helped with research but who was not so “key” as to be listed as an author."
+        },
+        {
+          "const": "ResearchGroup",
+          "description": "Typically refers to a group of individuals with a lab, department, or division that has a specifically defined focus of activity."
+        },
+        {
+          "const": "RightsHolder",
+          "description": "Person or institution owning or managing property rights, including intellectual property rights over the resource"
+        },
+        {
+          "const": "Sponsor",
+          "description": "Person or organisation that issued a contract or under the auspices of which a work has been written, printed, published, developed, etc."
+        },
+        {
+          "const": "Supervisor",
+          "description": "Designated administrator over one or more groups/teams working to produce a resource, or over one or more steps of a development process"
+        },
+        {
+          "const": "WorkPackageLeader",
+          "description": "A Work Package is a recognized data product, not all of which is included in publication. The package, instead, may include notes, discarded documents, etc. The Work Package Leader is"
+        },
+        {
+          "const": "Other",
+          "description": "Any person or institution making a significant contribution to the development and/or maintenance of the resource, but whose contribution is not adequately described by any of the other values for contributorType"
+        },
+        {
+          "const": "Study lead",
+          "description": "The individual who, if not the sponsor themselves, leads and co-ordinates the scientific and clinical activity within a clinical study, including co-ordinating the work of principal investigators at clinical sites. May be known as the Co-ordinating Investigator, the Study Chair, Study Director or similar terms."
+        },
+        {
+          "const": "CTSitePrincipalInvestigator",
+          "description": "The individual responsible for the safe conduct of a clinical trial at a particular clinical site."
+        },
+        {
+          "const": "ClinicalStudyManager",
+          "description": "An individual responsible for the operational management of a clinical study. Similar to a Project Manager but a study manager is heavily involved in the management of data and data collection."
+        },
+        {
+          "const": "TrialSponsor",
+          "description": "The organisation or individual that has the formal, legal role of a clinical trial sponsor, and is legally responsible for all aspects of a clinical trial."
+        },
+        {
+          "const": "SponsorContact",
+          "description": "An individual representing the sponsor and acting as an initial contact point."
+        },
+        {
+          "const": "PublicContact",
+          "description": "An individual designated as dealing with non-scientific queries from the public or press."
+        },
+        {
+          "const": "RecruitmentContact",
+          "description": "An individual designated as providing periodic updates on recruitment information or status, at all sites, usually for monitoring purposes."
+        },
+        {
+          "const": "StudyFunder",
+          "description": "An organisation providing some or all of the additional funds required for the study."
+        },
+        {
+          "const": "FunderContact",
+          "description": "An individual representing the funder and acting as an initial contact point."
+        },
+        {
+          "const": "IndependentMonitoringCommitteeMember",
+          "description": "A member of a safety monitoring committee for a clinical trial, independent of the researchers and research activity."
+        },
+        {
+          "const": "MedicinalProductSupplier",
+          "description": "Organisation that provides one or more of the medicines investigated in a clinical study."
+        },
+        {
+          "const": "MedicalDeviceSupplier",
+          "description": "Organisation that provides one or more of the medical devices in a clinical study."
+        },
+        {
+          "const": "LogisticsSupportOrganisation",
+          "description": "Organisation that provides logistical input, e.g. provides a drug distribution service."
+        },
+        {
+          "const": "ScientificSupportOrganisation",
+          "description": "Organisation that provides scientific support, e.g. a national or international research network."
+        },
+        {
+          "const": "CentralLaboratory",
+          "description": "Organisation that provides a central specialist laboratory testing facility.."
+        },
+        {
+          "const": "CentralImagingFacility",
+          "description": "Organisation that provides a central specialist imaging or scanning facility."
+        },
+        {
+          "const": "ClinicalOrganisation",
+          "description": "Organisation, usually a primary or secondary health care organisation, that manages one or more of the sites where a clinical study takes place."
+        },
+        {
+          "const": "ClinicalSite",
+          "description": "Organisation or location, usually in a primary or secondary health care organisation, that is one of the sites where a clinical study takes place."
+        },
+        {
+          "const": "CollaboratingOrganisation",
+          "description": "May be listed as a secondary sponsor, an organisation other than the lead sponsor involved in supporting a study."
+        },
+        {
+          "const": "SponsorInvestigator",
+          "description": "An individual with the role of sponsor as well as being the co-ordinating investigator for the study."
+        },
+        {
+          "const": "ResultsContact",
+          "description": "The individual, occasionally organisation, to be contacted for further information on the study results."
+        },
+        {
+          "const": "ResearchGroupMember",
+          "description": "From PubMed, an 'investigator' is an individual (e.g., collaborator or investigator) who is not an author of a paper but is listed as a member of a collective/corporate group that is an author of the paper."
+        }
+      ]
     },
     "resourceItemType": {
       "type": "string",
@@ -1495,6 +1627,22 @@
           "const": "IsObsoletedBy",
           "description": "Indicates A is replaced by B"
         }
+      ]
+    },
+    "publicationYear": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 4,
+      "examples": ["2018"]
+    },
+    "publisher": {
+      "type": "string",
+      "minLength": 1,
+      "examples": [
+        "World Data Center for Climate (WDCC)",
+        "GeoForschungsZentrum Potsdam (GFZ)",
+        "Geological Institute, University of Tokyo",
+        "GitHub"
       ]
     }
   }
