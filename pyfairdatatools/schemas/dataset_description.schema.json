@@ -167,7 +167,7 @@
         "resourceTypeValue": {
           "type": "string",
           "minLength": 1,
-          "description": "Free text. The recommended content is a single term of some detail about the domain or content of the dataset so that a pair can be formed with the resourceTypeGeneral subproperty (set to `Dataset`). For example, a resourceType of “Diabetes” yields `Diabetes dataset`"
+          "description": "Free text. The recommended content is a single term of some detail about the domain or content of the dataset so that a pair can be formed with the resourceTypeGeneral subproperty (set to `Dataset`). For example, a resourceType of `Diabetes` yields `Diabetes dataset`"
         },
         "resourceTypeGeneral": {
           "type": "string",
@@ -1254,7 +1254,7 @@
         },
         {
           "const": "Researcher",
-          "description": "A person involved in analysing data or the results of an experiment or formal study. May indicate an intern or assistant to one of the authors who helped with research but who was not so “key” as to be listed as an author."
+          "description": "A person involved in analysing data or the results of an experiment or formal study. May indicate an intern or assistant to one of the authors who helped with research but who was not so `key” as `o be listed as an author."
         },
         {
           "const": "ResearchGroup",

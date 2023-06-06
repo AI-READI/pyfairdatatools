@@ -27,55 +27,55 @@ def validate_dataset_description(data):  # sourcery skip: extract-method
         validate(instance=data, schema=schema)
 
         # validate the language code
-        with open(
-            path.join(path.dirname(__file__), "assets", "languages.json"),
-            encoding="utf-8",
-        ) as f:
-            list_of_language_codes = json.load(f)
+        # with open(
+        #     path.join(path.dirname(__file__), "assets", "languages.json"),
+        #     encoding="utf-8",
+        # ) as f:
+        #     list_of_language_codes = json.load(f)
 
-            valid = any(
-                language["code"] == data["language"]
-                for language in list_of_language_codes
-            )
-            if not valid:
-                print("Language code is invalid.")
-                return False
+        #     valid = any(
+        #         language["code"] == data["language"]
+        #         for language in list_of_language_codes
+        #     )
+        #     if not valid:
+        #         print("Language code is invalid.")
+        #         return False
 
         # validate the ORCID
-        for creator in data["Creator"]:
-            if "ORCID" in creator:
-                base_digits = creator["ORCID"].replace("-", "")[:-1]
+        # for creator in data["Creator"]:
+        #     if "ORCID" in creator:
+        #         base_digits = creator["ORCID"].replace("-", "")[:-1]
 
-                total = 0
-                for digit in base_digits:
-                    total = (total + int(digit)) * 2
+        #         total = 0
+        #         for digit in base_digits:
+        #             total = (total + int(digit)) * 2
 
-                remainder = total % 11
-                result = (12 - remainder) % 11
+        #         remainder = total % 11
+        #         result = (12 - remainder) % 11
 
-                check_digit = "X" if result == 10 else str(result)
+        #         check_digit = "X" if result == 10 else str(result)
 
-                if check_digit != creator["ORCID"][-1]:
-                    print("ORCID is invalid.")
-                    return False
+        #         if check_digit != creator["ORCID"][-1]:
+        #             print("ORCID is invalid.")
+        #             return False
 
         # validate the rights uri
-        if (
-            "Rights" in data
-            and "RightsURI" in data["Rights"]  # noqa: W503
-            and not utils.validate_url(data["Rights"]["RightsURI"])  # noqa: W503
-        ):
-            print("Rights identifier is invalid.")
-            return False
+        # if (
+        #     "Rights" in data
+        #     and "RightsURI" in data["Rights"]  # noqa: W503
+        #     and not utils.validate_url(data["Rights"]["RightsURI"])  # noqa: W503
+        # ):
+        #     print("Rights identifier is invalid.")
+        #     return False
 
         # validate the license identifier
-        if (
-            "Rights" in data
-            and "RightsIdentifier" in data["Rights"]  # noqa: W503
-            and not validate_license(data["Rights"]["RightsIdentifier"])  # noqa: W503
-        ):
-            print("License identifier is invalid.")
-            return False
+        # if (
+        #     "Rights" in data
+        #     and "RightsIdentifier" in data["Rights"]  # noqa: W503
+        #     and not validate_license(data["Rights"]["RightsIdentifier"])  # noqa: W503
+        # ):
+        #     print("License identifier is invalid.")
+        #     return False
 
         return True
     except ValidationError as e:
