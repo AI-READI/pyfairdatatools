@@ -1,5 +1,5 @@
 import json
-from os import path
+from os import path, makedirs
 from string import Template
 from xml.dom.minidom import parseString
 
@@ -32,6 +32,9 @@ def generate_dataset_description(data, file_path, file_type):
         if not validate.validate_dataset_description(data):
             print("Dataset description is invalid.")
             raise ValueError("Invalid input data")
+
+        if not path.exists(path.dirname(file_path)):
+            makedirs(path.dirname(file_path))
 
         if file_type == "json":
             try:

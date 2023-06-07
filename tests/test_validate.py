@@ -1,6 +1,6 @@
 """Unit tests for pyfairdatatools.validate module."""
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison # noqa: E501
-
+from copy import deepcopy
 
 from pyfairdatatools.validate import (
     validate_dataset_description,
@@ -11,57 +11,346 @@ from pyfairdatatools.validate import (
 
 
 class TestValidateDatasetDescription:
+    minimal_valid_data = {
+        "Identifier": {
+            "identifierValue": "10.5281/zenodo.1234567",
+            "identifierType": "DOI",
+        },
+        "Title": [
+            {
+                "titleValue": "Main Title",
+            }
+        ],
+        "Creator": [
+            {
+                "creatorName": "Doe, John",
+                "nameType": "Personal",
+            }
+        ],
+        "PublicationYear": "2023",
+        "ResourceType": {
+            "resourceTypeValue": "Diabetes",
+            "resourceTypeGeneral": "Dataset",
+        },
+        "DatasetRecordKeys": {"keysType": "Anonymised"},
+        "DatasetDeIdentLevel": {
+            "deIdentType": "NoDeIdentification",
+            "deIdentDirect": True,
+            "deIdentHIPAA": True,
+            "deIdentDates": True,
+            "deIdentNonarr": True,
+            "deIdentKAnon": True,
+        },
+        "DatasetConsent": {
+            "consentType": "NoRestriction",
+            "consentNoncommercial": True,
+            "consentGeogRestrict": True,
+            "consentResearchType": True,
+            "consentGeneticOnly": True,
+            "consentNoMethods": True,
+        },
+        "ManagingOrganisation": {
+            "name": "Test Organisation",
+        },
+        "AccessType": "PublicOnScreenAccess",
+        "AccessDetails": {"description": "Some description"},
+        "Publisher": "GitHub",
+    }
+
     def test_minimal_valid_dataset_description(self):
-        data = {
-            "Identifier": {
-                "identifierValue": "10.5281/zenodo.1234567",
-                "identifierType": "DOI",
-            },
-            "Title": [
-                {
-                    "titleValue": "Main Title",
-                    TODO: "titleType": "blank or non existing?"
-                }
-            ],
-            "Creator": [
-                {
-                    "creatorName": "Doe, John",
-                    "nameType": "Personal",
-                }
-            ],
-            "PublicationYear": "2023",
-            "ResourceType": {
-                "resourceTypeValue": "Diabetes",
-                "resourceTypeGeneral": "Dataset",
-            },
-            "DatasetRecordKeys": {"keysType": "Anonymised"},
-            "DatasetDeIdentLevel": {
-                "deIdentType": "NoDeIdentification",
-                "deIdentDirect": True,
-                "deIdentHIPAA": True,
-                "deIdentDates": True,
-                "deIdentNonarr": True,
-                "deIdentKAnon": True,
-            },
-            "DatasetConsent": {
-                "consentType": "NoRestriction",
-                "consentNoncommercial": True,
-                "consentGeogRestrict": True,
-                "consentResearchType": True,
-                "consentGeneticOnly": True,
-                "consentNoMethods": True,
-            },
-            "ManagingOrganisation": {
-                "name": "Test Organisation",
-            },
-            "AccessType": "PublicOnScreenAccess",
-            "AccessDetails": {"description": "Some description"},
-            "Publisher": "GitHub",
-        }
+        data = deepcopy(self.minimal_valid_data)
 
         output = validate_dataset_description(data)
 
         assert output is True
+
+    def test_identifier(self):
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Identifier"] = {
+            "identifierValue": "",
+        }
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Identifier"] = {
+            "identifierValue": "invalid",
+        }
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+    def test_title(self):
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Title"] = []
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Title"] = [{"titleValue": "Test", "titleType": ""}]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Title"] = [
+            {"titleValue": "Test"},
+            {"titleValue": "Test", "titleType": "Invalid"},
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+    def test_version(self):
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Version"] = ""
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+    def test_alternate_identifier(self):
+        data = deepcopy(self.minimal_valid_data)
+
+        data["AlternateIdentifier"] = [
+            {"alternateIdentifierValue": "", "alternateIdentifierType": "DOI"}
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["AlternateIdentifier"] = [
+            {
+                "alternateIdentifierValue": "10.5281/zenodo.7942786",
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["AlternateIdentifier"] = [
+            {
+                "alternateIdentifierValue": "10.5281/zenodo.7942786",
+                "alternateIdentifierType": "Invalid",
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+    def test_creator(self):
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Creator"] = []
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Creator"] = [
+            {
+                "creatorName": "Doe, John",
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Creator"] = [
+            {
+                "creatorName": "Doe, John",
+                "nameType": "Invalid",
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Creator"] = [
+            {
+                "creatorName": "Doe, John",
+                "nameType": "Invalid",
+                "affiliation": {
+                    "affiliationIdentifier": "Org1",
+                    "affiliationIdentifierScheme": "",
+                },
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Creator"] = [
+            {
+                "creatorName": "Doe, John",
+                "nameType": "Invalid",
+                "affiliation": {
+                    "affiliationIdentifier": "Org1",
+                    "affiliationIdentifierScheme": "ROR",
+                    "SchemeURI": "",
+                },
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+    def test_contributor(self):
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Contributor"] = [
+            {
+                "contributorType": "invalid",
+                "contributorName": "Doe, John",
+                "nameType": "Personal",
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Contributor"] = [
+            {
+                "contributorType": "ContactPerson",
+                "contributorName": "Doe, John",
+                "nameType": "Invalid",
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Contributor"] = [
+            {
+                "contributorType": "ContactPerson",
+                "contributorName": "Doe, John",
+                "nameType": "Personal",
+                "nameIdentifier": [],
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Contributor"] = [
+            {
+                "contributorType": "ContactPerson",
+                "contributorName": "Doe, John",
+                "nameType": "Personal",
+                "nameIdentifier": [
+                    {
+                        "nameIdentifierValue": "123456789",
+                    }
+                ],
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Contributor"] = [
+            {
+                "contributorType": "ContactPerson",
+                "contributorName": "Doe, John",
+                "nameType": "Personal",
+                "nameIdentifier": [
+                    {
+                        "nameIdentifierValue": "123456789",
+                        "nameIdentifierScheme": "ROR",
+                        "schemeURI": "",
+                    }
+                ],
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Contributor"] = [
+            {
+                "contributorType": "ContactPerson",
+                "contributorName": "Doe, John",
+                "nameType": "Personal",
+                "affiliation": {
+                    "affiliationIdentifier": "Org1",
+                    "affiliationIdentifierScheme": "",
+                },
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Contributor"] = [
+            {
+                "contributorType": "ContactPerson",
+                "contributorName": "Doe, John",
+                "nameType": "Personal",
+                "affiliation": {
+                    "affiliationIdentifier": "Org1",
+                    "affiliationIdentifierScheme": "ROR",
+                    "SchemeURI": "",
+                },
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+    def test_publication_year(self):
+        data = deepcopy(self.minimal_valid_data)
+
+        data["PublicationYear"] = "98"
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+    def test_date(self):
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Date"] = []
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Date"] = [
+            {"dateValue": "2004-03-02", "dateType": "invalid", "dateInformation": ""}
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
 
 
 class TestValidateReadme:

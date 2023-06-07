@@ -1,7 +1,7 @@
 {
   "$id": "https://schema.fairhub.org/dataset_description.json",
   "title": "Dataset Description",
-  "description": "Additional text here",
+  "description": "This is the schema for the dataset_description.json metadata file from the Biomedical and Clinical Dataset Structure (BCDS)",
   "type": "object",
   "additionalProperties": false,
   "properties": {
@@ -54,12 +54,84 @@
         },
         "required": ["alternateIdentifierValue", "alternateIdentifierType"]
       },
+      "minItems": 1,
       "uniqueItems": true
     },
     "Creator": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/creatorItem"
+        "type": "object",
+        "additionalProperties": false,
+        "description": "A researcher involved in producing the data.",
+        "properties": {
+          "creatorName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The full name of the creator. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
+          },
+          "nameType": {
+            "$ref": "#/definitions/typeOfNameOfPersonOrOrganization",
+            "description": "The type of name."
+          },
+          "nameIdentifier": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "nameIdentifierValue": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Uniquely identifies an individual or legal entity, according to various schemes."
+                },
+                "nameIdentifierScheme": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The name of the name identifier scheme. Example: ORCID, ISNI, ROR, GRID."
+                },
+                "schemeURI": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
+                }
+              },
+              "required": ["nameIdentifierValue", "nameIdentifierScheme"]
+            },
+            "uniqueItems": true
+          },
+          "affiliation": {
+            "type": "array",
+            "description": "The organizational or institutional affiliation of the creator. Only needed if the creator is a person",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "affiliationIdentifier": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Uniquely identifies the organizational affiliation of the creator."
+                },
+                "affiliationIdentifierScheme": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The name of the name identifier scheme. Example: ORCID, ISNI, ROR, GRID."
+                },
+                "SchemeURI": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
+                }
+              },
+              "required": [
+                "affiliationIdentifier",
+                "affiliationIdentifierScheme"
+              ]
+            },
+            "uniqueItems": true
+          }
+        },
+        "required": ["creatorName", "nameType"]
       },
       "description": "The main researchers involved in producing the data, in priority order. To supply multiple creators, repeat this property.",
       "minItems": 1,
@@ -68,7 +140,84 @@
     "Contributor": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/contributorItem"
+        "type": "object",
+        "additionalProperties": false,
+        "description": "",
+        "properties": {
+          "contributorType": {
+            "$ref": "#/definitions/contributorType",
+            "description": "The type of contributor of the resource"
+          },
+          "contributorName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The full name of the contributor. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
+          },
+          "nameType": {
+            "$ref": "#/definitions/typeOfNameOfPersonOrOrganization",
+            "description": "The type of name."
+          },
+          "nameIdentifier": {
+            "type": "array",
+            "description": "",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "nameIdentifierValue": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Uniquely identifies an individual or legal entity, according to various schemes."
+                },
+                "nameIdentifierScheme": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The name of the name identifier scheme. Example: ORCID, ISNI, ROR, GRID."
+                },
+                "schemeURI": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
+                }
+              },
+              "required": ["nameIdentifierValue", "nameIdentifierScheme"]
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "affiliation": {
+            "type": "array",
+            "description": "The organizational or institutional affiliation of the creator. Only needed if the creator is a person",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "affiliationIdentifier": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Uniquely identifies the organizational affiliation of the creator."
+                },
+                "affiliationIdentifierScheme": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The name of the name identifier scheme. Example: ORCID, ISNI, ROR, GRID."
+                },
+                "SchemeURI": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
+                }
+              },
+              "required": [
+                "affiliationIdentifier",
+                "affiliationIdentifierScheme"
+              ]
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        "required": ["contributorType", "contributorName", "nameType"]
       },
       "description": "The institution or person responsible for collecting, managing, distributing, or otherwise contributing to the development of the dataset. To supply multiple contributors, repeat this property.",
       "uniqueItems": true
@@ -157,6 +306,7 @@
         },
         "required": ["dateValue", "dateType"]
       },
+      "minItems": 1,
       "uniqueItems": true
     },
     "ResourceType": {
@@ -1046,152 +1196,6 @@
           "description": "Organizational name"
         }
       ]
-    },
-    "creatorItem": {
-      "type": "object",
-      "additionalProperties": false,
-      "description": "A researcher involved in producing the data.",
-      "properties": {
-        "creatorName": {
-          "type": "string",
-          "minLength": 1,
-          "description": "The full name of the creator. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
-        },
-        "nameType": {
-          "$ref": "#/definitions/typeOfNameOfPersonOrOrganization",
-          "description": "The type of name."
-        },
-        "nameIdentifier": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "nameIdentifierValue": {
-                "type": "string",
-                "minLength": 1,
-                "description": "Uniquely identifies an individual or legal entity, according to various schemes."
-              },
-              "nameIdentifierScheme": {
-                "type": "string",
-                "minLength": 1,
-                "description": "The name of the name identifier scheme. Example: ORCID, ISNI, ROR, GRID."
-              },
-              "schemeURI": {
-                "type": "string",
-                "minLength": 1,
-                "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
-              }
-            },
-            "required": ["nameIdentifierValue", "nameIdentifierScheme"]
-          },
-          "uniqueItems": true
-        },
-        "affiliation": {
-          "type": "array",
-          "description": "The organizational or institutional affiliation of the creator. Only needed if the creator is a person",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "affiliationIdentifier": {
-                "type": "string",
-                "minLength": 1,
-                "description": "Uniquely identifies the organizational affiliation of the creator."
-              },
-              "affiliationIdentifierScheme": {
-                "type": "string",
-                "minLength": 1,
-                "description": "The name of the name identifier scheme. Example: ORCID, ISNI, ROR, GRID."
-              },
-              "SchemeURI": {
-                "type": "string",
-                "minLength": 1,
-                "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
-              }
-            },
-            "required": ["affiliationIdentifier", "affiliationIdentifierScheme"]
-          },
-          "uniqueItems": true
-        }
-      },
-      "required": ["creatorName", "nameType"]
-    },
-    "contributorItem": {
-      "type": "object",
-      "additionalProperties": false,
-      "description": "",
-      "properties": {
-        "contributorType": {
-          "$ref": "#/definitions/contributorType",
-          "description": "The type of contributor of the resource"
-        },
-        "contributorName": {
-          "type": "string",
-          "minLength": 1,
-          "description": "The full name of the contributor. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
-        },
-        "nameType": {
-          "$ref": "#/definitions/typeOfNameOfPersonOrOrganization",
-          "description": "The type of name."
-        },
-        "nameIdentifier": {
-          "type": "array",
-          "description": "",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "nameIdentifierValue": {
-                "type": "string",
-                "minLength": 1,
-                "description": "Uniquely identifies an individual or legal entity, according to various schemes."
-              },
-              "nameIdentifierScheme": {
-                "type": "string",
-                "minLength": 1,
-                "description": "The name of the name identifier scheme. Example: ORCID, ISNI, ROR, GRID."
-              },
-              "schemeURI": {
-                "type": "string",
-                "minLength": 1,
-                "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
-              }
-            },
-            "required": ["nameIdentifierValue", "nameIdentifierScheme"]
-          },
-          "uniqueItems": true
-        },
-        "affiliation": {
-          "type": "array",
-          "description": "The organizational or institutional affiliation of the creator. Only needed if the creator is a person",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "affiliationIdentifier": {
-                "type": "string",
-                "minLength": 1,
-                "description": "Uniquely identifies the organizational affiliation of the creator."
-              },
-              "affiliationIdentifierScheme": {
-                "type": "string",
-                "minLength": 1,
-                "description": "The name of the name identifier scheme. Example: ORCID, ISNI, ROR, GRID."
-              },
-              "SchemeURI": {
-                "type": "string",
-                "minLength": 1,
-                "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
-              }
-            },
-            "required": ["affiliationIdentifier", "affiliationIdentifierScheme"]
-          },
-          "uniqueItems": true
-        }
-      },
-      "required": ["contributorType", "contributorName", "nameType"]
     },
     "contributorType": {
       "type": "string",

@@ -15,9 +15,49 @@ from pyfairdatatools.generate import (
 class TestGenerateDatasetDescription:
     def test_minimal_valid_dataset_description(self, tmp_path):
         data = {
-            "Title": "Test Title",
-            "Identifier": "10.5281/zenodo.1234567",
-            "IdentifierType": "DOI",
+            "Identifier": {
+                "identifierValue": "10.5281/zenodo.1234567",
+                "identifierType": "DOI",
+            },
+            "Title": [
+                {
+                    "titleValue": "Main Title",
+                }
+            ],
+            "Creator": [
+                {
+                    "creatorName": "Doe, John",
+                    "nameType": "Personal",
+                }
+            ],
+            "PublicationYear": "2023",
+            "ResourceType": {
+                "resourceTypeValue": "Diabetes",
+                "resourceTypeGeneral": "Dataset",
+            },
+            "DatasetRecordKeys": {"keysType": "Anonymised"},
+            "DatasetDeIdentLevel": {
+                "deIdentType": "NoDeIdentification",
+                "deIdentDirect": True,
+                "deIdentHIPAA": True,
+                "deIdentDates": True,
+                "deIdentNonarr": True,
+                "deIdentKAnon": True,
+            },
+            "DatasetConsent": {
+                "consentType": "NoRestriction",
+                "consentNoncommercial": True,
+                "consentGeogRestrict": True,
+                "consentResearchType": True,
+                "consentGeneticOnly": True,
+                "consentNoMethods": True,
+            },
+            "ManagingOrganisation": {
+                "name": "Test Organisation",
+            },
+            "AccessType": "PublicOnScreenAccess",
+            "AccessDetails": {"description": "Some description"},
+            "Publisher": "GitHub",
         }
 
         file = tmp_path / "dataset_description.json"
