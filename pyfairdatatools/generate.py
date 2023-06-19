@@ -1,5 +1,5 @@
 import json
-from os import path, makedirs
+from os import makedirs, path
 from string import Template
 from xml.dom.minidom import parseString
 

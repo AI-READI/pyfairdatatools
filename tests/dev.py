@@ -1,8 +1,6 @@
-from pyfairdatatools.generate import (
-    generate_dataset_description,
-)
-
 import os
+
+from pyfairdatatools.generate import generate_dataset_description
 
 minimal_valid_data = {
     "Identifier": {
