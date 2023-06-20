@@ -1,5 +1,5 @@
 {
-  "$id": "https://schema.fairhub.org/readme.json",
+  "$id": "https://schema.aireadi.org/readme.json",
   "title": "README",
   "description": "Additional text here",
   "type": "object",
