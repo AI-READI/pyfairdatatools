@@ -359,7 +359,7 @@ class TestValidateDatasetDescription:
 
         output = validate_dataset_description(data)
         assert output is True
-        
+
         data = deepcopy(self.minimal_valid_data)
 
         data["Language"] = ""
