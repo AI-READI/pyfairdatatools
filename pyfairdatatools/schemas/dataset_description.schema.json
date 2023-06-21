@@ -1,5 +1,5 @@
 {
-  "$id": "https://schema.aireadi.org/dataset_description.json",
+  "$id": "https://schema.aireadi.org/files/dataset_description.json",
   "title": "Dataset Description",
   "description": "This is the schema for the dataset_description.json metadata file from the Biomedical and Clinical Dataset Structure (BCDS)",
   "type": "object",
