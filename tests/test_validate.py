@@ -352,6 +352,28 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
+    def test_language(self):
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Language"] = "en-US"
+
+        output = validate_dataset_description(data)
+        assert output is True
+        
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Language"] = ""
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.minimal_valid_data)
+
+        data["Language"] = ["invalid"]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
 
 class TestValidateReadme:
     def test_minimal_valid_readme(self):

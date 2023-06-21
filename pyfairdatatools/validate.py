@@ -26,6 +26,22 @@ def validate_dataset_description(data):  # sourcery skip: extract-method
     try:
         validate(instance=data, schema=schema)
 
+        # validate the language code
+        if "Language" in data:
+            with open(
+                path.join(path.dirname(__file__), "assets", "languages.json"),
+                encoding="utf-8",
+            ) as f:
+                list_of_language_codes = json.load(f)
+
+                valid = any(
+                    language["code"] == data["Language"]
+                    for language in list_of_language_codes
+                )
+                if not valid:
+                    print("Language code is invalid.")
+                    return False
+
         return True
     except ValidationError as e:
         print(e.schema["error_msg"] if "error_msg" in e.schema else e.message)
@@ -71,6 +87,7 @@ def validate_license(identifier):
     Returns:
         bool: True if the license identifier is valid, False otherwise
     """
+    list_of_licenses = []
 
     # Import the license list from the assets folder
     with open(
