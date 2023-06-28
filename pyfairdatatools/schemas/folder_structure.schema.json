@@ -1,0 +1,39 @@
+{
+  "$id": "https://schema.aireadi.org/files/folder_structure.json",
+  "title": "Folder Structure",
+  "description": "This is a schema for a folder structure that is used to store a dataset. It is based on the BIDS folder structure, but is not identical.",
+  "type": "object",
+  "properties": {
+    "activity_monitor": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "CHANGELOG.md": {
+      "const": "file"
+    },
+    "LICENSE.txt": {
+      "const": "file"
+    },
+    "README.md": {
+      "const": "file"
+    },
+    "dataset_description.json": {
+      "const": "file"
+    },
+    "participants.json": {
+      "const": "file"
+    },
+    "participants.tsv": {
+      "const": "file"
+    }
+  },
+  "required": [
+    "CHANGELOG.md",
+    "LICENSE.txt",
+    "README.md",
+    "dataset_description.json",
+    "participants.json",
+    "participants.tsv"
+  ]
+}

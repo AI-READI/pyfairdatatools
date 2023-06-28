@@ -87,6 +87,7 @@ pyfairdatatools = "pyfairdatatools.cli:main"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.20.0"
+jupyter = "^1.0.0"
 
 [tool.poe.tasks]
 
@@ -104,6 +105,8 @@ pylint = "pylint pyfairdatatools tests --rcfile=.pylint.ini"
 precommit = ["format", "typecheck", "pylint"]
 
 test = "pytest -rx" 
+
+jupyter = "jupyter notebook"
 
 [tool.black]
 
