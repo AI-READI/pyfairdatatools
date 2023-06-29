@@ -9,6 +9,106 @@
         "const": "file"
       }
     },
+    "best_corrected_visual_acuity": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "blood_test": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "center_for_epidemiologic_studies_depression_scale": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "consent_form": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "continuous_glucose_monitoring": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "contrast_sensitivity_test": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "demographic_survey": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "diabetes_wellbeing_questionnaire": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "dietary_questionnaire": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "electrocardiogram": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "eye_fundus_photography": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "general_health_survey": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "medication_list": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "monofilament_foot_sensation_test": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "montreal_cognitive_assessment": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "optical_coherence_tomography": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "screening_questionnaire": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "sdsca": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "urine_test": {
+      "README.md": {
+        "const": "file"
+      }
+    },
+    "vital_signs_measurement": {
+      "README.md": {
+        "const": "file"
+      }
+    },
     "CHANGELOG.md": {
       "const": "file"
     },
