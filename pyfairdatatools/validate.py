@@ -53,6 +53,31 @@ def validate_dataset_description(data):  # sourcery skip: extract-method
         raise error
 
 
+def validate_study_description(data):  # sourcery skip: extract-method
+    """Validate a study description against the schema."""
+    schema = {}
+
+    # Import the schema from the schemas folder
+    with open(
+        os.path.join(
+            os.path.dirname(__file__), "schemas", "study_description.schema.json"
+        ),
+        encoding="utf-8",
+    ) as f:
+        schema = json.load(f)
+
+    try:
+        validate(instance=data, schema=schema)
+
+        return True
+    except ValidationError as e:
+        print(e.schema["error_msg"] if "error_msg" in e.schema else e.message)
+        return False
+    except Exception as error:
+        print(error)
+        raise error
+
+
 def validate_readme(data):
     """Validate a readme against the schema.
 
