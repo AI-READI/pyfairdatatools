@@ -38,8 +38,8 @@ The `pyfairdatatools` package contains a collection of methods for working with 
 
 ### Validate
 
-The `pyfairdatatools.validate` module contains methods for validating data against the FAIR guidelines adopted by the AI-READI project. You can learn more about the methods and how to use them in the [validate](docs/modules/validate.md) documentation.
+The `pyfairdatatools.validate` module contains methods for validating data against the FAIR guidelines adopted by the AI-READI project. You can learn more about the methods and how to use them in the [validate](modules/validate.md) documentation.
 
 ### Generate
 
-The `pyfairdatatools.generate` module contains methods for generating data and metadata files that follow the FAIR guidelines adopted by the AI-READI project. You can learn more about the methods and how to use them in the [generate](docs/modules/generate.md) documentation.
+The `pyfairdatatools.generate` module contains methods for generating data and metadata files that follow the FAIR guidelines adopted by the AI-READI project. You can learn more about the methods and how to use them in the [generate](modules/generate.md) documentation.
