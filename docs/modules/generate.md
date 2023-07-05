@@ -70,6 +70,60 @@ output = generate.generate_dataset_description(data = data, file_path = "dataset
 print(output)  # dataset_description.json
 ```
 
+### Generate Study Description
+
+You can call the `generate_study_description` method to generate a study_description file.
+
+#### Parameters
+
+##### data
+
+Provide the data required for your `study_description` file in this paramater.
+
+| Type   | Default value | Required | Accepted values                            |
+| ------ | ------------- | -------- | ------------------------------------------ |
+| Object | {}            | yes      | Data object following the required schemas |
+
+More information about the required data can be found in the [study_description](../schemas/study_description.md) schema.
+
+##### file_path
+
+Provide the path to the file where you want to save the generated study_description file.
+
+| Type   | Default value | Required | Accepted values |
+| ------ | ------------- | -------- | --------------- |
+| String | None          | yes      | Any string      |
+
+##### file_type
+
+Provide the file type of the file where you want to save the generated study_description file.
+
+| Type   | Default value | Required | Accepted values              |
+| ------ | ------------- | -------- | ---------------------------- |
+| String | None          | yes      | `json`, `xml`, `xlsx`, `csv` |
+
+#### Returns
+
+| Type   | Description                                                           |
+| ------ | --------------------------------------------------------------------- |
+| String | Returns the path to the generated study_description file as a string. |
+
+#### How to use
+
+```python
+from pyfairdatatools import generate
+
+data  = {
+    "Title": "My Dataset",
+    "Identifier": "10.5281/zenodo.1234567",
+    "IdentifierType": "DOI"
+}
+
+output = generate.generate_study_description(data = data, file_path = "study_description.json", file_type = "json")
+
+print(output)  # study_description.json
+```
+
 ### Generate Readme
 
 You can call the `generate_readme` method to generate a readme file.

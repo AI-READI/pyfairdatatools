@@ -56,6 +56,46 @@ output = validate.validate_dataset_description(data = data)
 print(output)  # True
 ```
 
+### Validate Study Description
+
+You can call the `validate_study_description` method to validate the data needed to create a study_description file.
+
+#### Parameters
+
+##### data
+
+Provide the data required for your `study_description` file in this paramater.
+
+| Type   | Default value | Required | Accepted values                            |
+| ------ | ------------- | -------- | ------------------------------------------ |
+| Object | {}            | yes      | Data object following the required schemas |
+
+More information about the required data can be found in the [study_description](https://github.com/AI-READI/high-level-dataset-structure/blob/specifications/main/v1.0.0/schemas/dataset_description.schema.json) schema.
+
+You can the hosted validator [here](https://www.jsonschemavalidator.net/s/aNSmlcv1) if you want a better understanding or visualization of the schema for the input.
+
+#### Returns
+
+| Type    | Description                                             |
+| ------- | ------------------------------------------------------- |
+| Boolean | Returns `True` if the data is valid, `False` otherwise. |
+
+#### How to use
+
+```python
+from pyfairdatatools import validate
+
+data  = {
+    "Title": "My Dataset",
+    "Identifier": "10.5281/zenodo.1234567",
+    "IdentifierType": "DOI"
+}
+
+output = validate.validate_study_description(data = data)
+
+print(output)  # True
+```
+
 ### Validate Readme
 
 You can call the `validate_readme` method to validate the data needed to create a README file.
