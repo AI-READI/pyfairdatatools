@@ -1132,7 +1132,7 @@
                 "minLength": 1
               }
             },
-            "required": ["ReferenceID"]
+            "required": ["ReferenceCitation"]
           },
           "minItems": 1,
           "uniqueItems": true
@@ -1269,6 +1269,10 @@
         {
           "const": "Completed",
           "description": "The study has concluded normally; participants are no longer receiving an intervention or being examined (that is, last participant's last visit has occurred)."
+        },
+        {
+          "const": "Terminated",
+          "description": "Study halted prematurely and will not resume; participants are no longer being examined or receiving intervention."
         }
       ]
     },
