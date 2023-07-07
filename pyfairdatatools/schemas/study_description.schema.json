@@ -24,7 +24,7 @@
             },
             "OrgStudyIdDomain": {
               "type": "string",
-              "description": "If an ID Type of 'Other Grant/Funding Number,' 'Registry Identifier,' or 'Other Identifier' is selected, provide the name of the funding organization, clinical trial registry, or organization that issued the identifier.",
+              "description": "If an ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected, provide the name of the funding organization, clinical trial registry, or organization that issued the identifier.  (required if ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected)",
               "minLength": 1
             },
             "OrgStudyIdLink": {
@@ -52,7 +52,7 @@
               },
               "SecondaryIdDomain": {
                 "type": "string",
-                "description": "If an ID Type of 'Other Grant/Funding Number,' 'Registry Identifier,' or 'Other Identifier' is selected, provide the name of the funding organization, clinical trial registry, or organization that issued the identifier.",
+                "description": "If an ID Type of 'Other Grant/Funding Number,' 'Registry Identifier,' or 'Other Identifier' is selected, provide the name of the funding organization, clinical trial registry, or organization that issued the identifier. (required if Secondary ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected)",
                 "minLength": 1
               },
               "SecondaryIdLink": {
@@ -283,7 +283,7 @@
                       "description": "Trials without phases (for example, studies of devices or behavioural interventions)."
                     },
                     {
-                      "const": "Early Phase 1",
+                      "const": "Early phase 1",
                       "description": "Exploratory trials, involving very limited human exposure, with no therapeutic or diagnostic intent (e.g., screening studies, microdose studies)."
                     },
                     {
@@ -319,9 +319,10 @@
                 "$ref": "#/definitions/enrollmentInfo"
               },
               "NumberArms": {
-                "type": "integer",
-                "description": "The number of arms in the clinical trial. For a trial with multiple periods or phases that have different numbers of arms, the maximum number of arms during all periods or phases. Note: 'Arm' means a pre-specified group or subgroup of participant(s) in a clinical trial assigned to receive specific intervention(s) (or no intervention) according to a protocol.",
-                "minimum": 0
+                "type": "string",
+                "pattern": "^[0-9]+$",
+                "minLength": 1,
+                "description": "The number of arms in the clinical trial. For a trial with multiple periods or phases that have different numbers of arms, the maximum number of arms during all periods or phases. Note: 'Arm' means a pre-specified group or subgroup of participant(s) in a clinical trial assigned to receive specific intervention(s) (or no intervention) according to a protocol. The minimum value is '1'"
               }
             },
             "required": [
@@ -459,9 +460,10 @@
                 "examples": ["3 Years", "5 Days", "10 Weeks"]
               },
               "NumberGroupsCohorts": {
-                "type": "integer",
-                "description": "Number of study groups/cohorts. Enter `1` for a single-group study. Many observational studies have one group/cohort; case control studies typically have two.",
-                "minimum": 1
+                "type": "string",
+                "pattern": "^[0-9]+$",
+                "minLength": 1,
+                "description": "Number of study groups/cohorts. Enter `1` for a single-group study. Many observational studies have one group/cohort; case control studies typically have two. The minimum value is '1'."
               }
             },
             "required": [
@@ -657,6 +659,201 @@
       },
       "required": ["ConditionList"]
     },
+    "ArmsInterventionsModule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ArmGroupList": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "description": "If the study is interventional: A description of each arm of the clinical trial that indicates its role in the clinical trial; provides an informative title; and, if necessary, additional descriptive information (including which interventions are administered in each arm) to differentiate each arm from other arms in the clinical trial. || If the study is observational: Specify the predefined participant groups (cohorts) to be studied, corresponding to Number of Groups specified under Study Design (for single-group studies, the following data elements are optional). Do not use this section to specify strata (Detailed Description can be used for that purpose, if desired).",
+            "additionalProperties": false,
+            "properties": {
+              "ArmGroupLabel": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ArmGroupType": {
+                "type": "string",
+                "description": "required if study type is interventional",
+                "enum": [
+                  "Experimental",
+                  "Active Comparator",
+                  "Placebo Comparator",
+                  "Sham Comparator",
+                  "No Intervention",
+                  "Other"
+                ]
+              },
+              "ArmGroupDescription": {
+                "type": "string",
+                "minLength": 1
+              },
+              "ArmGroupInterventionList": {
+                "type": "array",
+                "description": "required if study type is interventional and there is more than one intervention",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            },
+            "required": ["ArmGroupLabel"]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "InterventionList": {
+          "type": "array",
+          "description": "Specify the intervention(s) associated with each arm or group; at least one intervention must be specified for interventional studies. For observational studies, specify the intervention(s)/exposure(s) of interest, if any. If the same intervention is associated with more than one arm or group, provide the information once and use the Arm or Group/Intervention Cross-Reference to associate it with more than one arm or group.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "InterventionType": {
+                "type": "string",
+                "description": "For each intervention studied in the clinical study, the general type of intervention. Select one.",
+                "enum": [
+                  "Drug: Including placebo",
+                  "Device: Including sham",
+                  "Biological/Vaccine",
+                  "Procedure/Surgery",
+                  "Radiation",
+                  "Behavioral: For example, psychotherapy, lifestyle counseling",
+                  "Genetic: Including gene transfer, stem cell and recombinant DNA",
+                  "Dietary Supplement: For example, vitamins, minerals",
+                  "Combination Product: Combining a drug and device, a biological product and device; a drug and biological product; or a drug, biological product, and device",
+                  "Diagnostic Test: For example, imaging, in-vitro",
+                  "Other"
+                ]
+              },
+              "InterventionName": {
+                "type": "string",
+                "description": "A brief descriptive name used to refer to the intervention(s) studied in each arm of the clinical study. A non-proprietary name of the intervention must be used, if available. If a non-proprietary name is not available, a brief descriptive name or identifier must be used.",
+                "minLength": 1
+              },
+              "InterventionDescription": {
+                "type": "string",
+                "description": "Details that can be made public about the intervention, other than the Intervention Name(s) and Other Intervention Name(s), sufficient to distinguish the intervention from other, similar interventions studied in the same or another clinical study. For example, interventions involving drugs may include dosage form, dosage, frequency, and duration",
+                "minLength": 1
+              },
+              "InterventionArmGroupLabelList": {
+                "type": "array",
+                "description": "The name of the arm or group associated with the intervention studied in this clinical study. At least one Arm Group Label must be provided.",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              },
+              "InterventionOtherNameList": {
+                "type": "array",
+                "description": "Other current and former name(s) or alias(es), if any, different from the Intervention Name(s), that the sponsor has used publicly to identify the intervention(s), including, but not limited to, past or present names such as brand name(s), or serial numbers.",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            },
+            "required": [
+              "InterventionType",
+              "InterventionName",
+              "InterventionArmGroupLabelList"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": ["ArmGroupList", "InterventionList"]
+    },
+    "EligibilityModule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Gender": {
+          "type": "string",
+          "description": "The sex and, if applicable, gender of the participants eligible to participate in the clinical study. The sex of the participants eligible to participate in the clinical study. Note: 'Sex' means a person's classification as male or female based on biological distinctions.",
+          "oneOf": [
+            {
+              "const": "All",
+              "description": "Indicates no limit on eligibility based on the sex of participants"
+            },
+            {
+              "const": "Female",
+              "description": "Indicates that only female participants are being studied"
+            },
+            {
+              "const": "Male",
+              "description": "Indicates that only male participants are being studied"
+            }
+          ]
+        },
+        "GenderBased": {
+          "type": "string",
+          "description": "If applicable, indicate whether participant eligibility is based on gender. Note: 'Gender' means a person's self-representation of gender identity.",
+          "enum": ["Yes", "No"]
+        },
+        "GenderDescription": {
+          "type": "string",
+          "description": "If eligibility is based on gender, provide descriptive information about Gender criteria."
+        },
+        "MinimumAge": {
+          "type": "string",
+          "description": "The numerical value, if any, for the minimum age a potential participant must meet to be eligible for the clinical study. Include a whole number followed by units, if no limit use 'N/A' - see controlled values for units",
+          "pattern": "^[0-9]+(\\.[0-9]+)?\\s*(Years|Months|Weeks|Days|Hours|N/A)?$",
+          "minLength": 1
+        },
+        "MaximumAge": {
+          "type": "string",
+          "description": "The numerical value, if any, for the maximum age a potential participant must meet to be eligible for the clinical study. Include a whole number followed by units, if no limit use 'N/A' - see controlled values for units",
+          "pattern": "^[0-9]+(\\.[0-9]+)?\\s*(Years|Months|Weeks|Days|Hours|N/A)?$",
+          "minLength": 1
+        },
+        "HealthyVolunteers": {
+          "type": "string",
+          "description": "Indication that participants who do not have a disease or condition, or related conditions or symptoms, under study in the clinical study are permitted to participate in the clinical study. Required if the study type is Interventional.",
+          "enum": ["Yes", "No"]
+        },
+        "EligibilityCriteria": {
+          "type": "string",
+          "description": "A limited list of criteria for selection of participants in the clinical study, provided in terms of inclusion and exclusion criteria and suitable for assisting potential participants in identifying clinical studies of interest. Use a bulleted list for each criterion below the headers 'Inclusion Criteria' and 'Exclusion Criteria'",
+          "minLength": 1
+        },
+        "StudyPopulation": {
+          "type": "string",
+          "description": "A description of the population from which the groups or cohorts will be selected (for example, primary care clinic, community sample, residents of a certain town). Required for observational studies.",
+          "minLength": 1
+        },
+        "SamplingMethod": {
+          "type": "string",
+          "description": "The method used to select participants to be studied. Required for observational studies.",
+          "oneOf": [
+            {
+              "const": "Probability Sample",
+              "description": "Exclusively random process to guarantee that each participant or population has specified chance of selection, such as simple random sampling, systematic sampling, stratified random sampling, cluster sampling, and consecutive participant sampling"
+            },
+            {
+              "const": "Non-Probability Sample",
+              "description": "Any of a variety of other sampling processes, such as convenience sampling or invitation to volunteer"
+            }
+          ]
+        }
+      },
+      "required": [
+        "Gender",
+        "GenderBased",
+        "MinimumAge",
+        "MaximumAge",
+        "EligibilityCriteria"
+      ]
+    },
     "ContactsLocationsModule": {
       "type": "object",
       "additionalProperties": false,
@@ -775,7 +972,7 @@
               },
               "LocationContactList": {
                 "type": "array",
-                "description": "",
+                "description": "Required if Central Contact is not provided",
                 "items": {
                   "type": "object",
                   "description": "For each facility participating in a clinical study, including the name or title, telephone number, and email address of a person to whom questions concerning the study and enrollment at that site can be addressed. Include the following information.",
@@ -1080,8 +1277,10 @@
       "additionalProperties": false,
       "properties": {
         "EnrollmentCount": {
-          "type": "integer",
-          "description": "The estimated total number of participants to be enrolled (target number) or the actual total number of participants that are enrolled in the clinical study. Note: 'Enrolled' means a participant's, or their legally authorized representative's, agreement to participate in a clinical study following completion of the informed consent process. Potential participants who are screened for the purpose of determining eligibility for a study, but do not participate in the study, are not considered enrolled, unless otherwise specified by the protocol."
+          "type": "string",
+          "pattern": "^[0-9]+$",
+          "minLength": 1,
+          "description": "The estimated total number of participants to be enrolled (target number) or the actual total number of participants that are enrolled in the clinical study. Note: 'Enrolled' means a participant's, or their legally authorized representative's, agreement to participate in a clinical study following completion of the informed consent process. Potential participants who are screened for the purpose of determining eligibility for a study, but do not participate in the study, are not considered enrolled, unless otherwise specified by the protocol. The min value is '1'."
         },
         "EnrollmentType": {
           "type": "string",
