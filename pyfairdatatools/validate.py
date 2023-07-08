@@ -91,26 +91,27 @@ def validate_study_description(data):  # sourcery skip: extract-method
                 print("A value for OrgStudyIdDomain is required.")
                 return False
 
-        SecondaryIdInfoList = data["IdentificationModule"]["SecondaryIdInfoList"]
+        if "SecondaryIdInfoList" in data["IdentificationModule"]:
+            SecondaryIdInfoList = data["IdentificationModule"]["SecondaryIdInfoList"]
 
-        for SecondaryIdInfo in SecondaryIdInfoList:
-            SecondaryIdType = SecondaryIdInfo["SecondaryIdType"]
+            for SecondaryIdInfo in SecondaryIdInfoList:
+                SecondaryIdType = SecondaryIdInfo["SecondaryIdType"]
 
-            if SecondaryIdType in [
-                "Other Grant/Funding Number",
-                "Registry Identifier",
-                "Other Identifier",
-            ]:
-                # check if the SecondaryIdDomain key exists and is not empty
-                if "SecondaryIdDomain" not in SecondaryIdInfo:
-                    print("SecondaryIdDomain is required.")
-                    return False
+                if SecondaryIdType in [
+                    "Other Grant/Funding Number",
+                    "Registry Identifier",
+                    "Other Identifier",
+                ]:
+                    # check if the SecondaryIdDomain key exists and is not empty
+                    if "SecondaryIdDomain" not in SecondaryIdInfo:
+                        print("SecondaryIdDomain is required.")
+                        return False
 
-                SecondaryIdDomain = SecondaryIdInfo["SecondaryIdDomain"]
+                    SecondaryIdDomain = SecondaryIdInfo["SecondaryIdDomain"]
 
-                if SecondaryIdDomain is None or SecondaryIdDomain == "":
-                    print("A value for SecondaryIdDomain is required")
-                    return False
+                    if SecondaryIdDomain is None or SecondaryIdDomain == "":
+                        print("A value for SecondaryIdDomain is required")
+                        return False
 
         OverallStatus = data["StatusModule"]["OverallStatus"]
 
@@ -228,21 +229,21 @@ def validate_study_description(data):  # sourcery skip: extract-method
                 print("SamplingMethod is required for observational studies.")
                 return False
 
-        if (
-            "CentralContactList" in data["ContactsLocationsModule"]
-            and len(data["ContactsLocationsModule"]["CentralContactList"]) > 0
-        ):
-            LocationList = data["ContactsLocationsModule"]["CentralContactList"]
+        if "CentralContactList" in data["ContactsLocationsModule"]:
+            CentralContactList = data["ContactsLocationsModule"]["CentralContactList"]
 
-            for Location in LocationList:
-                if (
-                    "LocationContactList" not in Location
-                    or len(Location["LocationContactList"]) == 0
-                ):
-                    print(
-                        "LocationContactList is required if no Central Contact is provided."  # pylint: disable=line-too-long
-                    )
-                    return False
+            if len(CentralContactList) == 0:
+                LocationList = data["ContactsLocationsModule"]["LocationList"]
+
+                for Location in LocationList:
+                    if (
+                        "LocationContactList" not in Location
+                        or len(Location["LocationContactList"]) == 0
+                    ):
+                        print(
+                            "LocationContactList is required if no Central Contact is provided."  # pylint: disable=line-too-long
+                        )
+                        return False
 
         return True
     except ValidationError as e:

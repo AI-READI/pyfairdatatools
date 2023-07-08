@@ -1207,10 +1207,12 @@
   },
   "required": [
     "IdentificationModule",
+    "DesignModule",
     "StatusModule",
     "SponsorCollaboratorsModule",
     "DescriptionModule",
     "ConditionsModule",
+    "EligibilityModule",
     "ContactsLocationsModule"
   ],
   "definitions": {

@@ -7,6 +7,7 @@ from pyfairdatatools.validate import (
     validate_license,
     validate_participants,
     validate_readme,
+    validate_study_description,
 )
 
 
@@ -373,6 +374,86 @@ class TestValidateDatasetDescription:
 
         output = validate_dataset_description(data)
         assert output is False
+
+
+class TestValidateStudyDescription:
+    minimal_valid_data = {
+        "IdentificationModule": {
+            "OrgStudyIdInfo": {
+                "OrgStudyId": "RandomStudyId",
+                "OrgStudyIdType": "NIH Grant Number",
+            }
+        },
+        "StatusModule": {
+            "OverallStatus": "Recruiting",
+            "StartDateStruct": {
+                "StartDate": "July 07, 2023",
+                "StartDateType": "Actual",
+            },
+        },
+        "DesignModule": {
+            "StudyType": "Observational",
+            "DesignInfo": {
+                "DesignObservationalModelList": ["Cohort"],
+                "DesignTimePerspectiveList": ["Prospective"],
+            },
+            "EnrollmentInfo": {
+                "EnrollmentCount": "34",
+                "EnrollmentType": "Anticipated",
+            },
+            "TargetDuration": "4 Years",
+            "NumberGroupsCohorts": "1",
+        },
+        "SponsorCollaboratorsModule": {
+            "ResponsibleParty": {"ResponsiblePartyType": "Sponsor"},
+            "LeadSponsor": {"LeadSponsorName": "Harper Spiller"},
+        },
+        "DescriptionModule": {
+            "BriefSummary": "This is a brief summary",
+        },
+        "ConditionsModule": {"ConditionList": ["Condition 1", "Condition 2"]},
+        "EligibilityModule": {
+            "Gender": "All",
+            "GenderBased": "No",
+            "MinimumAge": "18 Years",
+            "MaximumAge": "65 Years",
+            "EligibilityCriteria": "This is the eligibility criteria",
+            "StudyPopulation": "This is the study population",
+            "SamplingMethod": "Non-Probability Sample",
+        },
+        "ContactsLocationsModule": {
+            "CentralContactList": [
+                {
+                    "CentralContactName": "Ethan Spiller",
+                    "CentralContactAffiliation": "White Lotus",
+                    "CentralContactPhone": "805-555-5555",
+                    "CentralContactEMail": "e.spiller@hbo.com",
+                }
+            ],
+            "OverallOfficialList": [
+                {
+                    "OverallOfficialName": "Daphne Sullivan",
+                    "OverallOfficialAffiliation": "White Lotus",
+                    "OverallOfficialRole": "Study Principal Investigator",
+                }
+            ],
+            "LocationList": [
+                {
+                    "LocationFacility": "White Lotus",
+                    "LocationStatus": "Recruiting",
+                    "LocationCity": "Taormina",
+                    "LocationCountry": "Italy",
+                }
+            ],
+        },
+    }
+
+    def test_minimal_valid_study_description(self):
+        data = deepcopy(self.minimal_valid_data)
+
+        output = validate_study_description(data)
+
+        assert output is True
 
 
 class TestValidateReadme:
