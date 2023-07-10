@@ -377,25 +377,68 @@ class TestValidateDatasetDescription:
 
 
 class TestValidateStudyDescription:
-    minimal_valid_data = {
+    observational_study_valid_data = {
         "IdentificationModule": {
             "OrgStudyIdInfo": {
                 "OrgStudyId": "RandomStudyId",
-                "OrgStudyIdType": "NIH Grant Number",
-            }
+                "OrgStudyIdType": "Registry Identifier",
+                "OrgStudyIdDomain": "ClinicalTrials.gov",
+                "OrgStudyIdLink": "https://clinicaltrials.gov/ct2/show/NCT00000000",
+            },
+            "SecondaryIdInfoList": [
+                {
+                    "SecondaryId": "SomeID",
+                    "SecondaryIdType": "Other Identifier",
+                    "SecondaryIdDomain": "Other",
+                    "SecondaryIdLink": "https://example.com",
+                }
+            ],
         },
         "StatusModule": {
-            "OverallStatus": "Recruiting",
+            "OverallStatus": "Suspended",
+            "WhyStopped": "Study stopped due to lack of funding",
             "StartDateStruct": {
                 "StartDate": "July 07, 2023",
                 "StartDateType": "Actual",
             },
+            "CompletionDateStruct": {
+                "CompletionDate": "July 08, 2024",
+                "CompletionDateType": "Actual",
+            },
+        },
+        "SponsorCollaboratorsModule": {
+            "ResponsibleParty": {
+                "ResponsiblePartyType": "Principal Investigator",
+                "ResponsiblePartyInvestigatorFullName": "Harper Spiller",
+                "ResponsiblePartyInvestigatorTitle": "Principal Investigator",
+                "ResponsiblePartyInvestigatorAffiliation": "White Lotus",
+            },
+            "LeadSponsor": {"LeadSponsorName": "Harper Spiller"},
+            "CollaboratorList": [
+                {"CollaboratorName": "Nicole Mossbacher"},
+                {"CollaboratorName": "Olivia Mossbacher"},
+            ],
+        },
+        "OversightModule": {
+            "OversightHasDMC": "No",
+        },
+        "DescriptionModule": {
+            "BriefSummary": "This is a brief summary",
+            "DetailedDescription": "This is a detailed description",
+        },
+        "ConditionsModule": {
+            "ConditionList": ["Condition 1", "Condition 2"],
+            "KeywordList": ["Keyword 1", "Keyword 2"],
         },
         "DesignModule": {
             "StudyType": "Observational",
             "DesignInfo": {
                 "DesignObservationalModelList": ["Cohort"],
                 "DesignTimePerspectiveList": ["Prospective"],
+            },
+            "BioSpec": {
+                "BioSpecRetention": "Samples With DNA",
+                "BioSpecDescription": "This is a description of the biospecs",
             },
             "EnrollmentInfo": {
                 "EnrollmentCount": "34",
@@ -404,14 +447,20 @@ class TestValidateStudyDescription:
             "TargetDuration": "4 Years",
             "NumberGroupsCohorts": "1",
         },
-        "SponsorCollaboratorsModule": {
-            "ResponsibleParty": {"ResponsiblePartyType": "Sponsor"},
-            "LeadSponsor": {"LeadSponsorName": "Harper Spiller"},
+        "ArmsInterventionsModule": {
+            "ArmGroupList": [
+                {"ArmGroupLabel": "Arm 1", "ArmGroupDescription": "Experimental"}
+            ],
+            "InterventionList": [
+                {
+                    "InterventionType": "Drug",
+                    "InterventionName": "Drug 1",
+                    "InterventionDescription": "This is a description of the intervention",
+                    "InterventionArmGroupLabelList": ["Arm 1"],
+                    "InterventionOtherNameList": ["Other Name 1"],
+                },
+            ],
         },
-        "DescriptionModule": {
-            "BriefSummary": "This is a brief summary",
-        },
-        "ConditionsModule": {"ConditionList": ["Condition 1", "Condition 2"]},
         "EligibilityModule": {
             "Gender": "All",
             "GenderBased": "No",
@@ -427,6 +476,7 @@ class TestValidateStudyDescription:
                     "CentralContactName": "Ethan Spiller",
                     "CentralContactAffiliation": "White Lotus",
                     "CentralContactPhone": "805-555-5555",
+                    "CentralContactPhoneExt": "123",
                     "CentralContactEMail": "e.spiller@hbo.com",
                 }
             ],
@@ -441,15 +491,222 @@ class TestValidateStudyDescription:
                 {
                     "LocationFacility": "White Lotus",
                     "LocationStatus": "Recruiting",
-                    "LocationCity": "Taormina",
-                    "LocationCountry": "Italy",
+                    "LocationCity": "Kihei",
+                    "LocationState": "Hawaii",
+                    "LocationZip": "96753",
+                    "LocationCountry": "United States",
+                }
+            ],
+        },
+        "IPDSharingStatementModule": {
+            "IPDSharing": "Yes",
+            "IPDSharingDescription": "This is a description of the IPD sharing statement",
+            "IPDSharingInfoTypeList": [
+                "Study Protocol",
+                "Statistical Analysis Plan (SAP)",
+            ],
+            "IPDSharingTimeFrame": "Beginning 9 Months and ending 36 months following article publication",
+            "IPDSharingAccessCriteria": "This is the IPD sharing access criteria",
+            "IPDSharingURL": "https://example.com",
+        },
+        "ReferencesModule": {
+            "ReferenceList": [
+                {
+                    "ReferenceID": "12345678",
+                    "ReferenceType": "Yes",
+                    "ReferenceCitation": "This is a reference citation",
+                }
+            ],
+            "SeeAlsoLinkList": [
+                {
+                    "SeeAlsoLinkLabel": "This is a link label",
+                    "SeeAlsoLinkURL": "https://example.com",
+                }
+            ],
+            "AvailIPDList": [
+                {
+                    "AvailIPDId": "123456",
+                    "AvailIPDType": "Clinical Study Report",
+                    "AvailIPDURL": "https://example.com",
+                    "AvailIPDComment": "This is the avail IPD access criteria",
                 }
             ],
         },
     }
 
-    def test_minimal_valid_study_description(self):
-        data = deepcopy(self.minimal_valid_data)
+    interventional_study_valid_data = {
+        "IdentificationModule": {
+            "OrgStudyIdInfo": {
+                "OrgStudyId": "RandomStudyId",
+                "OrgStudyIdType": "Registry Identifier",
+                "OrgStudyIdDomain": "ClinicalTrials.gov",
+                "OrgStudyIdLink": "https://clinicaltrials.gov/ct2/show/NCT00000000",
+            },
+            "SecondaryIdInfoList": [
+                {
+                    "SecondaryId": "SomeID",
+                    "SecondaryIdType": "Other Identifier",
+                    "SecondaryIdDomain": "Other",
+                    "SecondaryIdLink": "https://example.com",
+                }
+            ],
+        },
+        "StatusModule": {
+            "OverallStatus": "Suspended",
+            "WhyStopped": "Study stopped due to lack of funding",
+            "StartDateStruct": {
+                "StartDate": "July 07, 2023",
+                "StartDateType": "Actual",
+            },
+            "CompletionDateStruct": {
+                "CompletionDate": "July 08, 2024",
+                "CompletionDateType": "Actual",
+            },
+        },
+        "SponsorCollaboratorsModule": {
+            "ResponsibleParty": {
+                "ResponsiblePartyType": "Principal Investigator",
+                "ResponsiblePartyInvestigatorFullName": "Harper Spiller",
+                "ResponsiblePartyInvestigatorTitle": "Principal Investigator",
+                "ResponsiblePartyInvestigatorAffiliation": "White Lotus",
+            },
+            "LeadSponsor": {"LeadSponsorName": "Harper Spiller"},
+            "CollaboratorList": [
+                {"CollaboratorName": "Nicole Mossbacher"},
+                {"CollaboratorName": "Olivia Mossbacher"},
+            ],
+        },
+        "OversightModule": {
+            "OversightHasDMC": "No",
+        },
+        "DescriptionModule": {
+            "BriefSummary": "This is a brief summary",
+            "DetailedDescription": "This is a detailed description",
+        },
+        "ConditionsModule": {
+            "ConditionList": ["Condition 1", "Condition 2"],
+            "KeywordList": ["Keyword 1", "Keyword 2"],
+        },
+        "DesignModule": {
+            "StudyType": "Interventional",
+            "DesignInfo": {
+                "DesignAllocation": "Randomized",
+                "DesignInterventionModel": "Prevention",
+                "DesignInterventionModelDescription": "This is a description of the design intervention model",
+                "DesignPrimaryPurpose": "Parallel Assignment",
+                "DesignMaskingInfo": {
+                    "DesignMasking": "Blinded (no details)",
+                    "DesignMaskingDescription": "This is a description of the design masking",
+                    "DesignWhoMaskedList": ["Participant", "Care Provider"],
+                },
+            },
+            "PhaseList": ["Phase 1/2"],
+            "EnrollmentInfo": {
+                "EnrollmentCount": "34",
+                "EnrollmentType": "Anticipated",
+            },
+            "NumberArms": "1",
+        },
+        "ArmsInterventionsModule": {
+            "ArmGroupList": [
+                {
+                    "ArmGroupLabel": "Arm 1",
+                    "ArmGroupType": "Placebo Comparator",
+                    "ArmGroupDescription": "Experimental",
+                    "ArmGroupInterventionList": ["Drug 1"],
+                }
+            ],
+            "InterventionList": [
+                {
+                    "InterventionType": "Drug",
+                    "InterventionName": "Drug 1",
+                    "InterventionDescription": "This is a description of the intervention",
+                    "InterventionArmGroupLabelList": ["Arm 1"],
+                    "InterventionOtherNameList": ["Other Name 1"],
+                },
+            ],
+        },
+        "EligibilityModule": {
+            "Gender": "All",
+            "GenderBased": "No",
+            "MinimumAge": "18 Years",
+            "MaximumAge": "65 Years",
+            "HealthyVolunteers": "No",
+            "EligibilityCriteria": "This is the eligibility criteria",
+        },
+        "ContactsLocationsModule": {
+            "CentralContactList": [
+                {
+                    "CentralContactName": "Ethan Spiller",
+                    "CentralContactAffiliation": "White Lotus",
+                    "CentralContactPhone": "805-555-5555",
+                    "CentralContactPhoneExt": "123",
+                    "CentralContactEMail": "e.spiller@hbo.com",
+                }
+            ],
+            "OverallOfficialList": [
+                {
+                    "OverallOfficialName": "Daphne Sullivan",
+                    "OverallOfficialAffiliation": "White Lotus",
+                    "OverallOfficialRole": "Study Principal Investigator",
+                }
+            ],
+            "LocationList": [
+                {
+                    "LocationFacility": "White Lotus",
+                    "LocationStatus": "Recruiting",
+                    "LocationCity": "Kihei",
+                    "LocationState": "Hawaii",
+                    "LocationZip": "96753",
+                    "LocationCountry": "United States",
+                }
+            ],
+        },
+        "IPDSharingStatementModule": {
+            "IPDSharing": "Yes",
+            "IPDSharingDescription": "This is a description of the IPD sharing statement",
+            "IPDSharingInfoTypeList": [
+                "Study Protocol",
+                "Statistical Analysis Plan (SAP)",
+            ],
+            "IPDSharingTimeFrame": "Beginning 9 Months and ending 36 months following article publication",
+            "IPDSharingAccessCriteria": "This is the IPD sharing access criteria",
+            "IPDSharingURL": "https://example.com",
+        },
+        "ReferencesModule": {
+            "ReferenceList": [
+                {
+                    "ReferenceID": "12345678",
+                    "ReferenceType": "Yes",
+                    "ReferenceCitation": "This is a reference citation",
+                }
+            ],
+            "SeeAlsoLinkList": [
+                {
+                    "SeeAlsoLinkLabel": "This is a link label",
+                    "SeeAlsoLinkURL": "https://example.com",
+                }
+            ],
+            "AvailIPDList": [
+                {
+                    "AvailIPDId": "123456",
+                    "AvailIPDType": "Clinical Study Report",
+                    "AvailIPDURL": "https://example.com",
+                    "AvailIPDComment": "This is the avail IPD access criteria",
+                }
+            ],
+        },
+    }
+
+    def test_observational_valid_study_description(self):
+        data = deepcopy(self.observational_study_valid_data)
+
+        output = validate_study_description(data)
+
+        assert output is True
+
+    def test_interventional_valid_study_description(self):
+        data = deepcopy(self.interventional_study_valid_data)
 
         output = validate_study_description(data)
 

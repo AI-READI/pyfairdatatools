@@ -70,6 +70,189 @@
       },
       "required": ["OrgStudyIdInfo"]
     },
+    "StatusModule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "OverallStatus": {
+          "$ref": "#/definitions/statusOptions",
+          "description": "The recruitment status for the clinical study as a whole, based upon the status of the individual sites. If at least one facility in a multi-site clinical study has an Individual Site Status of 'Recruiting', then the Overall Recruitment Status for the study must be 'Recruiting'."
+        },
+        "WhyStopped": {
+          "type": "string",
+          "description": "A brief explanation of the reason(s) why such clinical study was stopped (for a clinical study that is 'Suspended', 'Terminated', or 'Withdrawn' prior to its planned completion as anticipated by the protocol). Required if OverallStatus is 'Suspended', 'Terminated', or 'Withdrawn'",
+          "minLength": 1
+        },
+        "StartDateStruct": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "The estimated date on which the clinical study will be open for recruitment of participants, or the actual date on which the first participant was enrolled. Note: 'Enrolled' means a participant's, or their legally authorized representative's, agreement to participate in a clinical study following completion of the informed consent process. Potential participants who are screened for the purpose of determining eligibility for the study, but do not participate in the study, are not considered enrolled, unless otherwise specified by the protocol.",
+          "properties": {
+            "StartDate": {
+              "type": "string",
+              "description": "Format like 'June 12, 2023'",
+              "minLength": 1
+            },
+            "StartDateType": {
+              "type": "string",
+              "enum": ["Actual", "Anticipated"]
+            }
+          },
+          "required": ["StartDate", "StartDateType"]
+        },
+        "CompletionDateStruct": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "The date the final participant was examined or received an intervention for purposes of final collection of data (for example, last participant's last visit), whether the clinical study concluded according to the pre-specified protocol or was terminated.",
+          "properties": {
+            "CompletionDate": {
+              "type": "string",
+              "description": "Format like 'June 12, 2023'",
+              "minLength": 1
+            },
+            "CompletionDateType": {
+              "type": "string",
+              "enum": ["Actual", "Anticipated"]
+            }
+          },
+          "required": ["CompletionDate", "CompletionDateType"]
+        }
+      },
+      "required": ["OverallStatus", "StartDateStruct"]
+    },
+    "SponsorCollaboratorsModule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ResponsibleParty": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ResponsiblePartyType": {
+              "type": "string",
+              "oneOf": [
+                {
+                  "const": "Sponsor",
+                  "description": "The entity (for example, corporation or agency) that initiates the study."
+                },
+                {
+                  "const": "Principal Investigator",
+                  "description": "The individual designated as responsible party by the sponsor."
+                },
+                {
+                  "const": "Sponsor-Investigator",
+                  "description": "The individual who both initiates and conducts the study."
+                }
+              ]
+            },
+            "ResponsiblePartyInvestigatorFullName": {
+              "type": "string",
+              "description": "Name of the investigator, including first and last name. (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
+              "minLength": 1,
+              "examples": ["John Smith"]
+            },
+            "ResponsiblePartyInvestigatorTitle": {
+              "type": "string",
+              "description": "Professional title of the investigator (for example, Professor of Medicine). (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
+              "minLength": 1,
+              "examples": ["Professor of Medicine"]
+            },
+            "ResponsiblePartyInvestigatorAffiliation": {
+              "type": "string",
+              "description": "Name of the organization to which the investigator is affiliated. (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
+              "minLength": 1,
+              "examples": ["University of California, San Diego"]
+            }
+          },
+          "required": ["ResponsiblePartyType"]
+        },
+        "LeadSponsor": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "LeadSponsorName": {
+              "type": "string",
+              "description": "The name of the entity or the individual who is the sponsor of the clinical study. Note: When a clinical study is conducted under an investigational new drug application (IND) or investigational device exemption (IDE), the IND or IDE holder is considered the sponsor. When a clinical study is not conducted under an IND or IDE, the single person or entity who initiates the study, by preparing and/or planning the study, and who has authority and control over the study, is considered the sponsor.",
+              "minLength": 1
+            }
+          },
+          "required": ["LeadSponsorName"]
+        },
+        "CollaboratorList": {
+          "type": "array",
+          "description": "Other organizations (if any) providing support. Support may include funding, design, implementation, data analysis or reporting. The responsible party is responsible for confirming all collaborators before listing them.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "CollaboratorName": {
+                "type": "string",
+                "description": "The name of the entity or the individual who is the collaborator of the clinical study."
+              }
+            },
+            "required": ["CollaboratorName"]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": ["ResponsibleParty", "LeadSponsor"]
+    },
+    "OversightModule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "OversightHasDMC": {
+          "type": "string",
+          "description": "Indicate whether a data monitoring committee has been appointed for this study. The data monitoring committee (board) is a group of independent scientists who are appointed to monitor the safety and scientific integrity of a human research intervention, and to make recommendations to the sponsor regarding the stopping of the trial for efficacy, for harms or for futility. The composition of the committee is dependent upon the scientific skills and knowledge required for monitoring the particular study. Select Yes/No.",
+          "enum": ["Yes", "No"]
+        }
+      }
+    },
+    "DescriptionModule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "BriefSummary": {
+          "type": "string",
+          "description": "A short description of the clinical study, written in language intended for the lay public. Limit: 5000 characters",
+          "minLength": 1
+        },
+        "DetailedDescription": {
+          "type": "string",
+          "description": "Extended description of the study, including more technical information (as compared to the Brief Summary), if desired. Do not include the entire protocol; do not duplicate information recorded in other data elements, such as Eligibility Criteria or outcome measures.For Patient Registries: Also describe the applicable registry procedures and other quality factors (for example, third party certification, on-site audit). In particular, summarize any procedures implemented as part of the patient registry, including, but not limited to the following: Quality assurance plan that addresses data validation and registry procedures, including any plans for site monitoring and auditing. Data checks to compare data entered into the registry against predefined rules for range or consistency with other data fields in the registry. Source data verification to assess the accuracy, completeness, or representativeness of registry data by comparing the data to external data sources (for example, medical records, paper or electronic case report forms, or interactive voice response systems). Data dictionary that contains detailed descriptions of each variable used by the registry, including the source of the variable, coding information if used (for example, World Health Organization Drug Dictionary, MedDRA), and normal ranges if relevant. Standard Operating Procedures to address registry operations and analysis activities, such as patient recruitment, data collection, data management, data analysis, reporting for adverse events, and change management. Sample size assessment to specify the number of participants or participant years necessary to demonstrate an effect. Plan for missing data to address situations where variables are reported as missing, unavailable, non-reported, uninterpretable, or considered missing because of data inconsistency or out-of-range results. Statistical analysis plan describing the analytical principles and statistical techniques to be employed in order to address the primary and secondary objectives, as specified in the study protocol or plan.",
+          "minLength": 1
+        }
+      },
+      "required": ["BriefSummary"]
+    },
+    "ConditionsModule": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ConditionList": {
+          "type": "array",
+          "description": "The name(s) of the disease(s) or condition(s) studied in the clinical study, or the focus of the clinical study. Use, if available, appropriate descriptors from NLM's Medical Subject Headings (MeSH)-controlled vocabulary thesaurus or terms from another vocabulary, such as the Systematized Nomenclature of Medicine—Clinical Terms (SNOMED CT), that has been mapped to MeSH within the Unified Medical Language System (UMLS) Metathesaurus.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "KeywordList": {
+          "type": "array",
+          "description": "Words or phrases that best describe the study. Keywords help users find studies in the database. Use NLM's Medical Subject Heading (MeSH)-controlled vocabulary terms where appropriate. Be as specific and precise as possible. Avoid acronyms and abbreviations.",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": ["ConditionList"]
+    },
     "DesignModule": {
       "type": "object",
       "required": ["StudyType"],
@@ -283,7 +466,7 @@
                       "description": "Trials without phases (for example, studies of devices or behavioural interventions)."
                     },
                     {
-                      "const": "Early phase 1",
+                      "const": "Early Phase 1",
                       "description": "Exploratory trials, involving very limited human exposure, with no therapeutic or diagnostic intent (e.g., screening studies, microdose studies)."
                     },
                     {
@@ -313,6 +496,7 @@
                   ]
                 },
                 "minItems": 1,
+                "maxItems": 1,
                 "uniqueItems": true
               },
               "EnrollmentInfo": {
@@ -476,189 +660,6 @@
         }
       ]
     },
-    "StatusModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "OverallStatus": {
-          "$ref": "#/definitions/statusOptions",
-          "description": "The recruitment status for the clinical study as a whole, based upon the status of the individual sites. If at least one facility in a multi-site clinical study has an Individual Site Status of 'Recruiting', then the Overall Recruitment Status for the study must be 'Recruiting'."
-        },
-        "WhyStopped": {
-          "type": "string",
-          "description": "A brief explanation of the reason(s) why such clinical study was stopped (for a clinical study that is 'Suspended', 'Terminated', or 'Withdrawn' prior to its planned completion as anticipated by the protocol). Required if OverallStatus is 'Suspended', 'Terminated', or 'Withdrawn'",
-          "minLength": 1
-        },
-        "StartDateStruct": {
-          "type": "object",
-          "additionalProperties": false,
-          "description": "The estimated date on which the clinical study will be open for recruitment of participants, or the actual date on which the first participant was enrolled. Note: 'Enrolled' means a participant's, or their legally authorized representative's, agreement to participate in a clinical study following completion of the informed consent process. Potential participants who are screened for the purpose of determining eligibility for the study, but do not participate in the study, are not considered enrolled, unless otherwise specified by the protocol.",
-          "properties": {
-            "StartDate": {
-              "type": "string",
-              "description": "Format like 'June 12, 2023'",
-              "minLength": 1
-            },
-            "StartDateType": {
-              "type": "string",
-              "enum": ["Actual", "Anticipated"]
-            }
-          },
-          "required": ["StartDate", "StartDateType"]
-        },
-        "CompletionDateStruct": {
-          "type": "object",
-          "additionalProperties": false,
-          "description": "The date the final participant was examined or received an intervention for purposes of final collection of data (for example, last participant's last visit), whether the clinical study concluded according to the pre-specified protocol or was terminated.",
-          "properties": {
-            "CompletionDate": {
-              "type": "string",
-              "description": "Format like 'June 12, 2023'",
-              "minLength": 1
-            },
-            "CompletionDateType": {
-              "type": "string",
-              "enum": ["Actual", "Anticipated"]
-            }
-          },
-          "required": ["CompletionDate", "CompletionDateType"]
-        }
-      },
-      "required": ["OverallStatus", "StartDateStruct"]
-    },
-    "SponsorCollaboratorsModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "ResponsibleParty": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "ResponsiblePartyType": {
-              "type": "string",
-              "oneOf": [
-                {
-                  "const": "Sponsor",
-                  "description": "The entity (for example, corporation or agency) that initiates the study."
-                },
-                {
-                  "const": "Principal Investigator",
-                  "description": "The individual designated as responsible party by the sponsor."
-                },
-                {
-                  "const": "Sponsor-Investigator",
-                  "description": "The individual who both initiates and conducts the study."
-                }
-              ]
-            },
-            "ResponsiblePartyInvestigatorFullName": {
-              "type": "string",
-              "description": "Name of the investigator, including first and last name. (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
-              "minLength": 1,
-              "examples": ["John Smith"]
-            },
-            "ResponsiblePartyInvestigatorTitle": {
-              "type": "string",
-              "description": "Professional title of the investigator (for example, Professor of Medicine). (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
-              "minLength": 1,
-              "examples": ["Professor of Medicine"]
-            },
-            "ResponsiblePartyInvestigatorAffiliation": {
-              "type": "string",
-              "description": "Name of the organization to which the investigator is affiliated. (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
-              "minLength": 1,
-              "examples": ["University of California, San Diego"]
-            }
-          },
-          "required": ["ResponsiblePartyType"]
-        },
-        "LeadSponsor": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "LeadSponsorName": {
-              "type": "string",
-              "description": "The name of the entity or the individual who is the sponsor of the clinical study. Note: When a clinical study is conducted under an investigational new drug application (IND) or investigational device exemption (IDE), the IND or IDE holder is considered the sponsor. When a clinical study is not conducted under an IND or IDE, the single person or entity who initiates the study, by preparing and/or planning the study, and who has authority and control over the study, is considered the sponsor.",
-              "minLength": 1
-            }
-          },
-          "required": ["LeadSponsorName"]
-        },
-        "CollaboratorList": {
-          "type": "array",
-          "description": "Other organizations (if any) providing support. Support may include funding, design, implementation, data analysis or reporting. The responsible party is responsible for confirming all collaborators before listing them.",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "CollaboratorName": {
-                "type": "string",
-                "description": "The name of the entity or the individual who is the collaborator of the clinical study."
-              }
-            },
-            "required": ["CollaboratorName"]
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        }
-      },
-      "required": ["ResponsibleParty", "LeadSponsor"]
-    },
-    "OversightModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "OversightHasDMC": {
-          "type": "string",
-          "description": "Indicate whether a data monitoring committee has been appointed for this study. The data monitoring committee (board) is a group of independent scientists who are appointed to monitor the safety and scientific integrity of a human research intervention, and to make recommendations to the sponsor regarding the stopping of the trial for efficacy, for harms or for futility. The composition of the committee is dependent upon the scientific skills and knowledge required for monitoring the particular study. Select Yes/No.",
-          "enum": ["Yes", "No"]
-        }
-      }
-    },
-    "DescriptionModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "BriefSummary": {
-          "type": "string",
-          "description": "A short description of the clinical study, written in language intended for the lay public. Limit: 5000 characters",
-          "minLength": 1
-        },
-        "DetailedDescription": {
-          "type": "string",
-          "description": "Extended description of the study, including more technical information (as compared to the Brief Summary), if desired. Do not include the entire protocol; do not duplicate information recorded in other data elements, such as Eligibility Criteria or outcome measures.For Patient Registries: Also describe the applicable registry procedures and other quality factors (for example, third party certification, on-site audit). In particular, summarize any procedures implemented as part of the patient registry, including, but not limited to the following: Quality assurance plan that addresses data validation and registry procedures, including any plans for site monitoring and auditing. Data checks to compare data entered into the registry against predefined rules for range or consistency with other data fields in the registry. Source data verification to assess the accuracy, completeness, or representativeness of registry data by comparing the data to external data sources (for example, medical records, paper or electronic case report forms, or interactive voice response systems). Data dictionary that contains detailed descriptions of each variable used by the registry, including the source of the variable, coding information if used (for example, World Health Organization Drug Dictionary, MedDRA), and normal ranges if relevant. Standard Operating Procedures to address registry operations and analysis activities, such as patient recruitment, data collection, data management, data analysis, reporting for adverse events, and change management. Sample size assessment to specify the number of participants or participant years necessary to demonstrate an effect. Plan for missing data to address situations where variables are reported as missing, unavailable, non-reported, uninterpretable, or considered missing because of data inconsistency or out-of-range results. Statistical analysis plan describing the analytical principles and statistical techniques to be employed in order to address the primary and secondary objectives, as specified in the study protocol or plan.",
-          "minLength": 1
-        }
-      },
-      "required": ["BriefSummary"]
-    },
-    "ConditionsModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "ConditionList": {
-          "type": "array",
-          "description": "The name(s) of the disease(s) or condition(s) studied in the clinical study, or the focus of the clinical study. Use, if available, appropriate descriptors from NLM's Medical Subject Headings (MeSH)-controlled vocabulary thesaurus or terms from another vocabulary, such as the Systematized Nomenclature of Medicine—Clinical Terms (SNOMED CT), that has been mapped to MeSH within the Unified Medical Language System (UMLS) Metathesaurus.",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "KeywordList": {
-          "type": "array",
-          "description": "Words or phrases that best describe the study. Keywords help users find studies in the database. Use NLM's Medical Subject Heading (MeSH)-controlled vocabulary terms where appropriate. Be as specific and precise as possible. Avoid acronyms and abbreviations.",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        }
-      },
-      "required": ["ConditionList"]
-    },
     "ArmsInterventionsModule": {
       "type": "object",
       "additionalProperties": false,
@@ -716,18 +717,51 @@
               "InterventionType": {
                 "type": "string",
                 "description": "For each intervention studied in the clinical study, the general type of intervention. Select one.",
-                "enum": [
-                  "Drug: Including placebo",
-                  "Device: Including sham",
-                  "Biological/Vaccine",
-                  "Procedure/Surgery",
-                  "Radiation",
-                  "Behavioral: For example, psychotherapy, lifestyle counseling",
-                  "Genetic: Including gene transfer, stem cell and recombinant DNA",
-                  "Dietary Supplement: For example, vitamins, minerals",
-                  "Combination Product: Combining a drug and device, a biological product and device; a drug and biological product; or a drug, biological product, and device",
-                  "Diagnostic Test: For example, imaging, in-vitro",
-                  "Other"
+                "oneOf": [
+                  {
+                    "const": "Drug",
+                    "description": "Including placebo"
+                  },
+                  {
+                    "const": "Device",
+                    "description": "Including sham"
+                  },
+                  {
+                    "const": "Biological/Vaccine",
+                    "description": ""
+                  },
+                  {
+                    "const": "Procedure/Surgery",
+                    "description": ""
+                  },
+                  {
+                    "const": "Radiation",
+                    "description": ""
+                  },
+                  {
+                    "const": "Behavioral",
+                    "description": "For example, psychotherapy, lifestyle counseling"
+                  },
+                  {
+                    "const": "Genetic",
+                    "description": "Including gene transfer, stem cell and recombinant DNA"
+                  },
+                  {
+                    "const": "Dietary Supplement",
+                    "description": "For example, vitamins, minerals"
+                  },
+                  {
+                    "const": "Combination Product",
+                    "description": "Combining a drug and device, a biological product and device; a drug and biological product; or a drug, biological product, and device"
+                  },
+                  {
+                    "const": "Diagnostic Test",
+                    "description": "For example, imaging, in-vitro"
+                  },
+                  {
+                    "const": "Other",
+                    "description": ""
+                  }
                 ]
               },
               "InterventionName": {
@@ -1207,10 +1241,11 @@
   },
   "required": [
     "IdentificationModule",
-    "DesignModule",
     "StatusModule",
     "SponsorCollaboratorsModule",
     "DescriptionModule",
+    "DesignModule",
+    "ArmsInterventionsModule",
     "ConditionsModule",
     "EligibilityModule",
     "ContactsLocationsModule"
