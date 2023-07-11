@@ -1,5 +1,4 @@
 import json
-from copy import deepcopy
 from os import makedirs, path
 from string import Template
 from xml.dom.minidom import parseString
