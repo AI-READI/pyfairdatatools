@@ -137,7 +137,7 @@
                 },
                 {
                   "const": "Principal Investigator",
-                  "description": "The individual designated as responsible party by the sponsor."
+                  "description": "The individual designated as a responsible party by the sponsor."
                 },
                 {
                   "const": "Sponsor-Investigator",
@@ -412,7 +412,7 @@
                           },
                           {
                             "const": "N/A",
-                            "description": "Explicitly labelled as not applicable - usually because the study is non-interventional"
+                            "description": "Explicitly labeled as not applicable - usually because the study is non-interventional"
                           }
                         ]
                       },
@@ -552,15 +552,15 @@
                         },
                         {
                           "const": "Case-Crossover",
-                          "description": "Characteristics of case immediately prior to disease onset (sometimes called the hazard period) compared to characteristics of same case at a prior time (that is, control period)."
+                          "description": "Characteristics of a case immediately prior to disease onset (sometimes called the hazard period) compared to characteristics of the same case at a prior time (that is, control period)."
                         },
                         {
                           "const": "Ecologic or Community",
-                          "description": "Geographically defined populations, such as countries or regions within a country, compared on a variety of environmental (for example, air pollution intensity, hours of sunlight) and/or global measures not reducible to individual level characteristics (for example, healthcare system, laws or policies median income, average fat intake, disease rate)."
+                          "description": "Geographically defined populations, such as countries or regions within a country, compared on a variety of environmental (for example, air pollution intensity, hours of sunlight) and/or global measures not reducible to individual-level characteristics (for example, healthcare system, laws or policies median income, average fat intake, disease rate)."
                         },
                         {
                           "const": "Family-Based",
-                          "description": "Studies conducted among family members, such as genetic studies within families or twin studies and studies of family environment."
+                          "description": "Studies conducted among family members, such as genetic studies within families or twin studies and studies of a family environment."
                         },
                         {
                           "const": "Other",
@@ -573,7 +573,7 @@
                   },
                   "DesignTimePerspectiveList": {
                     "type": "array",
-                    "description": "Temporal relationship of observation period to time of participant enrollment.",
+                    "description": "Temporal relationship of the observation period to the time of participant enrollment.",
                     "items": {
                       "type": "string",
                       "oneOf": [
@@ -894,7 +894,7 @@
       "properties": {
         "CentralContactList": {
           "type": "array",
-          "description": "The name or title, toll-free telephone number and email address of a person to whom questions concerning enrollment at any location of the study can be addressed.",
+          "description": "The name or title, toll-free telephone number, and email address of a person to whom questions concerning enrollment at any location of the study can be addressed.",
           "items": {
             "type": "object",
             "additionalProperties": false,
@@ -910,7 +910,7 @@
               },
               "CentralContactPhone": {
                 "type": "string",
-                "description": "Toll free phone number of the Central Contact Person. Use the format 800-555-5555 within the United States and Canada. If outside the United States and Canada, provide the full phone number, including the country code. 30 characters",
+                "description": "Toll-free phone number of the Central Contact Person. Use the format 800-555-5555 within the United States and Canada. If outside the United States and Canada, provide the full phone number, including the country code. 30 characters",
                 "minLength": 1,
                 "maxLength": 30
               },
@@ -1173,7 +1173,7 @@
         },
         "SeeAlsoLinkList": {
           "type": "array",
-          "description": "A web site directly relevant to the protocol may be entered, if desired. Do not include sites whose primary goal is to advertise or sell commercial products or services. Links to educational, research, government, and other non-profit web pages are acceptable. All submitted links are subject to review by ClinicalTrials.gov.",
+          "description": "A website directly relevant to the protocol may be entered, if desired. Do not include sites that aim to advertise or sell commercial products or services. Links to educational, research, government, and other non-profit web pages are acceptable. All submitted links are subject to review by ClinicalTrials.gov.",
           "items": {
             "type": "object",
             "additionalProperties": false,
@@ -1272,7 +1272,7 @@
         },
         {
           "const": "Other Identifier",
-          "description": "Also required to enter a brief description of the identifier (for example, the name of organization that issued the identifier).."
+          "description": "Also required to enter a brief description of the identifier (for example, the name of the organization that issued the identifier).."
         }
       ]
     },
@@ -1281,7 +1281,7 @@
       "oneOf": [
         {
           "const": "Withdrawn",
-          "description": "Study halted prematurely, prior to enrolment of first participant."
+          "description": "Study halted prematurely, prior to enrolment of the first participant."
         },
         {
           "const": "Recruiting",
