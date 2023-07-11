@@ -5,7 +5,7 @@ from . import generate, utils, validate
 try:
     __version__ = version("pyfairdatatools")
 except PackageNotFoundError:
-    __version__ = "0.1.2"
+    __version__ = "0.1.3"
 
 del PackageNotFoundError
 del version

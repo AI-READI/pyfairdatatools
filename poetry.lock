@@ -120,6 +120,21 @@ files = [
 python-dateutil = ">=2.7.0"
 
 [[package]]
+name = "art"
+version = "6.0"
+description = "ASCII Art Library For Python"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+files = [
+    {file = "art-6.0-py3-none-any.whl", hash = "sha256:882e6b5a4c6045c6dace31147c0b8522c8ca70177a5922f172733d116123a187"},
+    {file = "art-6.0.tar.gz", hash = "sha256:884ef1c10e900387cce97789e8668125720cbf4459206641b91fc298c859cda9"},
+]
+
+[package.extras]
+dev = ["bandit (>=1.5.1)", "coverage (>=4.1)", "pydocstyle (>=3.0.0)", "vulture (>=1.0)"]
+
+[[package]]
 name = "astroid"
 version = "2.13.5"
 description = "An abstract syntax tree for Python with inference support."
@@ -3063,4 +3078,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "73c63066cdc85909c9828ef162cdea24070834122544eff2c665b92315e94fdf"
+content-hash = "8c2aa180a42bfead9524d1d9383529e884d3b51fe0ff22c2687fe211a21000b3"
