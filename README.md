@@ -86,13 +86,13 @@ You will need the following installed on your system:
 
 Install it directly into an activated virtual environment:
 
-```text
+```bash
 pip install pyfairdatatools
 ```
 
 or add it to your [Poetry](https://poetry.eustace.io/) project:
 
-```text
+```bash
 poetry add pyfairdatatools
 ```
 
@@ -100,7 +100,7 @@ poetry add pyfairdatatools
 
 After installation, the package can be imported:
 
-```text
+```bash
 $ python
 >>> import pyfairdatatools
 >>> pyfairdatatools.__version__
@@ -136,21 +136,21 @@ If you would like to update the package, please follow the instructions below.
 
 1. Create a local virtual environment and activate it:
 
-   ```text
+   ```bash
    python -m venv .venv
    source .venv/bin/activate
    ```
 
    If you are using Anaconda, you can create a virtual environment with:
 
-   ```text
+   ```bash
    conda create -n pyfairdatatools-env python
    conda activate pyfairdatatools-env
    ```
 
 2. Install the dependencies for this package. We use [Poetry](https://poetry.eustace.io/) to manage the dependencies:
 
-   ```text
+   ```bash
    pip install poetry==1.3.2
    poetry install
    ```
@@ -159,31 +159,31 @@ If you would like to update the package, please follow the instructions below.
 
 3. Add your modifications and run the tests:
 
-   ```text
+   ```bash
    poetry run pytest
    ```
 
    If you need to add new python packages, you can use Poetry to add them:
 
-   ```text
+   ```bash
     poetry add <package-name>
    ```
 
 4. Format the code:
 
-   ```text
+   ```bash
    poe format
    ```
 
 5. Check the code quality:
 
-   ```text
+   ```bash
    poetry run flake8 pyfairdatatools tests
    ```
 
 6. Run the tests and check the code coverage:
 
-   ```text
+   ```bash
    poe test
    poe test --cov=pyfairdatatools
    ```
@@ -198,8 +198,14 @@ If you would like to update the package, please follow the instructions below.
 
 8. Publish the package:
 
-   ```text
+   ```bash
    poetry publish
+   ```
+
+   Set your API token for PyPI in your environment variables:
+
+   ```bash
+   poetry config pypi-token.pypi your-api-token
    ```
 
 ## License
@@ -215,7 +221,7 @@ This work is licensed under
 
 If you are using this package or reusing the source code from this repository for any purpose, please cite:
 
-```bash
+```text
     Coming soon...
 ```
 
