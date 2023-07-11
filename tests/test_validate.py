@@ -455,7 +455,7 @@ class TestValidateStudyDescription:
                 {
                     "InterventionType": "Drug",
                     "InterventionName": "Drug 1",
-                    "InterventionDescription": "This is a description of the intervention",
+                    "InterventionDescription": "description of the intervention",
                     "InterventionArmGroupLabelList": ["Arm 1"],
                     "InterventionOtherNameList": ["Other Name 1"],
                 },
@@ -500,12 +500,12 @@ class TestValidateStudyDescription:
         },
         "IPDSharingStatementModule": {
             "IPDSharing": "Yes",
-            "IPDSharingDescription": "This is a description of the IPD sharing statement",
+            "IPDSharingDescription": "description of the IPD sharing statement",
             "IPDSharingInfoTypeList": [
                 "Study Protocol",
                 "Statistical Analysis Plan (SAP)",
             ],
-            "IPDSharingTimeFrame": "Beginning 9 Months and ending 36 months following article publication",
+            "IPDSharingTimeFrame": "Beginning 9 Months and ending 36 months",
             "IPDSharingAccessCriteria": "This is the IPD sharing access criteria",
             "IPDSharingURL": "https://example.com",
         },
@@ -592,11 +592,11 @@ class TestValidateStudyDescription:
             "DesignInfo": {
                 "DesignAllocation": "Randomized",
                 "DesignInterventionModel": "Prevention",
-                "DesignInterventionModelDescription": "This is a description of the design intervention model",
+                "DesignInterventionModelDescription": "description",
                 "DesignPrimaryPurpose": "Parallel Assignment",
                 "DesignMaskingInfo": {
                     "DesignMasking": "Blinded (no details)",
-                    "DesignMaskingDescription": "This is a description of the design masking",
+                    "DesignMaskingDescription": "description of the design masking",
                     "DesignWhoMaskedList": ["Participant", "Care Provider"],
                 },
             },
@@ -620,7 +620,7 @@ class TestValidateStudyDescription:
                 {
                     "InterventionType": "Drug",
                     "InterventionName": "Drug 1",
-                    "InterventionDescription": "This is a description of the intervention",
+                    "InterventionDescription": "description of the intervention",
                     "InterventionArmGroupLabelList": ["Arm 1"],
                     "InterventionOtherNameList": ["Other Name 1"],
                 },
@@ -664,12 +664,12 @@ class TestValidateStudyDescription:
         },
         "IPDSharingStatementModule": {
             "IPDSharing": "Yes",
-            "IPDSharingDescription": "This is a description of the IPD sharing statement",
+            "IPDSharingDescription": "description of the IPD sharing statement",
             "IPDSharingInfoTypeList": [
                 "Study Protocol",
                 "Statistical Analysis Plan (SAP)",
             ],
-            "IPDSharingTimeFrame": "Beginning 9 Months and ending 36 months following article publication",
+            "IPDSharingTimeFrame": "Beginning 9 Months and ending 36 months ",
             "IPDSharingAccessCriteria": "This is the IPD sharing access criteria",
             "IPDSharingURL": "https://example.com",
         },

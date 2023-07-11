@@ -1,4 +1,5 @@
 import json
+from copy import deepcopy
 from os import makedirs, path
 from string import Template
 from xml.dom.minidom import parseString
@@ -99,6 +100,43 @@ def generate_study_description(data, file_path, file_type):
 
         if not path.exists(path.dirname(file_path)):
             makedirs(path.dirname(file_path))
+
+        StudyType = data["DesignModule"]["StudyType"]
+
+        if StudyType == "Interventional":
+            if "TargetDuration" in data["DesignModule"]:
+                del data["DesignModule"]["TargetDuration"]
+
+            if "NumberGroupsCohorts" in data["DesignModule"]:
+                del data["DesignModule"]["NumberGroupsCohorts"]
+
+            if "BioSpec" in data["DesignModule"]:
+                del data["DesignModule"]["BioSpec"]
+
+            if "StudyPopulation" in data["EligibilityModule"]:
+                del data["EligibilityModule"]["StudyPopulation"]
+
+            if "SamplingMethod" in data["EligibilityModule"]:
+                del data["EligibilityModule"]["SamplingMethod"]
+
+        if StudyType == "Observational":
+            if "PhaseList" in data["DesignModule"]:
+                del data["DesignModule"]["PhaseList"]
+
+            if "NumberArms" in data["DesignModule"]:
+                del data["DesignModule"]["NumberArms"]
+
+            ArmGroupList = data["ArmsInterventionsModule"]["ArmGroupList"]
+
+            for ArmGroup in ArmGroupList:
+                if "ArmGroupType" in ArmGroup:
+                    del ArmGroup["ArmGroupType"]
+
+                if "ArmGroupInterventionList" in ArmGroup:
+                    del ArmGroup["ArmGroupInterventionList"]
+
+            if "HealthyVolunteers" in data["EligibilityModule"]:
+                del data["EligibilityModule"]["HealthyVolunteers"]
 
         if file_type == "json":
             try:
