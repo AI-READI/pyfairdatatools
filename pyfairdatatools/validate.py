@@ -229,21 +229,21 @@ def validate_study_description(data):  # sourcery skip: extract-method
                 print("SamplingMethod is required for observational studies.")
                 return False
 
-        if "CentralContactList" in data["ContactsLocationsModule"]:
-            CentralContactList = data["ContactsLocationsModule"]["CentralContactList"]
+        if ("CentralContactList" not in data["ContactsLocationsModule"]) or (
+            "CentralContactList" in data["ContactsLocationsModule"]
+            and len(data["ContactsLocationsModule"]["CentralContactList"]) == 0
+        ):
+            LocationList = data["ContactsLocationsModule"]["LocationList"]
 
-            if len(CentralContactList) == 0:
-                LocationList = data["ContactsLocationsModule"]["LocationList"]
-
-                for Location in LocationList:
-                    if (
-                        "LocationContactList" not in Location
-                        or len(Location["LocationContactList"]) == 0
-                    ):
-                        print(
-                            "LocationContactList is required if no Central Contact is provided."  # pylint: disable=line-too-long
-                        )
-                        return False
+            for Location in LocationList:
+                if (
+                    "LocationContactList" not in Location
+                    or len(Location["LocationContactList"]) == 0
+                ):
+                    print(
+                        "LocationContactList is required if no Central Contact is provided."  # pylint: disable=line-too-long
+                    )
+                    return False
 
         return True
     except ValidationError as e:

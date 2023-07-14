@@ -1,6 +1,7 @@
 """Unit tests for pyfairdatatools.validate module."""
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison # noqa: E501
 from copy import deepcopy
+from typing import Any, Dict
 
 from pyfairdatatools.validate import (
     validate_dataset_description,
@@ -12,7 +13,7 @@ from pyfairdatatools.validate import (
 
 
 class TestValidateDatasetDescription:
-    minimal_valid_data = {
+    minimal_valid_data: Dict[str, Any] = {
         "Identifier": {
             "identifierValue": "10.5281/zenodo.1234567",
             "identifierType": "DOI",
@@ -377,7 +378,7 @@ class TestValidateDatasetDescription:
 
 
 class TestValidateStudyDescription:
-    observational_study_valid_data = {
+    observational_study_valid_data: Dict[str, Any] = {
         "IdentificationModule": {
             "OrgStudyIdInfo": {
                 "OrgStudyId": "RandomStudyId",
@@ -534,7 +535,7 @@ class TestValidateStudyDescription:
         },
     }
 
-    interventional_study_valid_data = {
+    interventional_study_valid_data: Dict[str, Any] = {
         "IdentificationModule": {
             "OrgStudyIdInfo": {
                 "OrgStudyId": "RandomStudyId",
@@ -712,13 +713,127 @@ class TestValidateStudyDescription:
 
         assert output is True
 
-    def test_invalid_study_type(self):
+    def test_invalid_identification_module(self):
         data = deepcopy(self.observational_study_valid_data)
 
-        data["DesignModule"]["StudyType"] = "Invalid"
+        data["IdentificationModule"]["OrgStudyIdInfo"][
+            "OrgStudyIdType"
+        ] = "Registry Identifier"
+
+        del data["IdentificationModule"]["OrgStudyIdInfo"]["OrgStudyIdDomain"]
 
         output = validate_study_description(data)
 
+        assert output is False
+
+        data = deepcopy(self.observational_study_valid_data)
+
+        for item in data["IdentificationModule"]["SecondaryIdInfoList"]:
+            item["SecondaryIdType"] = "Other Identifier"
+            del item["SecondaryIdDomain"]
+
+        output = validate_study_description(data)
+
+        assert output is False
+
+    def test_invalid_status_module(self):
+        data = deepcopy(self.observational_study_valid_data)
+
+        data["StatusModule"]["OverallStatus"] = "Terminated"
+
+        del data["StatusModule"]["WhyStopped"]
+
+        output = validate_study_description(data)
+
+        assert output is False
+
+    def test_invalid_sponsor_collaborators_module(self):
+        data = deepcopy(self.observational_study_valid_data)
+
+        data["SponsorCollaboratorsModule"]["ResponsibleParty"][
+            "ResponsiblePartyType"
+        ] = "Sponsor-Investigator"
+
+        del data["SponsorCollaboratorsModule"]["ResponsibleParty"][
+            "ResponsiblePartyInvestigatorFullName"
+        ]
+
+        output = validate_study_description(data)
+
+        assert output is False
+
+        data = deepcopy(self.observational_study_valid_data)
+
+        data["SponsorCollaboratorsModule"]["ResponsibleParty"][
+            "ResponsiblePartyType"
+        ] = "Sponsor-Investigator"
+
+        del data["SponsorCollaboratorsModule"]["ResponsibleParty"][
+            "ResponsiblePartyInvestigatorTitle"
+        ]
+
+        output = validate_study_description(data)
+
+        assert output is False
+
+        data = deepcopy(self.observational_study_valid_data)
+
+        data["SponsorCollaboratorsModule"]["ResponsibleParty"][
+            "ResponsiblePartyType"
+        ] = "Sponsor-Investigator"
+
+        del data["SponsorCollaboratorsModule"]["ResponsibleParty"][
+            "ResponsiblePartyInvestigatorAffiliation"
+        ]
+
+        output = validate_study_description(data)
+
+        assert output is False
+
+    def test_invalid_arms_interventions_module(self):
+        data = deepcopy(self.interventional_study_valid_data)
+
+        for item in data["ArmsInterventionsModule"]["ArmGroupList"]:
+            del item["ArmGroupType"]
+
+        output = validate_study_description(data)
+
+        assert output is False
+
+    def test_invalid_eligibilty_module(self):
+        data = deepcopy(self.interventional_study_valid_data)
+
+        del data["EligibilityModule"]["HealthyVolunteers"]
+
+        output = validate_study_description(data)
+
+        assert output is False
+
+        data = deepcopy(self.observational_study_valid_data)
+
+        del data["EligibilityModule"]["SamplingMethod"]
+
+        output = validate_study_description(data)
+
+        assert output is False
+
+        data = deepcopy(self.observational_study_valid_data)
+
+        del data["EligibilityModule"]["StudyPopulation"]
+
+        output = validate_study_description(data)
+
+        assert output is False
+
+    def test_invalid_contacts_locations_module(self):
+        data = deepcopy(self.observational_study_valid_data)
+
+        del data["ContactsLocationsModule"]["CentralContactList"]
+
+        output = validate_study_description(data)
+
+        # should fail because LocationContactList is 
+        # required if CentralContactList is not present
         assert output is False
 
 
