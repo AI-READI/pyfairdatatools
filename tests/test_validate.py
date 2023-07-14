@@ -712,6 +712,15 @@ class TestValidateStudyDescription:
 
         assert output is True
 
+    def test_invalid_study_type(self):
+        data = deepcopy(self.observational_study_valid_data)
+
+        data["DesignModule"]["StudyType"] = "Invalid"
+
+        output = validate_study_description(data)
+
+        assert output is False
+
 
 class TestValidateReadme:
     def test_minimal_valid_readme(self):
