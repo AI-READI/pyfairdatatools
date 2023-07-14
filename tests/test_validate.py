@@ -832,7 +832,7 @@ class TestValidateStudyDescription:
 
         output = validate_study_description(data)
 
-        # should fail because LocationContactList is 
+        # should fail because LocationContactList is
         # required if CentralContactList is not present
         assert output is False
 
