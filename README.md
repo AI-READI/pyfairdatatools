@@ -157,7 +157,7 @@ If you would like to update the package, please follow the instructions below.
 
    You can also use version 1.2.0 of Poetry, but you will need to run `poetry lock` after installing the dependencies.
 
-3. Add your modifications and run the tests:
+3. Add your modifications and run the tests. You can also use the command `poe test` for running the tests.
 
    ```bash
    poetry run pytest

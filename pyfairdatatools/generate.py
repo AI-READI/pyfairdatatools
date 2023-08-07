@@ -59,8 +59,6 @@ def generate_dataset_description(data, file_path, file_type):
             relatedItemIdentifier = item["relatedItemIdentifier"]
 
             for identifier in relatedItemIdentifier:
-                relation_type = identifier["relationType"]
-
                 if relation_type not in ["HasMetadata", "IsMetadataFor"]:
                     if "relatedMetadataScheme" in identifier:
                         del identifier["relatedMetadataScheme"]
