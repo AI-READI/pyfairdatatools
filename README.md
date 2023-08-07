@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="logo.svg" alt="logo" width="200" height="auto" />
+<img src="https://raw.githubusercontent.com/AI-READI/pyfairdatatools/main/logo.svg" alt="logo" width="200" height="auto" />
 
 <br />
 
