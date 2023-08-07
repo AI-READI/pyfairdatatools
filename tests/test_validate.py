@@ -1,5 +1,5 @@
 """Unit tests for pyfairdatatools.validate module."""
-# pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison # noqa: E501
+# pylint: disable=too-many-lines
 from copy import deepcopy
 from typing import Any, Dict
 
@@ -13,7 +13,7 @@ from pyfairdatatools.validate import (
 
 
 class TestValidateDatasetDescription:
-    minimal_valid_data: Dict[str, Any] = {
+    valid_data: Dict[str, Any] = {
         "Identifier": {
             "identifierValue": "10.5281/zenodo.1234567",
             "identifierType": "DOI",
@@ -21,20 +21,96 @@ class TestValidateDatasetDescription:
         "Title": [
             {
                 "titleValue": "Main Title",
+            },
+            {
+                "titleValue": "Subtitle",
+                "titleType": "Subtitle",
+            },
+        ],
+        "Version": "1.0.0",
+        "AlternateIdentifier": [
+            {
+                "alternateIdentifierValue": "10.5281/zenodo.1234567",
+                "alternateIdentifierType": "DOI",
             }
         ],
         "Creator": [
             {
                 "creatorName": "Doe, John",
                 "nameType": "Personal",
-            }
+                "nameIdentifier": [
+                    {
+                        "nameIdentifierValue": "0000-0001-2345-6789",
+                        "nameIdentifierScheme": "ORCID",
+                        "schemeURI": "https://orcid.org",
+                    }
+                ],
+                "affiliation": [
+                    {
+                        "affiliationIdentifier": "https://ror.org/123456789",
+                        "affiliationIdentifierScheme": "ROR",
+                        "schemeURI": "https://ror.org",
+                    }
+                ],
+            },
+            {
+                "creatorName": "White Lotus Research",
+                "nameType": "Organizational",
+                "nameIdentifier": [
+                    {
+                        "nameIdentifierValue": "0000-0001-2345-6789",
+                        "nameIdentifierScheme": "ROR",
+                        "schemeURI": "https://ror.org",
+                    }
+                ],
+            },
+        ],
+        "Contributor": [
+            {
+                "contributorType": "ContactPerson",
+                "contributorName": "Doe, John",
+                "nameType": "Personal",
+                "nameIdentifier": [
+                    {
+                        "nameIdentifierValue": "0000-0001-2345-6789",
+                        "nameIdentifierScheme": "ORCID",
+                        "schemeURI": "https://orcid.org",
+                    }
+                ],
+                "affiliation": [
+                    {
+                        "affiliationIdentifier": "https://ror.org/123456789",
+                        "affiliationIdentifierScheme": "ROR",
+                        "schemeURI": "https://ror.org",
+                    }
+                ],
+            },
+            {
+                "contributorType": "HostingInstitution",
+                "contributorName": "White Lotus Research",
+                "nameType": "Organizational",
+                "nameIdentifier": [
+                    {
+                        "nameIdentifierValue": "0000-0001-2345-6789",
+                        "nameIdentifierScheme": "ROR",
+                        "schemeURI": "https://ror.org",
+                    }
+                ],
+            },
         ],
         "PublicationYear": "2023",
+        "Date": [
+            {
+                "dateValue": "2023-01-01",
+                "dateType": "Collected",
+                "dateInformation": "Some information",
+            }
+        ],
         "ResourceType": {
             "resourceTypeValue": "Diabetes",
             "resourceTypeGeneral": "Dataset",
         },
-        "DatasetRecordKeys": {"keysType": "Anonymised"},
+        "DatasetRecordKeys": {"keysType": "Anonymised", "keysDetails": "Some details"},
         "DatasetDeIdentLevel": {
             "deIdentType": "NoDeIdentification",
             "deIdentDirect": True,
@@ -42,6 +118,7 @@ class TestValidateDatasetDescription:
             "deIdentDates": True,
             "deIdentNonarr": True,
             "deIdentKAnon": True,
+            "deIdentDetails": "Some details",
         },
         "DatasetConsent": {
             "consentType": "NoRestriction",
@@ -50,24 +127,124 @@ class TestValidateDatasetDescription:
             "consentResearchType": True,
             "consentGeneticOnly": True,
             "consentNoMethods": True,
+            "consentsDetails": "Some details",
         },
+        "Description": [
+            {"descriptionValue": "Some description", "descriptionType": "Abstract"},
+            {"descriptionValue": "Some description", "descriptionType": "Methods"},
+        ],
+        "Language": "en",
+        "RelatedIdentifier": [
+            {
+                "relatedIdentifierValue": "10.5281/zenodo.1234567",
+                "relatedIdentifierType": "DOI",
+                "relationType": "HasMetadata",
+                "relatedMetadataScheme": "DataCite",
+                "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",
+                "schemeType": "DOI",
+                "resourceTypeGeneral": "Dataset",
+            }
+        ],
+        "Subject": [
+            {
+                "subjectValue": "Diabetes",
+                "subjectScheme": "MeSH",
+                "schemeURI": "https://www.nlm.nih.gov/mesh/",
+                "valueURI": "https://www.nlm.nih.gov/mesh/1234567",
+                "classificationCode": "E11.9",
+            }
+        ],
         "ManagingOrganisation": {
             "name": "Test Organisation",
+            "rorId": "https://ror.org/123456789",
         },
         "AccessType": "PublicOnScreenAccess",
-        "AccessDetails": {"description": "Some description"},
+        "AccessDetails": {
+            "description": "Some description",
+            "url": "https://example.com",
+            "urlLastChecked": "2021-01-01",
+        },
+        "Rights": [
+            {
+                "rightsValue": "CC0-1.0",
+                "rightsURI": "https://creativecommons.org/publicdomain/zero/1.0/",
+                "rightsIdentifier": "CC0-1.0",
+                "rightsIdentifierScheme": "SPDX",
+            }
+        ],
         "Publisher": "GitHub",
+        "Size": ["15 pages", "15 MB"],
+        "FundingReference": [
+            {
+                "funderName": "Test Funder",
+                "funderIdentifier": {
+                    "funderIdentifierValue": "1234567",
+                    "funderIdentifierType": "Crossref Funder ID",
+                    "schemeURI": "https://doi.org/10.13039/501100001711",
+                },
+                "awardNumber": {
+                    "awardNumberValue": "1234567",
+                    "awardURI": "https://doi.org/10.13039/501100001711",
+                },
+                "awardTitle": "Test Award",
+            }
+        ],
+        "RelatedItem": [
+            {
+                "relatedItemType": "Book",
+                "relationType": "IsMetadataFor",
+                "relatedItemIdentifier": [
+                    {
+                        "relatedItemIdentifierValue": "10.5281/zenodo.1234567",
+                        "relatedItemIdentifierType": "DOI",
+                        "relatedMetadataScheme": "DataCite",
+                        "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",
+                        "schemeType": "DDT",
+                    }
+                ],
+                "creator": [
+                    {
+                        "creatorName": "Doe, John",
+                        "nameType": "Personal",
+                    }
+                ],
+                "title": [
+                    {
+                        "titleValue": "Test title",
+                    }
+                ],
+                "publicationYear": "2021",
+                "volume": "1",
+                "issue": "1",
+                "number": {"numberValue": "1", "numberType": "Article"},
+                "firstPage": "1",
+                "lastPage": "15",
+                "publisher": "Test Publisher",
+                "edition": "1",
+                "contributor": [
+                    {
+                        "contributorType": "Editor",
+                        "contributorName": "Doe, John",
+                        "nameType": "Personal",
+                    }
+                ],
+            }
+        ],
     }
 
-    def test_minimal_valid_dataset_description(self):
-        data = deepcopy(self.minimal_valid_data)
+    def test_valid_dataset_description(self):
+        data = deepcopy(self.valid_data)
 
-        output = validate_dataset_description(data)
+        try:
+            output = validate_dataset_description(data)
+        except Exception as e:
+            print(e)
+            output = False
 
         assert output is True
 
     def test_identifier(self):
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Identifier"] = {
             "identifierValue": "",
@@ -76,7 +253,7 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Identifier"] = {
             "identifierValue": "invalid",
@@ -86,21 +263,21 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_title(self):
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Title"] = []
 
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Title"] = [{"titleValue": "Test", "titleType": ""}]
 
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Title"] = [
             {"titleValue": "Test"},
@@ -111,7 +288,7 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_version(self):
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Version"] = ""
 
@@ -119,7 +296,7 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_alternate_identifier(self):
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["AlternateIdentifier"] = [
             {"alternateIdentifierValue": "", "alternateIdentifierType": "DOI"}
@@ -128,7 +305,7 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["AlternateIdentifier"] = [
             {
@@ -139,7 +316,7 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["AlternateIdentifier"] = [
             {
@@ -152,14 +329,14 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_creator(self):
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Creator"] = []
 
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Creator"] = [
             {
@@ -170,7 +347,7 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Creator"] = [
             {
@@ -182,7 +359,7 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Creator"] = [
             {
@@ -198,7 +375,7 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Creator"] = [
             {
@@ -216,7 +393,7 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_contributor(self):
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Contributor"] = [
             {
@@ -229,7 +406,7 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Contributor"] = [
             {
@@ -242,7 +419,7 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Contributor"] = [
             {
@@ -256,7 +433,7 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Contributor"] = [
             {
@@ -274,7 +451,7 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Contributor"] = [
             {
@@ -294,7 +471,7 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Contributor"] = [
             {
@@ -311,7 +488,7 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Contributor"] = [
             {
@@ -330,7 +507,7 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_publication_year(self):
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["PublicationYear"] = "98"
 
@@ -338,14 +515,14 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_date(self):
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Date"] = []
 
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Date"] = [
             {"dateValue": "2004-03-02", "dateType": "invalid", "dateInformation": ""}
@@ -355,21 +532,21 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_language(self):
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Language"] = "en-US"
 
         output = validate_dataset_description(data)
         assert output is True
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Language"] = ""
 
         output = validate_dataset_description(data)
         assert output is False
 
-        data = deepcopy(self.minimal_valid_data)
+        data = deepcopy(self.valid_data)
 
         data["Language"] = ["invalid"]
 

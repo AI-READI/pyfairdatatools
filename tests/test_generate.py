@@ -14,7 +14,7 @@ from pyfairdatatools.generate import (
 
 
 class TestGenerateDatasetDescription:
-    def test_minimal_valid_dataset_description(self, tmp_path):
+    def test_valid_dataset_description(self, tmp_path):
         data = {
             "Identifier": {
                 "identifierValue": "10.5281/zenodo.1234567",
@@ -23,20 +23,99 @@ class TestGenerateDatasetDescription:
             "Title": [
                 {
                     "titleValue": "Main Title",
+                },
+                {
+                    "titleValue": "Subtitle",
+                    "titleType": "Subtitle",
+                },
+            ],
+            "Version": "1.0.0",
+            "AlternateIdentifier": [
+                {
+                    "alternateIdentifierValue": "10.5281/zenodo.1234567",
+                    "alternateIdentifierType": "DOI",
                 }
             ],
             "Creator": [
                 {
                     "creatorName": "Doe, John",
                     "nameType": "Personal",
-                }
+                    "nameIdentifier": [
+                        {
+                            "nameIdentifierValue": "0000-0001-2345-6789",
+                            "nameIdentifierScheme": "ORCID",
+                            "schemeURI": "https://orcid.org",
+                        }
+                    ],
+                    "affiliation": [
+                        {
+                            "affiliationIdentifier": "https://ror.org/123456789",
+                            "affiliationIdentifierScheme": "ROR",
+                            "schemeURI": "https://ror.org",
+                        }
+                    ],
+                },
+                {
+                    "creatorName": "White Lotus Research",
+                    "nameType": "Organizational",
+                    "nameIdentifier": [
+                        {
+                            "nameIdentifierValue": "0000-0001-2345-6789",
+                            "nameIdentifierScheme": "ROR",
+                            "schemeURI": "https://ror.org",
+                        }
+                    ],
+                },
+            ],
+            "Contributor": [
+                {
+                    "contributorType": "ContactPerson",
+                    "contributorName": "Doe, John",
+                    "nameType": "Personal",
+                    "nameIdentifier": [
+                        {
+                            "nameIdentifierValue": "0000-0001-2345-6789",
+                            "nameIdentifierScheme": "ORCID",
+                            "schemeURI": "https://orcid.org",
+                        }
+                    ],
+                    "affiliation": [
+                        {
+                            "affiliationIdentifier": "https://ror.org/123456789",
+                            "affiliationIdentifierScheme": "ROR",
+                            "schemeURI": "https://ror.org",
+                        }
+                    ],
+                },
+                {
+                    "contributorType": "HostingInstitution",
+                    "contributorName": "White Lotus Research",
+                    "nameType": "Organizational",
+                    "nameIdentifier": [
+                        {
+                            "nameIdentifierValue": "0000-0001-2345-6789",
+                            "nameIdentifierScheme": "ROR",
+                            "schemeURI": "https://ror.org",
+                        }
+                    ],
+                },
             ],
             "PublicationYear": "2023",
+            "Date": [
+                {
+                    "dateValue": "2023-01-01",
+                    "dateType": "Collected",
+                    "dateInformation": "Some information",
+                }
+            ],
             "ResourceType": {
                 "resourceTypeValue": "Diabetes",
                 "resourceTypeGeneral": "Dataset",
             },
-            "DatasetRecordKeys": {"keysType": "Anonymised"},
+            "DatasetRecordKeys": {
+                "keysType": "Anonymised",
+                "keysDetails": "Some details",
+            },
             "DatasetDeIdentLevel": {
                 "deIdentType": "NoDeIdentification",
                 "deIdentDirect": True,
@@ -44,6 +123,7 @@ class TestGenerateDatasetDescription:
                 "deIdentDates": True,
                 "deIdentNonarr": True,
                 "deIdentKAnon": True,
+                "deIdentDetails": "Some details",
             },
             "DatasetConsent": {
                 "consentType": "NoRestriction",
@@ -52,13 +132,109 @@ class TestGenerateDatasetDescription:
                 "consentResearchType": True,
                 "consentGeneticOnly": True,
                 "consentNoMethods": True,
+                "consentsDetails": "Some details",
             },
+            "Description": [
+                {"descriptionValue": "Some description", "descriptionType": "Abstract"},
+                {"descriptionValue": "Some description", "descriptionType": "Methods"},
+            ],
+            "Language": "en",
+            "RelatedIdentifier": [
+                {
+                    "relatedIdentifierValue": "10.5281/zenodo.1234567",
+                    "relatedIdentifierType": "DOI",
+                    "relationType": "HasMetadata",
+                    "relatedMetadataScheme": "DataCite",
+                    "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",
+                    "schemeType": "DOI",
+                    "resourceTypeGeneral": "Dataset",
+                }
+            ],
+            "Subject": [
+                {
+                    "subjectValue": "Diabetes",
+                    "subjectScheme": "MeSH",
+                    "schemeURI": "https://www.nlm.nih.gov/mesh/",
+                    "valueURI": "https://www.nlm.nih.gov/mesh/1234567",
+                    "classificationCode": "E11.9",
+                }
+            ],
             "ManagingOrganisation": {
                 "name": "Test Organisation",
+                "rorId": "https://ror.org/123456789",
             },
             "AccessType": "PublicOnScreenAccess",
-            "AccessDetails": {"description": "Some description"},
+            "AccessDetails": {
+                "description": "Some description",
+                "url": "https://example.com",
+                "urlLastChecked": "2021-01-01",
+            },
+            "Rights": [
+                {
+                    "rightsValue": "CC0-1.0",
+                    "rightsURI": "https://creativecommons.org/publicdomain/zero/1.0/",
+                    "rightsIdentifier": "CC0-1.0",
+                    "rightsIdentifierScheme": "SPDX",
+                }
+            ],
             "Publisher": "GitHub",
+            "Size": ["15 pages", "15 MB"],
+            "FundingReference": [
+                {
+                    "funderName": "Test Funder",
+                    "funderIdentifier": {
+                        "funderIdentifierValue": "1234567",
+                        "funderIdentifierType": "Crossref Funder ID",
+                        "schemeURI": "https://doi.org/10.13039/501100001711",
+                    },
+                    "awardNumber": {
+                        "awardNumberValue": "1234567",
+                        "awardURI": "https://doi.org/10.13039/501100001711",
+                    },
+                    "awardTitle": "Test Award",
+                }
+            ],
+            "RelatedItem": [
+                {
+                    "relatedItemType": "Book",
+                    "relationType": "IsMetadataFor",
+                    "relatedItemIdentifier": [
+                        {
+                            "relatedItemIdentifierValue": "10.5281/zenodo.1234567",
+                            "relatedItemIdentifierType": "DOI",
+                            "relatedMetadataScheme": "DataCite",
+                            "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",
+                            "schemeType": "DDT",
+                        }
+                    ],
+                    "creator": [
+                        {
+                            "creatorName": "Doe, John",
+                            "nameType": "Personal",
+                        }
+                    ],
+                    "title": [
+                        {
+                            "titleValue": "Test title",
+                        }
+                    ],
+                    "publicationYear": "2021",
+                    "volume": "1",
+                    "issue": "1",
+                    "number": {"numberValue": "1", "numberType": "Article"},
+                    "firstPage": "1",
+                    "lastPage": "15",
+                    "publisher": "Test Publisher",
+                    "edition": "1",
+                    "contributor": [
+                        {
+                            "contributorType": "Editor",
+                            "contributorName": "Doe, John",
+                            "nameType": "Personal",
+                        }
+                    ],
+                }
+            ],
         }
 
         file = tmp_path / "dataset_description.json"
@@ -77,6 +253,8 @@ class TestGenerateDatasetDescription:
         file_type = "xml"
 
         generate_dataset_description(data, file, file_type)
+
+        # TODO: Add XML validation
 
 
 class TestGenerateStudyDescription:
@@ -252,6 +430,8 @@ class TestGenerateStudyDescription:
         file_type = "xml"
 
         generate_study_description(data, file, file_type)
+
+        # TODO: add validation of the XML file
 
     def test_interventional_study_description(self, tmp_path):
         data = {
@@ -432,6 +612,8 @@ class TestGenerateStudyDescription:
         file_type = "xml"
 
         generate_study_description(data, file, file_type)
+
+        # TODO: add validation of the XML file
 
 
 class TestGenerateReadme:

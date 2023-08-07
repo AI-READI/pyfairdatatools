@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://freesvg.org/img/1653682897science-svgrepo-com.png" alt="logo" width="200" height="auto" />
+<img src="logo.svg" alt="logo" width="200" height="auto" />
 
 <br />
 

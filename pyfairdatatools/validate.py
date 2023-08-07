@@ -47,6 +47,9 @@ def validate_dataset_description(data):  # sourcery skip: extract-method
         return True
     except ValidationError as e:
         print(e.schema["error_msg"] if "error_msg" in e.schema else e.message)
+
+        # return e.message
+
         return False
     except Exception as error:
         print(error)
