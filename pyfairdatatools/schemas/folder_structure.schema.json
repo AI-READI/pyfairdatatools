@@ -1,5 +1,5 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schema.aireadi.org/files/folder_structure.json",
   "title": "Folder Structure",
   "description": "This is a schema for a folder structure that is used to store a dataset. It is based on the BIDS folder structure, but is not identical.",
