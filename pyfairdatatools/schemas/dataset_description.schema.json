@@ -16,7 +16,7 @@
           "description": "Unique string that identifies the dataset."
         },
         "identifierType": {
-          "$ref": "#/definitions/identifierType",
+          "$ref": "#/$defs/identifierType",
           "description": "The type of identifier used to identify the dataset."
         }
       },
@@ -25,7 +25,7 @@
     "Title": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/titleItem"
+        "$ref": "#/$defs/titleItem"
       },
       "description": "The main title of the dataset is mandatory. Others are optional",
       "minItems": 1,
@@ -49,7 +49,7 @@
             "description": "An identifier other than the primary Identifier applied to the dataset. This may be any alphanumeric string which is unique within its domain of issue. May be used for local identifiers."
           },
           "alternateIdentifierType": {
-            "$ref": "#/definitions/identifierType",
+            "$ref": "#/$defs/identifierType",
             "description": "The type of identifier used to identify the dataset."
           }
         },
@@ -71,7 +71,7 @@
             "description": "The full name of the creator. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
           },
           "nameType": {
-            "$ref": "#/definitions/typeOfNameOfPersonOrOrganization",
+            "$ref": "#/$defs/typeOfNameOfPersonOrOrganization",
             "description": "The type of name."
           },
           "nameIdentifier": {
@@ -146,7 +146,7 @@
         "description": "",
         "properties": {
           "contributorType": {
-            "$ref": "#/definitions/contributorType",
+            "$ref": "#/$defs/contributorType",
             "description": "The type of contributor of the resource"
           },
           "contributorName": {
@@ -155,7 +155,7 @@
             "description": "The full name of the contributor. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
           },
           "nameType": {
-            "$ref": "#/definitions/typeOfNameOfPersonOrOrganization",
+            "$ref": "#/$defs/typeOfNameOfPersonOrOrganization",
             "description": "The type of name."
           },
           "nameIdentifier": {
@@ -224,7 +224,7 @@
       "uniqueItems": true
     },
     "PublicationYear": {
-      "$ref": "#/definitions/publicationYear",
+      "$ref": "#/$defs/publicationYear",
       "description": "The year in which the dataset was published."
     },
     "Date": {
@@ -573,11 +573,11 @@
             "description": "Identifier of the related resource. Must be globally unique."
           },
           "relatedIdentifierType": {
-            "$ref": "#/definitions/identifierType",
+            "$ref": "#/$defs/identifierType",
             "description": "The type of the RelatedIdentifier."
           },
           "relationType": {
-            "$ref": "#/definitions/relationType",
+            "$ref": "#/$defs/relationType",
             "description": "The type of relationship between the resource being registered and the RelatedIdentifier."
           },
           "relatedMetadataScheme": {
@@ -597,7 +597,7 @@
             "examples": ["XSD", "DDT", "Turtle"]
           },
           "resourceTypeGeneral": {
-            "$ref": "#/definitions/resourceItemType",
+            "$ref": "#/$defs/resourceItemType",
             "description": "The general type of the related resource."
           }
         },
@@ -788,7 +788,7 @@
       "uniqueItems": true
     },
     "Publisher": {
-      "$ref": "#/definitions/publisher",
+      "$ref": "#/$defs/publisher",
       "description": "The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the dataset. This property will be used to formulate the citation, so consider the prominence of the role."
     },
     "Size": {
@@ -888,11 +888,11 @@
         "description": "",
         "properties": {
           "relatedItemType": {
-            "$ref": "#/definitions/resourceItemType",
+            "$ref": "#/$defs/resourceItemType",
             "description": "The type of the related item, e.g., journal article; book or chapter"
           },
           "relationType": {
-            "$ref": "#/definitions/relationType",
+            "$ref": "#/$defs/relationType",
             "description": "The general type of the related resource."
           },
           "relatedItemIdentifier": {
@@ -909,7 +909,7 @@
                   "description": "The identifier for the related item."
                 },
                 "relatedItemIdentifierType": {
-                  "$ref": "#/definitions/identifierType",
+                  "$ref": "#/$defs/identifierType",
                   "description": "The type of the related item identifier."
                 },
                 "relatedMetadataScheme": {
@@ -947,7 +947,7 @@
                   "description": "The full name of the creator. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
                 },
                 "nameType": {
-                  "$ref": "#/definitions/typeOfNameOfPersonOrOrganization",
+                  "$ref": "#/$defs/typeOfNameOfPersonOrOrganization",
                   "description": "The type of name."
                 }
               },
@@ -958,14 +958,14 @@
           "title": {
             "type": "array",
             "items": {
-              "$ref": "#/definitions/titleItem"
+              "$ref": "#/$defs/titleItem"
             },
             "description": "The main title of the item is mandatory. Others are optional",
             "minItems": 1,
             "uniqueItems": true
           },
           "publicationYear": {
-            "$ref": "#/definitions/publicationYear",
+            "$ref": "#/$defs/publicationYear",
             "description": "The year when the item was or will be made publicly available"
           },
           "volume": {
@@ -1008,7 +1008,7 @@
             "description": "Last page of the related item, e.g., of the chapter, article, or conference paper in proceedings"
           },
           "publisher": {
-            "$ref": "#/definitions/publisher",
+            "$ref": "#/$defs/publisher",
             "description": "The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource."
           },
           "edition": {
@@ -1025,7 +1025,7 @@
               "description": "",
               "properties": {
                 "contributorType": {
-                  "$ref": "#/definitions/contributorType",
+                  "$ref": "#/$defs/contributorType",
                   "description": "The type of contributor of the resource"
                 },
                 "contributorName": {
@@ -1034,7 +1034,7 @@
                   "description": "The full name of the contributor. Should be in the format: `family name, given name`. If the contributor is an organization, the name should be in the format: `Organization name`."
                 },
                 "nameType": {
-                  "$ref": "#/definitions/typeOfNameOfPersonOrOrganization",
+                  "$ref": "#/$defs/typeOfNameOfPersonOrOrganization",
                   "description": "The type of name."
                 }
               },
@@ -1062,7 +1062,7 @@
     "AccessDetails",
     "Publisher"
   ],
-  "definitions": {
+  "$defs": {
     "identifierType": {
       "type": "string",
       "oneOf": [
@@ -1158,7 +1158,7 @@
           "description": "The name by which the dataset is known."
         },
         "titleType": {
-          "$ref": "#/definitions/titleType",
+          "$ref": "#/$defs/titleType",
           "description": "Empty if titleValue is the main tile. Must be from the controlled values of titleType otherwise."
         }
       },

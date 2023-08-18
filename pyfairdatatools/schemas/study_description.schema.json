@@ -20,7 +20,7 @@
               "minLength": 1
             },
             "OrgStudyIdType": {
-              "$ref": "#/definitions/studyIdType",
+              "$ref": "#/$defs/studyIdType",
               "description": "A description of the type of main ID."
             },
             "OrgStudyIdDomain": {
@@ -48,7 +48,7 @@
                 "minLength": 1
               },
               "SecondaryIdType": {
-                "$ref": "#/definitions/studyIdType",
+                "$ref": "#/$defs/studyIdType",
                 "description": "A description of the type of secondary ID."
               },
               "SecondaryIdDomain": {
@@ -76,7 +76,7 @@
       "additionalProperties": false,
       "properties": {
         "OverallStatus": {
-          "$ref": "#/definitions/statusOptions",
+          "$ref": "#/$defs/statusOptions",
           "description": "The recruitment status for the clinical study as a whole, based upon the status of the individual sites. If at least one facility in a multi-site clinical study has an Individual Site Status of 'Recruiting', then the Overall Recruitment Status for the study must be 'Recruiting'."
         },
         "WhyStopped": {
@@ -276,7 +276,7 @@
             },
             {
               "const": "Expanded Access",
-              "description": "An investigational drug product (including biological product) available through expanded access for patients who do not qualify for enrollment in a clinical trial. Expanded Access includes all expanded access types under section 561 of the Federal Food, Drug, and Cosmetic Act: (1) for individual patients, including emergency use; (2) for intermediate-size patient populations; and (3) under a treatment IND or treatment protocol. (For more information on data requirements for this Study Type, see Expanded Access Data Element Definitions)."
+              "description": "An investigational drug product (including biological product) available through expanded access for patients who do not qualify for enrollment in a clinical trial. Expanded Access includes all expanded access types under section 561 of the Federal Food, Drug, and Cosmetic Act: (1) for individual patients, including emergency use; (2) for intermediate-size patient populations; and (3) under a treatment IND or treatment protocol. (For more information on data requirements for this Study Type, see Expanded Access Data Element $defs)."
             }
           ]
         }
@@ -501,7 +501,7 @@
                 "uniqueItems": true
               },
               "EnrollmentInfo": {
-                "$ref": "#/definitions/enrollmentInfo"
+                "$ref": "#/$defs/enrollmentInfo"
               },
               "NumberArms": {
                 "type": "string",
@@ -636,7 +636,7 @@
                 "required": ["BioSpecRetention"]
               },
               "EnrollmentInfo": {
-                "$ref": "#/definitions/enrollmentInfo"
+                "$ref": "#/$defs/enrollmentInfo"
               },
               "TargetDuration": {
                 "type": "string",
@@ -982,7 +982,7 @@
                 "minLength": 1
               },
               "LocationStatus": {
-                "$ref": "#/definitions/statusOptions",
+                "$ref": "#/$defs/statusOptions",
                 "description": "The recruitment status of each participating facility in a clinical study."
               },
               "LocationCity": {
@@ -1251,7 +1251,7 @@
     "EligibilityModule",
     "ContactsLocationsModule"
   ],
-  "definitions": {
+  "$defs": {
     "studyIdType": {
       "type": "string",
       "oneOf": [
