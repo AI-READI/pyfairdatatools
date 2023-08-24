@@ -9,3 +9,8 @@ except PackageNotFoundError:
 
 del PackageNotFoundError
 del version
+
+from .identifier import *
+from .cfpir import *
+from .oct import *
+from .standards import DataDomain
