@@ -20,6 +20,7 @@ class DataDomain:
 
     @abstractmethod
     def convert(self, infile, outfile, **kwargs):
+        pass 
        """
         Convert data from an input file to an output file.
 
@@ -31,10 +32,11 @@ class DataDomain:
             **kwargs: Additional keyword arguments specific to the implementation.
 
         """
-        pass
+
 
     @abstractmethod
     def metadata(self, files, outfile, **kwargs):
+        pass
         """
         Extract metadata from files and save it.
 
@@ -46,4 +48,3 @@ class DataDomain:
             **kwargs: Additional keyword arguments specific to the implementation.
 
         """
-        pass
