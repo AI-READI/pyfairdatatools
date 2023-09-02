@@ -12,6 +12,7 @@ class DataDomain:
         convert(infile, outfile, **kwargs): Abstract method to convert data from an input file to an output file.
         metadata(files, outfile, **kwargs): Abstract method to extract metadata from files and save it.
     """
+
     def __init__(self):
         """
         Initialize the base class for data domain implementations.
@@ -20,8 +21,7 @@ class DataDomain:
 
     @abstractmethod
     def convert(self, infile, outfile, **kwargs):
-        pass 
-       """
+        """
         Convert data from an input file to an output file.
 
         This method is an abstract method that must be overridden in concrete subclasses.
@@ -32,11 +32,10 @@ class DataDomain:
             **kwargs: Additional keyword arguments specific to the implementation.
 
         """
-
+        pass
 
     @abstractmethod
     def metadata(self, files, outfile, **kwargs):
-        pass
         """
         Extract metadata from files and save it.
 
@@ -48,3 +47,4 @@ class DataDomain:
             **kwargs: Additional keyword arguments specific to the implementation.
 
         """
+        pass
