@@ -20,7 +20,7 @@
       "age": {
         "type": "number",
         "description": "Numeric value in years (float or integer value)",
-        "exclusiveMinimum": 0
+        "exclusiveMinimum": 0.5
       },
       "sex": {
         "type": "string",
