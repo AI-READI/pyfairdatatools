@@ -1082,89 +1082,149 @@ class TestValidateLicense:
         assert output is False
 
 
+
 class TestValidateParticipants:
-    def test_minimal_valid_participant(self):
-        data = [
-            {
-                "participant_id": "sub-user1",
-            }
-        ]
+#Testing Fail Cases
+    def test_fail_empty_array(self):
+        """Test that an empty array is invalid."""
+        data = []
+        
+        output = validate_participants(data)
+        
+        assert output is False
+
+    def test_fail_missing_participant_id(self):
+        """Test that missing participant_id is invalid."""
+        data =[{"sex": "male"}]
 
         output = validate_participants(data)
 
+        assert output is False
+
+    def test_fail_participant_id_validations(self):
+        """Test invalid 'participant_id' scenarios."""
+        test_cases = {
+            123: "Participant ID must be a string, not a number.",
+            "sub001": "Participant ID must follow the pattern 'sub-<label>' with a dash after 'sub'."
+        }
+
+        for participant_id, error_message in test_cases.items():
+            data = [{"participant_id": participant_id}]
+            output = validate_participants(data)
+            assert output is False, error_message
+
+    def test_fail_duplicate_participant_id(self):
+        """Test that duplicate participant IDs are invalid."""
+        data = [
+            {"participant_id": "sub-001"},
+            {"participant_id": "sub-001"}  # Duplicate ID
+        ]
+        
+        output = validate_participants(data)
+        
+        assert output is False
+
+    def test_fail_species_validations(self):
+        """Test invalid 'species' scenarios."""
+        test_cases = {
+            123: "Species must be a string, not a number.",
+            "": "Species cannot be an empty string.",
+            " ": "Species cannot be white"
+
+        }
+
+        for species, error_message in test_cases.items():
+            data = [{"participant_id": "sub-002", "species": species}]
+            output = validate_participants(data)
+            assert output is False, error_message
+
+    def test_fail_age_validations(self):
+        """Test invalid 'age' scenarios."""
+        test_cases = {
+            "80": "Age must be a number, not a string.",
+            0: "Age must be greater than zero.",
+            -1: "Age must be a positive number"
+
+        }
+
+        for age, error_message in test_cases.items():
+            data = [{"participant_id": "sub-002", "age": age}]
+            output = validate_participants(data)
+            assert output is False, error_message
+
+    def test_fail_sex_validations(self):
+        """Test invalid 'sex' types and values."""
+        test_cases = {
+            123: "Sex must be a string, not a number.",
+            "unknown": "Sex value 'unknown' is not a valid option."
+        }
+
+        for sex_value, error_message in test_cases.items():
+            data = [{"participant_id": "sub-002", "sex": sex_value}]
+            output = validate_participants(data)
+            assert output is False, error_message
+
+    def test_fail_handedness_validations(self):
+        """Test invalid 'handedness' types and values."""
+        test_cases = {
+            123: "Handedness must be a string, not a number.",
+            "ambidextr": "Handedness value 'ambidextr' is not a valid option."
+        }
+
+        for handedness_value, error_message in test_cases.items():
+            data = [{"participant_id": "sub-002", "handedness": handedness_value}]
+            output = validate_participants(data)
+            assert output is False, error_message
+
+    def test_fail_type_strain(self):
+        """Test that incorrect strain type is invalid."""
+        data = [{"participant_id": "sub-002", "strain": 123}]
+
+        output = validate__participants(data)
+
+        assert output is False
+
+    def test_fail_type_strain_rrid(self):
+        """Test that incorrect strain_rrid type is invalid."""
+        data = [{"participant_id": "sub-002", "strain_rrid": 123}]
+
+        output = validate__participants(data)
+
+        assert output is False
+
+    #Testing Valid Cases 
+
+    def test_valid_single_participant(self):
+        """Test a valid single participant entry."""
+        data = [{
+            "participant_id": "sub-001",
+            "species": "homo sapiens",
+            "age": 25,
+            "sex": "male",
+            "handedness": "right"
+        }]
+        
+        output = validate_participants(data)
+        
         assert output is True
 
-    def test_valid_participant_with_all_fields(self):
-        data = [
-            {
-                "participant_id": "sub-user1",
-                "species": "homo sapiens",
-                "age": 0.5,
-                "sex": "Female",
-                "handedness": "Right",
-                "strain": "C57BL/6J",
-                "strain_rrid": "RRID:IMSR_JAX:000664",
-            }
-        ]
-
+    def test_optional_fields_absent(self):
+        """Test that optional fields can be absent."""
+        data = [{"participant_id": "sub-007"}]  # Only required field present
+        
         output = validate_participants(data)
-
+        
         assert output is True
 
-    def test_invalid_participant_id(self):
-        data: list[dict[str, str]] = [{}]
-
+    def test_optional_strain_and_rrid_for_non_human(self):
+        """Test optional strain and strain_rrid for non-human species."""
+        data = [{
+            "participant_id": "sub-006",
+            "species": "mus musculus",
+            "strain": "C57BL/6J",
+            "strain_rrid": "RRID:IMSR_JAX:000664"
+        }]
+        
         output = validate_participants(data)
-
-        assert output is False
-
-        data = [{"participant_id": "bus-asd"}]
-
-        output = validate_participants(data)
-
-        assert output is False
-
-    def test_invalid_age(self):
-        data = [{"participant_id": "sub-sample1", "age": 0}]
-
-        output = validate_participants(data)
-
-        assert output is False
-
-        data = [{"participant_id": "sub-sample1", "age": -5}]
-
-        output = validate_participants(data)
-
-        assert output is False
-
-        data = [{"participant_id": "sub-sample1", "age": "5"}]
-
-        output = validate_participants(data)
-
-        assert output is False
-
-    def test_invalid_sex(self):
-        data = [{"participant_id": "sub-sample1", "sex": 0}]
-
-        output = validate_participants(data)
-
-        assert output is False
-
-        data = [{"participant_id": "sub-sample1", "sex": "Invalid"}]
-
-        output = validate_participants(data)
-
-        assert output is False
-
-    def test_invalid_handedness(self):
-        data = [{"participant_id": "sub-sample1", "handedness": 0}]
-
-        output = validate_participants(data)
-
-        assert output is False
-
-        data = [{"participant_id": "sub-sample1", "handedness": "Invalid"}]
-
-        output = validate_participants(data)
-
-        assert output is False
+        
+        assert output is True
