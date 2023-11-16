@@ -14,8 +14,7 @@ homepage = "https://pypi.org/project/pyfairdatatools"
 documentation = "https://pyfairdatatools.readthedocs.io"
 repository = "https://github.com/AI-READI/pyfairdatatools"
 
-keywords = [
-]
+keywords = []
 classifiers = [
     # TODO: update this list to match your application: https://pypi.org/pypi?%3Aaction=list_classifiers
     "Development Status :: 1 - Planning",
@@ -32,7 +31,7 @@ classifiers = [
 [tool.poetry.dependencies]
 
 python = "^3.8"
-urllib3="<2.0"
+urllib3 = "<2.0"
 
 # TODO: Remove these and add your library's requirements
 click = "*"
@@ -49,14 +48,14 @@ art = "^6.0"
 
 # Formatters
 black = "^22.1"
-tomli = "*" # missing 'black' dependency
+tomli = "*"     # missing 'black' dependency
 isort = "^5.10"
 
 # Linters
 mypy = "^1.0"
 pydocstyle = "^6.1"
 pylint = "~2.15"
-wrapt = "*" # missing 'pylint' dependency
+wrapt = "*"         # missing 'pylint' dependency
 
 # Testing
 pytest = "^7.1"
@@ -104,7 +103,7 @@ pylint = "pylint pyfairdatatools tests --rcfile=.pylint.ini"
 
 precommit = ["format", "typecheck", "pylint"]
 
-test = "pytest -rx" 
+test = "pytest -rx"
 
 jupyter = "jupyter notebook"
 
