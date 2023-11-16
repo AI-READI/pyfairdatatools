@@ -37,6 +37,13 @@ jobs:
       - name: Setup poetry config
         run: poetry config pypi-token.pypi "${{ secrets.PYPI_API_TOKEN }}"
 
+      - name: Wait for CI to pass
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: main
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          check-name: "ci"
+
       - name: Build package
         run: poetry build
 
