@@ -17,4 +17,3 @@ jobs:
         with:
           release-type: python
           package-name: pyfairdatatools
-          bump-minor-pre-major: True
