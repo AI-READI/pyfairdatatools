@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/AI-READI/pyfairdatatools/compare/v1.0.1...v1.0.2) (2023-11-16)
+
+
+### Bug Fixes
+
+* add affiliationValue to datasetDescription ([63b7946](https://github.com/AI-READI/pyfairdatatools/commit/63b7946065dac6cf5984829bc5b02689049cb750))
+
 ## 1.0.1 (2023-11-16)
 
 
@@ -69,5 +76,3 @@
 * update text ([84b5a1f](https://github.com/AI-READI/pyfairdatatools/commit/84b5a1fab2f97de8732dee3275cf1d24b2a9f41b))
 * update text ([cc85509](https://github.com/AI-READI/pyfairdatatools/commit/cc855094e612f182bcd67710b94055ab84b9511c))
 * update wording ([b5f5547](https://github.com/AI-READI/pyfairdatatools/commit/b5f5547cd5a0d1425fe7564fd32f678bda20e0d8))
-
-
