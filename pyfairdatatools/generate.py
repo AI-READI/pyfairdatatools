@@ -2,6 +2,7 @@ import json
 from os import makedirs, path
 from string import Template
 from xml.dom.minidom import parseString
+import yaml
 
 import dicttoxml
 
@@ -391,9 +392,9 @@ def generate_datatype_file(data, file_path, file_type):
         file_path (str): The path to the folder to save the datatype in
         file_type (str): The type of file to save the datatype as
     Returns:
-        A datatype file
+        A datatype description yaml file
     """
-    ALLOWED_FILE_TYPES = ["json", "xml"]
+    ALLOWED_FILE_TYPES = ["yaml"]
 
     try:
         if file_type not in ALLOWED_FILE_TYPES:
@@ -411,31 +412,41 @@ def generate_datatype_file(data, file_path, file_type):
         if not path.exists(path.dirname(file_path)):
             makedirs(path.dirname(file_path))
 
-        if file_type == "json":
+        # Create the datatype file before generating the datatype description file
+        datatype_data = {"datatype_dictionary": []}
+
+        with open(
+            path.join(path.dirname(__file__), "assets", "datatype_dictionary.yaml"),
+            encoding="utf-8",
+        ) as f:
+            schema = yaml.safe_load(f)
+
+        for entry in data:
+            for item in schema["datatype_dictionary"]:
+                if entry == item["code_name"] or entry in item["aliases"]:
+                    print(item)
+                    new_item = {}
+                    if "code_name" in item:
+                        new_item["code_name"] = item["code_name"]
+                    if "datatype_description" in item:
+                        new_item["datatype_description"] = item["datatype_description"]
+                    if "aliases" in item:
+                        new_item["aliases"] = item["aliases"]
+                    if "related_terms" in item:
+                        new_item["related_terms"] = item["related_terms"]
+                    if "related_standards" in item:
+                        new_item["related_standards"] = item["related_standards"]
+                    datatype_data["datatype_dictionary"].append(new_item)
+
+        if file_type == "yaml":
             try:
                 with open(file_path, "w", encoding="utf8") as f:
-                    json.dump(data, f, indent=4)
+                    yaml.dump(datatype_data, f, indent=4, sort_keys=False)
             except Exception as error:
                 print(error)
                 raise error
 
-        elif file_type == "xml":
-            try:
-                with open(file_path, "w", encoding="utf8") as f:
-                    xml = dicttoxml.dicttoxml(
-                        data,
-                        custom_root="datatype",
-                        attr_type=False,
-                    )
-
-                    dom = parseString(xml)  # type: ignore
-                    f.write(dom.toprettyxml())
-
-            except Exception as error:
-                print(error)
-                raise error
-
-        elif file_type not in ["xlsx", "csv"]:
+        elif file_type not in ["yaml"]:
             print("File type is invalid.")
             raise ValueError("Invalid file type")
 
