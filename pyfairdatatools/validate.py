@@ -45,6 +45,48 @@ def validate_dataset_description(data):  # sourcery skip: extract-method
                     print("Language code is invalid.")
                     return False
 
+        Contributors = data["Contributor"]
+
+        for Contributor in Contributors:
+            if "affilation" in Contributor:
+                affiliations = Contributor["affilation"]
+
+                for affiliation in affiliations:
+                    if (
+                        "affiliationValue" not in affiliation
+                        and "affiliationIdentifier" not in affiliation
+                    ):
+                        print("affiliationValue or affiliationIdentifier is required.")
+                        return False
+
+                    if "affiliationIdentifier" in affiliation:
+                        if "affiliationIdentifierScheme" not in affiliation:
+                            print(
+                                "affiliationIdentifierScheme is required if affiliationIdentifier is provided."  # pylint: disable=line-too-long
+                            )
+                            return False
+
+        Creators = data["Creator"]
+
+        for Creator in Creators:
+            if "affilation" in Creator:
+                affiliations = Creator["affilation"]
+
+                for affiliation in affiliations:
+                    if (
+                        "affiliationValue" not in affiliation
+                        and "affiliationIdentifier" not in affiliation
+                    ):
+                        print("affiliationValue or affiliationIdentifier is required.")
+                        return False
+
+                    if "affiliationIdentifier" in affiliation:
+                        if "affiliationIdentifierScheme" not in affiliation:
+                            print(
+                                "affiliationIdentifierScheme is required if affiliationIdentifier is provided."  # pylint: disable=line-too-long
+                            )
+                            return False
+
         return True
     except ValidationError as e:
         print(e.schema["error_msg"] if "error_msg" in e.schema else e.message)

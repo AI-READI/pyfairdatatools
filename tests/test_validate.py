@@ -47,6 +47,7 @@ class TestValidateDatasetDescription:
                 ],
                 "affiliation": [
                     {
+                        "affiliationValue": "White Lotus",
                         "affiliationIdentifier": "https://ror.org/123456789",
                         "affiliationIdentifierScheme": "ROR",
                         "schemeURI": "https://ror.org",
@@ -79,6 +80,7 @@ class TestValidateDatasetDescription:
                 ],
                 "affiliation": [
                     {
+                        "affiliationValue": "White Lotus",
                         "affiliationIdentifier": "https://ror.org/123456789",
                         "affiliationIdentifierScheme": "ROR",
                         "schemeURI": "https://ror.org",
@@ -365,6 +367,19 @@ class TestValidateDatasetDescription:
             {
                 "creatorName": "Doe, John",
                 "nameType": "Invalid",
+                "affiliation": {},
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.valid_data)
+
+        data["Creator"] = [
+            {
+                "creatorName": "Doe, John",
+                "nameType": "Invalid",
                 "affiliation": {
                     "affiliationIdentifier": "Org1",
                     "affiliationIdentifierScheme": "",
@@ -465,6 +480,20 @@ class TestValidateDatasetDescription:
                         "schemeURI": "",
                     }
                 ],
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.valid_data)
+
+        data["Contributor"] = [
+            {
+                "contributorType": "ContactPerson",
+                "contributorName": "Doe, John",
+                "nameType": "Personal",
+                "affiliation": {},
             }
         ]
 

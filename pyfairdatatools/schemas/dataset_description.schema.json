@@ -108,10 +108,15 @@
               "type": "object",
               "additionalProperties": false,
               "properties": {
+                "affiliationValue": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The name of the organizational or institutional affiliation of the creator. required if identifier is not provided."
+                },
                 "affiliationIdentifier": {
                   "type": "string",
                   "minLength": 1,
-                  "description": "Uniquely identifies the organizational affiliation of the creator."
+                  "description": "Uniquely identifies the organizational affiliation of the creator. required if value is not provided."
                 },
                 "affiliationIdentifierScheme": {
                   "type": "string",
@@ -124,10 +129,7 @@
                   "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
                 }
               },
-              "required": [
-                "affiliationIdentifier",
-                "affiliationIdentifierScheme"
-              ]
+              "required": []
             },
             "uniqueItems": true
           }
@@ -193,10 +195,15 @@
               "type": "object",
               "additionalProperties": false,
               "properties": {
+                "affiliationValue": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The name of the organizational or institutional affiliation of the creator. required if identifier is not provided."
+                },
                 "affiliationIdentifier": {
                   "type": "string",
                   "minLength": 1,
-                  "description": "Uniquely identifies the organizational affiliation of the creator."
+                  "description": "Uniquely identifies the organizational affiliation of the creator. required if value is not provided."
                 },
                 "affiliationIdentifierScheme": {
                   "type": "string",
@@ -209,10 +216,7 @@
                   "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
                 }
               },
-              "required": [
-                "affiliationIdentifier",
-                "affiliationIdentifierScheme"
-              ]
+              "required": []
             },
             "minItems": 1,
             "uniqueItems": true
