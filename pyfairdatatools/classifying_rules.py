@@ -1,10 +1,11 @@
 import os
-import pydicom
-import tempfile
 import shutil
+import tempfile
 import zipfile
-from defusedxml import minidom
+
+import pydicom
 import xmltodict
+from defusedxml import minidom
 
 
 class ClassifyingRule:

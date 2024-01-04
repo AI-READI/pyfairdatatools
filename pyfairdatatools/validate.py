@@ -1,7 +1,7 @@
 import json
 import os
-import yaml
 
+import yaml
 from jsonschema import ValidationError, validate
 
 # from . import utils

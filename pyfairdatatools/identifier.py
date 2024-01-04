@@ -1,11 +1,10 @@
 from classifying_rules import (
     process_dicom_zip,
-    process_env_zip,
     process_ecg_zip,
-    process_flio_zip
-    
-
+    process_env_zip,
+    process_flio_zip,
 )
+
 
 def data_identifier(zip_file_path):
     if not zip_file_path.endswith(".zip"):

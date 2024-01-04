@@ -1,8 +1,9 @@
 import os
-import pydicom
-import tempfile
 import shutil
+import tempfile
 import zipfile
+
+import pydicom
 
 KEEP = 0
 BLANK = 1

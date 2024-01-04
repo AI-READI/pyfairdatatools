@@ -7,10 +7,10 @@ from os import path
 from pyfairdatatools.generate import (
     generate_changelog_file,
     generate_dataset_description,
+    generate_datatype_file,
     generate_license_file,
     generate_readme,
     generate_study_description,
-    generate_datatype_file,
 )
 
 

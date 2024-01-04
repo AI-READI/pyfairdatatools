@@ -2,9 +2,9 @@ import json
 from os import makedirs, path
 from string import Template
 from xml.dom.minidom import parseString
-import yaml
 
 import dicttoxml
+import yaml
 
 from . import utils, validate
 

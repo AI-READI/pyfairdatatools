@@ -5,11 +5,11 @@ from typing import Any, Dict
 
 from pyfairdatatools.validate import (
     validate_dataset_description,
+    validate_datatype_description,
     validate_license,
     validate_participants,
     validate_readme,
     validate_study_description,
-    validate_datatype_description,
 )
 
 
