@@ -9,6 +9,7 @@ from pyfairdatatools.validate import (
     validate_participants,
     validate_readme,
     validate_study_description,
+    validate_datatype_description,
 )
 
 
@@ -1197,3 +1198,19 @@ class TestValidateParticipants:
         output = validate_participants(data)
 
         assert output is False
+
+
+class TestValidateDatatypeDescription:
+    def test_invalid_datatype_description(self):
+        data = ["ekg", "redcap_data", "oct", "invalid"]
+
+        output = validate_datatype_description(data)
+
+        assert output is False
+
+    def test_valid_datatype_description(self):
+        data = ["ekg", "redcap_data", "oct"]
+
+        output = validate_datatype_description(data)
+
+        assert output is True
