@@ -672,3 +672,28 @@ class TestGenerateLicense:
         )
 
         assert path.exists(file) is True
+
+
+class TestGenerateDatatypeDescription:
+    def test_valid_datatype_description(self, tmp_path)
+        data = [
+            "ecg",
+            "eye_fundus_photography_data",
+            "flio_data",
+            "phyisical_activity_monitoring_data",
+        ]
+        
+        file = tmp_path / "datatype_description.json"
+        file_type = "json"
+        
+        assert path.exists(file) is True
+        
+        with open(file, "r", enconding="utf8") as f:
+            imported_data = json.load(f)
+        
+        assert imported_data == data
+        
+        file = tmp_path / "datatype_description.xml"
+        file_type = "xml"
+        
+        generate_datatype_description(data, file, file_type)

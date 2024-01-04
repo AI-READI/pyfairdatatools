@@ -381,3 +381,67 @@ def generate_license_file(
                         else:
                             print("Could not get text for license.")
                             raise NotImplementedError("License text not available")
+
+
+def generate_datatype_file(data, file_path, file_type):
+    """Generate a datatype file.
+
+    Args:
+        data (dict): The datatype to generate
+        file_path (str): The path to the folder to save the datatype in
+        file_type (str): The type of file to save the datatype as
+    Returns:
+        A datatype file
+    """
+    ALLOWED_FILE_TYPES = ["json", "xml"]
+
+    try:
+        if file_type not in ALLOWED_FILE_TYPES:
+            print("File type is invalid.")
+            raise ValueError("Invalid file type")
+
+        if not utils.validate_file_path(file_path, writable=True):
+            print("File path is invalid.")
+            raise ValueError("Invalid file path")
+
+        if not validate.validate_datatype_description(data):
+            print("Datatype is invalid.")
+            raise ValueError("Invalid input data")
+
+        if not path.exists(path.dirname(file_path)):
+            makedirs(path.dirname(file_path))
+
+        if file_type == "json":
+            try:
+                with open(file_path, "w", encoding="utf8") as f:
+                    json.dump(data, f, indent=4)
+            except Exception as error:
+                print(error)
+                raise error
+
+        elif file_type == "xml":
+            try:
+                with open(file_path, "w", encoding="utf8") as f:
+                    xml = dicttoxml.dicttoxml(
+                        data,
+                        custom_root="datatype",
+                        attr_type=False,
+                    )
+
+                    dom = parseString(xml)  # type: ignore
+                    f.write(dom.toprettyxml())
+
+            except Exception as error:
+                print(error)
+                raise error
+
+        elif file_type not in ["xlsx", "csv"]:
+            print("File type is invalid.")
+            raise ValueError("Invalid file type")
+
+    except ValueError as error:
+        print(error)
+        raise ValueError("Invalid input") from error
+    except Exception as error:
+        print(error)
+        raise error
