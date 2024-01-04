@@ -451,13 +451,17 @@ def validate_datatype_description(data):
         with open(
             os.path.join(
                 os.path.dirname(__file__), "assets", "datatype_dictionary.yaml"
-            ),
-            encoding="utf-8",
+            )
         ) as f:
             schema = yaml.safe_load(f)
         
         try:
-            print(schema)
+            for item in schema["datatype_dictionary"]:
+                # if item["code_name"] in data:
+                print(data)
+                print(item["code_name"])
+                    
+                
             return True
         except ValidationError as e:
             print(e.schema["error_msg"] if "error_msg" in e.schema else e.message)

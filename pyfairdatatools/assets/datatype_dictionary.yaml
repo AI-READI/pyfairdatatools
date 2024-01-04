@@ -104,7 +104,7 @@ datatype_dictionary:
      - fluorescence_lifetime_imaging_ophthalmoscopy_data
      - fluorescence_lifetime_imaging_ophthalmoscopy_images
 
-  - code_name: continuous_glucose_monitoring	
+  - code_name: continuous_glucose_monitoring    
     datatype_description: 
       description_text: Data collected through continuous glucose monitoring device.
       description_source:  
