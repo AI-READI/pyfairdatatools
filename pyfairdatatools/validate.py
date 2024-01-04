@@ -1,6 +1,6 @@
 import json
 import os
-import pyyaml
+import yaml
 
 from jsonschema import ValidationError, validate
 
@@ -440,28 +440,28 @@ def validate_folder_structure(folder_path):
 
 
 def validate_datatype_description(data):
-    """Validate a datatype description against the scheme.
-    
-    Args:
-        data (list): The datatype description to validate
-    Returns:
-        bool: True if the datatype description is valid, False otherwise
-    """
-    # Import the yaml file from the schemas folder
-    with open(
-        os.path.join(
-            os.path.dirname(__file__), "assets", "datatype_dictionary.yaml"
-        ),
-        encoding="utf-8",
-    ) as f:
-        schema = pyyaml.safe_load(f)
-    
-    try:
-        print(schema)
-        return True
-    except ValidationError as e:
-        print(e.schema["error_msg"] if "error_msg" in e.schema else e.message)
-        return False
-    except Exception as error:
-        print(error)
-        raise error
+        """Validate a datatype description against the scheme.
+        
+        Args:
+            data (list): The datatype description to validate
+        Returns:
+            bool: True if the datatype description is valid, False otherwise
+        """
+        # Import the yaml file from the schemas folder
+        with open(
+            os.path.join(
+                os.path.dirname(__file__), "assets", "datatype_dictionary.yaml"
+            ),
+            encoding="utf-8",
+        ) as f:
+            schema = yaml.safe_load(f)
+        
+        try:
+            print(schema)
+            return True
+        except ValidationError as e:
+            print(e.schema["error_msg"] if "error_msg" in e.schema else e.message)
+            return False
+        except Exception as error:
+            print(error)
+            raise error
