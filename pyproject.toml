@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "pyfairdatatools"
-version = "1.0.3b1"
+version = "1.1.0b0"
 description = "Tools for AI-READI"
 
 packages = [{ include = "pyfairdatatools" }]
