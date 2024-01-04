@@ -20,13 +20,8 @@ class TestValidateDatasetDescription:
             "identifierType": "DOI",
         },
         "Title": [
-            {
-                "titleValue": "Main Title",
-            },
-            {
-                "titleValue": "Subtitle",
-                "titleType": "Subtitle",
-            },
+            {"titleValue": "Main Title",},
+            {"titleValue": "Subtitle", "titleType": "Subtitle",},
         ],
         "Version": "1.0.0",
         "AlternateIdentifier": [
@@ -205,17 +200,8 @@ class TestValidateDatasetDescription:
                         "schemeType": "DDT",
                     }
                 ],
-                "creator": [
-                    {
-                        "creatorName": "Doe, John",
-                        "nameType": "Personal",
-                    }
-                ],
-                "title": [
-                    {
-                        "titleValue": "Test title",
-                    }
-                ],
+                "creator": [{"creatorName": "Doe, John", "nameType": "Personal",}],
+                "title": [{"titleValue": "Test title",}],
                 "publicationYear": "2021",
                 "volume": "1",
                 "issue": "1",
@@ -311,9 +297,7 @@ class TestValidateDatasetDescription:
         data = deepcopy(self.valid_data)
 
         data["AlternateIdentifier"] = [
-            {
-                "alternateIdentifierValue": "10.5281/zenodo.7942786",
-            }
+            {"alternateIdentifierValue": "10.5281/zenodo.7942786",}
         ]
 
         output = validate_dataset_description(data)
@@ -341,11 +325,14 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = [
-            {
-                "creatorName": "Doe, John",
-            }
-        ]
+        data["Creator"] = [{"creatorName": "Doe, John",}]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.valid_data)
+
+        data["Creator"] = [{"creatorName": "Doe, John", "nameType": "Invalid",}]
 
         output = validate_dataset_description(data)
         assert output is False
@@ -353,23 +340,7 @@ class TestValidateDatasetDescription:
         data = deepcopy(self.valid_data)
 
         data["Creator"] = [
-            {
-                "creatorName": "Doe, John",
-                "nameType": "Invalid",
-            }
-        ]
-
-        output = validate_dataset_description(data)
-        assert output is False
-
-        data = deepcopy(self.valid_data)
-
-        data["Creator"] = [
-            {
-                "creatorName": "Doe, John",
-                "nameType": "Invalid",
-                "affiliation": {},
-            }
+            {"creatorName": "Doe, John", "nameType": "Invalid", "affiliation": {},}
         ]
 
         output = validate_dataset_description(data)
@@ -456,11 +427,7 @@ class TestValidateDatasetDescription:
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
                 "nameType": "Personal",
-                "nameIdentifier": [
-                    {
-                        "nameIdentifierValue": "123456789",
-                    }
-                ],
+                "nameIdentifier": [{"nameIdentifierValue": "123456789",}],
             }
         ]
 
@@ -627,9 +594,7 @@ class TestValidateStudyDescription:
                 {"CollaboratorName": "Olivia Mossbacher"},
             ],
         },
-        "OversightModule": {
-            "OversightHasDMC": "No",
-        },
+        "OversightModule": {"OversightHasDMC": "No",},
         "DescriptionModule": {
             "BriefSummary": "This is a brief summary",
             "DetailedDescription": "This is a detailed description",
@@ -784,9 +749,7 @@ class TestValidateStudyDescription:
                 {"CollaboratorName": "Olivia Mossbacher"},
             ],
         },
-        "OversightModule": {
-            "OversightHasDMC": "No",
-        },
+        "OversightModule": {"OversightHasDMC": "No",},
         "DescriptionModule": {
             "BriefSummary": "This is a brief summary",
             "DetailedDescription": "This is a detailed description",
@@ -1114,11 +1077,7 @@ class TestValidateLicense:
 
 class TestValidateParticipants:
     def test_minimal_valid_participant(self):
-        data = [
-            {
-                "participant_id": "sub-user1",
-            }
-        ]
+        data = [{"participant_id": "sub-user1",}]
 
         output = validate_participants(data)
 

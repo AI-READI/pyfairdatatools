@@ -7,20 +7,10 @@ minimal_valid_data = {
         "identifierValue": "10.5281/zenodo.1234567",
         "identifierType": "DOI",
     },
-    "Title": [
-        {
-            "titleValue": "Main Title",
-        }
-    ],
+    "Title": [{"titleValue": "Main Title",}],
     "Creator": [
-        {
-            "creatorName": "Doe, John",
-            "nameType": "Personal",
-        },
-        {
-            "creatorName": "Doe, John1",
-            "nameType": "Personal",
-        },
+        {"creatorName": "Doe, John", "nameType": "Personal",},
+        {"creatorName": "Doe, John1", "nameType": "Personal",},
     ],
     "PublicationYear": "2023",
     "ResourceType": {
@@ -44,9 +34,7 @@ minimal_valid_data = {
         "consentGeneticOnly": True,
         "consentNoMethods": True,
     },
-    "ManagingOrganisation": {
-        "name": "Test Organisation",
-    },
+    "ManagingOrganisation": {"name": "Test Organisation",},
     "AccessType": "PublicOnScreenAccess",
     "AccessDetails": {"description": "Some description"},
     "Publisher": "GitHub",

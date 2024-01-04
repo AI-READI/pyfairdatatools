@@ -449,11 +449,7 @@ def validate_datatype_description(data):
     """
     # Import the yaml file from the schemas folder
     with open(
-        os.path.join(
-            os.path.dirname(__file__),
-            "assets",
-            "datatype_dictionary.yaml",
-        ),
+        os.path.join(os.path.dirname(__file__), "assets", "datatype_dictionary.yaml",),
         encoding="utf-8",
     ) as f:
         schema = yaml.safe_load(f)

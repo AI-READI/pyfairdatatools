@@ -38,8 +38,7 @@ rules = [
     ClassifyingRule(
         "Eidon_UWF_Central_FAF",
         conditions=[
-            lambda entry: "0-af-" in entry.filename.lower()
-            and "Eidon" in entry.device
+            lambda entry: "0-af-" in entry.filename.lower() and "Eidon" in entry.device
         ],
     ),
     ClassifyingRule(
@@ -87,7 +86,6 @@ rules = [
             and str(entry.slicethickness).startswith("0.04")
         ],
     ),
-
     ClassifyingRule(
         "Maestro2_Mac_6x6-360x360_OCTA",
         conditions=[
@@ -98,7 +96,6 @@ rules = [
             and entry.filename.endswith(".1.1.dcm")
         ],
     ),
- 
     # triton
     ClassifyingRule(
         "Triton_3D(H)_Radial_OCT",
@@ -107,10 +104,8 @@ rules = [
             and "1.2.840.10008.5.1.4.1.1.77.1.5.4" == entry.sopclassuid
             and str(entry.slicethickness).startswith("0.03")
             and "Triton plus" == entry.device
-
         ],
     ),
-
     ClassifyingRule(
         "Triton_Macula_6*6_OCTA",
         conditions=[
@@ -120,7 +115,6 @@ rules = [
             and entry.filename.endswith(".1.1.dcm")
         ],
     ),
-
     ClassifyingRule(
         "Triton_Macula_12*12_OCTA",
         conditions=[
@@ -130,15 +124,13 @@ rules = [
             and entry.filename.endswith(".1.1.dcm")
         ],
     ),
-    
     # #spectralis
     ClassifyingRule(
         "Spec_ONH_RC_HR_OCT",
         conditions=[
             lambda entry: entry.device == "Spectralis"
-            
-            and (not isinstance(entry.framenumber, str)) and (26 <= int(entry.framenumber) <= 28)
-          
+            and (not isinstance(entry.framenumber, str))
+            and (26 <= int(entry.framenumber) <= 28)
             and str(entry.rows) == "496"
             and str(entry.columns) == "768"
             and entry.slicethickness == ""
@@ -156,10 +148,10 @@ rules = [
         "Spec_PPole_Mac_HR_OCT",
         conditions=[
             lambda entry: entry.device == "Spectralis"
-            and (not isinstance(entry.framenumber, str)) and (60 <= int(entry.framenumber) <= 62)
+            and (not isinstance(entry.framenumber, str))
+            and (60 <= int(entry.framenumber) <= 62)
             and str(entry.rows) == "496"
             and str(entry.columns) == "768"
-        
         ],
     ),
     ClassifyingRule(
@@ -172,25 +164,25 @@ rules = [
             and str(entry.gaze) == "R-1022D"
         ],
     ),
-     ClassifyingRule(
-         "Spec-Mac-20x20-HS_OCTA_reference_Bscan",
-         conditions=[
-             lambda entry: entry.device == "Spectralis"
-             and (not isinstance(entry.framenumber, str)) and (511 <= int(entry.framenumber) <= 513)
-            
-             and str(entry.rows) == "496"
-             and str(entry.columns) == "512"
-         ],
-     ),
-     ClassifyingRule(
-         "Spec-Mac-20x20-HS_OCTA_reference_IR",
-         conditions=[
-             lambda entry: entry.device == "Spectralis"
-             and str(entry.rows) == "768"
-             and str(entry.columns) == "768"
-             and str(entry.privatetag) == "Super Slim"
-         ],
-     )
+    ClassifyingRule(
+        "Spec-Mac-20x20-HS_OCTA_reference_Bscan",
+        conditions=[
+            lambda entry: entry.device == "Spectralis"
+            and (not isinstance(entry.framenumber, str))
+            and (511 <= int(entry.framenumber) <= 513)
+            and str(entry.rows) == "496"
+            and str(entry.columns) == "512"
+        ],
+    ),
+    ClassifyingRule(
+        "Spec-Mac-20x20-HS_OCTA_reference_IR",
+        conditions=[
+            lambda entry: entry.device == "Spectralis"
+            and str(entry.rows) == "768"
+            and str(entry.columns) == "768"
+            and str(entry.privatetag) == "Super Slim"
+        ],
+    )
     # OCTA
     # FLIO
 ]
@@ -214,7 +206,7 @@ class DicomEntry:
         gaze,
         privatetag,
         softwareversion,
-        numberoffiles
+        numberoffiles,
     ):
         self.filename = filename
         self.patientid = patientid
@@ -245,8 +237,6 @@ class DicomSummary:
         self.protocol = protocol  # belongs to which one in AIREADI checklist
 
 
-
-
 def extract_dicom_entry(file):
     if not os.path.exists(file):
         raise FileNotFoundError(f"File {file} not found.")
@@ -261,7 +251,9 @@ def extract_dicom_entry(file):
 
     folder_path = os.path.dirname(file)
     folder_files = os.listdir(folder_path)
-    filecount = len([f for f in folder_files if os.path.isfile(os.path.join(folder_path, f))])
+    filecount = len(
+        [f for f in folder_files if os.path.isfile(os.path.join(folder_path, f))]
+    )
 
     # Fundus photo 2D
     if sopclassuid == "1.2.840.10008.5.1.4.1.1.77.1.5.1":
@@ -276,16 +268,14 @@ def extract_dicom_entry(file):
             privatetag = dicom["00511017"]["Value"][0]
         else:
             privatetag = "N/A"
-            
-        if (
-            "00220006" in dicom
-            and "00080100" in dicom["00220006"]["Value"][0]):
+
+        if "00220006" in dicom and "00080100" in dicom["00220006"]["Value"][0]:
             gaze = dicom["00220006"]["Value"][0]["00080100"]["Value"][0]
         else:
             gaze = "N/A"
-            
-        framenumber = referencedsopinstance = slicethickness =  "N/A"
-    # B-Scan OCT 
+
+        framenumber = referencedsopinstance = slicethickness = "N/A"
+    # B-Scan OCT
     elif sopclassuid == "1.2.840.10008.5.1.4.1.1.77.1.5.4":
         rows = dicom["00280010"]["Value"][0]
         columns = dicom["00280011"]["Value"][0]
@@ -308,13 +298,11 @@ def extract_dicom_entry(file):
             ]["Value"][0]
         else:
             slicethickness = ""
-            
-        privatetag = gaze ="N/A"
+
+        privatetag = gaze = "N/A"
 
     # B-scan Volume Analysis Storage
-    elif (
-        sopclassuid == "1.2.840.10008.5.1.4.1.1.77.1.5.8"
-    ): 
+    elif sopclassuid == "1.2.840.10008.5.1.4.1.1.77.1.5.8":
         laterality = dicom["52009229"]["Value"][0]["00209071"]["Value"][0]["00209072"][
             "Value"
         ][0]
@@ -327,10 +315,10 @@ def extract_dicom_entry(file):
             "00180050"
         ]["Value"][0]
         referencedsopinstance = dicom["00200052"]["Value"][0]
-        privatetag = softwareversion = gaze="N/A"
+        privatetag = softwareversion = gaze = "N/A"
         numberoffiles = filecount
 
-    #segmentation
+    # segmentation
     elif sopclassuid == "1.2.840.10008.5.1.4.1.1.66.5":
         laterality = dicom["00200062"]["Value"][0]
         device = dicom["00081090"]["Value"][0]
@@ -339,8 +327,10 @@ def extract_dicom_entry(file):
         ]["Value"][0]
         implementationversion = ds.file_meta.ImplementationVersionName
         numberoffiles = filecount
-        rows = columns = framenumber = slicethickness = privatetag = gaze = softwareversion ="N/A"
-   
+        rows = (
+            columns
+        ) = framenumber = slicethickness = privatetag = gaze = softwareversion = "N/A"
+
     # en face
     elif sopclassuid == "1.2.840.10008.5.1.4.1.1.77.1.5.7":  # en face
         laterality = dicom["00200062"]["Value"][0]
@@ -350,10 +340,10 @@ def extract_dicom_entry(file):
         device = dicom["00081090"]["Value"][0]
         numberoffiles = filecount
         referencedsopinstance = dicom["00082112"]["Value"][0]["00081155"]["Value"][0]
-        framenumber = slicethickness = privatetag = gaze = softwareversion ="N/A"
-    
+        framenumber = slicethickness = privatetag = gaze = softwareversion = "N/A"
+
     # unknown
-    else:  
+    else:
         sopinstanceuid = f"Unknown SOP Class UID: {sopclassuid}"
         laterality = (
             device
@@ -363,7 +353,11 @@ def extract_dicom_entry(file):
             referencedsopinstance
         ) = (
             implementationversion
-        ) = columns = framenumber = slicethickness = privatetag = gaze= numberoffiles =softwareversion = "N/A"
+        ) = (
+            columns
+        ) = (
+            framenumber
+        ) = slicethickness = privatetag = gaze = numberoffiles = softwareversion = "N/A"
 
     output = DicomEntry(
         filename,
@@ -381,7 +375,7 @@ def extract_dicom_entry(file):
         gaze,
         privatetag,
         softwareversion,
-        numberoffiles
+        numberoffiles,
     )
     return output
 
@@ -394,6 +388,7 @@ def find_rule(file):
             return str(rule.name)
     else:
         return "No rules apply."
+
 
 ## Domain, Modality, Protocol, Patient ID, Laterlity, sopinstanceuid, referencedsopinstance
 def extract_dicom_summary(file):
@@ -417,8 +412,8 @@ def extract_dicom_summary(file):
         modality = "Surface Segmentation Storage"
     elif sopclassuid == "1.2.840.10008.5.1.4.1.1.77.1.5.7":
         modality = "En Face OCTA Image"
-    else :
-        modality = sopclassuid 
+    else:
+        modality = sopclassuid
 
     sopinstanceuid = dicomentry.sopinstanceuid
     device = dicomentry.device
@@ -432,10 +427,12 @@ def extract_dicom_summary(file):
     output = DicomSummary(domain, patientid, laterality, protocol)
     return output
 
+
 def get_dicom_summary(file):
     dicomsummary = extract_dicom_summary(file)
     obj_dict = vars(dicomsummary)
     return obj_dict
+
 
 def list_files_recursive(directory):
     all_files = []
@@ -445,6 +442,7 @@ def list_files_recursive(directory):
             all_files.append(file_path)
     return all_files
 
+
 def process_dicom_zip(zip_file_path):
     try:
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -452,7 +450,9 @@ def process_dicom_zip(zip_file_path):
                 zip_ref.extractall(temp_dir)
             extracted_files = list_files_recursive(temp_dir)
 
-            dicom_files = [f for f in extracted_files if f.endswith(".dcm") and "/__" not in f]
+            dicom_files = [
+                f for f in extracted_files if f.endswith(".dcm") and "/__" not in f
+            ]
 
             if len(dicom_files) == 1:
                 dicom_file_path = os.path.join(temp_dir, dicom_files[0])
@@ -474,44 +474,47 @@ def process_dicom_zip(zip_file_path):
         shutil.rmtree(temp_dir, ignore_errors=True)
     return None
 
+
 def process_env_zip(file_path):
-    path_parts = file_path.split('/')
+    path_parts = file_path.split("/")
     filename = path_parts[-1]
-    filename_parts = filename.split('-')
-    patient_id = "AIREADI-" + filename_parts[-2]  
-    sensor_id = filename_parts[-1].split('.')[0] 
+    filename_parts = filename.split("-")
+    patient_id = "AIREADI-" + filename_parts[-2]
+    sensor_id = filename_parts[-1].split(".")[0]
     info_dict = {
-        "domain" : "CSV",
-        "patient_id" : patient_id,
-        "laterality":"N/A", 
+        "domain": "CSV",
+        "patient_id": patient_id,
+        "laterality": "N/A",
         "protocol": "environmental_sensor",
-        "sensor_id": sensor_id
+        "sensor_id": sensor_id,
     }
 
     return info_dict
 
+
 def process_flio_zip(file_path):
-    path_parts = file_path.split('/')
+    path_parts = file_path.split("/")
     filename = path_parts[-1]
-    filename_parts = filename.split('_')
-    patient_id = "AIREADI-" + filename_parts[-7]   
-    laterality = filename_parts[-1][:2]   
+    filename_parts = filename.split("_")
+    patient_id = "AIREADI-" + filename_parts[-7]
+    laterality = filename_parts[-1][:2]
 
     if laterality == "OD":
-       laterality = "R"
-       
+        laterality = "R"
+
     elif laterality == "OS":
         laterality = "L"
     else:
         print("Invalid laterality")
 
     info_dict = {
-        "domain" : "DICOM",
-        "patient_id" : patient_id,
-        "laterality":laterality, 
+        "domain": "DICOM",
+        "patient_id": patient_id,
+        "laterality": laterality,
         "protocol": "FLIO",
     }
     return info_dict
+
 
 def process_ecg_zip(zip_file_path):
     try:

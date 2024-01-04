@@ -82,9 +82,7 @@ def generate_dataset_description(data, file_path, file_type):
             try:
                 with open(file_path, "w", encoding="utf8") as f:
                     xml = dicttoxml.dicttoxml(
-                        data,
-                        custom_root="dataset_description",
-                        attr_type=False,
+                        data, custom_root="dataset_description", attr_type=False,
                     )
 
                     dom = parseString(xml)  # type: ignore
@@ -183,9 +181,7 @@ def generate_study_description(data, file_path, file_type):
             try:
                 with open(file_path, "w", encoding="utf8") as f:
                     xml = dicttoxml.dicttoxml(
-                        data,
-                        custom_root="study_description",
-                        attr_type=False,
+                        data, custom_root="study_description", attr_type=False,
                     )
 
                     dom = parseString(xml)  # type: ignore
@@ -305,10 +301,7 @@ def generate_changelog_file(data, file_path, file_type):
 
 
 def generate_license_file(
-    file_path,
-    file_type,
-    identifier="",
-    data="",
+    file_path, file_type, identifier="", data="",
 ):
     # sourcery skip: low-code-quality
     """Generate a license file.
