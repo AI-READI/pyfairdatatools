@@ -413,7 +413,7 @@ def generate_datatype_file(data, file_path, file_type):
             makedirs(path.dirname(file_path))
 
         # Create the datatype file before generating the datatype description file
-        datatype_data = {"datatype_dictionary": []}
+        datatype_data: Dict[str, List[Dict[str, Any]]] = {"datatype_dictionary": []}
 
         with open(
             path.join(path.dirname(__file__), "assets", "datatype_dictionary.yaml"),
