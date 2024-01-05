@@ -7,6 +7,7 @@ import dicttoxml
 import yaml
 
 from . import utils, validate
+from typing import Dict, List, Any
 
 
 def generate_dataset_description(data, file_path, file_type):
