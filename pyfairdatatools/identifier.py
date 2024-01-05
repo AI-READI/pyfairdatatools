@@ -21,7 +21,14 @@ def data_identifier(zip_file_path):
 
     elif any(
         word in zip_file_path
-        for word in ["Optomed", "Eidon", "Maestro", "Triton", "Cirrus", "Spectralis",]
+        for word in [
+            "Optomed",
+            "Eidon",
+            "Maestro",
+            "Triton",
+            "Cirrus",
+            "Spectralis",
+        ]
     ):
         return process_dicom_zip(zip_file_path)
 

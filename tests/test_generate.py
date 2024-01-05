@@ -22,8 +22,13 @@ class TestGenerateDatasetDescription:
                 "identifierType": "DOI",
             },
             "Title": [
-                {"titleValue": "Main Title",},
-                {"titleValue": "Subtitle", "titleType": "Subtitle",},
+                {
+                    "titleValue": "Main Title",
+                },
+                {
+                    "titleValue": "Subtitle",
+                    "titleType": "Subtitle",
+                },
             ],
             "Version": "1.0.0",
             "AlternateIdentifier": [
@@ -203,8 +208,17 @@ class TestGenerateDatasetDescription:
                             "schemeType": "DDT",
                         }
                     ],
-                    "creator": [{"creatorName": "Doe, John", "nameType": "Personal",}],
-                    "title": [{"titleValue": "Test title",}],
+                    "creator": [
+                        {
+                            "creatorName": "Doe, John",
+                            "nameType": "Personal",
+                        }
+                    ],
+                    "title": [
+                        {
+                            "titleValue": "Test title",
+                        }
+                    ],
                     "publicationYear": "2021",
                     "volume": "1",
                     "issue": "1",
@@ -288,7 +302,9 @@ class TestGenerateStudyDescription:
                     {"CollaboratorName": "Olivia Mossbacher"},
                 ],
             },
-            "OversightModule": {"OversightHasDMC": "No",},
+            "OversightModule": {
+                "OversightHasDMC": "No",
+            },
             "DescriptionModule": {
                 "BriefSummary": "This is a brief summary",
                 "DetailedDescription": "This is a detailed description",
@@ -461,7 +477,9 @@ class TestGenerateStudyDescription:
                     {"CollaboratorName": "Olivia Mossbacher"},
                 ],
             },
-            "OversightModule": {"OversightHasDMC": "No",},
+            "OversightModule": {
+                "OversightHasDMC": "No",
+            },
             "DescriptionModule": {
                 "BriefSummary": "This is a brief summary",
                 "DetailedDescription": "This is a detailed description",

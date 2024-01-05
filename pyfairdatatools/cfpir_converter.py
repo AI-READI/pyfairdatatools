@@ -346,8 +346,14 @@ def extract_dicom_dict(file, tags):
             "vr": "UI",
             "Value": [dataset.file_meta.MediaStorageSOPInstanceUID],
         },
-        "00020010": {"vr": "UI", "Value": [dataset.file_meta.TransferSyntaxUID],},
-        "00020012": {"vr": "UI", "Value": [dataset.file_meta.ImplementationClassUID],},
+        "00020010": {
+            "vr": "UI",
+            "Value": [dataset.file_meta.TransferSyntaxUID],
+        },
+        "00020012": {
+            "vr": "UI",
+            "Value": [dataset.file_meta.ImplementationClassUID],
+        },
         "00020013": {
             "vr": "SH",
             "Value": [dataset.file_meta.ImplementationVersionName],
