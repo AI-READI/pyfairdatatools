@@ -689,4 +689,4 @@ class TestGenerateDatatypeDescription:
 
         assert path.exists(file) is True
 
-        generate_datatype_file(data, file, file_type)
+        generate_datatype_file(data=data, file_path=file, file_type=file_type)
