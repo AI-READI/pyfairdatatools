@@ -1,13 +1,13 @@
 import json
 from os import makedirs, path
 from string import Template
+from typing import Dict, List, Any
 from xml.dom.minidom import parseString
 
 import dicttoxml
 import yaml
 
 from . import utils, validate
-from typing import Dict, List, Any
 
 
 def generate_dataset_description(data, file_path, file_type):
