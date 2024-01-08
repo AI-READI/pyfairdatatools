@@ -687,6 +687,7 @@ class TestGenerateDatatypeDescription:
         file = tmp_path / "datatype_description.yaml"
         file_type = "yaml"
 
-        assert path.exists(file) is True
 
         generate_datatype_file(data=data, file_path=file, file_type=file_type)
+
+        assert path.exists(file) is True
