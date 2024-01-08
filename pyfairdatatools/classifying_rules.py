@@ -345,19 +345,8 @@ def extract_dicom_entry(file):
     # unknown
     else:
         sopinstanceuid = f"Unknown SOP Class UID: {sopclassuid}"
-        laterality = (
-            device
-        ) = (
-            rows
-        ) = (
-            referencedsopinstance
-        ) = (
-            implementationversion
-        ) = (
-            columns
-        ) = (
-            framenumber
-        ) = slicethickness = privatetag = gaze = numberoffiles = softwareversion = "N/A"
+        laterality = device = referencedsopinstance = implementationversion = "N/A"
+        rows = columns = framenumber = slicethickness = privatetag = gaze = numberoffiles = softwareversion = None
 
     output = DicomEntry(
         filename,
