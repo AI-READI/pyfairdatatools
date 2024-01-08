@@ -1,7 +1,7 @@
 import json
 from os import makedirs, path
 from string import Template
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 from xml.dom.minidom import parseString
 
 import dicttoxml
