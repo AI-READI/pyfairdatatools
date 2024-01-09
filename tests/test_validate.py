@@ -5,7 +5,7 @@ from typing import Any, Dict
 
 from pyfairdatatools.validate import (
     validate_dataset_description,
-    validate_datatype_description,
+    validate_datatype_dictionary,
     validate_license,
     validate_participants,
     validate_readme,
@@ -1204,13 +1204,13 @@ class TestValidateDatatypeDescription:
     def test_invalid_datatype_description(self):
         data = ["ekg", "redcap_data", "oct", "invalid"]
 
-        output = validate_datatype_description(data)
+        output = validate_datatype_dictionary(data)
 
         assert output is False
 
     def test_valid_datatype_description(self):
         data = ["ekg", "redcap_data", "oct"]
 
-        output = validate_datatype_description(data)
+        output = validate_datatype_dictionary(data)
 
         assert output is True

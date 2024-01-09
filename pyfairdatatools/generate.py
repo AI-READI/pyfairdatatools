@@ -389,11 +389,11 @@ def generate_datatype_file(data, file_path, file_type):
     """Generate a datatype file.
 
     Args:
-        data (dict): The datatype to generate
+        data (list): The list of datatypes to generate
         file_path (str): The path to the folder to save the datatype in
         file_type (str): The type of file to save the datatype as
     Returns:
-        A datatype description yaml file
+        A datatype dictionary yaml file
     """
     ALLOWED_FILE_TYPES = ["yaml"]
 
@@ -406,7 +406,7 @@ def generate_datatype_file(data, file_path, file_type):
             print("File path is invalid.")
             raise ValueError("Invalid file path")
 
-        if not validate.validate_datatype_description(data):
+        if not validate.validate_datatype_dictionary(data):
             print("Datatype is invalid.")
             raise ValueError("Invalid input data")
 

@@ -439,7 +439,7 @@ def validate_folder_structure(folder_path):
         raise error
 
 
-def validate_datatype_description(data):
+def validate_datatype_dictionary(data):
     """Validate a datatype description against the scheme.
 
     Args:
@@ -458,7 +458,6 @@ def validate_datatype_description(data):
     ) as f:
         schema = yaml.safe_load(f)
 
-    # print(json.dumps(schema))
     try:
         # create a list of code_name and aliases from schema to validate against
         code_name_list = [
@@ -470,7 +469,7 @@ def validate_datatype_description(data):
             if "aliases" in code_name
             for alias in code_name["aliases"]
         ]
-        # print(code_name_list)
+
         for entry in data:
             if entry not in code_name_list:
                 print(f"code_name {entry} is not a valid code_name or alias.")
