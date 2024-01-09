@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "pyfairdatatools"
-version = "1.0.3b1"
+version = "1.1.0b0"
 description = "Tools for AI-READI"
 
 packages = [{ include = "pyfairdatatools" }]
@@ -42,6 +42,8 @@ types-requests = "^2.30.0.0"
 pymdown-extensions = "^10.0.1"
 validators = "^0.20.0"
 art = "^6.0"
+pyyaml = "^6.0.1"
+types-pyyaml = "^6.0.12.12"
 
 
 [tool.poetry.dev-dependencies]

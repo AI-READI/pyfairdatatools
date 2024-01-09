@@ -1,8 +1,9 @@
 import os
-import pydicom
-import tempfile
 import shutil
+import tempfile
 import zipfile
+
+import pydicom
 
 KEEP = 0
 BLANK = 1
@@ -518,6 +519,7 @@ def convert_dicom(input, output):
     x = extract_dicom_dict(input, tags)
     write_dicom(conversion_rule, x, output)
 
+
 def list_files_recursive(directory):
     all_files = []
     for root, _, files in os.walk(directory):
@@ -525,6 +527,7 @@ def list_files_recursive(directory):
             file_path = os.path.join(root, file_name)
             all_files.append(file_path)
     return all_files
+
 
 def convert_zip_dicom(zip_file_path, output):
     try:

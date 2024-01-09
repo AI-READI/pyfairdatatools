@@ -7,6 +7,7 @@ from os import path
 from pyfairdatatools.generate import (
     generate_changelog_file,
     generate_dataset_description,
+    generate_datatype_file,
     generate_license_file,
     generate_readme,
     generate_study_description,
@@ -670,5 +671,22 @@ class TestGenerateLicense:
         generate_license_file(
             file_path=file, file_type=file_type, identifier=identifier
         )
+
+        assert path.exists(file) is True
+
+
+class TestGenerateDatatypeDescription:
+    def test_valid_datatype_description(self, tmp_path):
+        data = [
+            "ecg",
+            "eye_fundus_photography_data",
+            "flio_data",
+            "phyisical_activity_monitoring_data",
+        ]
+
+        file = tmp_path / "datatype_description.yaml"
+        file_type = "yaml"
+
+        generate_datatype_file(data=data, file_path=file, file_type=file_type)
 
         assert path.exists(file) is True

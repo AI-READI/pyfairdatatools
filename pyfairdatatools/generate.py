@@ -1,9 +1,11 @@
 import json
 from os import makedirs, path
 from string import Template
+from typing import Any, Dict, List
 from xml.dom.minidom import parseString
 
 import dicttoxml
+import yaml
 
 from . import utils, validate
 
@@ -381,3 +383,77 @@ def generate_license_file(
                         else:
                             print("Could not get text for license.")
                             raise NotImplementedError("License text not available")
+
+
+def generate_datatype_file(data, file_path, file_type):
+    """Generate a datatype file.
+
+    Args:
+        data (list): The list of datatypes to generate
+        file_path (str): The path to the folder to save the datatype in
+        file_type (str): The type of file to save the datatype as
+    Returns:
+        A datatype dictionary yaml file
+    """
+    ALLOWED_FILE_TYPES = ["yaml"]
+
+    try:
+        if file_type not in ALLOWED_FILE_TYPES:
+            print("File type is invalid.")
+            raise ValueError("Invalid file type")
+
+        if not utils.validate_file_path(file_path, writable=True):
+            print("File path is invalid.")
+            raise ValueError("Invalid file path")
+
+        if not validate.validate_datatype_dictionary(data):
+            print("Datatype is invalid.")
+            raise ValueError("Invalid input data")
+
+        if not path.exists(path.dirname(file_path)):
+            makedirs(path.dirname(file_path))
+
+        # Create the datatype file before generating the datatype description file
+        datatype_data: Dict[str, List[Dict[str, Any]]] = {"datatype_dictionary": []}
+
+        with open(
+            path.join(path.dirname(__file__), "assets", "datatype_dictionary.yaml"),
+            encoding="utf-8",
+        ) as f:
+            schema = yaml.safe_load(f)
+
+        for entry in data:
+            for item in schema["datatype_dictionary"]:
+                if entry == item["code_name"] or entry in item["aliases"]:
+                    print(item)
+                    new_item = {}
+                    if "code_name" in item:
+                        new_item["code_name"] = item["code_name"]
+                    if "datatype_description" in item:
+                        new_item["datatype_description"] = item["datatype_description"]
+                    if "aliases" in item:
+                        new_item["aliases"] = item["aliases"]
+                    if "related_terms" in item:
+                        new_item["related_terms"] = item["related_terms"]
+                    if "related_standards" in item:
+                        new_item["related_standards"] = item["related_standards"]
+                    datatype_data["datatype_dictionary"].append(new_item)
+
+        if file_type == "yaml":
+            try:
+                with open(file_path, "w", encoding="utf8") as f:
+                    yaml.dump(datatype_data, f, indent=4, sort_keys=False)
+            except Exception as error:
+                print(error)
+                raise error
+
+        elif file_type not in ["yaml"]:
+            print("File type is invalid.")
+            raise ValueError("Invalid file type")
+
+    except ValueError as error:
+        print(error)
+        raise ValueError("Invalid input") from error
+    except Exception as error:
+        print(error)
+        raise error
