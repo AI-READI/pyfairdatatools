@@ -7,7 +7,7 @@ from jsonschema import ValidationError, validate
 # from . import utils
 
 
-def validate_dataset_description(data):  # sourcery skip: extract-method
+def validate_dataset_description(data, verbose=False):  # sourcery skip: extract-method
     """Validate a dataset description against the schema.
 
     Args:

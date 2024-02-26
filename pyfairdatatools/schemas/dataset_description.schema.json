@@ -15,7 +15,9 @@
           "type": "string",
           "minLength": 1,
           "description": "Unique string that identifies the dataset.",
-          "examples": ["10.21384/foo"]
+          "examples": [
+            "10.21384/foo"
+          ]
         },
         "identifierType": {
           "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to suit datasets. In Datacite this must be 'DOI' but here, any type of identifier is allowed.",
@@ -23,7 +25,10 @@
           "description": "The type of identifier used to identify the dataset. Must be from the controlled list of identifierType."
         }
       },
-      "required": ["identifierValue", "identifierType"]
+      "required": [
+        "identifierValue",
+        "identifierType"
+      ]
     },
     "title": {
       "type": "array",
@@ -39,7 +44,9 @@
       "type": "string",
       "description": "The version number of the dataset. Suggested practice: major_version.minor_version. Register a new identifier for a major version change. May be used in conjunction with properties 'alternateIdentifier' and 'relatedIdentifier' to indicate various information updates. May be used in conjunction with property 'description' to indicate the nature and file/record range of version.",
       "minLength": 1,
-      "examples": ["2.1"]
+      "examples": [
+        "2.1"
+      ]
     },
     "alternateIdentifier": {
       "type": "array",
@@ -52,7 +59,9 @@
             "type": "string",
             "minLength": 1,
             "description": "An identifier other than the primary 'identifier' applicable for the dataset. This may be any alphanumeric string which is unique within its domain of issue. May be used for local identifiers.",
-            "examples": ["E-GEOD-34814"]
+            "examples": [
+              "E-GEOD-34814"
+            ]
           },
           "alternateIdentifierType": {
             "$comment": "In the DataCite Metadata Schema v4.5 free text is allowed here but here it must be from the controlled list of identifierType",
@@ -60,7 +69,10 @@
             "description": "The type of the alternateIdentifier. Must be from the controlled list of identifierType."
           }
         },
-        "required": ["alternateIdentifierValue", "alternateIdentifierType"]
+        "required": [
+          "alternateIdentifierValue",
+          "alternateIdentifierType"
+        ]
       },
       "minItems": 1,
       "uniqueItems": true
@@ -78,7 +90,9 @@
             "type": "string",
             "minLength": 1,
             "description": "The full name of the creator (personal name or organization name). Note that the personal name format should be: family, given. Names in non-roman scripts may be transliterated according to the ALA-LC tables https://www.loc.gov/catdir/cpso/roman.html.",
-            "examples": ["Garcia, Sofia"]
+            "examples": [
+              "Garcia, Sofia"
+            ]
           },
           "nameType": {
             "$comment": "Not mandatory in the DataCite Metadata Schema v4.5 but mandatory here",
@@ -107,7 +121,11 @@
                   "type": "string",
                   "minLength": 1,
                   "description": "The name of the name identifier scheme.",
-                  "examples": ["ORCID", "ISNI", "ROR"]
+                  "examples": [
+                    "ORCID",
+                    "ISNI",
+                    "ROR"
+                  ]
                 },
                 "schemeURI": {
                   "type": "string",
@@ -120,7 +138,10 @@
                   ]
                 }
               },
-              "required": ["nameIdentifierValue", "nameIdentifierScheme"]
+              "required": [
+                "nameIdentifierValue",
+                "nameIdentifierScheme"
+              ]
             },
             "uniqueItems": true
           },
@@ -154,21 +175,32 @@
                   "type": "string",
                   "minLength": 1,
                   "description": "The name of the name identifier scheme. If affiliationIdentifier is used, affiliationIdentifierScheme is mandatory.",
-                  "examples": ["ISNI", "ROR"]
+                  "examples": [
+                    "ISNI",
+                    "ROR"
+                  ]
                 },
                 "schemeURI": {
                   "type": "string",
                   "minLength": 1,
                   "description": "The URI of the name identifier scheme.",
-                  "examples": ["https://isni.org", "https://ror.org"]
+                  "examples": [
+                    "https://isni.org",
+                    "https://ror.org"
+                  ]
                 }
               },
-              "required": ["affiliationName"]
+              "required": [
+                "affiliationName"
+              ]
             },
             "uniqueItems": true
           }
         },
-        "required": ["creatorName", "nameType"]
+        "required": [
+          "creatorName",
+          "nameType"
+        ]
       },
       "minItems": 1,
       "uniqueItems": true
@@ -217,7 +249,11 @@
                   "type": "string",
                   "minLength": 1,
                   "description": "The name of the name identifier scheme.",
-                  "examples": ["ORCID", "ISNI", "ROR"]
+                  "examples": [
+                    "ORCID",
+                    "ISNI",
+                    "ROR"
+                  ]
                 },
                 "schemeURI": {
                   "type": "string",
@@ -230,8 +266,12 @@
                   ]
                 }
               },
-              "required": ["nameIdentifierValue", "nameIdentifierScheme"]
+              "required": [
+                "nameIdentifierValue",
+                "nameIdentifierScheme"
+              ]
             },
+            "minItems": 1,
             "uniqueItems": true
           },
           "affiliation": {
@@ -264,21 +304,33 @@
                   "type": "string",
                   "minLength": 1,
                   "description": "The name of the name identifier scheme. If affiliationIdentifier is used, affiliationIdentifierScheme is mandatory.",
-                  "examples": ["ISNI", "ROR"]
+                  "examples": [
+                    "ISNI",
+                    "ROR"
+                  ]
                 },
                 "schemeURI": {
                   "type": "string",
                   "minLength": 1,
                   "description": "The URI of the name identifier scheme.",
-                  "examples": ["https://isni.org", "https://ror.org"]
+                  "examples": [
+                    "https://isni.org",
+                    "https://ror.org"
+                  ]
                 }
               },
-              "required": ["affiliationName"]
+              "required": [
+                "affiliationName"
+              ]
             },
             "uniqueItems": true
           }
         },
-        "required": ["contributorType", "contributorName", "nameType"]
+        "required": [
+          "contributorType",
+          "contributorName",
+          "nameType"
+        ]
       },
       "uniqueItems": true
     },
@@ -371,7 +423,10 @@
             "description": "Specific information about the date, if appropriate. May be used to provide more information about the publication, release, or collection date details, for example. May also be used to clarify dates in ancient history. Examples: 55 BC, 55 BCE."
           }
         },
-        "required": ["dateValue", "dateType"]
+        "required": [
+          "dateValue",
+          "dateType"
+        ]
       },
       "minItems": 1,
       "uniqueItems": true
@@ -386,7 +441,9 @@
           "type": "string",
           "minLength": 1,
           "description": "Free text. The recommended content is a single term of some detail about the domain or content of the dataset so that a pair can be formed with the resourceTypeGeneral subproperty (set to `Dataset`). For example, a resourceType of `Diabetes` yields `Diabetes Dataset`.",
-          "examples": ["Diabetes"]
+          "examples": [
+            "Diabetes"
+          ]
         },
         "resourceTypeGeneral": {
           "type": "string",
@@ -394,7 +451,10 @@
           "pattern": "Dataset"
         }
       },
-      "required": ["resourceTypeValue", "resourceTypeGeneral"]
+      "required": [
+        "resourceTypeValue",
+        "resourceTypeGeneral"
+      ]
     },
     "datasetDeIdentLevel": {
       "$comment": "This key is from the ECRIN Metadata Schema for data object v6.0 'E.4 De-identification level'. Description has been modified to suit datasets.",
@@ -571,7 +631,10 @@
             ]
           }
         },
-        "required": ["descriptionType", "descriptionValue"]
+        "required": [
+          "descriptionType",
+          "descriptionValue"
+        ]
       },
       "uniqueItems": true
     },
@@ -579,7 +642,9 @@
       "type": "string",
       "minLength": 2,
       "description": "The primary language used in the dataset. Allowed values are taken from  IETF BCP 47 https://en.wikipedia.org/wiki/IETF_language_tag, ISO 639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes language codes",
-      "examples": ["en"]
+      "examples": [
+        "en"
+      ]
     },
     "relatedIdentifier": {
       "type": "array",
@@ -617,7 +682,11 @@
             "type": "string",
             "minLength": 1,
             "description": "The type of the relatedMetadataScheme, linked with the schemeURI. Use only with this relation pair: (HasMetadata/ IsMetadataFor)",
-            "examples": ["XSD", "DDT", "Turtle"]
+            "examples": [
+              "XSD",
+              "DDT",
+              "Turtle"
+            ]
           },
           "resourceTypeGeneral": {
             "$ref": "#/definitions/resourceItemType",
@@ -645,7 +714,9 @@
             "type": "string",
             "minLength": 1,
             "description": "The subject, keyword, classification code, or key phrase that describes the dataset",
-            "examples": ["Diabetes mellitus"]
+            "examples": [
+              "Diabetes mellitus"
+            ]
           },
           "subjectScheme": {
             "$comment": "Description is based on the DataCite Metadata Schema v4.5 but extended to provide more clarity.",
@@ -660,22 +731,30 @@
             "type": "string",
             "minLength": 1,
             "description": "The URI of the subject identifier scheme",
-            "examples": ["https://loinc.org/"]
+            "examples": [
+              "https://loinc.org/"
+            ]
           },
           "valueURI": {
             "type": "string",
             "minLength": 1,
             "description": "The URI of the subject term",
-            "examples": ["https://loinc.org/45636-8"]
+            "examples": [
+              "https://loinc.org/45636-8"
+            ]
           },
           "classificationCode": {
             "type": "string",
             "minLength": 1,
             "description": "The classification code used for the subject term in the subject scheme",
-            "examples": ["45636-8"]
+            "examples": [
+              "45636-8"
+            ]
           }
         },
-        "required": ["subjectValue"]
+        "required": [
+          "subjectValue"
+        ]
       },
       "uniqueItems": true
     },
@@ -696,7 +775,9 @@
           "description": "The id of the organisation, if known, within the ROR (Research Organisation Registry) system. This is a URL linking to the ROR resource."
         }
       },
-      "required": ["name"]
+      "required": [
+        "name"
+      ]
     },
     "accessType": {
       "$comment": "The 'NotKnownYet' option has been removed since it is not releveant here. The options have been Pascal Cased to align with the overall controlled values",
@@ -773,7 +854,9 @@
           "description": "If a check has been carried out, the date the url last responded with a 200 (success) message, as a string "
         }
       },
-      "required": ["description"]
+      "required": [
+        "description"
+      ]
     },
     "rights": {
       "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to for more clarity. It is not mandatory in the DataCite schema but is mandatory here.",
@@ -788,34 +871,46 @@
             "type": "string",
             "minLength": 1,
             "description": "Use the complete title of a license and include version information if applicable",
-            "examples": ["Creative Commons Attribution 4.0 International"]
+            "examples": [
+              "Creative Commons Attribution 4.0 International"
+            ]
           },
           "rightsURI": {
             "type": "string",
             "minLength": 1,
             "description": "The URI of the license",
-            "examples": ["https://creativecommons.org/licenses/by/4.0/"]
+            "examples": [
+              "https://creativecommons.org/licenses/by/4.0/"
+            ]
           },
           "rightsIdentifier": {
             "type": "string",
             "minLength": 1,
             "description": "A short, standardized version of the license name. A list of identifiers for commonly-used licenses may be found here: (https://spdx.org/licenses/)",
-            "examples": ["CC-BY-4.0"]
+            "examples": [
+              "CC-BY-4.0"
+            ]
           },
           "rightsIdentifierScheme": {
             "type": "string",
             "minLength": 1,
             "description": "The name of the scheme",
-            "examples": ["SPDX"]
+            "examples": [
+              "SPDX"
+            ]
           },
           "schemeURI": {
             "type": "string",
             "minLength": 1,
             "description": "The URI of the rightsIdentifierScheme",
-            "examples": ["https://spdx.org/licenses/"]
+            "examples": [
+              "https://spdx.org/licenses/"
+            ]
           }
         },
-        "required": ["rightsName"]
+        "required": [
+          "rightsName"
+        ]
       },
       "uniqueItems": true
     },
@@ -830,28 +925,38 @@
           "type": "string",
           "minLength": 1,
           "description": "Name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the dataset.",
-          "examples": ["FAIRhub"]
+          "examples": [
+            "FAIRhub"
+          ]
         },
         "publisherIdentifier": {
           "type": "string",
           "minLength": 1,
           "description": "Uniquely identifies the publisher, according to various schemes",
-          "examples": ["https://ror.org/04z8jg394"]
+          "examples": [
+            "https://ror.org/04z8jg394"
+          ]
         },
         "publisherIdentifierScheme": {
           "type": "string",
           "minLength": 1,
           "description": "The name of the publisher identifier scheme. If publisherIdentifier is used, publisherIdentifierScheme is mandatory",
-          "examples": ["ROR"]
+          "examples": [
+            "ROR"
+          ]
         },
         "schemeURI": {
           "type": "string",
           "minLength": 1,
           "description": "The URI of the publisher identifier scheme",
-          "examples": ["https://ror.org/"]
+          "examples": [
+            "https://ror.org/"
+          ]
         }
       },
-      "required": ["publisherName"]
+      "required": [
+        "publisherName"
+      ]
     },
     "size": {
       "type": "array",
@@ -861,7 +966,11 @@
         "type": "string",
         "minLength": 1,
         "description": "A specific size item",
-        "examples": ["15 pages", "6 MB", "45 minutes"]
+        "examples": [
+          "15 pages",
+          "6 MB",
+          "45 minutes"
+        ]
       },
       "uniqueItems": true
     },
@@ -878,7 +987,9 @@
             "type": "string",
             "minLength": 1,
             "description": "Name of the funding provider.",
-            "examples": ["National Institutes of Health (NIH)"]
+            "examples": [
+              "National Institutes of Health (NIH)"
+            ]
           },
           "funderIdentifier": {
             "type": "object",
@@ -889,22 +1000,35 @@
                 "type": "string",
                 "minLength": 1,
                 "description": "Uniquely identifies a funding entity, according to various types.",
-                "examples": ["https://ror.org/01cwqze88"]
+                "examples": [
+                  "https://ror.org/01cwqze88"
+                ]
               },
               "funderIdentifierType": {
                 "type": "string",
                 "minLength": 1,
                 "description": "The type of funder identifier used.",
-                "enum": ["Crossref Funder ID", "GRID", "ISNI", "ROR", "Other"]
+                "enum": [
+                  "Crossref Funder ID",
+                  "GRID",
+                  "ISNI",
+                  "ROR",
+                  "Other"
+                ]
               },
-              "SchemeURI": {
+              "schemeURI": {
                 "type": "string",
                 "minLength": 1,
                 "description": "The URI of the funder identifier scheme",
-                "examples": ["https://ror.org"]
+                "examples": [
+                  "https://ror.org"
+                ]
               }
             },
-            "required": ["funderIdentifierValue", "funderIdentifierType"]
+            "required": [
+              "funderIdentifierValue",
+              "funderIdentifierType"
+            ]
           },
           "awardNumber": {
             "type": "object",
@@ -915,7 +1039,9 @@
                 "type": "string",
                 "minLength": 1,
                 "description": "The code assigned by the funder to a sponsored award (grant).",
-                "examples": ["OT2OD032644"]
+                "examples": [
+                  "OT2OD032644"
+                ]
               },
               "awardURI": {
                 "type": "string",
@@ -926,16 +1052,22 @@
                 ]
               }
             },
-            "required": ["awardNumberValue"]
+            "required": [
+              "awardNumberValue"
+            ]
           },
           "awardTitle": {
             "type": "string",
             "minLength": 1,
             "description": "The human readable title or name of the award (grant)",
-            "examples": ["The awesome project of XYZ"]
+            "examples": [
+              "The awesome project of XYZ"
+            ]
           }
         },
-        "required": ["funderName"]
+        "required": [
+          "funderName"
+        ]
       },
       "uniqueItems": true
     },
@@ -1067,7 +1199,9 @@
           "description": "The titleType subproperty is used when more than a single title is provided. Unless otherwise indicated by titleType, a title is considered to be the main title. Must be from the controlled values of titleType otherwise."
         }
       },
-      "required": ["titleValue"]
+      "required": [
+        "titleValue"
+      ]
     },
     "titleType": {
       "$comment": "The options are from the DataCite Metadata schema v4.5 but descriptions are added since they are not provided by in the DataCite schema.",
@@ -1576,7 +1710,9 @@
       "type": "string",
       "minLength": 4,
       "maxLength": 4,
-      "examples": ["2022"]
+      "examples": [
+        "2022"
+      ]
     }
   }
 }

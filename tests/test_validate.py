@@ -51,7 +51,7 @@ class TestValidateDatasetDescription:
                 ],
                 "affiliation": [
                     {
-                        "affiliationValue": "White Lotus",
+                        "affiliationName": "White Lotus",
                         "affiliationIdentifier": "https://ror.org/123456789",
                         "affiliationIdentifierScheme": "ROR",
                         "schemeURI": "https://ror.org",
@@ -84,7 +84,7 @@ class TestValidateDatasetDescription:
                 ],
                 "affiliation": [
                     {
-                        "affiliationValue": "White Lotus",
+                        "affiliationName": "White Lotus",
                         "affiliationIdentifier": "https://ror.org/123456789",
                         "affiliationIdentifierScheme": "ROR",
                         "schemeURI": "https://ror.org",
@@ -116,7 +116,6 @@ class TestValidateDatasetDescription:
             "resourceTypeValue": "Diabetes",
             "resourceTypeGeneral": "Dataset",
         },
-        "datasetRecordKeys": {"keysType": "Anonymised", "keysDetails": "Some details"},
         "datasetDeIdentLevel": {
             "deIdentType": "NoDeIdentification",
             "deIdentDirect": True,
@@ -219,7 +218,7 @@ class TestValidateDatasetDescription:
         """Test identifier validation."""
         data = deepcopy(self.valid_data)
 
-        data["Identifier"] = {
+        data["identifier"] = {
             "identifierValue": "",
         }
 
@@ -228,7 +227,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Identifier"] = {
+        data["identifier"] = {
             "identifierValue": "invalid",
         }
 
@@ -239,21 +238,21 @@ class TestValidateDatasetDescription:
         """Test title validation."""
         data = deepcopy(self.valid_data)
 
-        data["Title"] = []
+        data["title"] = []
 
         output = validate_dataset_description(data)
         assert output is False
 
         data = deepcopy(self.valid_data)
 
-        data["Title"] = [{"titleValue": "Test", "titleType": ""}]
+        data["title"] = [{"titleValue": "Test", "titleType": ""}]
 
         output = validate_dataset_description(data)
         assert output is False
 
         data = deepcopy(self.valid_data)
 
-        data["Title"] = [
+        data["title"] = [
             {"titleValue": "Test"},
             {"titleValue": "Test", "titleType": "Invalid"},
         ]
@@ -265,7 +264,7 @@ class TestValidateDatasetDescription:
         """Test version validation."""
         data = deepcopy(self.valid_data)
 
-        data["Version"] = ""
+        data["version"] = ""
 
         output = validate_dataset_description(data)
         assert output is False
@@ -274,7 +273,7 @@ class TestValidateDatasetDescription:
         """Test alternate identifier validation."""
         data = deepcopy(self.valid_data)
 
-        data["AlternateIdentifier"] = [
+        data["alternateIdentifier"] = [
             {"alternateIdentifierValue": "", "alternateIdentifierType": "DOI"}
         ]
 
@@ -283,7 +282,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["AlternateIdentifier"] = [
+        data["alternateIdentifier"] = [
             {
                 "alternateIdentifierValue": "10.5281/zenodo.7942786",
             }
@@ -294,7 +293,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["AlternateIdentifier"] = [
+        data["alternateIdentifier"] = [
             {
                 "alternateIdentifierValue": "10.5281/zenodo.7942786",
                 "alternateIdentifierType": "Invalid",
@@ -308,14 +307,14 @@ class TestValidateDatasetDescription:
         """Test creator validation."""
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = []
+        data["creator"] = []
 
         output = validate_dataset_description(data)
         assert output is False
 
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = [
+        data["creator"] = [
             {
                 "creatorName": "Doe, John",
             }
@@ -326,7 +325,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = [
+        data["creator"] = [
             {
                 "creatorName": "Doe, John",
                 "nameType": "Invalid",
@@ -338,7 +337,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = [
+        data["creator"] = [
             {
                 "creatorName": "Doe, John",
                 "nameType": "Invalid",
@@ -351,7 +350,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = [
+        data["creator"] = [
             {
                 "creatorName": "Doe, John",
                 "nameType": "Invalid",
@@ -367,7 +366,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = [
+        data["creator"] = [
             {
                 "creatorName": "Doe, John",
                 "nameType": "Invalid",
@@ -386,7 +385,7 @@ class TestValidateDatasetDescription:
         """Test contributor validation."""
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "invalid",
                 "contributorName": "Doe, John",
@@ -399,7 +398,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -412,7 +411,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -426,7 +425,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -444,7 +443,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -464,7 +463,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -478,7 +477,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -495,7 +494,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -515,7 +514,7 @@ class TestValidateDatasetDescription:
         """Test publication year validation."""
         data = deepcopy(self.valid_data)
 
-        data["PublicationYear"] = "98"
+        data["publicationYear"] = "98"
 
         output = validate_dataset_description(data)
         assert output is False
@@ -524,14 +523,14 @@ class TestValidateDatasetDescription:
         """Test date validation."""
         data = deepcopy(self.valid_data)
 
-        data["Date"] = []
+        data["date"] = []
 
         output = validate_dataset_description(data)
         assert output is False
 
         data = deepcopy(self.valid_data)
 
-        data["Date"] = [
+        data["date"] = [
             {"dateValue": "2004-03-02", "dateType": "invalid", "dateInformation": ""}
         ]
 
@@ -542,21 +541,21 @@ class TestValidateDatasetDescription:
         """Test language validation."""
         data = deepcopy(self.valid_data)
 
-        data["Language"] = "en-US"
+        data["language"] = "en-US"
 
         output = validate_dataset_description(data)
         assert output is True
 
         data = deepcopy(self.valid_data)
 
-        data["Language"] = ""
+        data["language"] = ""
 
         output = validate_dataset_description(data)
         assert output is False
 
         data = deepcopy(self.valid_data)
 
-        data["Language"] = ["invalid"]
+        data["language"] = ["invalid"]
 
         output = validate_dataset_description(data)
         assert output is False

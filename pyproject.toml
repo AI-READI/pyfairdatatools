@@ -99,7 +99,8 @@ pylint = "pylint pyfairdatatools tests --rcfile=.pylint.ini"
 
 precommit = ["format", "typecheck", "pylint"]
 
-test = "pytest -rx"
+test = "pytest -rx -W ignore::DeprecationWarning"
+test_with_capture = "pytest -s -W ignore::DeprecationWarning"
 
 jupyter = "jupyter notebook"
 
