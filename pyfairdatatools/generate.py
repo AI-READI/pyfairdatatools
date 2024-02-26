@@ -38,7 +38,7 @@ def generate_dataset_description(data, file_path, file_type):
         if not path.exists(path.dirname(file_path)):
             makedirs(path.dirname(file_path))
 
-        RelatedIdentifier = data["RelatedIdentifier"]
+        RelatedIdentifier = data["relatedIdentifier"]
 
         for identifier in RelatedIdentifier:
             relation_type = identifier["relationType"]
@@ -52,24 +52,6 @@ def generate_dataset_description(data, file_path, file_type):
 
                 if "schemeType" in identifier:
                     del identifier["schemeType"]
-
-        RelatedItem = data["RelatedItem"]
-
-        for item in RelatedItem:
-            relation_type = item["relationType"]
-
-            relatedItemIdentifier = item["relatedItemIdentifier"]
-
-            for identifier in relatedItemIdentifier:
-                if relation_type not in ["HasMetadata", "IsMetadataFor"]:
-                    if "relatedMetadataScheme" in identifier:
-                        del identifier["relatedMetadataScheme"]
-
-                    if "schemeURI" in identifier:
-                        del identifier["schemeURI"]
-
-                    if "schemeType" in identifier:
-                        del identifier["schemeType"]
 
         if file_type == "json":
             try:

@@ -1,4 +1,5 @@
 """Unit tests for pyfairdatatools.validate module."""
+
 # pylint: disable=too-many-lines
 from copy import deepcopy
 from typing import Any, Dict
@@ -14,12 +15,14 @@ from pyfairdatatools.validate import (
 
 
 class TestValidateDatasetDescription:
+    """Unit tests for validate_dataset_description function."""
+
     valid_data: Dict[str, Any] = {
-        "Identifier": {
+        "identifier": {
             "identifierValue": "10.5281/zenodo.1234567",
             "identifierType": "DOI",
         },
-        "Title": [
+        "title": [
             {
                 "titleValue": "Main Title",
             },
@@ -28,14 +31,14 @@ class TestValidateDatasetDescription:
                 "titleType": "Subtitle",
             },
         ],
-        "Version": "1.0.0",
-        "AlternateIdentifier": [
+        "version": "1.0.0",
+        "alternateIdentifier": [
             {
                 "alternateIdentifierValue": "10.5281/zenodo.1234567",
                 "alternateIdentifierType": "DOI",
             }
         ],
-        "Creator": [
+        "creator": [
             {
                 "creatorName": "Doe, John",
                 "nameType": "Personal",
@@ -67,7 +70,7 @@ class TestValidateDatasetDescription:
                 ],
             },
         ],
-        "Contributor": [
+        "contributor": [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -101,20 +104,20 @@ class TestValidateDatasetDescription:
                 ],
             },
         ],
-        "PublicationYear": "2023",
-        "Date": [
+        "publicationYear": "2023",
+        "date": [
             {
                 "dateValue": "2023-01-01",
                 "dateType": "Collected",
                 "dateInformation": "Some information",
             }
         ],
-        "ResourceType": {
+        "resourceType": {
             "resourceTypeValue": "Diabetes",
             "resourceTypeGeneral": "Dataset",
         },
-        "DatasetRecordKeys": {"keysType": "Anonymised", "keysDetails": "Some details"},
-        "DatasetDeIdentLevel": {
+        "datasetRecordKeys": {"keysType": "Anonymised", "keysDetails": "Some details"},
+        "datasetDeIdentLevel": {
             "deIdentType": "NoDeIdentification",
             "deIdentDirect": True,
             "deIdentHIPAA": True,
@@ -123,7 +126,7 @@ class TestValidateDatasetDescription:
             "deIdentKAnon": True,
             "deIdentDetails": "Some details",
         },
-        "DatasetConsent": {
+        "datasetConsent": {
             "consentType": "NoRestriction",
             "consentNoncommercial": True,
             "consentGeogRestrict": True,
@@ -132,23 +135,23 @@ class TestValidateDatasetDescription:
             "consentNoMethods": True,
             "consentsDetails": "Some details",
         },
-        "Description": [
+        "description": [
             {"descriptionValue": "Some description", "descriptionType": "Abstract"},
             {"descriptionValue": "Some description", "descriptionType": "Methods"},
         ],
-        "Language": "en",
-        "RelatedIdentifier": [
+        "language": "en",
+        "relatedIdentifier": [
             {
                 "relatedIdentifierValue": "10.5281/zenodo.1234567",
                 "relatedIdentifierType": "DOI",
                 "relationType": "HasMetadata",
                 "relatedMetadataScheme": "DataCite",
-                "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",
+                "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",  # noqa: E501 pylint: disable=line-too-long
                 "schemeType": "DOI",
                 "resourceTypeGeneral": "Dataset",
             }
         ],
-        "Subject": [
+        "subject": [
             {
                 "subjectValue": "Diabetes",
                 "subjectScheme": "MeSH",
@@ -157,27 +160,33 @@ class TestValidateDatasetDescription:
                 "classificationCode": "E11.9",
             }
         ],
-        "ManagingOrganisation": {
+        "managingOrganisation": {
             "name": "Test Organisation",
             "rorId": "https://ror.org/123456789",
         },
-        "AccessType": "PublicOnScreenAccess",
-        "AccessDetails": {
+        "accessType": "PublicOnScreenAccess",
+        "accessDetails": {
             "description": "Some description",
             "url": "https://example.com",
             "urlLastChecked": "2021-01-01",
         },
-        "Rights": [
+        "rights": [
             {
-                "rightsValue": "CC0-1.0",
+                "rightsName": "CC0-1.0",
                 "rightsURI": "https://creativecommons.org/publicdomain/zero/1.0/",
                 "rightsIdentifier": "CC0-1.0",
                 "rightsIdentifierScheme": "SPDX",
+                "schemeURI": "https://spdx.org/licenses/",
             }
         ],
-        "Publisher": "GitHub",
-        "Size": ["15 pages", "15 MB"],
-        "FundingReference": [
+        "publisher": {
+            "publisherName": "Test Publisher",
+            "publisherIdentifier": "04z8jg394",
+            "publisherIdentifierScheme": "ROR",
+            "schemeURI": "https://www.crossref.org/",
+        },
+        "size": ["15 pages", "15 MB"],
+        "fundingReference": [
             {
                 "funderName": "Test Funder",
                 "funderIdentifier": {
@@ -192,61 +201,22 @@ class TestValidateDatasetDescription:
                 "awardTitle": "Test Award",
             }
         ],
-        "RelatedItem": [
-            {
-                "relatedItemType": "Book",
-                "relationType": "IsMetadataFor",
-                "relatedItemIdentifier": [
-                    {
-                        "relatedItemIdentifierValue": "10.5281/zenodo.1234567",
-                        "relatedItemIdentifierType": "DOI",
-                        "relatedMetadataScheme": "DataCite",
-                        "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",
-                        "schemeType": "DDT",
-                    }
-                ],
-                "creator": [
-                    {
-                        "creatorName": "Doe, John",
-                        "nameType": "Personal",
-                    }
-                ],
-                "title": [
-                    {
-                        "titleValue": "Test title",
-                    }
-                ],
-                "publicationYear": "2021",
-                "volume": "1",
-                "issue": "1",
-                "number": {"numberValue": "1", "numberType": "Article"},
-                "firstPage": "1",
-                "lastPage": "15",
-                "publisher": "Test Publisher",
-                "edition": "1",
-                "contributor": [
-                    {
-                        "contributorType": "Editor",
-                        "contributorName": "Doe, John",
-                        "nameType": "Personal",
-                    }
-                ],
-            }
-        ],
     }
 
     def test_valid_dataset_description(self):
+        """Test valid dataset description."""
         data = deepcopy(self.valid_data)
 
         try:
             output = validate_dataset_description(data)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             print(e)
             output = False
 
-        assert output is True
+        assert output
 
     def test_identifier(self):
+        """Test identifier validation."""
         data = deepcopy(self.valid_data)
 
         data["Identifier"] = {
@@ -266,6 +236,7 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_title(self):
+        """Test title validation."""
         data = deepcopy(self.valid_data)
 
         data["Title"] = []
@@ -291,6 +262,7 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_version(self):
+        """Test version validation."""
         data = deepcopy(self.valid_data)
 
         data["Version"] = ""
@@ -299,6 +271,7 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_alternate_identifier(self):
+        """Test alternate identifier validation."""
         data = deepcopy(self.valid_data)
 
         data["AlternateIdentifier"] = [
@@ -332,6 +305,7 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_creator(self):
+        """Test creator validation."""
         data = deepcopy(self.valid_data)
 
         data["Creator"] = []
@@ -409,6 +383,7 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_contributor(self):
+        """Test contributor validation."""
         data = deepcopy(self.valid_data)
 
         data["Contributor"] = [
@@ -537,6 +512,7 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_publication_year(self):
+        """Test publication year validation."""
         data = deepcopy(self.valid_data)
 
         data["PublicationYear"] = "98"
@@ -545,6 +521,7 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_date(self):
+        """Test date validation."""
         data = deepcopy(self.valid_data)
 
         data["Date"] = []
@@ -562,6 +539,7 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_language(self):
+        """Test language validation."""
         data = deepcopy(self.valid_data)
 
         data["Language"] = "en-US"
@@ -585,6 +563,8 @@ class TestValidateDatasetDescription:
 
 
 class TestValidateStudyDescription:
+    """Unit tests for validate_study_description function."""
+
     observational_study_valid_data: Dict[str, Any] = {
         "IdentificationModule": {
             "OrgStudyIdInfo": {
@@ -907,6 +887,7 @@ class TestValidateStudyDescription:
     }
 
     def test_observational_valid_study_description(self):
+        """Test valid observational study description."""
         data = deepcopy(self.observational_study_valid_data)
 
         output = validate_study_description(data)
@@ -914,6 +895,7 @@ class TestValidateStudyDescription:
         assert output is True
 
     def test_interventional_valid_study_description(self):
+        """Test valid interventional study description."""
         data = deepcopy(self.interventional_study_valid_data)
 
         output = validate_study_description(data)
@@ -921,6 +903,7 @@ class TestValidateStudyDescription:
         assert output is True
 
     def test_invalid_identification_module(self):
+        """Test invalid identification module."""
         data = deepcopy(self.observational_study_valid_data)
 
         data["IdentificationModule"]["OrgStudyIdInfo"][
@@ -935,6 +918,7 @@ class TestValidateStudyDescription:
 
         data = deepcopy(self.observational_study_valid_data)
 
+        # sourcery skip: no-loop-in-tests
         for item in data["IdentificationModule"]["SecondaryIdInfoList"]:
             item["SecondaryIdType"] = "Other Identifier"
             del item["SecondaryIdDomain"]
@@ -944,6 +928,7 @@ class TestValidateStudyDescription:
         assert output is False
 
     def test_invalid_status_module(self):
+        """Test invalid status module."""
         data = deepcopy(self.observational_study_valid_data)
 
         data["StatusModule"]["OverallStatus"] = "Terminated"
@@ -955,6 +940,7 @@ class TestValidateStudyDescription:
         assert output is False
 
     def test_invalid_sponsor_collaborators_module(self):
+        """Test invalid sponsor collaborators module."""
         data = deepcopy(self.observational_study_valid_data)
 
         data["SponsorCollaboratorsModule"]["ResponsibleParty"][
@@ -998,6 +984,7 @@ class TestValidateStudyDescription:
         assert output is False
 
     def test_invalid_arms_interventions_module(self):
+        """Test invalid arms interventions module."""
         data = deepcopy(self.interventional_study_valid_data)
 
         for item in data["ArmsInterventionsModule"]["ArmGroupList"]:
@@ -1008,6 +995,7 @@ class TestValidateStudyDescription:
         assert output is False
 
     def test_invalid_eligibilty_module(self):
+        """Test invalid eligibility module."""
         data = deepcopy(self.interventional_study_valid_data)
 
         del data["EligibilityModule"]["HealthyVolunteers"]
@@ -1033,6 +1021,7 @@ class TestValidateStudyDescription:
         assert output is False
 
     def test_invalid_contacts_locations_module(self):
+        """Test invalid contacts locations module."""
         data = deepcopy(self.observational_study_valid_data)
 
         del data["ContactsLocationsModule"]["CentralContactList"]
@@ -1045,7 +1034,10 @@ class TestValidateStudyDescription:
 
 
 class TestValidateReadme:
+    """Unit tests for validate_readme function."""
+
     def test_minimal_valid_readme(self):
+
         data = {"Title": "Test Title"}
 
         output = validate_readme(data)
@@ -1095,7 +1087,10 @@ class TestValidateReadme:
 
 
 class TestValidateLicense:
+    """Unit tests for validate_license function."""
+
     def test_valid_license(self):
+        """Test valid license."""
         data = "CC-BY-4.0"
 
         output = validate_license(data)
@@ -1103,6 +1098,7 @@ class TestValidateLicense:
         assert output is True
 
     def test_fail_invalid_license(self):
+        """Test invalid license."""
         data = {
             "License": "Invalid",
         }
@@ -1113,7 +1109,10 @@ class TestValidateLicense:
 
 
 class TestValidateParticipants:
+    """Unit tests for validate_participants function."""
+
     def test_minimal_valid_participant(self):
+        """Test minimal valid participant."""
         data = [
             {
                 "participant_id": "sub-user1",
@@ -1125,6 +1124,7 @@ class TestValidateParticipants:
         assert output is True
 
     def test_valid_participant_with_all_fields(self):
+        """Test valid participant with all fields."""
         data = [
             {
                 "participant_id": "sub-user1",

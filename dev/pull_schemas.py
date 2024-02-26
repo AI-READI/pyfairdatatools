@@ -37,7 +37,7 @@ def main():
 
         # Write the schema to a file
         with open(file_path, "w", encoding="utf-8") as file:
-            json.dump(schema, file, indent=4)
+            json.dump(schema, file, indent=2)
 
     return
 

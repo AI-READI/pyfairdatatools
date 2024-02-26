@@ -12,6 +12,7 @@ Icon*
 # Temporary virtual environment files
 /.cache/
 /.venv/
+venv/
 tmp/
 
 # Temporary server files

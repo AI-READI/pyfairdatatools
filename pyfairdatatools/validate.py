@@ -30,7 +30,7 @@ def validate_dataset_description(data):  # sourcery skip: extract-method
         validate(instance=data, schema=schema)
 
         # validate the language code
-        if "Language" in data:
+        if "language" in data:
             with open(
                 os.path.join(os.path.dirname(__file__), "assets", "languages.json"),
                 encoding="utf-8",
@@ -38,39 +38,18 @@ def validate_dataset_description(data):  # sourcery skip: extract-method
                 list_of_language_codes = json.load(f)
 
                 valid = any(
-                    language["code"] == data["Language"]
+                    language["code"] == data["language"]
                     for language in list_of_language_codes
                 )
                 if not valid:
-                    print("Language code is invalid.")
+                    print("language code is invalid.")
                     return False
 
-        Contributors = data["Contributor"]
+        contributors = data["contributor"]
 
-        for Contributor in Contributors:
-            if "affilation" in Contributor:
-                affiliations = Contributor["affilation"]
-
-                for affiliation in affiliations:
-                    if (
-                        "affiliationValue" not in affiliation
-                        and "affiliationIdentifier" not in affiliation
-                    ):
-                        print("affiliationValue or affiliationIdentifier is required.")
-                        return False
-
-                    if "affiliationIdentifier" in affiliation:
-                        if "affiliationIdentifierScheme" not in affiliation:
-                            print(
-                                "affiliationIdentifierScheme is required if affiliationIdentifier is provided."  # pylint: disable=line-too-long
-                            )
-                            return False
-
-        Creators = data["Creator"]
-
-        for Creator in Creators:
-            if "affilation" in Creator:
-                affiliations = Creator["affilation"]
+        for contributor in contributors:
+            if "affilation" in contributor:
+                affiliations = contributor["affilation"]
 
                 for affiliation in affiliations:
                     if (
@@ -80,12 +59,31 @@ def validate_dataset_description(data):  # sourcery skip: extract-method
                         print("affiliationValue or affiliationIdentifier is required.")
                         return False
 
-                    if "affiliationIdentifier" in affiliation:
-                        if "affiliationIdentifierScheme" not in affiliation:
-                            print(
-                                "affiliationIdentifierScheme is required if affiliationIdentifier is provided."  # pylint: disable=line-too-long
-                            )
-                            return False
+                    if "affiliationIdentifier" in affiliation and "affiliationIdentifierScheme" not in affiliation:
+                        print(
+                            "affiliationIdentifierScheme is required if affiliationIdentifier is provided."  # pylint: disable=line-too-long
+                        )
+                        return False
+
+        creators = data["creator"]
+
+        for creator in creators:
+            if "affilation" in creator:
+                affiliations = creator["affilation"]
+
+                for affiliation in affiliations:
+                    if (
+                        "affiliationValue" not in affiliation
+                        and "affiliationIdentifier" not in affiliation
+                    ):
+                        print("affiliationValue or affiliationIdentifier is required.")
+                        return False
+
+                    if "affiliationIdentifier" in affiliation and "affiliationIdentifierScheme" not in affiliation:
+                        print(
+                            "affiliationIdentifierScheme is required if affiliationIdentifier is provided."  # pylint: disable=line-too-long
+                        )
+                        return False
 
         return True
     except ValidationError as e:
@@ -99,7 +97,7 @@ def validate_dataset_description(data):  # sourcery skip: extract-method
         raise error
 
 
-def validate_study_description(data):  # sourcery skip: extract-method
+def validate_study_description(data):    # sourcery skip: extract-method, low-code-quality
     """Validate a study description against the schema."""
     schema = {}
 
@@ -256,7 +254,7 @@ def validate_study_description(data):  # sourcery skip: extract-method
                 print("HealthyVolunteers is required for interventional studies.")
                 return False
 
-        if StudyType == "Observational":
+        elif StudyType == "Observational":
             # check if the StudyPopulation key exists and is not empty
             if "StudyPopulation" not in data["EligibilityModule"]:
                 print("StudyPopulation is required for observational studies.")
@@ -275,9 +273,9 @@ def validate_study_description(data):  # sourcery skip: extract-method
                 print("SamplingMethod is required for observational studies.")
                 return False
 
-        if ("CentralContactList" not in data["ContactsLocationsModule"]) or (
-            "CentralContactList" in data["ContactsLocationsModule"]
-            and len(data["ContactsLocationsModule"]["CentralContactList"]) == 0
+        if (
+            "CentralContactList" not in data["ContactsLocationsModule"]
+            or len(data["ContactsLocationsModule"]["CentralContactList"]) == 0
         ):
             LocationList = data["ContactsLocationsModule"]["LocationList"]
 

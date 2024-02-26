@@ -17,11 +17,11 @@ from pyfairdatatools.generate import (
 class TestGenerateDatasetDescription:
     def test_valid_dataset_description(self, tmp_path):
         data = {
-            "Identifier": {
+            "identifier": {
                 "identifierValue": "10.5281/zenodo.1234567",
                 "identifierType": "DOI",
             },
-            "Title": [
+            "title": [
                 {
                     "titleValue": "Main Title",
                 },
@@ -30,14 +30,14 @@ class TestGenerateDatasetDescription:
                     "titleType": "Subtitle",
                 },
             ],
-            "Version": "1.0.0",
-            "AlternateIdentifier": [
+            "version": "1.0.0",
+            "alternateIdentifier": [
                 {
                     "alternateIdentifierValue": "10.5281/zenodo.1234567",
                     "alternateIdentifierType": "DOI",
                 }
             ],
-            "Creator": [
+            "creator": [
                 {
                     "creatorName": "Doe, John",
                     "nameType": "Personal",
@@ -50,6 +50,7 @@ class TestGenerateDatasetDescription:
                     ],
                     "affiliation": [
                         {
+                            "affiliationValue": "White Lotus",
                             "affiliationIdentifier": "https://ror.org/123456789",
                             "affiliationIdentifierScheme": "ROR",
                             "schemeURI": "https://ror.org",
@@ -68,7 +69,7 @@ class TestGenerateDatasetDescription:
                     ],
                 },
             ],
-            "Contributor": [
+            "contributor": [
                 {
                     "contributorType": "ContactPerson",
                     "contributorName": "Doe, John",
@@ -82,6 +83,7 @@ class TestGenerateDatasetDescription:
                     ],
                     "affiliation": [
                         {
+                            "affiliationValue": "White Lotus",
                             "affiliationIdentifier": "https://ror.org/123456789",
                             "affiliationIdentifierScheme": "ROR",
                             "schemeURI": "https://ror.org",
@@ -101,23 +103,20 @@ class TestGenerateDatasetDescription:
                     ],
                 },
             ],
-            "PublicationYear": "2023",
-            "Date": [
+            "publicationYear": "2023",
+            "date": [
                 {
                     "dateValue": "2023-01-01",
                     "dateType": "Collected",
                     "dateInformation": "Some information",
                 }
             ],
-            "ResourceType": {
+            "resourceType": {
                 "resourceTypeValue": "Diabetes",
                 "resourceTypeGeneral": "Dataset",
             },
-            "DatasetRecordKeys": {
-                "keysType": "Anonymised",
-                "keysDetails": "Some details",
-            },
-            "DatasetDeIdentLevel": {
+            "datasetRecordKeys": {"keysType": "Anonymised", "keysDetails": "Some details"},
+            "datasetDeIdentLevel": {
                 "deIdentType": "NoDeIdentification",
                 "deIdentDirect": True,
                 "deIdentHIPAA": True,
@@ -126,7 +125,7 @@ class TestGenerateDatasetDescription:
                 "deIdentKAnon": True,
                 "deIdentDetails": "Some details",
             },
-            "DatasetConsent": {
+            "datasetConsent": {
                 "consentType": "NoRestriction",
                 "consentNoncommercial": True,
                 "consentGeogRestrict": True,
@@ -135,23 +134,23 @@ class TestGenerateDatasetDescription:
                 "consentNoMethods": True,
                 "consentsDetails": "Some details",
             },
-            "Description": [
+            "description": [
                 {"descriptionValue": "Some description", "descriptionType": "Abstract"},
                 {"descriptionValue": "Some description", "descriptionType": "Methods"},
             ],
-            "Language": "en",
-            "RelatedIdentifier": [
+            "language": "en",
+            "relatedIdentifier": [
                 {
                     "relatedIdentifierValue": "10.5281/zenodo.1234567",
                     "relatedIdentifierType": "DOI",
                     "relationType": "HasMetadata",
                     "relatedMetadataScheme": "DataCite",
-                    "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",
+                    "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",  # noqa: E501 pylint: disable=line-too-long
                     "schemeType": "DOI",
                     "resourceTypeGeneral": "Dataset",
                 }
             ],
-            "Subject": [
+            "subject": [
                 {
                     "subjectValue": "Diabetes",
                     "subjectScheme": "MeSH",
@@ -160,27 +159,33 @@ class TestGenerateDatasetDescription:
                     "classificationCode": "E11.9",
                 }
             ],
-            "ManagingOrganisation": {
+            "managingOrganisation": {
                 "name": "Test Organisation",
                 "rorId": "https://ror.org/123456789",
             },
-            "AccessType": "PublicOnScreenAccess",
-            "AccessDetails": {
+            "accessType": "PublicOnScreenAccess",
+            "accessDetails": {
                 "description": "Some description",
                 "url": "https://example.com",
                 "urlLastChecked": "2021-01-01",
             },
-            "Rights": [
+            "rights": [
                 {
-                    "rightsValue": "CC0-1.0",
+                    "rightsName": "CC0-1.0",
                     "rightsURI": "https://creativecommons.org/publicdomain/zero/1.0/",
                     "rightsIdentifier": "CC0-1.0",
                     "rightsIdentifierScheme": "SPDX",
+                    "schemeURI": "https://spdx.org/licenses/",
                 }
             ],
-            "Publisher": "GitHub",
-            "Size": ["15 pages", "15 MB"],
-            "FundingReference": [
+            "publisher": {
+                "publisherName": "Test Publisher",
+                "publisherIdentifier": "04z8jg394",
+                "publisherIdentifierScheme": "ROR",
+                "schemeURI": "https://www.crossref.org/",
+            },
+            "size": ["15 pages", "15 MB"],
+            "fundingReference": [
                 {
                     "funderName": "Test Funder",
                     "funderIdentifier": {
@@ -193,47 +198,6 @@ class TestGenerateDatasetDescription:
                         "awardURI": "https://doi.org/10.13039/501100001711",
                     },
                     "awardTitle": "Test Award",
-                }
-            ],
-            "RelatedItem": [
-                {
-                    "relatedItemType": "Book",
-                    "relationType": "IsMetadataFor",
-                    "relatedItemIdentifier": [
-                        {
-                            "relatedItemIdentifierValue": "10.5281/zenodo.1234567",
-                            "relatedItemIdentifierType": "DOI",
-                            "relatedMetadataScheme": "DataCite",
-                            "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",
-                            "schemeType": "DDT",
-                        }
-                    ],
-                    "creator": [
-                        {
-                            "creatorName": "Doe, John",
-                            "nameType": "Personal",
-                        }
-                    ],
-                    "title": [
-                        {
-                            "titleValue": "Test title",
-                        }
-                    ],
-                    "publicationYear": "2021",
-                    "volume": "1",
-                    "issue": "1",
-                    "number": {"numberValue": "1", "numberType": "Article"},
-                    "firstPage": "1",
-                    "lastPage": "15",
-                    "publisher": "Test Publisher",
-                    "edition": "1",
-                    "contributor": [
-                        {
-                            "contributorType": "Editor",
-                            "contributorName": "Doe, John",
-                            "nameType": "Personal",
-                        }
-                    ],
                 }
             ],
         }
