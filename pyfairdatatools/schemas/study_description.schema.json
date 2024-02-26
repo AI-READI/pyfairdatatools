@@ -1,1335 +1,1430 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schema.aireadi.org/files/study_description.json",
-  "title": "Study Description",
-  "description": "Add a description of the study and the dataset.",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "IdentificationModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "OrgStudyIdInfo": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "OrgStudyId": {
-              "type": "string",
-              "description": "Main unique identifier assigned to the study.",
-              "minLength": 1
-            },
-            "OrgStudyIdType": {
-              "$ref": "#/$defs/studyIdType",
-              "description": "A description of the type of main ID."
-            },
-            "OrgStudyIdDomain": {
-              "type": "string",
-              "description": "If an ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected, provide the name of the funding organization, clinical trial registry, or organization that issued the identifier.  (required if ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected)",
-              "minLength": 1
-            },
-            "OrgStudyIdLink": {
-              "type": "string",
-              "format": "uri",
-              "minLength": 1
-            }
-          },
-          "required": ["OrgStudyId", "OrgStudyIdType"]
-        },
-        "SecondaryIdInfoList": {
-          "type": "array",
-          "items": {
+    "$id": "https://schema.aireadi.org/files/study_description.json",
+    "title": "Study Description",
+    "description": "Add a description of the study and the dataset.",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "IdentificationModule": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "SecondaryId": {
-                "type": "string",
-                "description": "An identifier(s) (ID), if any, other than the main identifier.",
-                "minLength": 1
-              },
-              "SecondaryIdType": {
-                "$ref": "#/$defs/studyIdType",
-                "description": "A description of the type of secondary ID."
-              },
-              "SecondaryIdDomain": {
-                "type": "string",
-                "description": "If an ID Type of 'Other Grant/Funding Number,' 'Registry Identifier,' or 'Other Identifier' is selected, provide the name of the funding organization, clinical trial registry, or organization that issued the identifier. (required if Secondary ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected)",
-                "minLength": 1
-              },
-              "SecondaryIdLink": {
-                "type": "string",
-                "format": "uri",
-                "description": "If the ID has a resolvable link, optionally provide the full link here. For instance, if ID is 'K01HL147713' then the ID link is 'https://reporter.nih.gov/quickSearch/K01HL147713'",
-                "minLength": 1
-              }
-            },
-            "required": ["SecondaryId", "SecondaryIdType"]
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        }
-      },
-      "required": ["OrgStudyIdInfo"]
-    },
-    "StatusModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "OverallStatus": {
-          "$ref": "#/$defs/statusOptions",
-          "description": "The recruitment status for the clinical study as a whole, based upon the status of the individual sites. If at least one facility in a multi-site clinical study has an Individual Site Status of 'Recruiting', then the Overall Recruitment Status for the study must be 'Recruiting'."
-        },
-        "WhyStopped": {
-          "type": "string",
-          "description": "A brief explanation of the reason(s) why such clinical study was stopped (for a clinical study that is 'Suspended', 'Terminated', or 'Withdrawn' prior to its planned completion as anticipated by the protocol). Required if OverallStatus is 'Suspended', 'Terminated', or 'Withdrawn'",
-          "minLength": 1
-        },
-        "StartDateStruct": {
-          "type": "object",
-          "additionalProperties": false,
-          "description": "The estimated date on which the clinical study will be open for recruitment of participants, or the actual date on which the first participant was enrolled. Note: 'Enrolled' means a participant's, or their legally authorized representative's, agreement to participate in a clinical study following completion of the informed consent process. Potential participants who are screened for the purpose of determining eligibility for the study, but do not participate in the study, are not considered enrolled, unless otherwise specified by the protocol.",
-          "properties": {
-            "StartDate": {
-              "type": "string",
-              "description": "Format like 'June 12, 2023'",
-              "minLength": 1
-            },
-            "StartDateType": {
-              "type": "string",
-              "enum": ["Actual", "Anticipated"]
-            }
-          },
-          "required": ["StartDate", "StartDateType"]
-        },
-        "CompletionDateStruct": {
-          "type": "object",
-          "additionalProperties": false,
-          "description": "The date the final participant was examined or received an intervention for purposes of final collection of data (for example, last participant's last visit), whether the clinical study concluded according to the pre-specified protocol or was terminated.",
-          "properties": {
-            "CompletionDate": {
-              "type": "string",
-              "description": "Format like 'June 12, 2023'",
-              "minLength": 1
-            },
-            "CompletionDateType": {
-              "type": "string",
-              "enum": ["Actual", "Anticipated"]
-            }
-          },
-          "required": ["CompletionDate", "CompletionDateType"]
-        }
-      },
-      "required": ["OverallStatus", "StartDateStruct"]
-    },
-    "SponsorCollaboratorsModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "ResponsibleParty": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "ResponsiblePartyType": {
-              "type": "string",
-              "oneOf": [
-                {
-                  "const": "Sponsor",
-                  "description": "The entity (for example, corporation or agency) that initiates the study."
-                },
-                {
-                  "const": "Principal Investigator",
-                  "description": "The individual designated as a responsible party by the sponsor."
-                },
-                {
-                  "const": "Sponsor-Investigator",
-                  "description": "The individual who both initiates and conducts the study."
-                }
-              ]
-            },
-            "ResponsiblePartyInvestigatorFullName": {
-              "type": "string",
-              "description": "Name of the investigator, including first and last name. (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
-              "minLength": 1,
-              "examples": ["John Smith"]
-            },
-            "ResponsiblePartyInvestigatorTitle": {
-              "type": "string",
-              "description": "Professional title of the investigator (for example, Professor of Medicine). (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
-              "minLength": 1,
-              "examples": ["Professor of Medicine"]
-            },
-            "ResponsiblePartyInvestigatorAffiliation": {
-              "type": "string",
-              "description": "Name of the organization to which the investigator is affiliated. (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
-              "minLength": 1,
-              "examples": ["University of California, San Diego"]
-            }
-          },
-          "required": ["ResponsiblePartyType"]
-        },
-        "LeadSponsor": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "LeadSponsorName": {
-              "type": "string",
-              "description": "The name of the entity or the individual who is the sponsor of the clinical study. Note: When a clinical study is conducted under an investigational new drug application (IND) or investigational device exemption (IDE), the IND or IDE holder is considered the sponsor. When a clinical study is not conducted under an IND or IDE, the single person or entity who initiates the study, by preparing and/or planning the study, and who has authority and control over the study, is considered the sponsor.",
-              "minLength": 1
-            }
-          },
-          "required": ["LeadSponsorName"]
-        },
-        "CollaboratorList": {
-          "type": "array",
-          "description": "Other organizations (if any) providing support. Support may include funding, design, implementation, data analysis or reporting. The responsible party is responsible for confirming all collaborators before listing them.",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "CollaboratorName": {
-                "type": "string",
-                "description": "The name of the entity or the individual who is the collaborator of the clinical study."
-              }
-            },
-            "required": ["CollaboratorName"]
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        }
-      },
-      "required": ["ResponsibleParty", "LeadSponsor"]
-    },
-    "OversightModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "OversightHasDMC": {
-          "type": "string",
-          "description": "Indicate whether a data monitoring committee has been appointed for this study. The data monitoring committee (board) is a group of independent scientists who are appointed to monitor the safety and scientific integrity of a human research intervention, and to make recommendations to the sponsor regarding the stopping of the trial for efficacy, for harms or for futility. The composition of the committee is dependent upon the scientific skills and knowledge required for monitoring the particular study. Select Yes/No.",
-          "enum": ["Yes", "No"]
-        }
-      }
-    },
-    "DescriptionModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "BriefSummary": {
-          "type": "string",
-          "description": "A short description of the clinical study, written in language intended for the lay public. Limit: 5000 characters",
-          "minLength": 1
-        },
-        "DetailedDescription": {
-          "type": "string",
-          "description": "Extended description of the study, including more technical information (as compared to the Brief Summary), if desired. Do not include the entire protocol; do not duplicate information recorded in other data elements, such as Eligibility Criteria or outcome measures.For Patient Registries: Also describe the applicable registry procedures and other quality factors (for example, third party certification, on-site audit). In particular, summarize any procedures implemented as part of the patient registry, including, but not limited to the following: Quality assurance plan that addresses data validation and registry procedures, including any plans for site monitoring and auditing. Data checks to compare data entered into the registry against predefined rules for range or consistency with other data fields in the registry. Source data verification to assess the accuracy, completeness, or representativeness of registry data by comparing the data to external data sources (for example, medical records, paper or electronic case report forms, or interactive voice response systems). Data dictionary that contains detailed descriptions of each variable used by the registry, including the source of the variable, coding information if used (for example, World Health Organization Drug Dictionary, MedDRA), and normal ranges if relevant. Standard Operating Procedures to address registry operations and analysis activities, such as patient recruitment, data collection, data management, data analysis, reporting for adverse events, and change management. Sample size assessment to specify the number of participants or participant years necessary to demonstrate an effect. Plan for missing data to address situations where variables are reported as missing, unavailable, non-reported, uninterpretable, or considered missing because of data inconsistency or out-of-range results. Statistical analysis plan describing the analytical principles and statistical techniques to be employed in order to address the primary and secondary objectives, as specified in the study protocol or plan.",
-          "minLength": 1
-        }
-      },
-      "required": ["BriefSummary"]
-    },
-    "ConditionsModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "ConditionList": {
-          "type": "array",
-          "description": "The name(s) of the disease(s) or condition(s) studied in the clinical study, or the focus of the clinical study. Use, if available, appropriate descriptors from NLM's Medical Subject Headings (MeSH)-controlled vocabulary thesaurus or terms from another vocabulary, such as the Systematized Nomenclature of Medicine—Clinical Terms (SNOMED CT), that has been mapped to MeSH within the Unified Medical Language System (UMLS) Metathesaurus.",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "KeywordList": {
-          "type": "array",
-          "description": "Words or phrases that best describe the study. Keywords help users find studies in the database. Use NLM's Medical Subject Heading (MeSH)-controlled vocabulary terms where appropriate. Be as specific and precise as possible. Avoid acronyms and abbreviations.",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        }
-      },
-      "required": ["ConditionList"]
-    },
-    "DesignModule": {
-      "type": "object",
-      "required": ["StudyType"],
-      "properties": {
-        "StudyType": {
-          "type": "string",
-          "description": "The type of study being registered.",
-          "oneOf": [
-            {
-              "const": "Interventional",
-              "description": "A clinical trial. Participants are assigned prospectively to an intervention or interventions according to a protocol to evaluate the effect of the intervention(s) on biomedical or other health related outcomes."
-            },
-            {
-              "const": "Observational",
-              "description": "Studies in human beings in which biomedical and/or health outcomes are assessed in pre-defined groups of individuals. Participants in the study may receive diagnostic, therapeutic, or other interventions, but the investigator does not assign specific interventions to the study participants. This includes when participants receive interventions as part of routine medical care, and a researcher studies the effect of the intervention."
-            },
-            {
-              "const": "Observational Patient Registry",
-              "description": "An observational study that is also considered to be a Patient Registry. Note: The Agency for Healthcare Research and Quality (AHRQ) defines a Patient Registry as including an organized system that uses observational methods to collect uniform data (clinical and other) prospectively for a population defined by a particular disorder/disease, condition (including susceptibility to a disorder), or exposure (including products, healthcare services, and/or procedures) and that serves a predetermined scientific, clinical, or policy purpose. Patient registries may be single purpose or on-going data collection programs that address one or more questions."
-            },
-            {
-              "const": "Expanded Access",
-              "description": "An investigational drug product (including biological product) available through expanded access for patients who do not qualify for enrollment in a clinical trial. Expanded Access includes all expanded access types under section 561 of the Federal Food, Drug, and Cosmetic Act: (1) for individual patients, including emergency use; (2) for intermediate-size patient populations; and (3) under a treatment IND or treatment protocol. (For more information on data requirements for this Study Type, see Expanded Access Data Element $defs)."
-            }
-          ]
-        }
-      },
-      "allOf": [
-        {
-          "if": {
-            "properties": {
-              "StudyType": {
-                "const": "Interventional"
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "DesignInfo": {
-                "type": "object",
-                "description": "A description of the manner in which the clinical trial will be conducted.",
-                "additionalProperties": false,
-                "properties": {
-                  "DesignAllocation": {
-                    "type": "string",
-                    "description": "The process by which participants are assigned to a clinical study. Types of allocation include randomized and nonrandomized. Interventions in a nonrandomized study are not assigned randomly.",
-                    "oneOf": [
-                      {
-                        "const": "N/A",
-                        "description": "For a single-arm trial"
-                      },
-                      {
-                        "const": "Randomized",
-                        "description": "Participants are assigned to intervention groups by chance."
-                      },
-                      {
-                        "const": "Non-randomized",
-                        "description": "Participants are expressly assigned to intervention groups through a non-random method, such as physician choice."
-                      }
-                    ]
-                  },
-                  "DesignInterventionModel": {
-                    "type": "string",
-                    "description": "The strategy for assigning interventions to participants.",
-                    "oneOf": [
-                      {
-                        "const": "Treatment",
-                        "description": "One or more interventions are being evaluated for treating a disease, syndrome, or condition."
-                      },
-                      {
-                        "const": "Prevention",
-                        "description": "One or more interventions are being assessed for preventing the development of a specific disease or health condition."
-                      },
-                      {
-                        "const": "Diagnostic",
-                        "description": "One or more interventions are being evaluated for identifying a disease or health condition."
-                      },
-                      {
-                        "const": "Supportive Care",
-                        "description": "One or more interventions are evaluated for maximizing comfort, minimizing side effects, or mitigating against a decline in the participant's health or function."
-                      },
-                      {
-                        "const": "Screening",
-                        "description": "One or more interventions are assessed or examined for identifying a condition, or risk factors for a condition, in people who are not yet known to have the condition or risk factor."
-                      },
-                      {
-                        "const": "Health Services Research",
-                        "description": "One or more interventions for evaluating the delivery, processes, management, organization, or financing of healthcare."
-                      },
-                      {
-                        "const": "Basic Science",
-                        "description": "One or more interventions for examining the basic mechanism of action (for example, physiology or biomechanics of an intervention)."
-                      },
-                      {
-                        "const": "Device Feasibility",
-                        "description": "An intervention of a device product is being evaluated in a small clinical trial (generally fewer than 10 participants) to determine the feasibility of the product, or a clinical trial to test a prototype device for feasibility and not health outcomes."
-                      }
-                    ]
-                  },
-                  "DesignInterventionModelDescription": {
-                    "type": "string",
-                    "description": "Provide details about the Interventional Study Model",
-                    "minLength": 1
-                  },
-                  "DesignPrimaryPurpose": {
-                    "type": "string",
-                    "description": "The main objective of the intervention(s) being evaluated by the clinical trial.",
-                    "oneOf": [
-                      {
-                        "const": "Single Group Assignment",
-                        "description": "Clinical trials with a single arm."
-                      },
-                      {
-                        "const": "Parallel Assignment",
-                        "description": "Participants are assigned to one of two or more groups in parallel for the duration of the study."
-                      },
-                      {
-                        "const": "Crossover Assignment",
-                        "description": "Participants receive one of two (or more) alternative interventions during the initial phase of the study and receive the other intervention during the second phase of the study."
-                      },
-                      {
-                        "const": "Factorial Assignment",
-                        "description": "Two or more interventions, each alone and in combination, are evaluated in parallel against a control group."
-                      },
-                      {
-                        "const": "Sequential Assignment",
-                        "description": "Groups of participants are assigned to receive interventions based on prior milestones being reached in the study, such as in some dose escalation and adaptive design studies."
-                      }
-                    ]
-                  },
-                  "DesignMaskingInfo": {
+                "OrgStudyIdInfo": {
                     "type": "object",
-                    "description": " The party or parties involved in the clinical trial who are prevented from having knowledge of the interventions assigned to individual participants.",
                     "additionalProperties": false,
                     "properties": {
-                      "DesignMasking": {
-                        "type": "string",
-                        "oneOf": [
-                          {
-                            "const": "None (open label)"
-                          },
-                          {
-                            "const": "Blinded (no details)",
-                            "description": "From a statement that says the study was blinded, but where the degree of blinding was not provided"
-                          },
-                          {
-                            "const": "Single"
-                          },
-                          {
-                            "const": "Double"
-                          },
-                          {
-                            "const": "Triple"
-                          },
-                          {
-                            "const": "Quadruple"
-                          },
-                          {
-                            "const": "N/A",
-                            "description": "Explicitly labeled as not applicable - usually because the study is non-interventional"
-                          }
-                        ]
-                      },
-                      "DesignMaskingDescription": {
-                        "type": "string",
-                        "description": "Provide information about other parties who may be masked in the clinical trial, if any.",
-                        "minLength": 1
-                      },
-                      "DesignWhoMaskedList": {
-                        "type": "array",
-                        "items": {
-                          "type": "string",
-                          "oneOf": [
-                            {
-                              "const": "Participant"
-                            },
-                            {
-                              "const": "Care Provider"
-                            },
-                            {
-                              "const": "Investigator"
-                            },
-                            {
-                              "const": "Outcomes Assessor",
-                              "description": "The individual who evaluates the outcome(s) of interest"
-                            }
-                          ]
+                        "OrgStudyId": {
+                            "type": "string",
+                            "description": "Main unique identifier assigned to the study.",
+                            "minLength": 1
                         },
-                        "minItems": 1,
-                        "uniqueItems": true
-                      }
-                    },
-                    "required": ["DesignMasking", "DesignWhoMaskedList"]
-                  }
-                },
-                "required": [
-                  "DesignAllocation",
-                  "DesignInterventionModel",
-                  "DesignPrimaryPurpose",
-                  "DesignMaskingInfo"
-                ]
-              },
-              "PhaseList": {
-                "type": "array",
-                "description": "For a clinical trial of a drug product (including a biological product), the numerical phase of such clinical trial, consistent with terminology in 21 CFR 312.21 and in 21 CFR 312.85 for phase 4 studies. Select only one.",
-                "items": {
-                  "type": "string",
-                  "oneOf": [
-                    {
-                      "const": "N/A",
-                      "description": "Trials without phases (for example, studies of devices or behavioural interventions)."
-                    },
-                    {
-                      "const": "Early Phase 1",
-                      "description": "Exploratory trials, involving very limited human exposure, with no therapeutic or diagnostic intent (e.g., screening studies, microdose studies)."
-                    },
-                    {
-                      "const": "Phase 1",
-                      "description": "Initial studies to determine the metabolism and pharmacologic actions of drugs in humans, side effects, and to gain early evidence of effectiveness; may include healthy participants and/or patients."
-                    },
-                    {
-                      "const": "Phase 1/2",
-                      "description": "Trials that are a combination of phases 1 and 2."
-                    },
-                    {
-                      "const": "Phase 2",
-                      "description": "Controlled clinical studies conducted to evaluate the effectiveness of the intervention for a particular indication in participants with the disease or condition under study, and to determine the common short-term side effects and risks."
-                    },
-                    {
-                      "const": "Phase 2/3",
-                      "description": "Trials that are a combination of phases 2 and 3."
-                    },
-                    {
-                      "const": "Phase 3",
-                      "description": "Trials conducted after preliminary evidence suggesting effectiveness of the drug has been obtained, and are intended to gather additional information to evaluate the overall benefit-risk relationship of the drug."
-                    },
-                    {
-                      "const": "Phase 4",
-                      "description": "Studies of approved drugs to delineate additional information including the drug's risks, benefits, and optimal use."
-                    }
-                  ]
-                },
-                "minItems": 1,
-                "maxItems": 1,
-                "uniqueItems": true
-              },
-              "EnrollmentInfo": {
-                "$ref": "#/$defs/enrollmentInfo"
-              },
-              "NumberArms": {
-                "type": "string",
-                "pattern": "^[0-9]+$",
-                "minLength": 1,
-                "description": "The number of arms in the clinical trial. For a trial with multiple periods or phases that have different numbers of arms, the maximum number of arms during all periods or phases. Note: 'Arm' means a pre-specified group or subgroup of participant(s) in a clinical trial assigned to receive specific intervention(s) (or no intervention) according to a protocol. The minimum value is '1'"
-              }
-            },
-            "required": [
-              "DesignInfo",
-              "PhaseList",
-              "EnrollmentInfo",
-              "NumberArms"
-            ]
-          }
-        },
-        {
-          "if": {
-            "properties": {
-              "StudyType": {
-                "const": "Observational"
-              }
-            }
-          },
-          "then": {
-            "properties": {
-              "DesignInfo": {
-                "type": "object",
-                "description": "A description of the manner in which the observational study will be conducted",
-                "additionalProperties": false,
-                "properties": {
-                  "DesignObservationalModelList": {
-                    "type": "array",
-                    "description": "Primary strategy for participant identification and follow-up.",
-                    "items": {
-                      "type": "string",
-                      "oneOf": [
-                        {
-                          "const": "Cohort",
-                          "description": "Group of individuals, initially defined and composed, with common characteristics (for example, condition, birth year), who are examined or traced over a given time period."
+                        "OrgStudyIdType": {
+                            "$ref": "#/definitions/studyIdType",
+                            "description": "A description of the type of main ID."
                         },
-                        {
-                          "const": "Case-Control",
-                          "description": "Group of individuals with specific characteristics (for example, conditions or exposures) compared to group(s) with different characteristics, but otherwise similar."
+                        "OrgStudyIdDomain": {
+                            "type": "string",
+                            "description": "If an ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected, provide the name of the funding organization, clinical trial registry, or organization that issued the identifier.  (required if ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected)",
+                            "minLength": 1
                         },
-                        {
-                          "const": "Case-Only",
-                          "description": "Single group of individuals with specific characteristics."
-                        },
-                        {
-                          "const": "Case-Crossover",
-                          "description": "Characteristics of a case immediately prior to disease onset (sometimes called the hazard period) compared to characteristics of the same case at a prior time (that is, control period)."
-                        },
-                        {
-                          "const": "Ecologic or Community",
-                          "description": "Geographically defined populations, such as countries or regions within a country, compared on a variety of environmental (for example, air pollution intensity, hours of sunlight) and/or global measures not reducible to individual-level characteristics (for example, healthcare system, laws or policies median income, average fat intake, disease rate)."
-                        },
-                        {
-                          "const": "Family-Based",
-                          "description": "Studies conducted among family members, such as genetic studies within families or twin studies and studies of a family environment."
-                        },
-                        {
-                          "const": "Other",
-                          "description": "Explain in Detailed Description.."
+                        "OrgStudyIdLink": {
+                            "type": "string",
+                            "description": "If the ID has a resolvable link, optionally provide the full link here. For instance, if ID is 'K01HL147713' then the ID link is 'https://reporter.nih.gov/quickSearch/K01HL147713'",
+                            "format": "uri",
+                            "minLength": 1
                         }
-                      ]
                     },
-                    "minItems": 1,
-                    "uniqueItems": true
-                  },
-                  "DesignTimePerspectiveList": {
-                    "type": "array",
-                    "description": "Temporal relationship of the observation period to the time of participant enrollment.",
-                    "items": {
-                      "type": "string",
-                      "oneOf": [
-                        {
-                          "const": "Retrospective",
-                          "description": "Look back using observations collected predominantly prior to subject selection and enrollment."
-                        },
-                        {
-                          "const": "Prospective",
-                          "description": "Look forward using periodic observations collected predominantly following subject enrollment."
-                        },
-                        {
-                          "const": "Cross-sectional",
-                          "description": "Observations or measurements made at a single point in time, usually at subject enrollment."
-                        },
-                        {
-                          "const": "Other",
-                          "description": "Explain in Detailed Description."
-                        }
-                      ]
-                    },
-                    "minItems": 1,
-                    "uniqueItems": true
-                  }
-                },
-                "required": [
-                  "DesignObservationalModelList",
-                  "DesignTimePerspectiveList"
-                ]
-              },
-              "BioSpec": {
-                "type": "object",
-                "additionalProperties": false,
-                "properties": {
-                  "BioSpecRetention": {
-                    "type": "string",
-                    "description": "Indicate whether samples of material from research participants are retained in a biorepository.",
-                    "oneOf": [
-                      {
-                        "const": "None Retained",
-                        "description": "No samples retained"
-                      },
-                      {
-                        "const": "Samples With DNA",
-                        "description": "Samples retained, with potential for extraction of DNA from at least one of the types of samples retained (e.g., frozen tissue, whole blood)"
-                      },
-                      {
-                        "const": "Samples Without DNA",
-                        "description": "Samples retained, with no potential for DNA extraction from any retained samples (e.g., fixed tissue, plasma)"
-                      }
+                    "required": [
+                        "OrgStudyId",
+                        "OrgStudyIdType"
                     ]
-                  },
-                  "BioSpecDescription": {
+                },
+                "SecondaryIdInfoList": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "SecondaryId": {
+                                "type": "string",
+                                "description": "An identifier(s) (ID), if any, other than the main identifier.",
+                                "minLength": 1
+                            },
+                            "SecondaryIdType": {
+                                "$ref": "#/definitions/studyIdType",
+                                "description": "A description of the type of secondary ID."
+                            },
+                            "SecondaryIdDomain": {
+                                "type": "string",
+                                "description": "If an ID Type of 'Other Grant/Funding Number,' 'Registry Identifier,' or 'Other Identifier' is selected, provide the name of the funding organization, clinical trial registry, or organization that issued the identifier. (required if Secondary ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected)",
+                                "minLength": 1
+                            },
+                            "SecondaryIdLink": {
+                                "type": "string",
+                                "format": "uri",
+                                "description": "If the ID has a resolvable link, optionally provide the full link here. For instance, if ID is 'K01HL147713' then the ID link is 'https://reporter.nih.gov/quickSearch/K01HL147713'",
+                                "minLength": 1
+                            }
+                        },
+                        "required": [
+                            "SecondaryId",
+                            "SecondaryIdType"
+                        ]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                }
+            },
+            "required": [
+                "OrgStudyIdInfo"
+            ]
+        },
+        "StatusModule": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "OverallStatus": {
+                    "$ref": "#/definitions/statusOptions",
+                    "description": "The recruitment status for the clinical study as a whole, based upon the status of the individual sites. If at least one facility in a multi-site clinical study has an Individual Site Status of 'Recruiting', then the Overall Recruitment Status for the study must be 'Recruiting'."
+                },
+                "WhyStopped": {
                     "type": "string",
-                    "description": "Specify all types of biospecimens to be retained (e.g., whole blood, serum, white cells, urine, tissue).",
+                    "description": "A brief explanation of the reason(s) why such clinical study was stopped (for a clinical study that is 'Suspended', 'Terminated', or 'Withdrawn' prior to its planned completion as anticipated by the protocol). Required if OverallStatus is 'Suspended', 'Terminated', or 'Withdrawn'",
                     "minLength": 1
-                  }
                 },
-                "required": ["BioSpecRetention"]
-              },
-              "EnrollmentInfo": {
-                "$ref": "#/$defs/enrollmentInfo"
-              },
-              "TargetDuration": {
-                "type": "string",
-                "description": "For Patient Registries, the anticipated time period over which each participant is to be followed.",
-                "minLength": 1,
-                "examples": ["3 Years", "5 Days", "10 Weeks"]
-              },
-              "NumberGroupsCohorts": {
-                "type": "string",
-                "pattern": "^[0-9]+$",
-                "minLength": 1,
-                "description": "Number of study groups/cohorts. Enter `1` for a single-group study. Many observational studies have one group/cohort; case control studies typically have two. The minimum value is '1'."
-              }
+                "StartDateStruct": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "description": "The estimated date on which the clinical study will be open for recruitment of participants, or the actual date on which the first participant was enrolled. Note: 'Enrolled' means a participant's, or their legally authorized representative's, agreement to participate in a clinical study following completion of the informed consent process. Potential participants who are screened for the purpose of determining eligibility for the study, but do not participate in the study, are not considered enrolled, unless otherwise specified by the protocol.",
+                    "properties": {
+                        "StartDate": {
+                            "type": "string",
+                            "description": "Format like 'June 12, 2023'",
+                            "minLength": 1
+                        },
+                        "StartDateType": {
+                            "type": "string",
+                            "enum": [
+                                "Actual",
+                                "Anticipated"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "StartDate",
+                        "StartDateType"
+                    ]
+                },
+                "CompletionDateStruct": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "description": "The date the final participant was examined or received an intervention for purposes of final collection of data (for example, last participant's last visit), whether the clinical study concluded according to the pre-specified protocol or was terminated.",
+                    "properties": {
+                        "CompletionDate": {
+                            "type": "string",
+                            "description": "Format like 'June 12, 2023'",
+                            "minLength": 1
+                        },
+                        "CompletionDateType": {
+                            "type": "string",
+                            "enum": [
+                                "Actual",
+                                "Anticipated"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "CompletionDate",
+                        "CompletionDateType"
+                    ]
+                }
             },
             "required": [
-              "DesignInfo",
-              "EnrollmentInfo",
-              "TargetDuration",
-              "NumberGroupsCohorts"
+                "OverallStatus",
+                "StartDateStruct",
+                "CompletionDateStruct"
             ]
-          }
-        }
-      ]
-    },
-    "ArmsInterventionsModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "ArmGroupList": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "description": "If the study is interventional: A description of each arm of the clinical trial that indicates its role in the clinical trial; provides an informative title; and, if necessary, additional descriptive information (including which interventions are administered in each arm) to differentiate each arm from other arms in the clinical trial. || If the study is observational: Specify the predefined participant groups (cohorts) to be studied, corresponding to Number of Groups specified under Study Design (for single-group studies, the following data elements are optional). Do not use this section to specify strata (Detailed Description can be used for that purpose, if desired).",
-            "additionalProperties": false,
-            "properties": {
-              "ArmGroupLabel": {
-                "type": "string",
-                "minLength": 1
-              },
-              "ArmGroupType": {
-                "type": "string",
-                "description": "required if study type is interventional",
-                "enum": [
-                  "Experimental",
-                  "Active Comparator",
-                  "Placebo Comparator",
-                  "Sham Comparator",
-                  "No Intervention",
-                  "Other"
-                ]
-              },
-              "ArmGroupDescription": {
-                "type": "string",
-                "minLength": 1
-              },
-              "ArmGroupInterventionList": {
-                "type": "array",
-                "description": "required if study type is interventional and there is more than one intervention",
-                "items": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "minItems": 1,
-                "uniqueItems": true
-              }
-            },
-            "required": ["ArmGroupLabel"]
-          },
-          "minItems": 1,
-          "uniqueItems": true
         },
-        "InterventionList": {
-          "type": "array",
-          "description": "Specify the intervention(s) associated with each arm or group; at least one intervention must be specified for interventional studies. For observational studies, specify the intervention(s)/exposure(s) of interest, if any. If the same intervention is associated with more than one arm or group, provide the information once and use the Arm or Group/Intervention Cross-Reference to associate it with more than one arm or group.",
-          "items": {
+        "SponsorCollaboratorsModule": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "InterventionType": {
-                "type": "string",
-                "description": "For each intervention studied in the clinical study, the general type of intervention. Select one.",
-                "oneOf": [
-                  {
-                    "const": "Drug",
-                    "description": "Including placebo"
-                  },
-                  {
-                    "const": "Device",
-                    "description": "Including sham"
-                  },
-                  {
-                    "const": "Biological/Vaccine",
-                    "description": ""
-                  },
-                  {
-                    "const": "Procedure/Surgery",
-                    "description": ""
-                  },
-                  {
-                    "const": "Radiation",
-                    "description": ""
-                  },
-                  {
-                    "const": "Behavioral",
-                    "description": "For example, psychotherapy, lifestyle counseling"
-                  },
-                  {
-                    "const": "Genetic",
-                    "description": "Including gene transfer, stem cell and recombinant DNA"
-                  },
-                  {
-                    "const": "Dietary Supplement",
-                    "description": "For example, vitamins, minerals"
-                  },
-                  {
-                    "const": "Combination Product",
-                    "description": "Combining a drug and device, a biological product and device; a drug and biological product; or a drug, biological product, and device"
-                  },
-                  {
-                    "const": "Diagnostic Test",
-                    "description": "For example, imaging, in-vitro"
-                  },
-                  {
-                    "const": "Other",
-                    "description": ""
-                  }
-                ]
-              },
-              "InterventionName": {
-                "type": "string",
-                "description": "A brief descriptive name used to refer to the intervention(s) studied in each arm of the clinical study. A non-proprietary name of the intervention must be used, if available. If a non-proprietary name is not available, a brief descriptive name or identifier must be used.",
-                "minLength": 1
-              },
-              "InterventionDescription": {
-                "type": "string",
-                "description": "Details that can be made public about the intervention, other than the Intervention Name(s) and Other Intervention Name(s), sufficient to distinguish the intervention from other, similar interventions studied in the same or another clinical study. For example, interventions involving drugs may include dosage form, dosage, frequency, and duration",
-                "minLength": 1
-              },
-              "InterventionArmGroupLabelList": {
-                "type": "array",
-                "description": "The name of the arm or group associated with the intervention studied in this clinical study. At least one Arm Group Label must be provided.",
-                "items": {
-                  "type": "string",
-                  "minLength": 1
+                "ResponsibleParty": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "ResponsiblePartyType": {
+                            "type": "string",
+                            "oneOf": [
+                                {
+                                    "const": "Sponsor",
+                                    "description": "The entity (for example, corporation or agency) that initiates the study."
+                                },
+                                {
+                                    "const": "Principal Investigator",
+                                    "description": "The individual designated as a responsible party by the sponsor."
+                                },
+                                {
+                                    "const": "Sponsor-Investigator",
+                                    "description": "The individual who both initiates and conducts the study."
+                                }
+                            ]
+                        },
+                        "ResponsiblePartyInvestigatorFullName": {
+                            "type": "string",
+                            "description": "Name of the investigator, including first and last name. (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
+                            "minLength": 1,
+                            "examples": [
+                                "John Smith"
+                            ]
+                        },
+                        "ResponsiblePartyInvestigatorTitle": {
+                            "type": "string",
+                            "description": "Professional title of the investigator (for example, Professor of Medicine). (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
+                            "minLength": 1,
+                            "examples": [
+                                "Professor of Medicine"
+                            ]
+                        },
+                        "ResponsiblePartyInvestigatorAffiliation": {
+                            "type": "string",
+                            "description": "Name of the organization to which the investigator is affiliated. (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
+                            "minLength": 1,
+                            "examples": [
+                                "University of California, San Diego"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "ResponsiblePartyType"
+                    ]
                 },
-                "minItems": 1,
-                "uniqueItems": true
-              },
-              "InterventionOtherNameList": {
-                "type": "array",
-                "description": "Other current and former name(s) or alias(es), if any, different from the Intervention Name(s), that the sponsor has used publicly to identify the intervention(s), including, but not limited to, past or present names such as brand name(s), or serial numbers.",
-                "items": {
-                  "type": "string",
-                  "minLength": 1
+                "LeadSponsor": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "LeadSponsorName": {
+                            "type": "string",
+                            "description": "The name of the entity or the individual who is the sponsor of the clinical study. Note: When a clinical study is conducted under an investigational new drug application (IND) or investigational device exemption (IDE), the IND or IDE holder is considered the sponsor. When a clinical study is not conducted under an IND or IDE, the single person or entity who initiates the study, by preparing and/or planning the study, and who has authority and control over the study, is considered the sponsor.",
+                            "minLength": 1
+                        }
+                    },
+                    "required": [
+                        "LeadSponsorName"
+                    ]
                 },
-                "minItems": 1,
-                "uniqueItems": true
-              }
+                "CollaboratorList": {
+                    "type": "array",
+                    "description": "Other organizations (if any) providing support. Support may include funding, design, implementation, data analysis or reporting. The responsible party is responsible for confirming all collaborators before listing them.",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "CollaboratorName": {
+                                "type": "string",
+                                "description": "The name of the entity or the individual who is the collaborator of the clinical study."
+                            }
+                        },
+                        "required": [
+                            "CollaboratorName"
+                        ]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                }
             },
             "required": [
-              "InterventionType",
-              "InterventionName",
-              "InterventionArmGroupLabelList"
+                "ResponsibleParty",
+                "LeadSponsor"
             ]
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        }
-      },
-      "required": ["ArmGroupList", "InterventionList"]
-    },
-    "EligibilityModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "Gender": {
-          "type": "string",
-          "description": "The sex and, if applicable, gender of the participants eligible to participate in the clinical study. The sex of the participants eligible to participate in the clinical study. Note: 'Sex' means a person's classification as male or female based on biological distinctions.",
-          "oneOf": [
-            {
-              "const": "All",
-              "description": "Indicates no limit on eligibility based on the sex of participants"
-            },
-            {
-              "const": "Female",
-              "description": "Indicates that only female participants are being studied"
-            },
-            {
-              "const": "Male",
-              "description": "Indicates that only male participants are being studied"
+        },
+        "OversightModule": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "OversightHasDMC": {
+                    "type": "string",
+                    "description": "Indicate whether a data monitoring committee has been appointed for this study. The data monitoring committee (board) is a group of independent scientists who are appointed to monitor the safety and scientific integrity of a human research intervention, and to make recommendations to the sponsor regarding the stopping of the trial for efficacy, for harms or for futility. The composition of the committee is dependent upon the scientific skills and knowledge required for monitoring the particular study. Select Yes/No.",
+                    "enum": [
+                        "Yes",
+                        "No"
+                    ]
+                }
             }
-          ]
         },
-        "GenderBased": {
-          "type": "string",
-          "description": "If applicable, indicate whether participant eligibility is based on gender. Note: 'Gender' means a person's self-representation of gender identity.",
-          "enum": ["Yes", "No"]
-        },
-        "GenderDescription": {
-          "type": "string",
-          "description": "If eligibility is based on gender, provide descriptive information about Gender criteria."
-        },
-        "MinimumAge": {
-          "type": "string",
-          "description": "The numerical value, if any, for the minimum age a potential participant must meet to be eligible for the clinical study. Include a whole number followed by units, if no limit use 'N/A' - see controlled values for units",
-          "pattern": "^[0-9]+(\\.[0-9]+)?\\s*(Years|Months|Weeks|Days|Hours|N/A)?$",
-          "minLength": 1
-        },
-        "MaximumAge": {
-          "type": "string",
-          "description": "The numerical value, if any, for the maximum age a potential participant must meet to be eligible for the clinical study. Include a whole number followed by units, if no limit use 'N/A' - see controlled values for units",
-          "pattern": "^[0-9]+(\\.[0-9]+)?\\s*(Years|Months|Weeks|Days|Hours|N/A)?$",
-          "minLength": 1
-        },
-        "HealthyVolunteers": {
-          "type": "string",
-          "description": "Indication that participants who do not have a disease or condition, or related conditions or symptoms, under study in the clinical study are permitted to participate in the clinical study. Required if the study type is Interventional.",
-          "enum": ["Yes", "No"]
-        },
-        "EligibilityCriteria": {
-          "type": "string",
-          "description": "A limited list of criteria for selection of participants in the clinical study, provided in terms of inclusion and exclusion criteria and suitable for assisting potential participants in identifying clinical studies of interest. Use a bulleted list for each criterion below the headers 'Inclusion Criteria' and 'Exclusion Criteria'",
-          "minLength": 1
-        },
-        "StudyPopulation": {
-          "type": "string",
-          "description": "A description of the population from which the groups or cohorts will be selected (for example, primary care clinic, community sample, residents of a certain town). Required for observational studies.",
-          "minLength": 1
-        },
-        "SamplingMethod": {
-          "type": "string",
-          "description": "The method used to select participants to be studied. Required for observational studies.",
-          "oneOf": [
-            {
-              "const": "Probability Sample",
-              "description": "Exclusively random process to guarantee that each participant or population has specified chance of selection, such as simple random sampling, systematic sampling, stratified random sampling, cluster sampling, and consecutive participant sampling"
-            },
-            {
-              "const": "Non-Probability Sample",
-              "description": "Any of a variety of other sampling processes, such as convenience sampling or invitation to volunteer"
-            }
-          ]
-        }
-      },
-      "required": [
-        "Gender",
-        "GenderBased",
-        "MinimumAge",
-        "MaximumAge",
-        "EligibilityCriteria"
-      ]
-    },
-    "ContactsLocationsModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "CentralContactList": {
-          "type": "array",
-          "description": "The name or title, toll-free telephone number, and email address of a person to whom questions concerning enrollment at any location of the study can be addressed.",
-          "items": {
+        "DescriptionModule": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "CentralContactName": {
-                "type": "string",
-                "minLength": 1
-              },
-              "CentralContactAffiliation": {
-                "type": "string",
-                "description": "If none, specify Unaffiliated.",
-                "minLength": 1
-              },
-              "CentralContactPhone": {
-                "type": "string",
-                "description": "Toll-free phone number of the Central Contact Person. Use the format 800-555-5555 within the United States and Canada. If outside the United States and Canada, provide the full phone number, including the country code. 30 characters",
-                "minLength": 1,
-                "maxLength": 30
-              },
-              "CentralContactPhoneExt": {
-                "type": "string",
-                "description": "phone extension, if needed.",
-                "minLength": 1
-              },
-              "CentralContactEMail": {
-                "type": "string",
-                "description": "Email address of the Central Contact Person",
-                "minLength": 1
-              }
+                "BriefSummary": {
+                    "type": "string",
+                    "description": "A short description of the clinical study, written in language intended for the lay public. Limit: 5000 characters",
+                    "minLength": 1
+                },
+                "DetailedDescription": {
+                    "type": "string",
+                    "description": "Extended description of the study, including more technical information (as compared to the Brief Summary), if desired. Do not include the entire protocol; do not duplicate information recorded in other data elements, such as Eligibility Criteria or outcome measures.For Patient Registries: Also describe the applicable registry procedures and other quality factors (for example, third party certification, on-site audit). In particular, summarize any procedures implemented as part of the patient registry, including, but not limited to the following: Quality assurance plan that addresses data validation and registry procedures, including any plans for site monitoring and auditing. Data checks to compare data entered into the registry against predefined rules for range or consistency with other data fields in the registry. Source data verification to assess the accuracy, completeness, or representativeness of registry data by comparing the data to external data sources (for example, medical records, paper or electronic case report forms, or interactive voice response systems). Data dictionary that contains detailed descriptions of each variable used by the registry, including the source of the variable, coding information if used (for example, World Health Organization Drug Dictionary, MedDRA), and normal ranges if relevant. Standard Operating Procedures to address registry operations and analysis activities, such as patient recruitment, data collection, data management, data analysis, reporting for adverse events, and change management. Sample size assessment to specify the number of participants or participant years necessary to demonstrate an effect. Plan for missing data to address situations where variables are reported as missing, unavailable, non-reported, uninterpretable, or considered missing because of data inconsistency or out-of-range results. Statistical analysis plan describing the analytical principles and statistical techniques to be employed in order to address the primary and secondary objectives, as specified in the study protocol or plan.",
+                    "minLength": 1
+                }
             },
             "required": [
-              "CentralContactName",
-              "CentralContactAffiliation",
-              "CentralContactPhone",
-              "CentralContactEMail"
+                "BriefSummary"
             ]
-          },
-          "minItems": 1,
-          "uniqueItems": true
         },
-        "OverallOfficialList": {
-          "type": "array",
-          "items": {
+        "ConditionsModule": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "OverallOfficialName": {
-                "type": "string",
-                "minLength": 1
-              },
-              "OverallOfficialAffiliation": {
-                "type": "string",
-                "description": "Full name of the official's organization. If none, specify Unaffiliated.",
-                "minLength": 1
-              },
-              "OverallOfficialRole": {
-                "type": "string",
-                "description": "Position or function of the official.",
-                "enum": [
-                  "Study Chair",
-                  "Study Director",
-                  "Study Principal Investigator"
-                ]
-              }
+                "ConditionList": {
+                    "type": "array",
+                    "description": "The name(s) of the disease(s) or condition(s) studied in the clinical study, or the focus of the clinical study. Use, if available, appropriate descriptors from NLM's Medical Subject Headings (MeSH)-controlled vocabulary thesaurus or terms from another vocabulary, such as the Systematized Nomenclature of Medicine\u2014Clinical Terms (SNOMED CT), that has been mapped to MeSH within the Unified Medical Language System (UMLS) Metathesaurus.",
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "KeywordList": {
+                    "type": "array",
+                    "description": "Words or phrases that best describe the study. Keywords help users find studies in the database. Use NLM's Medical Subject Heading (MeSH)-controlled vocabulary terms where appropriate. Be as specific and precise as possible. Avoid acronyms and abbreviations.",
+                    "items": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                }
             },
             "required": [
-              "OverallOfficialName",
-              "OverallOfficialAffiliation",
-              "OverallOfficialRole"
+                "ConditionList"
             ]
-          },
-          "minItems": 1,
-          "uniqueItems": true
         },
-        "LocationList": {
-          "type": "array",
-          "items": {
+        "DesignModule": {
             "type": "object",
-            "additionalProperties": false,
+            "required": [
+                "StudyType"
+            ],
             "properties": {
-              "LocationFacility": {
-                "type": "string",
-                "description": "Full name of the organization where the clinical study is being conducted.",
-                "minLength": 1
-              },
-              "LocationStatus": {
-                "$ref": "#/$defs/statusOptions",
-                "description": "The recruitment status of each participating facility in a clinical study."
-              },
-              "LocationCity": {
-                "type": "string",
-                "description": "City of the location of the clinical study.",
-                "minLength": 1
-              },
-              "LocationState": {
-                "type": "string",
-                "description": "State or province of the location of the clinical study. Required for U.S. locations (including territories of the United States)",
-                "minLength": 1
-              },
-              "LocationZip": {
-                "type": "string",
-                "description": "Zip or postal code of the location of the clinical study. Required for U.S. locations (including territories of the United States)",
-                "minLength": 1
-              },
-              "LocationCountry": {
-                "type": "string",
-                "description": "Country of the location of the clinical study.",
-                "minLength": 1
-              },
-              "LocationContactList": {
-                "type": "array",
-                "description": "Required if Central Contact is not provided",
-                "items": {
-                  "type": "object",
-                  "description": "For each facility participating in a clinical study, including the name or title, telephone number, and email address of a person to whom questions concerning the study and enrollment at that site can be addressed. Include the following information.",
-                  "additionalProperties": false,
-                  "properties": {
-                    "LocationContactName": {
-                      "type": "string",
-                      "minLength": 1
+                "StudyType": {
+                    "type": "string",
+                    "description": "The type of study being registered.",
+                    "oneOf": [
+                        {
+                            "const": "Interventional",
+                            "description": "A clinical trial. Participants are assigned prospectively to an intervention or interventions according to a protocol to evaluate the effect of the intervention(s) on biomedical or other health related outcomes."
+                        },
+                        {
+                            "const": "Observational",
+                            "description": "Studies in human beings in which biomedical and/or health outcomes are assessed in pre-defined groups of individuals. Participants in the study may receive diagnostic, therapeutic, or other interventions, but the investigator does not assign specific interventions to the study participants. This includes when participants receive interventions as part of routine medical care, and a researcher studies the effect of the intervention."
+                        },
+                        {
+                            "const": "Observational Patient Registry",
+                            "description": "An observational study that is also considered to be a Patient Registry. Note: The Agency for Healthcare Research and Quality (AHRQ) defines a Patient Registry as including an organized system that uses observational methods to collect uniform data (clinical and other) prospectively for a population defined by a particular disorder/disease, condition (including susceptibility to a disorder), or exposure (including products, healthcare services, and/or procedures) and that serves a predetermined scientific, clinical, or policy purpose. Patient registries may be single purpose or on-going data collection programs that address one or more questions."
+                        },
+                        {
+                            "const": "Expanded Access",
+                            "description": "An investigational drug product (including biological product) available through expanded access for patients who do not qualify for enrollment in a clinical trial. Expanded Access includes all expanded access types under section 561 of the Federal Food, Drug, and Cosmetic Act: (1) for individual patients, including emergency use; (2) for intermediate-size patient populations; and (3) under a treatment IND or treatment protocol. (For more information on data requirements for this Study Type, see Expanded Access Data Element Definitions)."
+                        }
+                    ]
+                }
+            },
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "StudyType": {
+                                "const": "Interventional"
+                            }
+                        }
                     },
-                    "LocationContactRole": {
-                      "type": "string",
-                      "description": "Position or function of the contact person.",
-                      "enum": ["Principal Investigator", "Sub-Investigator"]
-                    },
-                    "LocationContactPhone": {
-                      "type": "string",
-                      "description": "Office phone of the Facility Contact.",
-                      "minLength": 1
-                    },
-                    "LocationContactPhoneExt": {
-                      "type": "string",
-                      "description": "phone extension, if needed.",
-                      "minLength": 1
-                    },
-                    "LocationContactEMail": {
-                      "type": "string",
-                      "description": "Electronic mail address of the facility contact person",
-                      "minLength": 1
+                    "then": {
+                        "properties": {
+                            "DesignInfo": {
+                                "type": "object",
+                                "description": "A description of the manner in which the clinical trial will be conducted.",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "DesignAllocation": {
+                                        "type": "string",
+                                        "description": "The process by which participants are assigned to a clinical study. Types of allocation include randomized and nonrandomized. Interventions in a nonrandomized study are not assigned randomly.",
+                                        "oneOf": [
+                                            {
+                                                "const": "N/A",
+                                                "description": "For a single-arm trial"
+                                            },
+                                            {
+                                                "const": "Randomized",
+                                                "description": "Participants are assigned to intervention groups by chance."
+                                            },
+                                            {
+                                                "const": "Non-randomized",
+                                                "description": "Participants are expressly assigned to intervention groups through a non-random method, such as physician choice."
+                                            }
+                                        ]
+                                    },
+                                    "DesignInterventionModel": {
+                                        "type": "string",
+                                        "description": "The strategy for assigning interventions to participants.",
+                                        "oneOf": [
+                                            {
+                                                "const": "Treatment",
+                                                "description": "One or more interventions are being evaluated for treating a disease, syndrome, or condition."
+                                            },
+                                            {
+                                                "const": "Prevention",
+                                                "description": "One or more interventions are being assessed for preventing the development of a specific disease or health condition."
+                                            },
+                                            {
+                                                "const": "Diagnostic",
+                                                "description": "One or more interventions are being evaluated for identifying a disease or health condition."
+                                            },
+                                            {
+                                                "const": "Supportive Care",
+                                                "description": "One or more interventions are evaluated for maximizing comfort, minimizing side effects, or mitigating against a decline in the participant's health or function."
+                                            },
+                                            {
+                                                "const": "Screening",
+                                                "description": "One or more interventions are assessed or examined for identifying a condition, or risk factors for a condition, in people who are not yet known to have the condition or risk factor."
+                                            },
+                                            {
+                                                "const": "Health Services Research",
+                                                "description": "One or more interventions for evaluating the delivery, processes, management, organization, or financing of healthcare."
+                                            },
+                                            {
+                                                "const": "Basic Science",
+                                                "description": "One or more interventions for examining the basic mechanism of action (for example, physiology or biomechanics of an intervention)."
+                                            },
+                                            {
+                                                "const": "Device Feasibility",
+                                                "description": "An intervention of a device product is being evaluated in a small clinical trial (generally fewer than 10 participants) to determine the feasibility of the product, or a clinical trial to test a prototype device for feasibility and not health outcomes."
+                                            }
+                                        ]
+                                    },
+                                    "DesignInterventionModelDescription": {
+                                        "type": "string",
+                                        "description": "Provide details about the Interventional Study Model",
+                                        "minLength": 1
+                                    },
+                                    "DesignPrimaryPurpose": {
+                                        "type": "string",
+                                        "description": "The main objective of the intervention(s) being evaluated by the clinical trial.",
+                                        "oneOf": [
+                                            {
+                                                "const": "Single Group Assignment",
+                                                "description": "Clinical trials with a single arm."
+                                            },
+                                            {
+                                                "const": "Parallel Assignment",
+                                                "description": "Participants are assigned to one of two or more groups in parallel for the duration of the study."
+                                            },
+                                            {
+                                                "const": "Crossover Assignment",
+                                                "description": "Participants receive one of two (or more) alternative interventions during the initial phase of the study and receive the other intervention during the second phase of the study."
+                                            },
+                                            {
+                                                "const": "Factorial Assignment",
+                                                "description": "Two or more interventions, each alone and in combination, are evaluated in parallel against a control group."
+                                            },
+                                            {
+                                                "const": "Sequential Assignment",
+                                                "description": "Groups of participants are assigned to receive interventions based on prior milestones being reached in the study, such as in some dose escalation and adaptive design studies."
+                                            }
+                                        ]
+                                    },
+                                    "DesignMaskingInfo": {
+                                        "type": "object",
+                                        "description": " The party or parties involved in the clinical trial who are prevented from having knowledge of the interventions assigned to individual participants.",
+                                        "additionalProperties": false,
+                                        "properties": {
+                                            "DesignMasking": {
+                                                "type": "string",
+                                                "oneOf": [
+                                                    {
+                                                        "const": "None (open label)"
+                                                    },
+                                                    {
+                                                        "const": "Blinded (no details)",
+                                                        "description": "From a statement that says the study was blinded, but where the degree of blinding was not provided"
+                                                    },
+                                                    {
+                                                        "const": "Single"
+                                                    },
+                                                    {
+                                                        "const": "Double"
+                                                    },
+                                                    {
+                                                        "const": "Triple"
+                                                    },
+                                                    {
+                                                        "const": "Quadruple"
+                                                    },
+                                                    {
+                                                        "const": "N/A",
+                                                        "description": "Explicitly labeled as not applicable - usually because the study is non-interventional"
+                                                    }
+                                                ]
+                                            },
+                                            "DesignMaskingDescription": {
+                                                "type": "string",
+                                                "description": "Provide information about other parties who may be masked in the clinical trial, if any.",
+                                                "minLength": 1
+                                            },
+                                            "DesignWhoMaskedList": {
+                                                "type": "array",
+                                                "items": {
+                                                    "type": "string",
+                                                    "oneOf": [
+                                                        {
+                                                            "const": "Participant"
+                                                        },
+                                                        {
+                                                            "const": "Care Provider"
+                                                        },
+                                                        {
+                                                            "const": "Investigator"
+                                                        },
+                                                        {
+                                                            "const": "Outcomes Assessor",
+                                                            "description": "The individual who evaluates the outcome(s) of interest"
+                                                        }
+                                                    ]
+                                                },
+                                                "minItems": 1,
+                                                "uniqueItems": true
+                                            }
+                                        },
+                                        "required": [
+                                            "DesignMasking",
+                                            "DesignWhoMaskedList"
+                                        ]
+                                    }
+                                },
+                                "required": [
+                                    "DesignAllocation",
+                                    "DesignInterventionModel",
+                                    "DesignPrimaryPurpose",
+                                    "DesignMaskingInfo"
+                                ]
+                            },
+                            "PhaseList": {
+                                "type": "array",
+                                "description": "For a clinical trial of a drug product (including a biological product), the numerical phase of such clinical trial, consistent with terminology in 21 CFR 312.21 and in 21 CFR 312.85 for phase 4 studies. Select only one.",
+                                "items": {
+                                    "type": "string",
+                                    "oneOf": [
+                                        {
+                                            "const": "N/A",
+                                            "description": "Trials without phases (for example, studies of devices or behavioural interventions)."
+                                        },
+                                        {
+                                            "const": "Early Phase 1",
+                                            "description": "Exploratory trials, involving very limited human exposure, with no therapeutic or diagnostic intent (e.g., screening studies, microdose studies)."
+                                        },
+                                        {
+                                            "const": "Phase 1",
+                                            "description": "Initial studies to determine the metabolism and pharmacologic actions of drugs in humans, side effects, and to gain early evidence of effectiveness; may include healthy participants and/or patients."
+                                        },
+                                        {
+                                            "const": "Phase 1/2",
+                                            "description": "Trials that are a combination of phases 1 and 2."
+                                        },
+                                        {
+                                            "const": "Phase 2",
+                                            "description": "Controlled clinical studies conducted to evaluate the effectiveness of the intervention for a particular indication in participants with the disease or condition under study, and to determine the common short-term side effects and risks."
+                                        },
+                                        {
+                                            "const": "Phase 2/3",
+                                            "description": "Trials that are a combination of phases 2 and 3."
+                                        },
+                                        {
+                                            "const": "Phase 3",
+                                            "description": "Trials conducted after preliminary evidence suggesting effectiveness of the drug has been obtained, and are intended to gather additional information to evaluate the overall benefit-risk relationship of the drug."
+                                        },
+                                        {
+                                            "const": "Phase 4",
+                                            "description": "Studies of approved drugs to delineate additional information including the drug's risks, benefits, and optimal use."
+                                        }
+                                    ]
+                                },
+                                "minItems": 1,
+                                "maxItems": 1,
+                                "uniqueItems": true
+                            },
+                            "EnrollmentInfo": {
+                                "$ref": "#/definitions/enrollmentInfo"
+                            },
+                            "NumberArms": {
+                                "type": "string",
+                                "pattern": "^[0-9]+$",
+                                "minLength": 1,
+                                "description": "The number of arms in the clinical trial. For a trial with multiple periods or phases that have different numbers of arms, the maximum number of arms during all periods or phases. Note: 'Arm' means a pre-specified group or subgroup of participant(s) in a clinical trial assigned to receive specific intervention(s) (or no intervention) according to a protocol. The minimum value is '1'"
+                            }
+                        },
+                        "required": [
+                            "DesignInfo",
+                            "PhaseList",
+                            "EnrollmentInfo",
+                            "NumberArms"
+                        ]
                     }
-                  },
-                  "required": [
-                    "LocationContactName",
-                    "LocationContactRole",
-                    "LocationContactPhone",
-                    "LocationContactEMail"
-                  ]
                 },
-                "minItems": 1,
-                "uniqueItems": true
-              }
+                {
+                    "if": {
+                        "properties": {
+                            "StudyType": {
+                                "const": "Observational"
+                            }
+                        }
+                    },
+                    "then": {
+                        "properties": {
+                            "DesignInfo": {
+                                "type": "object",
+                                "description": "A description of the manner in which the observational study will be conducted",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "DesignObservationalModelList": {
+                                        "type": "array",
+                                        "description": "Primary strategy for participant identification and follow-up.",
+                                        "items": {
+                                            "type": "string",
+                                            "oneOf": [
+                                                {
+                                                    "const": "Cohort",
+                                                    "description": "Group of individuals, initially defined and composed, with common characteristics (for example, condition, birth year), who are examined or traced over a given time period."
+                                                },
+                                                {
+                                                    "const": "Case-Control",
+                                                    "description": "Group of individuals with specific characteristics (for example, conditions or exposures) compared to group(s) with different characteristics, but otherwise similar."
+                                                },
+                                                {
+                                                    "const": "Case-Only",
+                                                    "description": "Single group of individuals with specific characteristics."
+                                                },
+                                                {
+                                                    "const": "Case-Crossover",
+                                                    "description": "Characteristics of a case immediately prior to disease onset (sometimes called the hazard period) compared to characteristics of the same case at a prior time (that is, control period)."
+                                                },
+                                                {
+                                                    "const": "Ecologic or Community",
+                                                    "description": "Geographically defined populations, such as countries or regions within a country, compared on a variety of environmental (for example, air pollution intensity, hours of sunlight) and/or global measures not reducible to individual-level characteristics (for example, healthcare system, laws or policies median income, average fat intake, disease rate)."
+                                                },
+                                                {
+                                                    "const": "Family-Based",
+                                                    "description": "Studies conducted among family members, such as genetic studies within families or twin studies and studies of a family environment."
+                                                },
+                                                {
+                                                    "const": "Other",
+                                                    "description": "Explain in Detailed Description.."
+                                                }
+                                            ]
+                                        },
+                                        "minItems": 1,
+                                        "uniqueItems": true
+                                    },
+                                    "DesignTimePerspectiveList": {
+                                        "type": "array",
+                                        "description": "Temporal relationship of the observation period to the time of participant enrollment.",
+                                        "items": {
+                                            "type": "string",
+                                            "oneOf": [
+                                                {
+                                                    "const": "Retrospective",
+                                                    "description": "Look back using observations collected predominantly prior to subject selection and enrollment."
+                                                },
+                                                {
+                                                    "const": "Prospective",
+                                                    "description": "Look forward using periodic observations collected predominantly following subject enrollment."
+                                                },
+                                                {
+                                                    "const": "Cross-sectional",
+                                                    "description": "Observations or measurements made at a single point in time, usually at subject enrollment."
+                                                },
+                                                {
+                                                    "const": "Other",
+                                                    "description": "Explain in Detailed Description."
+                                                }
+                                            ]
+                                        },
+                                        "minItems": 1,
+                                        "uniqueItems": true
+                                    }
+                                },
+                                "required": [
+                                    "DesignObservationalModelList",
+                                    "DesignTimePerspectiveList"
+                                ]
+                            },
+                            "BioSpec": {
+                                "type": "object",
+                                "additionalProperties": false,
+                                "properties": {
+                                    "BioSpecRetention": {
+                                        "type": "string",
+                                        "description": "Indicate whether samples of material from research participants are retained in a biorepository.",
+                                        "oneOf": [
+                                            {
+                                                "const": "None Retained",
+                                                "description": "No samples retained"
+                                            },
+                                            {
+                                                "const": "Samples With DNA",
+                                                "description": "Samples retained, with potential for extraction of DNA from at least one of the types of samples retained (e.g., frozen tissue, whole blood)"
+                                            },
+                                            {
+                                                "const": "Samples Without DNA",
+                                                "description": "Samples retained, with no potential for DNA extraction from any retained samples (e.g., fixed tissue, plasma)"
+                                            }
+                                        ]
+                                    },
+                                    "BioSpecDescription": {
+                                        "type": "string",
+                                        "description": "Specify all types of biospecimens to be retained (e.g., whole blood, serum, white cells, urine, tissue).",
+                                        "minLength": 1
+                                    }
+                                },
+                                "required": [
+                                    "BioSpecRetention"
+                                ]
+                            },
+                            "EnrollmentInfo": {
+                                "$ref": "#/definitions/enrollmentInfo"
+                            },
+                            "TargetDuration": {
+                                "type": "string",
+                                "description": "For Patient Registries, the anticipated time period over which each participant is to be followed.",
+                                "minLength": 1,
+                                "examples": [
+                                    "3 Years",
+                                    "5 Days",
+                                    "10 Weeks"
+                                ]
+                            },
+                            "NumberGroupsCohorts": {
+                                "type": "string",
+                                "pattern": "^[0-9]+$",
+                                "minLength": 1,
+                                "description": "Number of study groups/cohorts. Enter `1` for a single-group study. Many observational studies have one group/cohort; case control studies typically have two. The minimum value is '1'."
+                            }
+                        },
+                        "required": [
+                            "DesignInfo",
+                            "EnrollmentInfo",
+                            "TargetDuration",
+                            "NumberGroupsCohorts"
+                        ]
+                    }
+                }
+            ]
+        },
+        "ArmsInterventionsModule": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "ArmGroupList": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "description": "If the study is interventional: A description of each arm of the clinical trial that indicates its role in the clinical trial; provides an informative title; and, if necessary, additional descriptive information (including which interventions are administered in each arm) to differentiate each arm from other arms in the clinical trial. || If the study is observational: Specify the predefined participant groups (cohorts) to be studied, corresponding to Number of Groups specified under Study Design (for single-group studies, the following data elements are optional). Do not use this section to specify strata (Detailed Description can be used for that purpose, if desired).",
+                        "additionalProperties": false,
+                        "properties": {
+                            "ArmGroupLabel": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "ArmGroupType": {
+                                "type": "string",
+                                "description": "required if study type is interventional",
+                                "enum": [
+                                    "Experimental",
+                                    "Active Comparator",
+                                    "Placebo Comparator",
+                                    "Sham Comparator",
+                                    "No Intervention",
+                                    "Other"
+                                ]
+                            },
+                            "ArmGroupDescription": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "ArmGroupInterventionList": {
+                                "type": "array",
+                                "description": "required if study type is interventional and there is more than one intervention",
+                                "items": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "minItems": 1,
+                                "uniqueItems": true
+                            }
+                        },
+                        "required": [
+                            "ArmGroupLabel"
+                        ]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "InterventionList": {
+                    "type": "array",
+                    "description": "Specify the intervention(s) associated with each arm or group; at least one intervention must be specified for interventional studies. For observational studies, specify the intervention(s)/exposure(s) of interest, if any. If the same intervention is associated with more than one arm or group, provide the information once and use the Arm or Group/Intervention Cross-Reference to associate it with more than one arm or group.",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "InterventionType": {
+                                "type": "string",
+                                "description": "For each intervention studied in the clinical study, the general type of intervention. Select one.",
+                                "oneOf": [
+                                    {
+                                        "const": "Drug",
+                                        "description": "Including placebo"
+                                    },
+                                    {
+                                        "const": "Device",
+                                        "description": "Including sham"
+                                    },
+                                    {
+                                        "const": "Biological/Vaccine",
+                                        "description": ""
+                                    },
+                                    {
+                                        "const": "Procedure/Surgery",
+                                        "description": ""
+                                    },
+                                    {
+                                        "const": "Radiation",
+                                        "description": ""
+                                    },
+                                    {
+                                        "const": "Behavioral",
+                                        "description": "For example, psychotherapy, lifestyle counseling"
+                                    },
+                                    {
+                                        "const": "Genetic",
+                                        "description": "Including gene transfer, stem cell and recombinant DNA"
+                                    },
+                                    {
+                                        "const": "Dietary Supplement",
+                                        "description": "For example, vitamins, minerals"
+                                    },
+                                    {
+                                        "const": "Combination Product",
+                                        "description": "Combining a drug and device, a biological product and device; a drug and biological product; or a drug, biological product, and device"
+                                    },
+                                    {
+                                        "const": "Diagnostic Test",
+                                        "description": "For example, imaging, in-vitro"
+                                    },
+                                    {
+                                        "const": "Other",
+                                        "description": ""
+                                    }
+                                ]
+                            },
+                            "InterventionName": {
+                                "type": "string",
+                                "description": "A brief descriptive name used to refer to the intervention(s) studied in each arm of the clinical study. A non-proprietary name of the intervention must be used, if available. If a non-proprietary name is not available, a brief descriptive name or identifier must be used.",
+                                "minLength": 1
+                            },
+                            "InterventionDescription": {
+                                "type": "string",
+                                "description": "Details that can be made public about the intervention, other than the Intervention Name(s) and Other Intervention Name(s), sufficient to distinguish the intervention from other, similar interventions studied in the same or another clinical study. For example, interventions involving drugs may include dosage form, dosage, frequency, and duration",
+                                "minLength": 1
+                            },
+                            "InterventionArmGroupLabelList": {
+                                "type": "array",
+                                "description": "The name of the arm or group associated with the intervention studied in this clinical study. At least one Arm Group Label must be provided.",
+                                "items": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "minItems": 1,
+                                "uniqueItems": true
+                            },
+                            "InterventionOtherNameList": {
+                                "type": "array",
+                                "description": "Other current and former name(s) or alias(es), if any, different from the Intervention Name(s), that the sponsor has used publicly to identify the intervention(s), including, but not limited to, past or present names such as brand name(s), or serial numbers.",
+                                "items": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "minItems": 1,
+                                "uniqueItems": true
+                            }
+                        },
+                        "required": [
+                            "InterventionType",
+                            "InterventionName",
+                            "InterventionArmGroupLabelList"
+                        ]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                }
             },
             "required": [
-              "LocationFacility",
-              "LocationStatus",
-              "LocationCity",
-              "LocationCountry"
+                "ArmGroupList",
+                "InterventionList"
             ]
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        }
-      },
-      "required": ["LocationList"]
-    },
-    "IPDSharingStatementModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["IPDSharing"],
-      "properties": {
-        "IPDSharing": {
-          "type": "string",
-          "description": "Indicate whether there is a plan to make individual participant data (IPD) collected in this study, including data dictionaries, available to other researchers (typically after the end of the study).",
-          "oneOf": [
-            {
-              "const": "Yes",
-              "description": "There is a plan to make IPD and related data dictionaries available."
-            },
-            {
-              "const": "No",
-              "description": "There is no plan to make IPD available."
-            },
-            {
-              "const": "Undecided",
-              "description": "It is not yet known if there will be a plan to make IPD available."
-            }
-          ]
         },
-        "IPDSharingDescription": {
-          "type": "string",
-          "description": "If Plan to Share IPD is 'Yes' briefly describe what specific individual participant data sets are to be shared (for example, all collected IPD, all IPD that underlie results in a publication). If the Plan to Share IPD is 'No' or 'Undecided' an explanation may be provided for why IPD will not be shared or why it is not yet decided.",
-          "minLength": 1
-        },
-        "IPDSharingInfoTypeList": {
-          "type": "array",
-          "description": "The type(s) of supporting information that will be shared, in addition to the individual participant data set and data dictionaries for the IPD itself.",
-          "items": {
-            "type": "string",
-            "enum": [
-              "Study Protocol",
-              "Statistical Analysis Plan (SAP)",
-              "Informed Consent Form (ICF)",
-              "Clinical Study Report (CSR)",
-              "Analytic Code"
+        "EligibilityModule": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Gender": {
+                    "type": "string",
+                    "description": "The sex and, if applicable, gender of the participants eligible to participate in the clinical study. The sex of the participants eligible to participate in the clinical study. Note: 'Sex' means a person's classification as male or female based on biological distinctions.",
+                    "oneOf": [
+                        {
+                            "const": "All",
+                            "description": "Indicates no limit on eligibility based on the sex of participants"
+                        },
+                        {
+                            "const": "Female",
+                            "description": "Indicates that only female participants are being studied"
+                        },
+                        {
+                            "const": "Male",
+                            "description": "Indicates that only male participants are being studied"
+                        }
+                    ]
+                },
+                "GenderBased": {
+                    "type": "string",
+                    "description": "If applicable, indicate whether participant eligibility is based on gender. Note: 'Gender' means a person's self-representation of gender identity.",
+                    "enum": [
+                        "Yes",
+                        "No"
+                    ]
+                },
+                "GenderDescription": {
+                    "type": "string",
+                    "description": "If eligibility is based on gender, provide descriptive information about Gender criteria."
+                },
+                "MinimumAge": {
+                    "type": "string",
+                    "description": "The numerical value, if any, for the minimum age a potential participant must meet to be eligible for the clinical study. Include a whole number followed by units, if no limit use 'N/A' - see controlled values for units",
+                    "pattern": "^[0-9]+(\\.[0-9]+)?\\s*(Years|Months|Weeks|Days|Hours|N/A)?$",
+                    "minLength": 1
+                },
+                "MaximumAge": {
+                    "type": "string",
+                    "description": "The numerical value, if any, for the maximum age a potential participant must meet to be eligible for the clinical study. Include a whole number followed by units, if no limit use 'N/A' - see controlled values for units",
+                    "pattern": "^[0-9]+(\\.[0-9]+)?\\s*(Years|Months|Weeks|Days|Hours|N/A)?$",
+                    "minLength": 1
+                },
+                "HealthyVolunteers": {
+                    "type": "string",
+                    "description": "Indication that participants who do not have a disease or condition, or related conditions or symptoms, under study in the clinical study are permitted to participate in the clinical study. Required if the study type is Interventional.",
+                    "enum": [
+                        "Yes",
+                        "No"
+                    ]
+                },
+                "EligibilityCriteria": {
+                    "type": "string",
+                    "description": "A limited list of criteria for selection of participants in the clinical study, provided in terms of inclusion and exclusion criteria and suitable for assisting potential participants in identifying clinical studies of interest. Use a bulleted list for each criterion below the headers 'Inclusion Criteria' and 'Exclusion Criteria'",
+                    "minLength": 1
+                },
+                "StudyPopulation": {
+                    "type": "string",
+                    "description": "A description of the population from which the groups or cohorts will be selected (for example, primary care clinic, community sample, residents of a certain town). Required for observational studies.",
+                    "minLength": 1
+                },
+                "SamplingMethod": {
+                    "type": "string",
+                    "description": "The method used to select participants to be studied. Required for observational studies.",
+                    "oneOf": [
+                        {
+                            "const": "Probability Sample",
+                            "description": "Exclusively random process to guarantee that each participant or population has specified chance of selection, such as simple random sampling, systematic sampling, stratified random sampling, cluster sampling, and consecutive participant sampling"
+                        },
+                        {
+                            "const": "Non-Probability Sample",
+                            "description": "Any of a variety of other sampling processes, such as convenience sampling or invitation to volunteer"
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "Gender",
+                "GenderBased",
+                "MinimumAge",
+                "MaximumAge",
+                "EligibilityCriteria",
+                "StudyPopulation",
+                "SamplingMethod"
             ]
-          },
-          "minItems": 1,
-          "uniqueItems": true
         },
-        "IPDSharingTimeFrame": {
-          "type": "string",
-          "description": "A description of when the IPD and any additional supporting information will become available and for how long, including the start and end dates or period of availability. This may be provided as an absolute date (for example, starting in January 2025) or as a date relative to the time when summary data are published or otherwise made available (for example, starting 6 months after publication).",
-          "minLength": 1
-        },
-        "IPDSharingAccessCriteria": {
-          "type": "string",
-          "description": "Describe by what access criteria IPD and any additional supporting information will be shared, including with whom, for what types of analyses, and by what mechanism. Information about who will review requests and criteria for reviewing requests may also be provided.",
-          "minLength": 1
-        },
-        "IPDSharingURL": {
-          "type": "string",
-          "description": "The web address, if any, used to find additional information about the plan to share IPD.",
-          "format": "uri",
-          "minLength": 1
-        }
-      },
-      "if": {
-        "properties": {
-          "IPDSharing": {
-            "const": "Yes"
-          }
-        }
-      },
-      "then": {
-        "required": [
-          "IPDSharingDescription",
-          "IPDSharingInfoTypeList",
-          "IPDSharingTimeFrame",
-          "IPDSharingAccessCriteria",
-          "IPDSharingURL"
-        ]
-      }
-    },
-    "ReferencesModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "ReferenceList": {
-          "type": "array",
-          "description": "Citations to publications related to the study: background and/or results. Provide either the PubMed Unique Identifier (PMID) or the DOI of an article or enter the full bibliographic citation.",
-          "items": {
+        "ContactsLocationsModule": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "ReferenceID": {
-                "type": "string",
-                "description": "The PubMed Unique Identifier (PMID) or the DOI of an article.",
-                "minLength": 1
-              },
-              "ReferenceType": {
-                "type": "string",
-                "description": "Indicate if the reference provided reports on results from this clinical study.",
-                "enum": ["Yes", "No"]
-              },
-              "ReferenceCitation": {
-                "type": "string",
-                "description": "A bibliographic reference in NLM's MEDLINE format.",
-                "minLength": 1
-              }
+                "CentralContactList": {
+                    "type": "array",
+                    "description": "The name or title, toll-free telephone number, and email address of a person to whom questions concerning enrollment at any location of the study can be addressed.",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "CentralContactName": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "CentralContactAffiliation": {
+                                "type": "string",
+                                "description": "If none, specify Unaffiliated.",
+                                "minLength": 1
+                            },
+                            "CentralContactPhone": {
+                                "type": "string",
+                                "description": "Toll-free phone number of the Central Contact Person. Use the format 800-555-5555 within the United States and Canada. If outside the United States and Canada, provide the full phone number, including the country code. 30 characters",
+                                "minLength": 1,
+                                "maxLength": 30
+                            },
+                            "CentralContactPhoneExt": {
+                                "type": "string",
+                                "description": "phone extension, if needed.",
+                                "minLength": 1
+                            },
+                            "CentralContactEMail": {
+                                "type": "string",
+                                "description": "Email address of the Central Contact Person",
+                                "minLength": 1
+                            }
+                        },
+                        "required": [
+                            "CentralContactName",
+                            "CentralContactAffiliation",
+                            "CentralContactPhone",
+                            "CentralContactEMail"
+                        ]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "OverallOfficialList": {
+                    "type": "array",
+                    "description": "",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "OverallOfficialName": {
+                                "type": "string",
+                                "minLength": 1
+                            },
+                            "OverallOfficialAffiliation": {
+                                "type": "string",
+                                "description": "Full name of the official's organization. If none, specify Unaffiliated.",
+                                "minLength": 1
+                            },
+                            "OverallOfficialRole": {
+                                "type": "string",
+                                "description": "Position or function of the official.",
+                                "enum": [
+                                    "Study Chair",
+                                    "Study Director",
+                                    "Study Principal Investigator"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "OverallOfficialName",
+                            "OverallOfficialAffiliation",
+                            "OverallOfficialRole"
+                        ]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "LocationList": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "LocationFacility": {
+                                "type": "string",
+                                "description": "Full name of the organization where the clinical study is being conducted.",
+                                "minLength": 1
+                            },
+                            "LocationStatus": {
+                                "$ref": "#/definitions/statusOptions",
+                                "description": "The recruitment status of each participating facility in a clinical study."
+                            },
+                            "LocationCity": {
+                                "type": "string",
+                                "description": "City of the location of the clinical study.",
+                                "minLength": 1
+                            },
+                            "LocationState": {
+                                "type": "string",
+                                "description": "State or province of the location of the clinical study. Required for U.S. locations (including territories of the United States)",
+                                "minLength": 1
+                            },
+                            "LocationZip": {
+                                "type": "string",
+                                "description": "Zip or postal code of the location of the clinical study. Required for U.S. locations (including territories of the United States)",
+                                "minLength": 1
+                            },
+                            "LocationCountry": {
+                                "type": "string",
+                                "description": "Country of the location of the clinical study.",
+                                "minLength": 1
+                            },
+                            "LocationContactList": {
+                                "type": "array",
+                                "description": "Required if Central Contact is not provided",
+                                "items": {
+                                    "type": "object",
+                                    "description": "For each facility participating in a clinical study, including the name or title, telephone number, and email address of a person to whom questions concerning the study and enrollment at that site can be addressed. Include the following information.",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "LocationContactName": {
+                                            "type": "string",
+                                            "minLength": 1
+                                        },
+                                        "LocationContactRole": {
+                                            "type": "string",
+                                            "description": "Position or function of the contact person.",
+                                            "enum": [
+                                                "Principal Investigator",
+                                                "Sub-Investigator"
+                                            ]
+                                        },
+                                        "LocationContactPhone": {
+                                            "type": "string",
+                                            "description": "Office phone of the Facility Contact.",
+                                            "minLength": 1
+                                        },
+                                        "LocationContactPhoneExt": {
+                                            "type": "string",
+                                            "description": "phone extension, if needed.",
+                                            "minLength": 1
+                                        },
+                                        "LocationContactEMail": {
+                                            "type": "string",
+                                            "description": "Electronic mail address of the facility contact person",
+                                            "minLength": 1
+                                        }
+                                    },
+                                    "required": [
+                                        "LocationContactName",
+                                        "LocationContactRole",
+                                        "LocationContactPhone",
+                                        "LocationContactEMail"
+                                    ]
+                                },
+                                "minItems": 1,
+                                "uniqueItems": true
+                            }
+                        },
+                        "required": [
+                            "LocationFacility",
+                            "LocationStatus",
+                            "LocationCity",
+                            "LocationCountry"
+                        ]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                }
             },
-            "required": ["ReferenceCitation"]
-          },
-          "minItems": 1,
-          "uniqueItems": true
+            "required": [
+                "LocationList"
+            ]
         },
-        "SeeAlsoLinkList": {
-          "type": "array",
-          "description": "A website directly relevant to the protocol may be entered, if desired. Do not include sites that aim to advertise or sell commercial products or services. Links to educational, research, government, and other non-profit web pages are acceptable. All submitted links are subject to review by ClinicalTrials.gov.",
-          "items": {
+        "IPDSharingStatementModule": {
             "type": "object",
             "additionalProperties": false,
+            "required": [
+                "IPDSharing"
+            ],
             "properties": {
-              "SeeAlsoLinkLabel": {
-                "type": "string",
-                "description": "Title or brief description of the linked page.",
-                "minLength": 1
-              },
-              "SeeAlsoLinkURL": {
-                "type": "string",
-                "description": "Complete URL, including http:// or https://",
-                "format": "uri",
-                "minLength": 1
-              }
+                "IPDSharing": {
+                    "type": "string",
+                    "description": "Indicate whether there is a plan to make individual participant data (IPD) collected in this study, including data dictionaries, available to other researchers (typically after the end of the study).",
+                    "oneOf": [
+                        {
+                            "const": "Yes",
+                            "description": "There is a plan to make IPD and related data dictionaries available."
+                        },
+                        {
+                            "const": "No",
+                            "description": "There is no plan to make IPD available."
+                        },
+                        {
+                            "const": "Undecided",
+                            "description": "It is not yet known if there will be a plan to make IPD available."
+                        }
+                    ]
+                },
+                "IPDSharingDescription": {
+                    "type": "string",
+                    "description": "If Plan to Share IPD is 'Yes' briefly describe what specific individual participant data sets are to be shared (for example, all collected IPD, all IPD that underlie results in a publication). If the Plan to Share IPD is 'No' or 'Undecided' an explanation may be provided for why IPD will not be shared or why it is not yet decided.",
+                    "minLength": 1
+                },
+                "IPDSharingInfoTypeList": {
+                    "type": "array",
+                    "description": "The type(s) of supporting information that will be shared, in addition to the individual participant data set and data dictionaries for the IPD itself.",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Study Protocol",
+                            "Statistical Analysis Plan (SAP)",
+                            "Informed Consent Form (ICF)",
+                            "Clinical Study Report (CSR)",
+                            "Analytic Code"
+                        ]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "IPDSharingTimeFrame": {
+                    "type": "string",
+                    "description": "A description of when the IPD and any additional supporting information will become available and for how long, including the start and end dates or period of availability. This may be provided as an absolute date (for example, starting in January 2025) or as a date relative to the time when summary data are published or otherwise made available (for example, starting 6 months after publication).",
+                    "minLength": 1
+                },
+                "IPDSharingAccessCriteria": {
+                    "type": "string",
+                    "description": "Describe by what access criteria IPD and any additional supporting information will be shared, including with whom, for what types of analyses, and by what mechanism. Information about who will review requests and criteria for reviewing requests may also be provided.",
+                    "minLength": 1
+                },
+                "IPDSharingURL": {
+                    "type": "string",
+                    "description": "The web address, if any, used to find additional information about the plan to share IPD.",
+                    "format": "uri",
+                    "minLength": 1
+                }
             },
-            "required": ["SeeAlsoLinkURL"]
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "AvailIPDList": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "AvailIPDId": {
-                "type": "string",
-                "description": "The unique identifier used by a data repository for the data set or supporting information.",
-                "minLength": 1
-              },
-              "AvailIPDType": {
-                "type": "string",
-                "description": "The type of data set or supporting information.",
-                "enum": [
-                  "Individual Participant Data Set",
-                  "Study Protocol",
-                  "Statistical Analysis Plan",
-                  "Informed Consent Form",
-                  "Clinical Study Report",
-                  "Analytic Code",
-                  "Other"
+            "if": {
+                "properties": {
+                    "IPDSharing": {
+                        "const": "Yes"
+                    }
+                }
+            },
+            "then": {
+                "required": [
+                    "IPDSharingDescription",
+                    "IPDSharingInfoTypeList",
+                    "IPDSharingTimeFrame",
+                    "IPDSharingAccessCriteria",
+                    "IPDSharingURL"
                 ]
-              },
-              "AvailIPDURL": {
-                "type": "string",
-                "description": "The web address, if any, used to find additional information about the availability of the data set or supporting information.",
-                "format": "uri",
-                "minLength": 1
-              },
-              "AvailIPDComment": {
-                "type": "string",
-                "description": "Additional information including the name of the data repository or other location where the data set or supporting information is available. Provide any additional explanations about the data set or supporting information and instructions for obtaining access, particularly if a URL is not provided.",
-                "minLength": 1
-              }
+            }
+        },
+        "ReferencesModule": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "ReferenceList": {
+                    "type": "array",
+                    "description": "Citations to publications related to the study: background and/or results. Provide either the PubMed Unique Identifier (PMID) or the DOI of an article or enter the full bibliographic citation.",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "ReferenceID": {
+                                "type": "string",
+                                "description": "The PubMed Unique Identifier (PMID) or the DOI of an article.",
+                                "minLength": 1
+                            },
+                            "ReferenceType": {
+                                "type": "string",
+                                "description": "Indicate if the reference provided reports on results from this clinical study.",
+                                "enum": [
+                                    "Yes",
+                                    "No"
+                                ]
+                            },
+                            "ReferenceCitation": {
+                                "type": "string",
+                                "description": "A bibliographic reference in NLM's MEDLINE format.",
+                                "minLength": 1
+                            }
+                        },
+                        "required": [
+                            "ReferenceCitation"
+                        ]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "SeeAlsoLinkList": {
+                    "type": "array",
+                    "description": "A website directly relevant to the protocol may be entered, if desired. Do not include sites that aim to advertise or sell commercial products or services. Links to educational, research, government, and other non-profit web pages are acceptable. All submitted links are subject to review by ClinicalTrials.gov.",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "SeeAlsoLinkLabel": {
+                                "type": "string",
+                                "description": "Title or brief description of the linked page.",
+                                "minLength": 1
+                            },
+                            "SeeAlsoLinkURL": {
+                                "type": "string",
+                                "description": "Complete URL, including http:// or https://",
+                                "format": "uri",
+                                "minLength": 1
+                            }
+                        },
+                        "required": [
+                            "SeeAlsoLinkURL"
+                        ]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                },
+                "AvailIPDList": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "AvailIPDId": {
+                                "type": "string",
+                                "description": "The unique identifier used by a data repository for the data set or supporting information.",
+                                "minLength": 1
+                            },
+                            "AvailIPDType": {
+                                "type": "string",
+                                "description": "The type of data set or supporting information.",
+                                "enum": [
+                                    "Individual Participant Data Set",
+                                    "Study Protocol",
+                                    "Statistical Analysis Plan",
+                                    "Informed Consent Form",
+                                    "Clinical Study Report",
+                                    "Analytic Code",
+                                    "Other"
+                                ]
+                            },
+                            "AvailIPDURL": {
+                                "type": "string",
+                                "description": "The web address, if any, used to find additional information about the availability of the data set or supporting information.",
+                                "format": "uri",
+                                "minLength": 1
+                            },
+                            "AvailIPDComment": {
+                                "type": "string",
+                                "description": "Additional information including the name of the data repository or other location where the data set or supporting information is available. Provide any additional explanations about the data set or supporting information and instructions for obtaining access, particularly if a URL is not provided.",
+                                "minLength": 1
+                            }
+                        },
+                        "required": [
+                            "AvailIPDId",
+                            "AvailIPDType",
+                            "AvailIPDURL"
+                        ]
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                }
+            }
+        }
+    },
+    "required": [
+        "IdentificationModule",
+        "StatusModule",
+        "SponsorCollaboratorsModule",
+        "DescriptionModule",
+        "DesignModule",
+        "ArmsInterventionsModule",
+        "ConditionsModule",
+        "EligibilityModule",
+        "ContactsLocationsModule"
+    ],
+    "definitions": {
+        "studyIdType": {
+            "type": "string",
+            "oneOf": [
+                {
+                    "const": "NIH Grant Number",
+                    "description": "In the ID field, include activity code, institute code, and 6-digit serial number. Other components of the full award number (type code, support year, and suffix) are optional."
+                },
+                {
+                    "const": "Other Grant/Funding Number",
+                    "description": "Identifier assigned by a funding organization other than the U.S. NIH; also required to enter the name of the funding organization."
+                },
+                {
+                    "const": "Registry Identifier",
+                    "description": "Number assigned by a clinical trial registry (for example, a registry that is part of the World Health Organization [WHO] Registry Network); also required to enter the name of the clinical trial registry.."
+                },
+                {
+                    "const": "EudraCT Number",
+                    "description": "Identifier assigned by the European Medicines Agency Clinical Trials Database (EudraCT).."
+                },
+                {
+                    "const": "Other Identifier",
+                    "description": "Also required to enter a brief description of the identifier (for example, the name of the organization that issued the identifier).."
+                }
+            ]
+        },
+        "statusOptions": {
+            "type": "string",
+            "oneOf": [
+                {
+                    "const": "Withdrawn",
+                    "description": "Study halted prematurely, prior to enrolment of the first participant."
+                },
+                {
+                    "const": "Recruiting",
+                    "description": "Participants are currently being recruited, whether or not any participants have yet been enrolled."
+                },
+                {
+                    "const": "Active, not recruiting",
+                    "description": "Study is continuing, meaning participants are receiving an intervention or being examined, but new participants are not currently being recruited or enrolled."
+                },
+                {
+                    "const": "Not yet recruiting",
+                    "description": "Participants are not yet being recruited."
+                },
+                {
+                    "const": "Suspended",
+                    "description": "Study halted prematurely but potentially will resume."
+                },
+                {
+                    "const": "Enrolling by invitation",
+                    "description": "Participants are being (or will be) selected from a predetermined population."
+                },
+                {
+                    "const": "Completed",
+                    "description": "The study has concluded normally; participants are no longer receiving an intervention or being examined (that is, last participant's last visit has occurred)."
+                },
+                {
+                    "const": "Terminated",
+                    "description": "Study halted prematurely and will not resume; participants are no longer being examined or receiving intervention."
+                }
+            ]
+        },
+        "enrollmentInfo": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "EnrollmentCount": {
+                    "type": "string",
+                    "pattern": "^[0-9]+$",
+                    "minLength": 1,
+                    "description": "The estimated total number of participants to be enrolled (target number) or the actual total number of participants that are enrolled in the clinical study. Note: 'Enrolled' means a participant's, or their legally authorized representative's, agreement to participate in a clinical study following completion of the informed consent process. Potential participants who are screened for the purpose of determining eligibility for a study, but do not participate in the study, are not considered enrolled, unless otherwise specified by the protocol. The min value is '1'."
+                },
+                "EnrollmentType": {
+                    "type": "string",
+                    "enum": [
+                        "Anticipated",
+                        "Actual"
+                    ]
+                }
             },
-            "required": ["AvailIPDId", "AvailIPDType", "AvailIPDURL"]
-          },
-          "minItems": 1,
-          "uniqueItems": true
+            "required": [
+                "EnrollmentCount",
+                "EnrollmentType"
+            ]
         }
-      }
     }
-  },
-  "required": [
-    "IdentificationModule",
-    "StatusModule",
-    "SponsorCollaboratorsModule",
-    "DescriptionModule",
-    "DesignModule",
-    "ArmsInterventionsModule",
-    "ConditionsModule",
-    "EligibilityModule",
-    "ContactsLocationsModule"
-  ],
-  "$defs": {
-    "studyIdType": {
-      "type": "string",
-      "oneOf": [
-        {
-          "const": "NIH Grant Number",
-          "description": "In the ID field, include activity code, institute code, and 6-digit serial number. Other components of the full award number (type code, support year, and suffix) are optional."
-        },
-        {
-          "const": "Other Grant/Funding Number",
-          "description": "Identifier assigned by a funding organization other than the U.S. NIH; also required to enter the name of the funding organization."
-        },
-        {
-          "const": "Registry Identifier",
-          "description": "Number assigned by a clinical trial registry (for example, a registry that is part of the World Health Organization [WHO] Registry Network); also required to enter the name of the clinical trial registry.."
-        },
-        {
-          "const": "EudraCT Number",
-          "description": "Identifier assigned by the European Medicines Agency Clinical Trials Database (EudraCT).."
-        },
-        {
-          "const": "Other Identifier",
-          "description": "Also required to enter a brief description of the identifier (for example, the name of the organization that issued the identifier).."
-        }
-      ]
-    },
-    "statusOptions": {
-      "type": "string",
-      "oneOf": [
-        {
-          "const": "Withdrawn",
-          "description": "Study halted prematurely, prior to enrolment of the first participant."
-        },
-        {
-          "const": "Recruiting",
-          "description": "Participants are currently being recruited, whether or not any participants have yet been enrolled."
-        },
-        {
-          "const": "Active, not recruiting",
-          "description": "Study is continuing, meaning participants are receiving an intervention or being examined, but new participants are not currently being recruited or enrolled."
-        },
-        {
-          "const": "Not yet recruiting",
-          "description": "Participants are not yet being recruited."
-        },
-        {
-          "const": "Suspended",
-          "description": "Study halted prematurely but potentially will resume."
-        },
-        {
-          "const": "Enrolling by invitation",
-          "description": "Participants are being (or will be) selected from a predetermined population."
-        },
-        {
-          "const": "Completed",
-          "description": "The study has concluded normally; participants are no longer receiving an intervention or being examined (that is, last participant's last visit has occurred)."
-        },
-        {
-          "const": "Terminated",
-          "description": "Study halted prematurely and will not resume; participants are no longer being examined or receiving intervention."
-        }
-      ]
-    },
-    "enrollmentInfo": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "EnrollmentCount": {
-          "type": "string",
-          "pattern": "^[0-9]+$",
-          "minLength": 1,
-          "description": "The estimated total number of participants to be enrolled (target number) or the actual total number of participants that are enrolled in the clinical study. Note: 'Enrolled' means a participant's, or their legally authorized representative's, agreement to participate in a clinical study following completion of the informed consent process. Potential participants who are screened for the purpose of determining eligibility for a study, but do not participate in the study, are not considered enrolled, unless otherwise specified by the protocol. The min value is '1'."
-        },
-        "EnrollmentType": {
-          "type": "string",
-          "enum": ["Anticipated", "Actual"]
-        }
-      },
-      "required": ["EnrollmentCount", "EnrollmentType"]
-    }
-  }
 }

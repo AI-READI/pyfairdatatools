@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "pyfairdatatools"
-version = "1.1.0b0"
+version = "1.2.0b0"
 description = "Tools for AI-READI"
 
 packages = [{ include = "pyfairdatatools" }]
@@ -16,7 +16,6 @@ repository = "https://github.com/AI-READI/pyfairdatatools"
 
 keywords = []
 classifiers = [
-    # TODO: update this list to match your application: https://pypi.org/pypi?%3Aaction=list_classifiers
     "Development Status :: 1 - Planning",
     "Intended Audience :: Developers",
     "License :: OSI Approved",
@@ -33,7 +32,6 @@ classifiers = [
 python = "^3.8"
 urllib3 = "<2.0"
 
-# TODO: Remove these and add your library's requirements
 click = "*"
 minilog = "*"
 jsonschema = "^4.17.3"
@@ -108,6 +106,8 @@ precommit = ["format", "typecheck", "pylint"]
 test = "pytest -rx"
 
 jupyter = "jupyter notebook"
+
+sync_schemas = "python ./dev/pull_schemas.py"
 
 [tool.black]
 
