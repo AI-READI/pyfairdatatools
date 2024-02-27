@@ -185,6 +185,7 @@ class TestValidateDatasetDescription:
             "schemeURI": "https://www.crossref.org/",
         },
         "size": ["15 pages", "15 MB"],
+        "format": ["application/pdf", "text/csv", "dicom", "nifti"],
         "fundingReference": [
             {
                 "funderName": "Test Funder",
