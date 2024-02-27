@@ -194,6 +194,7 @@
                 "affiliationName"
               ]
             },
+            "minItems": 1,
             "uniqueItems": true
           }
         },
@@ -323,6 +324,7 @@
                 "affiliationName"
               ]
             },
+            "minItems": 1,
             "uniqueItems": true
           }
         },
