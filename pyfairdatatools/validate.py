@@ -59,7 +59,10 @@ def validate_dataset_description(data, verbose=False):  # sourcery skip: extract
                         print("affiliationValue or affiliationIdentifier is required.")
                         return False
 
-                    if "affiliationIdentifier" in affiliation and "affiliationIdentifierScheme" not in affiliation:
+                    if (
+                        "affiliationIdentifier" in affiliation
+                        and "affiliationIdentifierScheme" not in affiliation
+                    ):
                         print(
                             "affiliationIdentifierScheme is required if affiliationIdentifier is provided."  # pylint: disable=line-too-long
                         )
@@ -79,9 +82,38 @@ def validate_dataset_description(data, verbose=False):  # sourcery skip: extract
                         print("affiliationValue or affiliationIdentifier is required.")
                         return False
 
-                    if "affiliationIdentifier" in affiliation and "affiliationIdentifierScheme" not in affiliation:
+                    if (
+                        "affiliationIdentifier" in affiliation
+                        and "affiliationIdentifierScheme" not in affiliation
+                    ):  # pylint: disable=line-too-long
                         print(
                             "affiliationIdentifierScheme is required if affiliationIdentifier is provided."  # pylint: disable=line-too-long
+                        )
+                        return False
+
+        if "relatedIdentifier" in data:
+            related_identifiers = data["relatedIdentifier"]
+
+            for related_identifier in related_identifiers:
+                if related_identifier["relationType"] in [
+                    "IsMetadataFor",
+                    "HasMetadata",
+                ]:
+                    if "relatedMetadataScheme" not in related_identifier:
+                        print(
+                            "relatedMetadataScheme is required for IsMetadataFor and HasMetadata relation types."
+                        )
+                        return False
+
+                    if "schemeURI" not in related_identifier:
+                        print(
+                            "schemeURI is required for IsMetadataFor and HasMetadata relation types."
+                        )
+                        return False
+
+                    if "schemeType" not in related_identifier:
+                        print(
+                            "schemeType is required for IsMetadataFor and HasMetadata relation types."
                         )
                         return False
 
@@ -97,7 +129,7 @@ def validate_dataset_description(data, verbose=False):  # sourcery skip: extract
         raise error
 
 
-def validate_study_description(data):    # sourcery skip: extract-method, low-code-quality
+def validate_study_description(data):  # sourcery skip: extract-method, low-code-quality
     """Validate a study description against the schema."""
     schema = {}
 
