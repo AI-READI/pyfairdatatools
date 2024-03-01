@@ -45,47 +45,6 @@ def validate_dataset_description(data, verbose=False):  # sourcery skip: extract
                     print("language code is invalid.")
                     return False
 
-        contributors = data["contributor"]
-
-        for contributor in contributors:
-            if "affilation" in contributor:
-                affiliations = contributor["affilation"]
-
-                for affiliation in affiliations:
-                    if (
-                        "affiliationIdentifier" in affiliation
-                        and "affiliationIdentifierScheme" not in affiliation
-                    ):
-                        print(
-                            "affiliationIdentifierScheme is required if affiliationIdentifier is provided."  # pylint: disable=line-too-long
-                        )
-                        return False
-
-        creators = data["creator"]
-
-        for creator in creators:
-            if "affilation" in creator:
-                affiliations = creator["affilation"]
-
-                for affiliation in affiliations:
-                    if (
-                        "affiliationIdentifier" in affiliation
-                        and "affiliationIdentifierScheme" not in affiliation
-                    ):  # pylint: disable=line-too-long
-                        print(
-                            "affiliationIdentifierScheme is required if affiliationIdentifier is provided."  # pylint: disable=line-too-long
-                        )
-                        return False
-
-        if "publisher" in data and (
-            "publisherIdentifier" in data["publisher"]
-            and "publisherIdentifierScheme" not in data["publisher"]
-        ):  # pylint: disable=line-too-long
-            print(
-                "publisherIdentifierScheme is required if publisherIdentifier is provided."
-            )
-            return False
-
         if "relatedIdentifier" in data:
             related_identifiers = data["relatedIdentifier"]
 

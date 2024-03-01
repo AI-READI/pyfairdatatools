@@ -7,9 +7,17 @@
 - `Creator` has been renamed to `creator`
   - `affiliationValue` has been renamed to `affiliationName`
   - `affiliationName` has been renamed to required
+  - `affiliationIdentifier` has been changed to an object
+    - `affiliationIdentifierValue` has been added and is required
+    - `affiliationIdentifierScheme` has been added and is required
+    - `schemeURI` has been added
 - `Contributor` has been renamed to `contributor`
   - `affiliationValue` has been renamed to `affiliationName`
   - `affiliationName` has been renamed to required
+  - `affiliationIdentifier` has been changed to an object
+    - `affiliationIdentifierValue` has been added and is required
+    - `affiliationIdentifierScheme` has been added and is required
+    - `schemeURI` has been added
 - `PublicationYear` has been renamed to `publicationYear`
 - `Date` has been renamed to `date`
 - `ResourceType` has been renamed to `resourceType`
@@ -31,18 +39,28 @@
   - `schemeType` has been added
   - `resourceTypeGeneral` has been added
 - `Subject` has been renamed to `subject`
+  - `subjectIdentifier` has been added
+    - `classificationCode` has been added and is required
+    - `subjectScheme` has been added and is required
+    - `schemeURI` has been added
+    - `valueURI` has been moved to here
 - `ManagingOrganization` has been renamed to `managingOrganization`
 - `AccessType` has been renamed to `accessType`
   - `NotYetKnown` has been removed as an option for `accessType`
 - `AcessDetails` has been renamed to `accessDetails`
 - `Rights` has been renamed to `rights`
   - `rightsValue` has been renamed to `rightsName`
+  - `rightsIdentifier` has been changed to an object
+    - `rightsIdentifierValue` has been added and is required
+    - `rightsIdentifierScheme` has been added and is required
+    - `schemeURI` has been added
   - `schemeURI` has been added
 - `Publisher` has been renamed to `publisher`
   - `publisherName` has been added and is required
-  - `publisherIdentifier` has been added
-  - `publisherIdentifierScheme` has been added
-  - `schemeURI` has been added
+  - `publisherIdentifier` has been changed to an object
+    - `publisherIdentifierValue` has been added and is required
+    - `publisherIdentifierScheme` has been added and is required
+    - `schemeURI` has been added
 - `Size` has been renamed to `size`
 - `format` has been added
 - `FundingReference` has been renamed to `fundingReference`
