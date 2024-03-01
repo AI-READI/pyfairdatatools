@@ -1,0 +1,55 @@
+# All Changes
+
+- `IdentificationModule` has been renamed to `identificationModule`
+  - `officialTitle` has been added
+  - `acronym` has been added
+  - `OrgStudyIdInfo` has been renamed to `orgStudyIdInfo`
+    - `OrgStudyId` has been renamed to `orgStudyId`
+    - `OrgStudyIdType` has been renamed to `orgStudyIdType`
+    - `OrgStudyIdDomain` has been renamed to `orgStudyIdDomain`
+    - `OrgStudyIdLink` has been renamed to `orgStudyIdLink`
+  - `SecondaryIdInfoList` has been renamed to `secondaryIdInfoList`
+    - `SecondaryId` has been renamed to `secondaryId`
+    - `SecondaryIdType` has been renamed to `secondaryIdType`
+    - `SecondaryIdDomain` has been renamed to `secondaryIdDomain`
+    - `SecondaryIdLink` has been renamed to `secondaryIdLink`
+- `StatusModule` has been renamed to `statusModule`
+  - `OverallStatus` has been renamed to `overallStatus`
+  - `WhyStopped` has been renamed to `whyStopped`
+  - `StartDateStruct` has been renamed to `startDateStruct`
+    - `StartDate` has been renamed to `startDate` and the format has been changed to `YYYY-MM`
+    - `StartDateType` has been renamed to `startDateType`
+  - `CompletionDateStruct` has been renamed to `completionDateStruct` and is now required
+    - `CompletionDate` has been renamed to `completionDate` and the format has been changed to `YYYY-MM`
+    - `CompletionDateType` has been renamed to `completionDateType`
+- `SponsorCollaboratorsModule` has been renamed to `sponsorCollaboratorsModule`
+  - `LeadSponsor` has been renamed to `leadSponsor`
+    - `LeadSponsorName` has been renamed to `leadSponsorName`
+    - `leadSponsorIdentifier` has been added
+    - `leadSponsorIdentifierScheme` has been added
+    - `schemeURI` has been added
+  - `ResponsibleParty` has been renamed to `responsibleParty`
+    - `ResponsiblePartyInvestigatorFullName` has been renamed to `responsiblePartyInvestigatorFullName`
+    - `ResponsiblePartyInvestigatorTitle` has been renamed to `responsiblePartyInvestigatorTitle`
+    - `responsiblePartyInvestigatorIdentifier` has been added and is now required
+      - `responsiblePartyInvestigatorIdentifierValue` has been added
+      - `responsiblePartyInvestigatorIdentifierScheme` has been added
+      - `schemeURI` has been added
+    - `ResponsiblePartyInvestigatorAffiliation` has been renamed to `responsiblePartyInvestigatorAffiliation`
+      - `responsiblePartyInvestigatorAffiliationName` has been added and is now required
+      - `responsiblePartyInvestigatorAffiliationIdentifier` has been added
+      - `responsiblePartyInvestigatorAffiliationIdentifierScheme` has been added
+      - `schemeURI` has been added
+    - `CollaboratorList` has been renamed to `collaboratorList`
+      - `CollaboratorName` has been renamed to `collaboratorName`
+      - `collaboratorNameIdentifier` has been added
+      - `collaboratorNameIdentifierScheme` has been added
+      - `schemeURI` has been added
+- `OversightModule` has been renamed to `oversightModule`
+  - `OversightHasDMC` has been renamed to `oversightHasDMC`
+  - `isFDARegulatedDrug` has been added
+  - `isFDARegulatedDevice` has been added
+  - `humanSubjectReviewStatus` has been added and is now required
+- `DescriptionModule` has been renamed to `descriptionModule`
+  - `BriefSummary` has been renamed to `briefSummary`
+  - `DetailedDescription` has been renamed to `detailedDescription`
