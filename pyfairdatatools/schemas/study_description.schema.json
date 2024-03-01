@@ -258,12 +258,22 @@
                 }
               ]
             },
-            "responsiblePartyInvestigatorFullName": {
+            "responsiblePartyInvestigatorFirstName": {
+              "$comment": "Name split into first and last here",
               "type": "string",
-              "description": "Name of the investigator, including first and last name (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
+              "description": "First name of the investigator. Required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator'",
               "minLength": 1,
               "examples": [
-                "John Smith"
+                "James"
+              ]
+            },
+            "responsiblePartyInvestigatorLastName": {
+              "$comment": "Name split into first and last here",
+              "type": "string",
+              "description": "Last name of the investigator. Required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator'",
+              "minLength": 1,
+              "examples": [
+                "Smith"
               ]
             },
             "responsiblePartyInvestigatorTitle": {
@@ -376,7 +386,8 @@
           },
           "then": {
             "required": [
-              "responsiblePartyInvestigatorFullName",
+              "responsiblePartyInvestigatorFirstName",
+              "responsiblePartyInvestigatorLastName",
               "responsiblePartyInvestigatorTitle",
               "responsiblePartyInvestigatorAffiliation"
             ]
@@ -1027,20 +1038,13 @@
                 "description": "For Patient Registries, the anticipated time period over which each participant is to be followed.",
                 "minLength": 1,
                 "pattern": "^[0-9]+(\\.[0-9]+)?\\s*(Years|Months|Weeks|Days|Hours)?$"
-              },
-              "numberGroupsCohorts": {
-                "$comment": "This key is not in the ClinicalTrials.gov JSON study record but it has been added here to match the corresponding the Data Elements",
-                "type": "string",
-                "pattern": "^[1-9][0-9]*$",
-                "minLength": 1,
-                "description": "Number of study groups/cohorts. Enter `1` for a single-group study. Many observational studies have one group/cohort; case control studies typically have two. The minimum value is '1'."
               }
             },
             "required": [
               "isPatientRegistry",
               "designInfo",
-              "enrollmentInfo",
-              "numberGroupsCohorts"
+              "bioSpec",
+              "enrollmentInfo"
             ],
             "if": {
               "properties": {
@@ -1194,8 +1198,7 @@
             "required": [
               "interventionType",
               "interventionName",
-              "interventionDescription",
-              "interventionArmGroupLabelList"
+              "interventionDescription"
             ]
           },
           "minItems": 1,
@@ -1289,8 +1292,8 @@
             }
           },
           "required": [
-            "armGroupList",
-            "interventionList"
+            "eligibilityCriteriaInclusion",
+            "eligibilityCriteriaExclusion"
           ]
         },
         "studyPopulation": {

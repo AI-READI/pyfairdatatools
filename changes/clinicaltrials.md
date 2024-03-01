@@ -29,7 +29,9 @@
     - `leadSponsorIdentifierScheme` has been added
     - `schemeURI` has been added
   - `ResponsibleParty` has been renamed to `responsibleParty`
-    - `ResponsiblePartyInvestigatorFullName` has been renamed to `responsiblePartyInvestigatorFullName`
+    - `ResponsiblePartyInvestigatorFullName` has been removed and replaced with `responsiblePartyInvestigatorFirstName` and `responsiblePartyInvestigatorLastName`
+    - `responsiblePartyInvestigatorFirstName` has been added and is now required
+    - `responsiblePartyInvestigatorLastName` has been added and is now required
     - `ResponsiblePartyInvestigatorTitle` has been renamed to `responsiblePartyInvestigatorTitle`
     - `responsiblePartyInvestigatorIdentifier` has been added and is now required
       - `responsiblePartyInvestigatorIdentifierValue` has been added
