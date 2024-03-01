@@ -53,3 +53,125 @@
 - `DescriptionModule` has been renamed to `descriptionModule`
   - `BriefSummary` has been renamed to `briefSummary`
   - `DetailedDescription` has been renamed to `detailedDescription`
+- `ConditionsModule` has been renamed to `conditionsModule`
+  - `ConditionList` has been renamed to `conditionList`
+    - `conditionName` has been added and is now required
+    - `conditionScheme` has been added
+    - `schemeURI` has been added
+    - `conditionURI` has been added
+    - `conditionClassificationCode` has been added
+  - `KeywordList` has been renamed to `keywordList`
+    - `keywordValue` has been added and is now required
+    - `keywordScheme` has been added
+    - `schemeURI` has been added
+    - `keywordURI` has been added
+    - `keywordClassificationCode` has been added
+- `DesignModule` has been renamed to `designModule`
+  - `StudyType` has been renamed to `studyType`
+  - `DesignInfo` has been renamed to `designInfo`
+    - `DesignAllocation` has been renamed to `designAllocation`
+    - `DesignInterventionModel` has been renamed to `designInterventionModel`
+    - `DesignInterventionModelDescription` has been renamed to `designInterventionModelDescription`
+    - `DesignObservationalModelList` has been renamed to `designObservationalModelList`
+    - `DesignTimePerspectiveList` has been renamed to `designTimePerspectiveList`
+    - `DesignPrimaryPurpose` has been renamed to `designPrimaryPurpose`
+    - `DesignMaskingInfo` has been renamed to `designMaskingInfo`
+      - `DesignMasking` has been renamed to `designMasking`
+      - `DesignMaskingDescription` has been renamed to `designMaskingDescription`
+  - `PhaseList` has been renamed to `phaseList`
+  - `EnrollmentInfo` has been renamed to `enrollmentInfo`
+    - `EnrollmentCount` has been renamed to `enrollmentCount`
+    - `EnrollmentType` has been renamed to `enrollmentType`
+  - `isPatientRegistry` has been added
+  - `BioSpec` has been renamed to `bioSpec`
+    - `BioSpecRetention` has been renamed to `bioSpecRetention`
+    - `BioSpecDescription` has been renamed to `bioSpecDescription` and is now required
+  - `TargetDuration` has been renamed to `targetDuration` and now requires a regex pattern and is required if `isPatientRegistry` is true
+  - `NumberGroupsCohorts` has been renamed to `numberGroupsCohorts` and has an updated regex pattern
+- `ArmsInterventionsModule` has been renamed to `armsInterventionsModule`
+  - `ArmGroupList` has been renamed to `armGroupList`
+    - `ArmGroupLabel` has been renamed to `armGroupLabel`
+    - `ArmGroupType` has been renamed to `armGroupType`
+    - `ArmGroupDescription` has been renamed to `armGroupDescription` and is now required
+    - `ArmGroupInterventionList` has been renamed to `armGroupInterventionList`
+  - `InterventionList` has been renamed to `interventionList`
+    - `InterventionType` has been renamed to `interventionType`
+    - `InterventionName` has been renamed to `interventionName`
+    - `InterventionDescription` has been renamed to `interventionDescription` and is now required
+    - `InterventionArmGroupLabel` has been renamed to `interventionArmGroupLabel`
+    - `InterventionOtherNameList` has been renamed to `interventionOtherNameList`
+      - `InterventionOtherName` has been renamed to `interventionOtherName`
+      - `InterventionOtherNameType` has been renamed to `interventionOtherNameType`
+      - `InterventionOtherNameDescription` has been renamed to `interventionOtherNameDescription`
+- `EligibilityModule` has been renamed to `eligibilityModule`
+  - `Gender` has been renamed to `sex`
+  - `GenderBased` has been renamed to `genderBased`
+  - `GenderDescription` has been renamed to `genderDescription`
+  - `MinimumAge` has been renamed to `minimumAge`
+  - `MaximumAge` has been renamed to `maximumAge`
+  - `HealthyVolunteers` has been renamed to `healthyVolunteers`
+  - `EligibilityCriteria` has been renamed to `eligibilityCriteria`
+    - `eligibilityCriteriaInclusion` has been added
+    - `eligibilityCriteriaExclusion` has been added
+  - `studyPopulation` has been added
+  - `samplingMethod` has been added
+- `ContactsLocationsModule` has been renamed to `contactsLocationsModule`
+  - `CentralContactList` has been renamed to `centralContactList`
+    - `CentralContactName` has been removed and replaced with `centralContactFirstName` and `centralContactLastName`
+    - `CentralContactFirstName` has been added and is now required
+    - `CentralContactLastName` has been added and is now required
+    - `centralContactDegree` has been added
+    - `centralContactIdentifier` has been added
+      - `centralContactIdentifierValue` has been added and is now required
+      - `centralContactIdentifierScheme` has been added
+      - `schemeURI` has been added
+    - `centralContactAffiliation` has been added
+      - `centralContactAffiliationName` has been added and is now required
+      - `centralContactAffiliationIdentifier` has been added
+      - `centralContactAffiliationIdentifierScheme` has been added
+      - `schemeURI` has been added
+    - `CentralContactPhone` has been renamed to `centralContactPhone` is no longer required
+    - `CentralContactPhoneExt` has been renamed to `centralContactPhoneExt`
+    - `CentralContactEMail` has been renamed to `centralContactEMail`
+  - `OverallOfficialList` has been renamed to `overallOfficialList`
+    - `OverallOfficialName` has been removed and replaced with `overallOfficialFirstName` and `overallOfficialLastName`
+    - `OverallOfficialFirstName` has been added and is now required
+    - `OverallOfficialLastName` has been added and is now required
+    - `overallOfficialDegree` has been added
+    - `overallOfficialIdentifier` has been added
+      - `overallOfficialIdentifierValue` has been added and is now required
+      - `overallOfficialIdentifierScheme` has been added
+      - `schemeURI` has been added
+    - `overallOfficialAffiliation` has been added
+      - `overallOfficialAffiliationName` has been added and is now required
+      - `overallOfficialAffiliationIdentifier` has been added
+      - `overallOfficialAffiliationIdentifierScheme` has been added
+      - `schemeURI` has been added
+    - `OverallOfficialRole` has been renamed to `overallOfficialRole`
+  - `LocationList` has been renamed to `locationList`
+    - `LocationFacility` has been renamed to `locationFacility`
+    - `LocationStatus` has been renamed to `locationStatus`
+    - `LocationCity` has been renamed to `locationCity`
+    - `LocationState` has been renamed to `locationState`
+    - `LocationZip` has been renamed to `locationZip`
+    - `LocationCountry` has been renamed to `locationCountry`
+  - `locationIdentifier` has been added
+    - `locationIdentifierValue` has been added and is now required
+    - `locationIdentifierScheme` has been added
+    - `schemeURI` has been added
+  - `LocationContactList` has been renamed to `locationContactList`
+    - `LocationContactName` has been removed and replaced with `locationContactFirstName` and `locationContactLastName`
+    - `LocationContactFirstName` has been added and is now required
+    - `LocationContactLastName` has been added and is now required
+    - `locationContactDegree` has been added
+    - `locationContactIdentifier` has been added
+      - `locationContactIdentifierValue` has been added and is now required
+      - `locationContactIdentifierScheme` has been added
+      - `schemeURI` has been added
+    - `LocationContactRole` has been renamed to `locationContactRole`
+    - `LocationContactPhone` has been renamed to `locationContactPhone`
+    - `LocationContactPhoneExt` has been renamed to `locationContactPhoneExt`
+    - `LocationContactEMail` has been renamed to `locationContactEMail`
+- `IPDSharingStatementModule` has been removed
+- `ReferencesModule` has been removed
+- `humanSubjectReviewStatus` has controlled options
