@@ -26,7 +26,9 @@
   - `LeadSponsor` has been renamed to `leadSponsor`
     - `LeadSponsorName` has been renamed to `leadSponsorName`
     - `leadSponsorIdentifier` has been added
-    - `leadSponsorIdentifierScheme` has been added
+      - `leadSponsorIdentifierValue` has been added and is now required
+      - `leadSponsorIdentifierScheme` has been added and is now required
+      - `schemeURI` has been added
     - `schemeURI` has been added
   - `ResponsibleParty` has been renamed to `responsibleParty`
     - `ResponsiblePartyInvestigatorFullName` has been removed and replaced with `responsiblePartyInvestigatorFirstName` and `responsiblePartyInvestigatorLastName`
@@ -34,19 +36,21 @@
     - `responsiblePartyInvestigatorLastName` has been added and is now required
     - `ResponsiblePartyInvestigatorTitle` has been renamed to `responsiblePartyInvestigatorTitle`
     - `responsiblePartyInvestigatorIdentifier` has been added and is now required
-      - `responsiblePartyInvestigatorIdentifierValue` has been added
-      - `responsiblePartyInvestigatorIdentifierScheme` has been added
+      - `responsiblePartyInvestigatorIdentifierValue` has been added and is now required
+      - `responsiblePartyInvestigatorIdentifierScheme` has been added and is now required
       - `schemeURI` has been added
     - `ResponsiblePartyInvestigatorAffiliation` has been renamed to `responsiblePartyInvestigatorAffiliation`
       - `responsiblePartyInvestigatorAffiliationName` has been added and is now required
       - `responsiblePartyInvestigatorAffiliationIdentifier` has been added
-      - `responsiblePartyInvestigatorAffiliationIdentifierScheme` has been added
-      - `schemeURI` has been added
+        - `responsiblePartyInvestigatorAffiliationIdentifierValue` has been added and is now required
+        - `responsiblePartyInvestigatorAffiliationIdentifierScheme` has been added and is now required
+        - `schemeURI` has been added
     - `CollaboratorList` has been renamed to `collaboratorList`
       - `CollaboratorName` has been renamed to `collaboratorName`
       - `collaboratorNameIdentifier` has been added
-      - `collaboratorNameIdentifierScheme` has been added
-      - `schemeURI` has been added
+        - `collaboratorNameIdentifierValue` has been added and is now required
+        - `collaboratorNameIdentifierScheme` has been added and is now required
+        - `schemeURI` has been added
 - `OversightModule` has been renamed to `oversightModule`
   - `OversightHasDMC` has been renamed to `oversightHasDMC`
   - `isFDARegulatedDrug` has been added
@@ -58,15 +62,18 @@
 - `ConditionsModule` has been renamed to `conditionsModule`
   - `ConditionList` has been renamed to `conditionList`
     - `conditionName` has been added and is now required
-    - `conditionScheme` has been added
-    - `schemeURI` has been added
-    - `conditionURI` has been added
-    - `conditionClassificationCode` has been added
+    - `conditionIdentifier` has been added
+      - `conditionClassificationCode` has been added and is now required
+      - `conditionScheme` has been added and is now required
+      - `schemeURI` has been added
+      - `conditionURI` has been added
   - `KeywordList` has been renamed to `keywordList`
     - `keywordValue` has been added and is now required
-    - `keywordScheme` has been added
-    - `schemeURI` has been added
-    - `keywordURI` has been added
+    - `keywordIdentifier` has been added
+      - `keywordClassificationCode` has been added and is now required
+      - `keywordScheme` has been added and is now required
+      - `schemeURI` has been added
+      - `keywordURI` has been added
     - `keywordClassificationCode` has been added
 - `DesignModule` has been renamed to `designModule`
   - `StudyType` has been renamed to `studyType`
@@ -125,13 +132,14 @@
     - `centralContactDegree` has been added
     - `centralContactIdentifier` has been added
       - `centralContactIdentifierValue` has been added and is now required
-      - `centralContactIdentifierScheme` has been added
+      - `centralContactIdentifierScheme` has been added and is now required
       - `schemeURI` has been added
     - `centralContactAffiliation` has been added
       - `centralContactAffiliationName` has been added and is now required
       - `centralContactAffiliationIdentifier` has been added
-      - `centralContactAffiliationIdentifierScheme` has been added
-      - `schemeURI` has been added
+        - `centralContactAffiliationIdentifierValue` has been added and is now required
+        - `centralContactAffiliationIdentifierScheme` has been added and is now required
+        - `schemeURI` has been added
     - `CentralContactPhone` has been renamed to `centralContactPhone` is no longer required
     - `CentralContactPhoneExt` has been renamed to `centralContactPhoneExt`
     - `CentralContactEMail` has been renamed to `centralContactEMail`
@@ -142,13 +150,14 @@
     - `overallOfficialDegree` has been added
     - `overallOfficialIdentifier` has been added
       - `overallOfficialIdentifierValue` has been added and is now required
-      - `overallOfficialIdentifierScheme` has been added
+      - `overallOfficialIdentifierScheme` has been added and is now required
       - `schemeURI` has been added
     - `overallOfficialAffiliation` has been added
       - `overallOfficialAffiliationName` has been added and is now required
       - `overallOfficialAffiliationIdentifier` has been added
-      - `overallOfficialAffiliationIdentifierScheme` has been added
-      - `schemeURI` has been added
+        - `overallOfficialAffiliationIdentifierValue` has been added and is now required
+        - `overallOfficialAffiliationIdentifierScheme` has been added and is now required
+        - `schemeURI` has been added
     - `OverallOfficialRole` has been renamed to `overallOfficialRole`
   - `LocationList` has been renamed to `locationList`
     - `LocationFacility` has been renamed to `locationFacility`
@@ -159,7 +168,7 @@
     - `LocationCountry` has been renamed to `locationCountry`
   - `locationIdentifier` has been added
     - `locationIdentifierValue` has been added and is now required
-    - `locationIdentifierScheme` has been added
+    - `locationIdentifierScheme` has been added and is now required
     - `schemeURI` has been added
   - `LocationContactList` has been renamed to `locationContactList`
     - `LocationContactName` has been removed and replaced with `locationContactFirstName` and `locationContactLastName`
