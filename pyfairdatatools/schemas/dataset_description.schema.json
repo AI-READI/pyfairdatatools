@@ -760,7 +760,7 @@
       },
       "uniqueItems": true
     },
-    "managingOrganisation": {
+    "managingOrganization": {
       "$comment": "This key is from the ECRIN Metadata Schema for data objects v6.0 'F.1 Managing Organisation'",
       "type": "object",
       "additionalProperties": false,
@@ -774,7 +774,7 @@
         "rorId": {
           "type": "string",
           "minLength": 1,
-          "description": "The id of the organisation, if known, within the ROR (Research Organisation Registry) system. This is a URL linking to the ROR resource."
+          "description": "The id of the organization, if known, within the ROR (Research Organization Registry) system. This is a URL linking to the ROR resource."
         }
       },
       "required": [

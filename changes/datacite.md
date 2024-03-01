@@ -1,0 +1,52 @@
+# All Changes
+
+- `Identifier` has been renamed to `identifier`
+- `Title` has been renamed to `title`
+- `Version` has been renamed to `version`
+- `AlternateIdentifier` has been renamed to `alternateIdentifier`
+- `Creator` has been renamed to `creator`
+  - `affiliationValue` has been renamed to `affiliationName`
+  - `affiliationName` has been renamed to required
+- `Contributor` has been renamed to `contributor`
+  - `affiliationValue` has been renamed to `affiliationName`
+  - `affiliationName` has been renamed to required
+- `PublicationYear` has been renamed to `publicationYear`
+- `Date` has been renamed to `date`
+- `ResourceType` has been renamed to `resourceType`
+- `DatasetRecordKeys` has been removed
+- `DatasetDeIdentLevel` has been renamed to `datasetDeIdentLevel`
+  - `NotKnown` has been removed as an option for `deIdentType`
+- `DatasetConsent` has been renamed to `datasetConsent`
+  - `NotKnown` has been removed as an option for `consentType`
+- `Description` has been renamed to `description`
+  - `SeriesInformation` has been removed as an option for `descriptionType`
+  - `TableOfContents` has been removed as an option for `descriptionType`
+- `Language` has been renamed to `language`
+- `RelatedIdentifier` has been renamed to `relatedIdentifier` and added to the libarary
+  - `relatedIdentifierValue` has been added and is required
+  - `relatedIdentifierType` has been added and is required
+  - `relationType` has been added and is required
+  - `relatedMetadataScheme` has been added
+  - `schemeURI` has been added
+  - `schemeType` has been added
+  - `resourceTypeGeneral` has been added
+- `Subject` has been renamed to `subject`
+- `ManagingOrganization` has been renamed to `managingOrganization`
+- `AccessType` has been renamed to `accessType`
+  - `NotYetKnown` has been removed as an option for `accessType`
+- `AcessDetails` has been renamed to `accessDetails`
+- `Rights` has been renamed to `rights`
+  - `rightsValue` has been renamed to `rightsName`
+  - `schemeURI` has been added
+- `Publisher` has been renamed to `publisher`
+  - `publisherName` has been added and is required
+  - `publisherIdentifier` has been added
+  - `publisherIdentifierScheme` has been added
+  - `schemeURI` has been added
+- `Size` has been renamed to `size`
+- `format` has been added
+- `FundingReference` has been renamed to `fundingReference`
+  - `funderIdentifierType` is now required in `funderIdentifier`
+- `RelatedItem` has been removed
+- `other` option has been renamed to `Other` for `identifierType`
+- `Study lead` option has been renamed to `StudyLead` for `contributorType`

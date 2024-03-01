@@ -1075,7 +1075,6 @@ class TestValidateReadme:
     """Unit tests for validate_readme function."""
 
     def test_minimal_valid_readme(self):
-
         data = {"Title": "Test Title"}
 
         output = validate_readme(data)
