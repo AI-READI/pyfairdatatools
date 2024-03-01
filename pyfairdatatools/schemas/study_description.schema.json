@@ -1,4 +1,5 @@
 {
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schema.aireadi.org/files/study_description.json",
   "title": "Study Description",
   "description": "Add a description of the study and the dataset.",
@@ -19,7 +20,7 @@
               "minLength": 1
             },
             "OrgStudyIdType": {
-              "$ref": "#/definitions/studyIdType",
+              "$ref": "#/$defs/studyIdType",
               "description": "A description of the type of main ID."
             },
             "OrgStudyIdDomain": {
@@ -29,15 +30,11 @@
             },
             "OrgStudyIdLink": {
               "type": "string",
-              "description": "If the ID has a resolvable link, optionally provide the full link here. For instance, if ID is 'K01HL147713' then the ID link is 'https://reporter.nih.gov/quickSearch/K01HL147713'",
               "format": "uri",
               "minLength": 1
             }
           },
-          "required": [
-            "OrgStudyId",
-            "OrgStudyIdType"
-          ]
+          "required": ["OrgStudyId", "OrgStudyIdType"]
         },
         "SecondaryIdInfoList": {
           "type": "array",
@@ -51,7 +48,7 @@
                 "minLength": 1
               },
               "SecondaryIdType": {
-                "$ref": "#/definitions/studyIdType",
+                "$ref": "#/$defs/studyIdType",
                 "description": "A description of the type of secondary ID."
               },
               "SecondaryIdDomain": {
@@ -66,25 +63,20 @@
                 "minLength": 1
               }
             },
-            "required": [
-              "SecondaryId",
-              "SecondaryIdType"
-            ]
+            "required": ["SecondaryId", "SecondaryIdType"]
           },
           "minItems": 1,
           "uniqueItems": true
         }
       },
-      "required": [
-        "OrgStudyIdInfo"
-      ]
+      "required": ["OrgStudyIdInfo"]
     },
     "StatusModule": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "OverallStatus": {
-          "$ref": "#/definitions/statusOptions",
+          "$ref": "#/$defs/statusOptions",
           "description": "The recruitment status for the clinical study as a whole, based upon the status of the individual sites. If at least one facility in a multi-site clinical study has an Individual Site Status of 'Recruiting', then the Overall Recruitment Status for the study must be 'Recruiting'."
         },
         "WhyStopped": {
@@ -104,16 +96,10 @@
             },
             "StartDateType": {
               "type": "string",
-              "enum": [
-                "Actual",
-                "Anticipated"
-              ]
+              "enum": ["Actual", "Anticipated"]
             }
           },
-          "required": [
-            "StartDate",
-            "StartDateType"
-          ]
+          "required": ["StartDate", "StartDateType"]
         },
         "CompletionDateStruct": {
           "type": "object",
@@ -127,23 +113,13 @@
             },
             "CompletionDateType": {
               "type": "string",
-              "enum": [
-                "Actual",
-                "Anticipated"
-              ]
+              "enum": ["Actual", "Anticipated"]
             }
           },
-          "required": [
-            "CompletionDate",
-            "CompletionDateType"
-          ]
+          "required": ["CompletionDate", "CompletionDateType"]
         }
       },
-      "required": [
-        "OverallStatus",
-        "StartDateStruct",
-        "CompletionDateStruct"
-      ]
+      "required": ["OverallStatus", "StartDateStruct"]
     },
     "SponsorCollaboratorsModule": {
       "type": "object",
@@ -174,30 +150,22 @@
               "type": "string",
               "description": "Name of the investigator, including first and last name. (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
               "minLength": 1,
-              "examples": [
-                "John Smith"
-              ]
+              "examples": ["John Smith"]
             },
             "ResponsiblePartyInvestigatorTitle": {
               "type": "string",
               "description": "Professional title of the investigator (for example, Professor of Medicine). (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
               "minLength": 1,
-              "examples": [
-                "Professor of Medicine"
-              ]
+              "examples": ["Professor of Medicine"]
             },
             "ResponsiblePartyInvestigatorAffiliation": {
               "type": "string",
               "description": "Name of the organization to which the investigator is affiliated. (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
               "minLength": 1,
-              "examples": [
-                "University of California, San Diego"
-              ]
+              "examples": ["University of California, San Diego"]
             }
           },
-          "required": [
-            "ResponsiblePartyType"
-          ]
+          "required": ["ResponsiblePartyType"]
         },
         "LeadSponsor": {
           "type": "object",
@@ -209,9 +177,7 @@
               "minLength": 1
             }
           },
-          "required": [
-            "LeadSponsorName"
-          ]
+          "required": ["LeadSponsorName"]
         },
         "CollaboratorList": {
           "type": "array",
@@ -225,18 +191,13 @@
                 "description": "The name of the entity or the individual who is the collaborator of the clinical study."
               }
             },
-            "required": [
-              "CollaboratorName"
-            ]
+            "required": ["CollaboratorName"]
           },
           "minItems": 1,
           "uniqueItems": true
         }
       },
-      "required": [
-        "ResponsibleParty",
-        "LeadSponsor"
-      ]
+      "required": ["ResponsibleParty", "LeadSponsor"]
     },
     "OversightModule": {
       "type": "object",
@@ -245,10 +206,7 @@
         "OversightHasDMC": {
           "type": "string",
           "description": "Indicate whether a data monitoring committee has been appointed for this study. The data monitoring committee (board) is a group of independent scientists who are appointed to monitor the safety and scientific integrity of a human research intervention, and to make recommendations to the sponsor regarding the stopping of the trial for efficacy, for harms or for futility. The composition of the committee is dependent upon the scientific skills and knowledge required for monitoring the particular study. Select Yes/No.",
-          "enum": [
-            "Yes",
-            "No"
-          ]
+          "enum": ["Yes", "No"]
         }
       }
     },
@@ -267,9 +225,7 @@
           "minLength": 1
         }
       },
-      "required": [
-        "BriefSummary"
-      ]
+      "required": ["BriefSummary"]
     },
     "ConditionsModule": {
       "type": "object",
@@ -277,7 +233,7 @@
       "properties": {
         "ConditionList": {
           "type": "array",
-          "description": "The name(s) of the disease(s) or condition(s) studied in the clinical study, or the focus of the clinical study. Use, if available, appropriate descriptors from NLM's Medical Subject Headings (MeSH)-controlled vocabulary thesaurus or terms from another vocabulary, such as the Systematized Nomenclature of Medicine\u2014Clinical Terms (SNOMED CT), that has been mapped to MeSH within the Unified Medical Language System (UMLS) Metathesaurus.",
+          "description": "The name(s) of the disease(s) or condition(s) studied in the clinical study, or the focus of the clinical study. Use, if available, appropriate descriptors from NLM's Medical Subject Headings (MeSH)-controlled vocabulary thesaurus or terms from another vocabulary, such as the Systematized Nomenclature of Medicine—Clinical Terms (SNOMED CT), that has been mapped to MeSH within the Unified Medical Language System (UMLS) Metathesaurus.",
           "items": {
             "type": "string",
             "minLength": 1
@@ -296,15 +252,11 @@
           "uniqueItems": true
         }
       },
-      "required": [
-        "ConditionList"
-      ]
+      "required": ["ConditionList"]
     },
     "DesignModule": {
       "type": "object",
-      "required": [
-        "StudyType"
-      ],
+      "required": ["StudyType"],
       "properties": {
         "StudyType": {
           "type": "string",
@@ -324,7 +276,7 @@
             },
             {
               "const": "Expanded Access",
-              "description": "An investigational drug product (including biological product) available through expanded access for patients who do not qualify for enrollment in a clinical trial. Expanded Access includes all expanded access types under section 561 of the Federal Food, Drug, and Cosmetic Act: (1) for individual patients, including emergency use; (2) for intermediate-size patient populations; and (3) under a treatment IND or treatment protocol. (For more information on data requirements for this Study Type, see Expanded Access Data Element Definitions)."
+              "description": "An investigational drug product (including biological product) available through expanded access for patients who do not qualify for enrollment in a clinical trial. Expanded Access includes all expanded access types under section 561 of the Federal Food, Drug, and Cosmetic Act: (1) for individual patients, including emergency use; (2) for intermediate-size patient populations; and (3) under a treatment IND or treatment protocol. (For more information on data requirements for this Study Type, see Expanded Access Data Element $defs)."
             }
           ]
         }
@@ -494,10 +446,7 @@
                         "uniqueItems": true
                       }
                     },
-                    "required": [
-                      "DesignMasking",
-                      "DesignWhoMaskedList"
-                    ]
+                    "required": ["DesignMasking", "DesignWhoMaskedList"]
                   }
                 },
                 "required": [
@@ -552,7 +501,7 @@
                 "uniqueItems": true
               },
               "EnrollmentInfo": {
-                "$ref": "#/definitions/enrollmentInfo"
+                "$ref": "#/$defs/enrollmentInfo"
               },
               "NumberArms": {
                 "type": "string",
@@ -684,22 +633,16 @@
                     "minLength": 1
                   }
                 },
-                "required": [
-                  "BioSpecRetention"
-                ]
+                "required": ["BioSpecRetention"]
               },
               "EnrollmentInfo": {
-                "$ref": "#/definitions/enrollmentInfo"
+                "$ref": "#/$defs/enrollmentInfo"
               },
               "TargetDuration": {
                 "type": "string",
                 "description": "For Patient Registries, the anticipated time period over which each participant is to be followed.",
                 "minLength": 1,
-                "examples": [
-                  "3 Years",
-                  "5 Days",
-                  "10 Weeks"
-                ]
+                "examples": ["3 Years", "5 Days", "10 Weeks"]
               },
               "NumberGroupsCohorts": {
                 "type": "string",
@@ -760,9 +703,7 @@
                 "uniqueItems": true
               }
             },
-            "required": [
-              "ArmGroupLabel"
-            ]
+            "required": ["ArmGroupLabel"]
           },
           "minItems": 1,
           "uniqueItems": true
@@ -865,10 +806,7 @@
           "uniqueItems": true
         }
       },
-      "required": [
-        "ArmGroupList",
-        "InterventionList"
-      ]
+      "required": ["ArmGroupList", "InterventionList"]
     },
     "EligibilityModule": {
       "type": "object",
@@ -895,10 +833,7 @@
         "GenderBased": {
           "type": "string",
           "description": "If applicable, indicate whether participant eligibility is based on gender. Note: 'Gender' means a person's self-representation of gender identity.",
-          "enum": [
-            "Yes",
-            "No"
-          ]
+          "enum": ["Yes", "No"]
         },
         "GenderDescription": {
           "type": "string",
@@ -919,10 +854,7 @@
         "HealthyVolunteers": {
           "type": "string",
           "description": "Indication that participants who do not have a disease or condition, or related conditions or symptoms, under study in the clinical study are permitted to participate in the clinical study. Required if the study type is Interventional.",
-          "enum": [
-            "Yes",
-            "No"
-          ]
+          "enum": ["Yes", "No"]
         },
         "EligibilityCriteria": {
           "type": "string",
@@ -954,9 +886,7 @@
         "GenderBased",
         "MinimumAge",
         "MaximumAge",
-        "EligibilityCriteria",
-        "StudyPopulation",
-        "SamplingMethod"
+        "EligibilityCriteria"
       ]
     },
     "ContactsLocationsModule": {
@@ -1008,7 +938,6 @@
         },
         "OverallOfficialList": {
           "type": "array",
-          "description": "",
           "items": {
             "type": "object",
             "additionalProperties": false,
@@ -1053,7 +982,7 @@
                 "minLength": 1
               },
               "LocationStatus": {
-                "$ref": "#/definitions/statusOptions",
+                "$ref": "#/$defs/statusOptions",
                 "description": "The recruitment status of each participating facility in a clinical study."
               },
               "LocationCity": {
@@ -1091,10 +1020,7 @@
                     "LocationContactRole": {
                       "type": "string",
                       "description": "Position or function of the contact person.",
-                      "enum": [
-                        "Principal Investigator",
-                        "Sub-Investigator"
-                      ]
+                      "enum": ["Principal Investigator", "Sub-Investigator"]
                     },
                     "LocationContactPhone": {
                       "type": "string",
@@ -1134,16 +1060,12 @@
           "uniqueItems": true
         }
       },
-      "required": [
-        "LocationList"
-      ]
+      "required": ["LocationList"]
     },
     "IPDSharingStatementModule": {
       "type": "object",
       "additionalProperties": false,
-      "required": [
-        "IPDSharing"
-      ],
+      "required": ["IPDSharing"],
       "properties": {
         "IPDSharing": {
           "type": "string",
@@ -1237,10 +1159,7 @@
               "ReferenceType": {
                 "type": "string",
                 "description": "Indicate if the reference provided reports on results from this clinical study.",
-                "enum": [
-                  "Yes",
-                  "No"
-                ]
+                "enum": ["Yes", "No"]
               },
               "ReferenceCitation": {
                 "type": "string",
@@ -1248,9 +1167,7 @@
                 "minLength": 1
               }
             },
-            "required": [
-              "ReferenceCitation"
-            ]
+            "required": ["ReferenceCitation"]
           },
           "minItems": 1,
           "uniqueItems": true
@@ -1274,9 +1191,7 @@
                 "minLength": 1
               }
             },
-            "required": [
-              "SeeAlsoLinkURL"
-            ]
+            "required": ["SeeAlsoLinkURL"]
           },
           "minItems": 1,
           "uniqueItems": true
@@ -1317,11 +1232,7 @@
                 "minLength": 1
               }
             },
-            "required": [
-              "AvailIPDId",
-              "AvailIPDType",
-              "AvailIPDURL"
-            ]
+            "required": ["AvailIPDId", "AvailIPDType", "AvailIPDURL"]
           },
           "minItems": 1,
           "uniqueItems": true
@@ -1340,7 +1251,7 @@
     "EligibilityModule",
     "ContactsLocationsModule"
   ],
-  "definitions": {
+  "$defs": {
     "studyIdType": {
       "type": "string",
       "oneOf": [
@@ -1415,16 +1326,10 @@
         },
         "EnrollmentType": {
           "type": "string",
-          "enum": [
-            "Anticipated",
-            "Actual"
-          ]
+          "enum": ["Anticipated", "Actual"]
         }
       },
-      "required": [
-        "EnrollmentCount",
-        "EnrollmentType"
-      ]
+      "required": ["EnrollmentCount", "EnrollmentType"]
     }
   }
 }
