@@ -29,7 +29,6 @@
       - `leadSponsorIdentifierValue` has been added and is now required
       - `leadSponsorIdentifierScheme` has been added and is now required
       - `schemeURI` has been added
-    - `schemeURI` has been added
   - `ResponsibleParty` has been renamed to `responsibleParty`
     - `ResponsiblePartyInvestigatorFullName` has been removed and replaced with `responsiblePartyInvestigatorFirstName` and `responsiblePartyInvestigatorLastName`
     - `responsiblePartyInvestigatorFirstName` has been added and is now required
@@ -74,7 +73,6 @@
       - `keywordScheme` has been added and is now required
       - `schemeURI` has been added
       - `keywordURI` has been added
-    - `keywordClassificationCode` has been added
 - `DesignModule` has been renamed to `designModule`
   - `StudyType` has been renamed to `studyType`
   - `DesignInfo` has been renamed to `designInfo`
@@ -107,11 +105,7 @@
     - `InterventionType` has been renamed to `interventionType`
     - `InterventionName` has been renamed to `interventionName`
     - `InterventionDescription` has been renamed to `interventionDescription` and is now required
-    - `InterventionArmGroupLabel` has been renamed to `interventionArmGroupLabel`
     - `InterventionOtherNameList` has been renamed to `interventionOtherNameList`
-      - `InterventionOtherName` has been renamed to `interventionOtherName`
-      - `InterventionOtherNameType` has been renamed to `interventionOtherNameType`
-      - `InterventionOtherNameDescription` has been renamed to `interventionOtherNameDescription`
 - `EligibilityModule` has been renamed to `eligibilityModule`
   - `Gender` has been renamed to `sex`
   - `GenderBased` has been renamed to `genderBased`

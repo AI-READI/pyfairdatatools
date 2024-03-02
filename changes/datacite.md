@@ -54,7 +54,6 @@
     - `rightsIdentifierValue` has been added and is required
     - `rightsIdentifierScheme` has been added and is required
     - `schemeURI` has been added
-  - `schemeURI` has been added
 - `Publisher` has been renamed to `publisher`
   - `publisherName` has been added and is required
   - `publisherIdentifier` has been changed to an object

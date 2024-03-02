@@ -99,179 +99,61 @@ def validate_study_description(data):  # sourcery skip: extract-method, low-code
     try:
         validate(instance=data, schema=schema)
 
-        OrgStudyIdType = data["IdentificationModule"]["OrgStudyIdInfo"][
-            "OrgStudyIdType"
-        ]
+        statusModule = data["statusModule"]
 
-        if OrgStudyIdType in [
-            "Other Grant/Funding Number",
-            "Registry Identifier",
-            "Other Identifier",
-        ]:
-            # check if the OrgStudyIdDomain key exists and is not empty
-            if "OrgStudyIdDomain" not in data["IdentificationModule"]["OrgStudyIdInfo"]:
-                print("OrgStudyIdDomain is required.")
-                return False
+        overallStatus = statusModule["overallStatus"]
 
-            OrgStudyIdDomain = data["IdentificationModule"]["OrgStudyIdInfo"][
-                "OrgStudyIdDomain"
-            ]
-
-            if OrgStudyIdDomain is None or OrgStudyIdDomain == "":
-                print("A value for OrgStudyIdDomain is required.")
-                return False
-
-        if "SecondaryIdInfoList" in data["IdentificationModule"]:
-            SecondaryIdInfoList = data["IdentificationModule"]["SecondaryIdInfoList"]
-
-            for SecondaryIdInfo in SecondaryIdInfoList:
-                SecondaryIdType = SecondaryIdInfo["SecondaryIdType"]
-
-                if SecondaryIdType in [
-                    "Other Grant/Funding Number",
-                    "Registry Identifier",
-                    "Other Identifier",
-                ]:
-                    # check if the SecondaryIdDomain key exists and is not empty
-                    if "SecondaryIdDomain" not in SecondaryIdInfo:
-                        print("SecondaryIdDomain is required.")
-                        return False
-
-                    SecondaryIdDomain = SecondaryIdInfo["SecondaryIdDomain"]
-
-                    if SecondaryIdDomain is None or SecondaryIdDomain == "":
-                        print("A value for SecondaryIdDomain is required")
-                        return False
-
-        OverallStatus = data["StatusModule"]["OverallStatus"]
-
-        if OverallStatus in ["Suspended", "Completed", "Terminated"]:
-            # check if the WhyStopped key exists and is not empty
-            if "WhyStopped" not in data["StatusModule"]:
-                print("WhyStopped is required.")
-                return False
-
-            WhyStopped = data["StatusModule"]["WhyStopped"]
-
-            if WhyStopped is None or WhyStopped == "":
-                print("A value for WhyStopped is required.")
-                return False
-
-        ResponsiblePartyType = data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyType"
-        ]
-
-        if ResponsiblePartyType in ["Principal Investigator", "Sponsor-Investigator"]:
-            # check if the ResponsiblePartyInvestigatorFullName key exists
-            # and is not empty
-            if (
-                "ResponsiblePartyInvestigatorFullName"
-                not in data["SponsorCollaboratorsModule"]["ResponsibleParty"]
-            ):
-                print("ResponsiblePartyInvestigatorFullName is required.")
-                return False
-
-            ResponsiblePartyInvestigatorFullName = data["SponsorCollaboratorsModule"][
-                "ResponsibleParty"
-            ]["ResponsiblePartyInvestigatorFullName"]
-
-            if (
-                ResponsiblePartyInvestigatorFullName is None
-                or ResponsiblePartyInvestigatorFullName == ""
-            ):
-                print("A value for ResponsiblePartyInvestigatorFullName is required.")
-                return False
-
-            # check if the ResponsiblePartyInvestigatorTitle key exists and is not empty
-            if (
-                "ResponsiblePartyInvestigatorTitle"
-                not in data["SponsorCollaboratorsModule"]["ResponsibleParty"]
-            ):
-                print("ResponsiblePartyInvestigatorTitle is required.")
-                return False
-
-            ResponsiblePartyInvestigatorTitle = data["SponsorCollaboratorsModule"][
-                "ResponsibleParty"
-            ]["ResponsiblePartyInvestigatorTitle"]
-
-            if (
-                ResponsiblePartyInvestigatorTitle is None
-                or ResponsiblePartyInvestigatorTitle == ""
-            ):
-                print("A value for ResponsiblePartyInvestigatorTitle is required.")
-                return False
-
-            # check if the ResponsiblePartyInvestigatorAffiliation key exists
-            # and is not empty
-            if (
-                "ResponsiblePartyInvestigatorAffiliation"
-                not in data["SponsorCollaboratorsModule"]["ResponsibleParty"]
-            ):
-                print("ResponsiblePartyInvestigatorAffiliation is required.")
-                return False
-
-            ResponsiblePartyInvestigatorAffiliation = data[
-                "SponsorCollaboratorsModule"
-            ]["ResponsibleParty"]["ResponsiblePartyInvestigatorAffiliation"]
-
-            if (
-                ResponsiblePartyInvestigatorAffiliation is None
-                or ResponsiblePartyInvestigatorAffiliation == ""
-            ):
+        if overallStatus in ["Withdrawn", "Terminated", "Suspended"]:
+            if "whyStopped" not in statusModule:
                 print(
-                    "A value for ResponsiblePartyInvestigatorAffiliation is required."
+                    "whyStopped is required for Withdrawn, Terminated, and Suspended overallStatus."
                 )
                 return False
 
-        StudyType = data["DesignModule"]["StudyType"]
+        studyType = data["designModule"]["studyType"]
 
-        if StudyType == "Interventional":
-            ArmGroupList = data["ArmsInterventionsModule"]["ArmGroupList"]
+        if studyType == "Interventional":
+            armGroupList = data["armsInterventionsModule"]["armGroupList"]
 
-            for ArmGroup in ArmGroupList:
-                if "ArmGroupType" not in ArmGroup:
+            for armGroup in armGroupList:
+                if "armGroupType" not in armGroup:
                     print(
-                        "ArmGroupType is required is required for interventional studies."  # pylint: disable=line-too-long
+                        "armGroupType is required is required for interventional studies."  # pylint: disable=line-too-long
                     )
                     return False
 
-            # check if the HealthyVolunteers key exists
-            if "HealthyVolunteers" not in data["EligibilityModule"]:
-                print("HealthyVolunteers is required for interventional studies.")
-                return False
-
-        elif StudyType == "Observational":
+        elif studyType == "Observational":
             # check if the StudyPopulation key exists and is not empty
-            if "StudyPopulation" not in data["EligibilityModule"]:
-                print("StudyPopulation is required for observational studies.")
+            if "studyPopulation" not in data["eligibilityModule"]:
+                print("studyPopulation is required for observational studies.")
                 return False
 
-            StudyPopulation = data["EligibilityModule"]["StudyPopulation"]
+            studyPopulation = data["eligibilityModule"]["studyPopulation"]
 
-            if StudyPopulation is None or StudyPopulation == "":
+            if studyPopulation is None or studyPopulation == "":
                 print(
-                    "A value for StudyPopulation is required for observational studies."
+                    "A value for studyPopulation is required for observational studies."
                 )
                 return False
 
             # check if the SamplingMethod key exists
-            if "SamplingMethod" not in data["EligibilityModule"]:
-                print("SamplingMethod is required for observational studies.")
+            if "samplingMethod" not in data["eligibilityModule"]:
+                print("samplingMethod is required for observational studies.")
                 return False
 
         if (
-            "CentralContactList" not in data["ContactsLocationsModule"]
-            or len(data["ContactsLocationsModule"]["CentralContactList"]) == 0
+            "centralContactList" not in data["contactsLocationsModule"]
+            or len(data["contactsLocationsModule"]["centralContactList"]) == 0
         ):
-            LocationList = data["ContactsLocationsModule"]["LocationList"]
+            locationList = data["contactsLocationsModule"]["locationList"]
 
-            for Location in LocationList:
+            for location in locationList:
                 if (
-                    "LocationContactList" not in Location
-                    or len(Location["LocationContactList"]) == 0
+                    "locationContactList" not in location
+                    or len(location["locationContactList"]) == 0
                 ):
                     print(
-                        "LocationContactList is required if no Central Contact is provided."  # pylint: disable=line-too-long
+                        "locationContactList is required if no Central Contact is provided."  # pylint: disable=line-too-long
                     )
                     return False
 
