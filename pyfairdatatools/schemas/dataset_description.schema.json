@@ -1,237 +1,370 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schema.aireadi.org/files/dataset_description.json",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "title": "Dataset Description",
-  "description": "This is the schema for the dataset_description.json metadata file from the Biomedical and Clinical Dataset Structure (BCDS)",
+  "description": "This is the schema for the dataset_description.json metadata file from the Clinical Dataset Structure (CDS). The keys, descriptions, requirements, examples, etc. are from the DataCite Metadata Schema v4.5 unless specified otherwise in $comment. Note that the 'GeoLocation' and 'RelatedItem' properties from Datacite are not included as they were not deemed relevant for the use case in the CDS. Some keys are from the the ECRIN Metadata Schema for data object v6.0 and we have introduced some modifications as necessary for tailoring the schema to clinical research datasets. All keys are camelCase.",
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "Identifier": {
+    "identifier": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
         "identifierValue": {
+          "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure. Description is based on the DataCite Metadata Schema v4.5 for 'identifier' but modified to suit datasets. In DataCite, only a DOI is allowed, but here, any identifier is allowed",
           "type": "string",
           "minLength": 1,
-          "description": "Unique string that identifies the dataset."
+          "description": "Unique string that identifies the dataset.",
+          "examples": [
+            "10.21384/foo"
+          ]
         },
         "identifierType": {
-          "$ref": "#/$defs/identifierType",
-          "description": "The type of identifier used to identify the dataset."
+          "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to suit datasets. In Datacite this must be 'DOI' but here, any type of identifier is allowed.",
+          "$ref": "#/definitions/identifierType",
+          "description": "The type of identifier used to identify the dataset. Must be from the controlled list of identifierType."
         }
       },
-      "required": ["identifierValue", "identifierType"]
+      "required": [
+        "identifierValue",
+        "identifierType"
+      ]
     },
-    "Title": {
+    "title": {
       "type": "array",
       "items": {
-        "$ref": "#/$defs/titleItem"
+        "$ref": "#/definitions/titleItem"
       },
       "description": "The main title of the dataset is mandatory. Others are optional",
       "minItems": 1,
       "uniqueItems": true
     },
-    "Version": {
+    "version": {
+      "$comment": "Description is from DataCite Metadata Schema v4.5 but modified to suit dataset. It is not mandatory in the DataCite Schema but it is mandatory here.",
       "type": "string",
-      "description": "The version number of the dataset. Suggested practice: major_version.minor_version. Register a new identifier for a major version change. ",
-      "minLength": 1
+      "description": "The version number of the dataset. Suggested practice: major_version.minor_version. Register a new identifier for a major version change. May be used in conjunction with properties 'alternateIdentifier' and 'relatedIdentifier' to indicate various information updates. May be used in conjunction with property 'description' to indicate the nature and file/record range of version.",
+      "minLength": 1,
+      "examples": [
+        "2.1"
+      ]
     },
-    "AlternateIdentifier": {
+    "alternateIdentifier": {
       "type": "array",
-      "description": "An identifier other than the primary Identifier applied to the resource being registered. This may be any alphanumeric string which is unique within its domain of issue. May be used for local identifiers. The AlternateIdentifier should be an additional identifier for the same instance of the resource (i.e., same location, same file).",
       "items": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "alternateIdentifierValue": {
+            "$comment": "This key has been added to fit the JSON structure. Description is based on the DataCite Metadata Schema v4.5 for 'identifier' but modified to suit datasets.",
             "type": "string",
             "minLength": 1,
-            "description": "An identifier other than the primary Identifier applied to the dataset. This may be any alphanumeric string which is unique within its domain of issue. May be used for local identifiers."
+            "description": "An identifier other than the primary 'identifier' applicable for the dataset. This may be any alphanumeric string which is unique within its domain of issue. May be used for local identifiers.",
+            "examples": [
+              "E-GEOD-34814"
+            ]
           },
           "alternateIdentifierType": {
-            "$ref": "#/$defs/identifierType",
-            "description": "The type of identifier used to identify the dataset."
+            "$comment": "In the DataCite Metadata Schema v4.5 free text is allowed here but here it must be from the controlled list of identifierType",
+            "$ref": "#/definitions/identifierType",
+            "description": "The type of the alternateIdentifier. Must be from the controlled list of identifierType."
           }
         },
-        "required": ["alternateIdentifierValue", "alternateIdentifierType"]
+        "required": [
+          "alternateIdentifierValue",
+          "alternateIdentifierType"
+        ]
       },
       "minItems": 1,
       "uniqueItems": true
     },
-    "Creator": {
+    "creator": {
+      "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to suit datasets",
       "type": "array",
+      "description": "The main researchers involved in producing the data, in priority order. To supply multiple creators, repeat this property.",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "description": "A researcher involved in producing the data.",
         "properties": {
           "creatorName": {
+            "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified for clarity.",
             "type": "string",
             "minLength": 1,
-            "description": "The full name of the creator. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
+            "description": "The full name of the creator (personal name or organization name). Note that the personal name format should be: family, given. Names in non-roman scripts may be transliterated according to the ALA-LC tables https://www.loc.gov/catdir/cpso/roman.html.",
+            "examples": [
+              "Garcia, Sofia"
+            ]
           },
           "nameType": {
-            "$ref": "#/$defs/typeOfNameOfPersonOrOrganization",
-            "description": "The type of name."
+            "$comment": "Not mandatory in the DataCite Metadata Schema v4.5 but mandatory here",
+            "$ref": "#/definitions/nameType",
+            "description": "The type of name. Must be from the controlled list of nameType."
           },
           "nameIdentifier": {
             "type": "array",
-            "description": "",
+            "description": "Uniquely identifies an individual or legal entity, according to various schemes.",
             "items": {
               "type": "object",
               "additionalProperties": false,
               "properties": {
                 "nameIdentifierValue": {
+                  "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure. It is not clear from the DataCite documentation if the scheme URI should be included in the value. Here, the scheme URI must be included in the value.",
                   "type": "string",
                   "minLength": 1,
-                  "description": "Uniquely identifies an individual or legal entity, according to various schemes."
+                  "description": "Uniquely identifies an individual or legal entity, according to various schemes.",
+                  "examples": [
+                    "https://orcid.org/0000-0001-5727-2427",
+                    "https://isni.org/isni/0000000492299539",
+                    "https://ror.org/04aj4c18"
+                  ]
                 },
                 "nameIdentifierScheme": {
                   "type": "string",
                   "minLength": 1,
-                  "description": "The name of the name identifier scheme. Example: ORCID, ISNI, ROR, GRID."
+                  "description": "The name of the name identifier scheme.",
+                  "examples": [
+                    "ORCID",
+                    "ISNI",
+                    "ROR"
+                  ]
                 },
                 "schemeURI": {
                   "type": "string",
                   "minLength": 1,
-                  "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
+                  "description": "The URI of the name identifier scheme.",
+                  "examples": [
+                    "https://orcid.org",
+                    "https://isni.org",
+                    "https://ror.org"
+                  ]
                 }
               },
-              "required": ["nameIdentifierValue", "nameIdentifierScheme"]
+              "required": [
+                "nameIdentifierValue",
+                "nameIdentifierScheme"
+              ]
             },
             "uniqueItems": true
           },
           "affiliation": {
             "type": "array",
-            "description": "The organizational or institutional affiliation of the creator. Only needed if the creator is a person",
+            "description": "The organizational or institutional affiliation of the creator.",
             "items": {
               "type": "object",
               "additionalProperties": false,
               "properties": {
-                "affiliationValue": {
+                "affiliationName": {
+                  "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure. Description is based on the DataCite Metadata schema v4.5 for 'affiliation' but has been modified for clarity.",
                   "type": "string",
                   "minLength": 1,
-                  "description": "The name of the organizational or institutional affiliation of the creator. required if identifier is not provided."
+                  "description": "Name of the organizational or institutional affiliation of the creator. In the case of an organizational creator, e.g., a research group, this will often be the name of the institution to which that organization belongs.",
+                  "examples": [
+                    "German National Library of Science and Technology",
+                    "DataCite"
+                  ]
                 },
                 "affiliationIdentifier": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "Uniquely identifies the organizational affiliation of the creator. required if value is not provided."
-                },
-                "affiliationIdentifierScheme": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The name of the name identifier scheme. Example: ORCID, ISNI, ROR, GRID."
-                },
-                "schemeURI": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
+                  "$comment": "Created an object for the identifier here to better handle requirements",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "affiliationIdentifierValue": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Uniquely identifies the organizational affiliation of the creator.",
+                      "examples": [
+                        "https://ror.org/04aj4c181",
+                        "https://isni.org/isni/0000000492299539"
+                      ]
+                    },
+                    "affiliationIdentifierScheme": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The name of the name identifier scheme. If affiliationIdentifier is used, affiliationIdentifierScheme is mandatory.",
+                      "examples": [
+                        "ISNI",
+                        "ROR"
+                      ]
+                    },
+                    "schemeURI": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The URI of the name identifier scheme.",
+                      "examples": [
+                        "https://isni.org",
+                        "https://ror.org"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "affiliationIdentifierValue",
+                    "affiliationIdentifierScheme"
+                  ]
                 }
               },
-              "required": []
+              "required": [
+                "affiliationName"
+              ]
             },
+            "minItems": 1,
             "uniqueItems": true
           }
         },
-        "required": ["creatorName", "nameType"]
+        "required": [
+          "creatorName",
+          "nameType"
+        ]
       },
-      "description": "The main researchers involved in producing the data, in priority order. To supply multiple creators, repeat this property.",
       "minItems": 1,
       "uniqueItems": true
     },
-    "Contributor": {
+    "contributor": {
       "type": "array",
+      "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to suit datasets",
+      "description": "The institution or person responsible for collecting, managing, distributing, or otherwise contributing to the development of the dataset. To supply multiple contributors, repeat this property.",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "description": "",
         "properties": {
           "contributorType": {
-            "$ref": "#/$defs/contributorType",
-            "description": "The type of contributor of the resource"
+            "$ref": "#/definitions/contributorType",
+            "description": "The type of contributor of the resource. Must be from the controlled list of contributorType."
           },
           "contributorName": {
             "type": "string",
             "minLength": 1,
-            "description": "The full name of the contributor. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
+            "description": "The full name of the contributor. The personal name format should be: family, given. Non-roman names should be transliterated according to the ALA-LC schemas https://www.loc.gov/catdir/cpso/roman.html."
           },
           "nameType": {
-            "$ref": "#/$defs/typeOfNameOfPersonOrOrganization",
-            "description": "The type of name."
+            "$comment": "Not mandatory in the DataCite schema but mandatory here",
+            "$ref": "#/definitions/nameType",
+            "description": "The type of name. Must be from the list of controlled values nameType."
           },
           "nameIdentifier": {
             "type": "array",
-            "description": "",
+            "description": "Uniquely identifies an individual or legal entity, according to various schemes.",
             "items": {
               "type": "object",
               "additionalProperties": false,
               "properties": {
                 "nameIdentifierValue": {
+                  "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure. It is not clear from the DataCite documentation if the scheme URI should be included in the value. Here, the scheme URI must be included in the value.",
                   "type": "string",
                   "minLength": 1,
-                  "description": "Uniquely identifies an individual or legal entity, according to various schemes."
+                  "description": "Uniquely identifies an individual or legal entity, according to various schemes.",
+                  "examples": [
+                    "https://orcid.org/0000-0001-5727-2427",
+                    "https://isni.org/isni/0000000492299539",
+                    "https://ror.org/04aj4c18"
+                  ]
                 },
                 "nameIdentifierScheme": {
                   "type": "string",
                   "minLength": 1,
-                  "description": "The name of the name identifier scheme. Example: ORCID, ISNI, ROR, GRID."
+                  "description": "The name of the name identifier scheme.",
+                  "examples": [
+                    "ORCID",
+                    "ISNI",
+                    "ROR"
+                  ]
                 },
                 "schemeURI": {
                   "type": "string",
                   "minLength": 1,
-                  "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
+                  "description": "The URI of the name identifier scheme.",
+                  "examples": [
+                    "https://orcid.org",
+                    "https://isni.org",
+                    "https://ror.org"
+                  ]
                 }
               },
-              "required": ["nameIdentifierValue", "nameIdentifierScheme"]
+              "required": [
+                "nameIdentifierValue",
+                "nameIdentifierScheme"
+              ]
             },
             "minItems": 1,
             "uniqueItems": true
           },
           "affiliation": {
             "type": "array",
-            "description": "The organizational or institutional affiliation of the creator. Only needed if the creator is a person",
+            "description": "The organizational or institutional affiliation of the creator.",
             "items": {
               "type": "object",
               "additionalProperties": false,
               "properties": {
-                "affiliationValue": {
+                "affiliationName": {
+                  "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure. Description is based on the DataCite Metadata schema v4.5 for 'affiliation' but has been modified for clarity.",
                   "type": "string",
                   "minLength": 1,
-                  "description": "The name of the organizational or institutional affiliation of the creator. required if identifier is not provided."
+                  "description": "Name of the organizational or institutional affiliation of the creator. In the case of an organizational creator, e.g., a research group, this will often be the name of the institution to which that organization belongs.",
+                  "examples": [
+                    "German National Library of Science and Technology",
+                    "DataCite"
+                  ]
                 },
                 "affiliationIdentifier": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "Uniquely identifies the organizational affiliation of the creator. required if value is not provided."
-                },
-                "affiliationIdentifierScheme": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The name of the name identifier scheme. Example: ORCID, ISNI, ROR, GRID."
-                },
-                "schemeURI": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The URI of the name identifier scheme. Example: https://ror.org, https://isni.org, https://orcid.org, https://grid.ac"
+                  "$comment": "Created an object for the identifier here to better handle requirements",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "affiliationIdentifierValue": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Uniquely identifies the organizational affiliation of the creator.",
+                      "examples": [
+                        "https://ror.org/04aj4c181",
+                        "https://isni.org/isni/0000000492299539"
+                      ]
+                    },
+                    "affiliationIdentifierScheme": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The name of the name identifier scheme. If affiliationIdentifier is used, affiliationIdentifierScheme is mandatory.",
+                      "examples": [
+                        "ISNI",
+                        "ROR"
+                      ]
+                    },
+                    "schemeURI": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The URI of the name identifier scheme.",
+                      "examples": [
+                        "https://isni.org",
+                        "https://ror.org"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "affiliationIdentifierValue",
+                    "affiliationIdentifierScheme"
+                  ]
                 }
               },
-              "required": []
+              "required": [
+                "affiliationName"
+              ]
             },
             "minItems": 1,
             "uniqueItems": true
           }
         },
-        "required": ["contributorType", "contributorName", "nameType"]
+        "required": [
+          "contributorType",
+          "contributorName",
+          "nameType"
+        ]
       },
-      "description": "The institution or person responsible for collecting, managing, distributing, or otherwise contributing to the development of the dataset. To supply multiple contributors, repeat this property.",
       "uniqueItems": true
     },
-    "PublicationYear": {
-      "$ref": "#/$defs/publicationYear",
-      "description": "The year in which the dataset was published."
+    "publicationYear": {
+      "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to suit datasets",
+      "$ref": "#/definitions/publicationYear",
+      "description": "The year when the data was or will be made publicly available. In the case of dynamic data where there may be multiple releases in one year, include the 'date', 'dateType', and 'dateInformation' property and sub-properties to provide more information about the publication or release date details."
     },
-    "Date": {
+    "date": {
+      "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to suit datasets",
       "type": "array",
       "description": "Different dates relevant to the dataset",
       "items": {
@@ -239,19 +372,22 @@
         "additionalProperties": false,
         "properties": {
           "dateValue": {
+            "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure",
             "type": "string",
             "minLength": 1,
-            "description": "YYYY, YYYY-MM-DD, YYYY-MM-DDThh:mm:ssTZD or any other format or level of granularity described in W3CDTF22. Use RKMS-ISO860123 standard for depicting date ranges.",
+            "description": "YYYY, YYYY-MM-DD, YYYY-MM-DDThh:mm:ssTZD or any other format or level of granularity described in W3CDTF22 https://www.w3.org/TR/NOTE-datetime. Use RKMS-ISO860123 https://www.ukoln.ac.uk/metadata/dcmi/collection-RKMS-ISO8601/ standard for depicting date ranges. Years before 0000 must be prefixed with a - sign, e.g., -0054 to indicate 55 BC.",
             "examples": [
               "2004",
               "2004-03-02",
               "2004-03-02T00:00:00Z",
-              "2004-03-02T00:00:00.000Z"
+              "2004-03-02T00:00:00.000Z",
+              "2004-03-02/2005-06-02"
             ]
           },
           "dateType": {
+            "$comment": "The options and their descriptions are exactly from DataCite Metadata Schema v4.5 extended with few options from the 'date_type' in the ECRIN Metadata schema v6.0 for data object. ECRIN options have been Pascal Cased to align with DataCite options.",
             "type": "string",
-            "description": "The type of date.",
+            "description": "The type of date. Must be from the controlled list.",
             "oneOf": [
               {
                 "const": "Accepted",
@@ -294,10 +430,12 @@
                 "description": "The date the resource is removed."
               },
               {
+                "$comment": "From ECRIN",
                 "const": "ControlledAccessInForce",
                 "description": "The date the resource is made available under controlled access of some form. May be a range. To indicate the end of such a period, use Available."
               },
               {
+                "$comment": "From ECRIN",
                 "const": "Other",
                 "description": "Date type not defined elsewhere."
               }
@@ -306,80 +444,53 @@
           "dateInformation": {
             "type": "string",
             "minLength": 1,
-            "description": "Additional information about the date, if needed"
+            "description": "Specific information about the date, if appropriate. May be used to provide more information about the publication, release, or collection date details, for example. May also be used to clarify dates in ancient history. Examples: 55 BC, 55 BCE."
           }
         },
-        "required": ["dateValue", "dateType"]
+        "required": [
+          "dateValue",
+          "dateType"
+        ]
       },
       "minItems": 1,
       "uniqueItems": true
     },
-    "ResourceType": {
+    "resourceType": {
       "type": "object",
       "additionalProperties": false,
       "description": "Description of the type of dataset",
       "properties": {
         "resourceTypeValue": {
+          "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure. Example is customized for clinical datasets.",
           "type": "string",
           "minLength": 1,
-          "description": "Free text. The recommended content is a single term of some detail about the domain or content of the dataset so that a pair can be formed with the resourceTypeGeneral subproperty (set to `Dataset`). For example, a resourceType of `Diabetes` yields `Diabetes dataset`"
+          "description": "Free text. The recommended content is a single term of some detail about the domain or content of the dataset so that a pair can be formed with the resourceTypeGeneral subproperty (set to `Dataset`). For example, a resourceType of `Diabetes` yields `Diabetes Dataset`.",
+          "examples": [
+            "Diabetes"
+          ]
         },
         "resourceTypeGeneral": {
           "type": "string",
-          "description": "The general type of a resource.",
+          "description": "The general type of a resource. While there are several options possible in the DataCite Schema, it must always be 'dataset' here.",
           "pattern": "Dataset"
         }
       },
-      "required": ["resourceTypeValue", "resourceTypeGeneral"]
+      "required": [
+        "resourceTypeValue",
+        "resourceTypeGeneral"
+      ]
     },
-    "DatasetRecordKeys": {
+    "datasetDeIdentLevel": {
+      "$comment": "This key is from the ECRIN Metadata Schema for data object v6.0 'E.4 De-identification level'. Description has been modified to suit datasets.",
       "type": "object",
       "additionalProperties": false,
-      "description": "A set of keys that uniquely identify the dataset within the repository",
-      "properties": {
-        "keysType": {
-          "type": "string",
-          "description": "Provides an indication of the types of keys used in the dataset, in particular if they are claimed to be anonymous or pseudonymous",
-          "oneOf": [
-            {
-              "const": "NotKnown",
-              "description": "No clear information available about the record keys in use."
-            },
-            {
-              "const": "Anonymised",
-              "description": "Data controller or manager describes dataset as `anonymised`, in their interpretation of the term."
-            },
-            {
-              "const": "Pseudonymised",
-              "description": "Data controller or manager describes dataset as `pseudonymised`, in their interpretation of the term."
-            },
-            {
-              "const": "Identifiable",
-              "description": "Data controller or manager describes dataset as `identifiable`, in their interpretation of the term."
-            }
-          ]
-        },
-        "keysDetails": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Provides further details of the record key types, perhaps referring to dataset preparation, if available"
-        }
-      },
-      "required": ["keysType"]
-    },
-    "DatasetDeIdentLevel": {
-      "type": "object",
-      "additionalProperties": false,
-      "description": "For dataset objects only, indicates the level of de-identification applied to the dataset",
+      "description": "Indicates the level of de-identification applied to the dataset",
       "properties": {
         "deIdentType": {
+          "$comment": "The 'NotKnown' option from ECRIN has been removed here. The options have been Pascal Cased to align with the overall controlled values.",
           "type": "string",
-          "description": "Provide an indication of the level of deidentification of the dataset",
+          "description": "Provides an indication of the level of deidentification of the dataset. Must be from the controlled list.",
           "oneOf": [
-            {
-              "const": "NotKnown",
-              "description": "No clear information available about the de-identification, if any, applied to the data."
-            },
             {
               "const": "NoDeIdentification",
               "description": "Confirmed that no de-identification measures have been applied to the data set."
@@ -429,19 +540,17 @@
         "deIdentKAnon"
       ]
     },
-    "DatasetConsent": {
+    "datasetConsent": {
+      "$comment": "This key is from the ECRIN Metadata Schema for data object v6.0 'E.5 Associated consent'. Description has been modified to suit datasets.",
       "type": "object",
       "additionalProperties": false,
-      "description": "For dataset objects only, provides an indication of the level of explicit consent for secondary use of the data",
+      "description": "Provide an indication of the level of explicit consent for secondary use of the data.",
       "properties": {
         "consentType": {
+          "$comment": "The 'NotKnown' option from ECRIN has been removed here. The options have been Pascal Cased to align with the overall controlled values.",
           "type": "string",
-          "description": "One of the allowed types, from the dataset_consent_types enumeration, e.g. `No explicit consent`, or `General research use`",
+          "description": "Must be from the controlled list",
           "oneOf": [
-            {
-              "const": "NotKnown",
-              "description": "No clear information available about consent for secondary use, or if any exists."
-            },
             {
               "const": "NoExplicitConsent",
               "description": "No specific consent was given for the sharing of data or its re-use beyond the study in which it was originally collected."
@@ -503,21 +612,23 @@
         "consentNoMethods"
       ]
     },
-    "Description": {
+    "description": {
       "type": "array",
-      "description": "All additional information that does not fit in any of the other categories. May be used for technical information.",
+      "description": "All additional information that does not fit in any of the other categories. It is a best practice to supply a description. ",
       "items": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
           "descriptionValue": {
+            "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure",
             "type": "string",
             "minLength": 1,
             "description": "A description associated with the dataset"
           },
           "descriptionType": {
+            "$comment": "Some option from DataCite Metadata Schema v4.5 controlled list have been removed since they were not deemed relevant to clinical research datasets.",
             "type": "string",
-            "description": "The type of the Description",
+            "description": "The type of the 'description'. Must be from controlled list.",
             "oneOf": [
               {
                 "const": "Abstract",
@@ -534,19 +645,8 @@
                 ]
               },
               {
-                "const": "SeriesInformation",
-                "description": "Information about a repeating series, such as volume, issue, number."
-              },
-              {
-                "const": "TableOfContents",
-                "description": "A listing of the Table of Contents.",
-                "examples": [
-                  "https://data.datacite.org/application/vnd.datacite.datacit e+xml/10.5678/LCRS/FOR816.CIT.1031"
-                ]
-              },
-              {
                 "const": "TechnicalInfo",
-                "description": "Detailed information that may be associated with design, implementation, operation, use, and/or maintenance of a process or  system."
+                "description": "Detailed information that may be associated with design, implementation, operation, use, and/or maintenance of a process or system."
               },
               {
                 "const": "Other",
@@ -555,16 +655,22 @@
             ]
           }
         },
-        "required": ["descriptionType", "descriptionValue"]
+        "required": [
+          "descriptionType",
+          "descriptionValue"
+        ]
       },
       "uniqueItems": true
     },
-    "Language": {
+    "language": {
       "type": "string",
       "minLength": 2,
-      "description": "The primary language used in the dataset. Allowed values are taken from  IETF BCP 47, ISO 639-1 language codes"
+      "description": "The primary language used in the dataset. Allowed values are taken from  IETF BCP 47 https://en.wikipedia.org/wiki/IETF_language_tag, ISO 639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes language codes",
+      "examples": [
+        "en"
+      ]
     },
-    "RelatedIdentifier": {
+    "relatedIdentifier": {
       "type": "array",
       "description": "Identifiers of related resources. These must be globally unique identifiers.",
       "items": {
@@ -572,17 +678,19 @@
         "additionalProperties": false,
         "properties": {
           "relatedIdentifierValue": {
+            "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure",
             "type": "string",
             "minLength": 1,
             "description": "Identifier of the related resource. Must be globally unique."
           },
           "relatedIdentifierType": {
-            "$ref": "#/$defs/identifierType",
-            "description": "The type of the RelatedIdentifier."
+            "$ref": "#/definitions/identifierType",
+            "description": "The type of the relatedIdentifier. Must be from the controlled list of identifierType."
           },
           "relationType": {
-            "$ref": "#/$defs/relationType",
-            "description": "The type of relationship between the resource being registered and the RelatedIdentifier."
+            "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to suit datasets",
+            "$ref": "#/definitions/relationType",
+            "description": "The type of relationship between the dataset (A) and the related resource (B). Must be from the controlled list of relationType."
           },
           "relatedMetadataScheme": {
             "type": "string",
@@ -598,11 +706,15 @@
             "type": "string",
             "minLength": 1,
             "description": "The type of the relatedMetadataScheme, linked with the schemeURI. Use only with this relation pair: (HasMetadata/ IsMetadataFor)",
-            "examples": ["XSD", "DDT", "Turtle"]
+            "examples": [
+              "XSD",
+              "DDT",
+              "Turtle"
+            ]
           },
           "resourceTypeGeneral": {
-            "$ref": "#/$defs/resourceItemType",
-            "description": "The general type of the related resource."
+            "$ref": "#/definitions/resourceItemType",
+            "description": "The general type of the related resource. Must be from the controlled list of resourceItemType."
           }
         },
         "required": [
@@ -613,73 +725,100 @@
       },
       "uniqueItems": true
     },
-    "Subject": {
+    "subject": {
       "type": "array",
-      "description": "Subject, keyword, classification code, or key phrase describing the resource",
       "items": {
+        "$comment": "Examples have be adapted for clinical research datasets",
         "type": "object",
         "additionalProperties": false,
         "description": "",
         "properties": {
           "subjectValue": {
+            "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure",
             "type": "string",
             "minLength": 1,
-            "description": "The subject, keyword, classification code, or key phrase that describes the resource"
-          },
-          "subjectScheme": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The name of the subject scheme or classification code or authority if one is used",
+            "description": "The subject, keyword, classification code, or key phrase that describes the dataset",
             "examples": [
-              "Library of Congress Subject Headings (LCSH)",
-              "ANZSRC Fields of Research"
+              "Diabetes mellitus"
             ]
           },
-          "schemeURI": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The URI of the subject identifier scheme",
-            "examples": ["https://id.loc.gov/authorities/subjects.html"]
-          },
-          "valueURI": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The URI of the subject term",
-            "examples": [
-              "https://id.loc.gov/authorities/subjects/sh85118622.html"
+          "subjectIdentifier": {
+            "$comment": "Created an object for the identifier here to better handle requirements",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "classificationCode": {
+                "$comment": "Made required here as part of the identifier object",
+                "type": "string",
+                "minLength": 1,
+                "description": "The classification code used for the subject term in the subject scheme",
+                "examples": [
+                  "45636-8"
+                ]
+              },
+              "subjectScheme": {
+                "$comment": "Made required here as part of the identifier object. Description is based on the DataCite Metadata Schema v4.5 but extended to provide more clarity.",
+                "type": "string",
+                "minLength": 1,
+                "description": "The name of the subject scheme or classification code or authority if one is used (e.g., name of ontology)",
+                "examples": [
+                  "Logical Observation Identifier Names and Codes (LOINC)"
+                ]
+              },
+              "schemeURI": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The URI of the subject identifier scheme",
+                "examples": [
+                  "https://loinc.org/"
+                ]
+              },
+              "valueURI": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The URI of the subject term",
+                "examples": [
+                  "https://loinc.org/45636-8"
+                ]
+              }
+            },
+            "required": [
+              "classificationCode",
+              "subjectScheme"
             ]
-          },
-          "classificationCode": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The classification code used for the subject term in the subject scheme"
           }
         },
-        "required": ["subjectValue"]
+        "required": [
+          "subjectValue"
+        ]
       },
       "uniqueItems": true
     },
-    "ManagingOrganisation": {
+    "managingOrganization": {
+      "$comment": "This key is from the ECRIN Metadata Schema for data objects v6.0 'F.1 Managing Organization'",
       "type": "object",
       "additionalProperties": false,
-      "description": "The organisation managing the object, in particular that determines access to it",
       "properties": {
         "name": {
+          "$comment": "Description has been modified for clarity",
           "type": "string",
           "minLength": 1,
-          "description": "The name of the organisation managing the object"
+          "description": "The name of the organization managing the dataset, in particular that determines access to it"
         },
         "rorId": {
           "type": "string",
           "minLength": 1,
-          "description": "The id of the organisation, if known, within the ROR (Research Organisation Registry) system. This is a URL linking to the ROR resource."
+          "description": "The id of the organization, if known, within the ROR (Research Organization Registry) system. This is a URL linking to the ROR resource."
         }
       },
-      "required": ["name"]
+      "required": [
+        "name"
+      ]
     },
-    "AccessType": {
+    "accessType": {
+      "$comment": "The 'NotKnownYet' option has been removed since it is not relevant here. The options have been Pascal Cased to align with the overall controlled values",
       "type": "string",
-      "description": "The type of access to the object",
+      "description": "The type of access to the dataset. Must be from controlled list",
       "oneOf": [
         {
           "const": "PublicOnScreenAccess",
@@ -724,14 +863,11 @@
         {
           "const": "Other",
           "description": "None of the listed options."
-        },
-        {
-          "const": "NotYetKnown",
-          "description": "Dummy value supplied by default on entity creation."
         }
       ]
     },
-    "AccessDetails": {
+    "accessDetails": {
+      "$comment": "This key is from the ECRIN Metadata Schema for data objects v6.0 'F.3 Access Details'",
       "type": "object",
       "additionalProperties": false,
       "description": "Further details of the access (especially if non public)",
@@ -745,68 +881,163 @@
           "type": "string",
           "minLength": 1,
           "pattern": "^(https?|ftp)://[^s/$.?#].[^s]*$",
-          "description": "A url of a web page that provides details of the accesss available, possibly including the practical details required or a form to use to apply for access"
+          "description": "A url of a web page that provides details of the access available, possibly including the practical details required or a form to use to apply for access"
         },
         "urlLastChecked": {
+          "$comment": "Format changed to match DataCite date format",
           "type": "string",
           "format": "date-time",
           "description": "If a check has been carried out, the date the url last responded with a 200 (success) message, as a string "
         }
       },
-      "required": ["description"]
+      "required": [
+        "description"
+      ]
     },
-    "Rights": {
+    "rights": {
+      "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to for more clarity. It is not mandatory in the DataCite schema but is mandatory here.",
       "type": "array",
-      "description": "The rights associated with the object",
+      "description": "The license associated with the dataset. The property may be repeated to record complex rights characteristics.",
       "items": {
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "rightsValue": {
+          "rightsName": {
+            "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure",
             "type": "string",
             "minLength": 1,
             "description": "Use the complete title of a license and include version information if applicable",
-            "examples": ["CMU License", "MIT License Modern Variant"]
+            "examples": [
+              "Creative Commons Attribution 4.0 International"
+            ]
           },
           "rightsURI": {
             "type": "string",
             "minLength": 1,
             "description": "The URI of the license",
-            "examples": ["https://creativecommons.org/licenses/by/4.0/"]
+            "examples": [
+              "https://creativecommons.org/licenses/by/4.0/"
+            ]
           },
           "rightsIdentifier": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The identifier of the rights statement. A list of identifiers for commonly-used licenses may be found here: (https://spdx.org/licenses/)",
-            "examples": ["CC-BY-4.0", "CC-BY-NC-4.0", "MIT", "MIT-CMU"]
-          },
-          "rightsIdentifierScheme": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The name of the rights identifier scheme or authority if one is used",
-            "examples": ["SPDX"]
+            "$comment": "Created an object for the identifier here to better handle requirements",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "rightsIdentifierValue": {
+                "$comment": "Made required here as part of the object",
+                "type": "string",
+                "minLength": 1,
+                "description": "A short, standardized version of the license name. A list of identifiers for commonly-used licenses may be found here: (https://spdx.org/licenses/)",
+                "examples": [
+                  "CC-BY-4.0"
+                ]
+              },
+              "rightsIdentifierScheme": {
+                "$comment": "Made required here as part of the object",
+                "type": "string",
+                "minLength": 1,
+                "description": "The name of the scheme",
+                "examples": [
+                  "SPDX"
+                ]
+              },
+              "schemeURI": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The URI of the rightsIdentifierScheme",
+                "examples": [
+                  "https://spdx.org/licenses/"
+                ]
+              }
+            },
+            "required": [
+              "rightsIdentifierValue",
+              "rightsIdentifierScheme"
+            ]
           }
         },
-        "required": ["rightsValue"]
+        "required": [
+          "rightsName"
+        ]
       },
       "uniqueItems": true
     },
-    "Publisher": {
-      "$ref": "#/$defs/publisher",
-      "description": "The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the dataset. This property will be used to formulate the citation, so consider the prominence of the role."
+    "publisher": {
+      "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to suit the JSON structure",
+      "description": "Information about the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the dataset.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "publisherName": {
+          "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure. Description is based on the DataCite Metadata Schema v4.5 for 'publisher' but modified to suit dataset.",
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the dataset.",
+          "examples": [
+            "FAIRhub"
+          ]
+        },
+        "publisherIdentifier": {
+          "$comment": "Created an object for the identifier here to better handle requirements",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "publisherIdentifierValue": {
+              "$comment": "Made required here as part of the object",
+              "type": "string",
+              "minLength": 1,
+              "description": "Uniquely identifies the publisher, according to various schemes",
+              "examples": [
+                "https://ror.org/04z8jg394"
+              ]
+            },
+            "publisherIdentifierScheme": {
+              "$comment": "Made required here as part of the object",
+              "type": "string",
+              "minLength": 1,
+              "description": "The name of the publisher identifier scheme. If publisherIdentifier is used, publisherIdentifierScheme is mandatory",
+              "examples": [
+                "ROR"
+              ]
+            },
+            "schemeURI": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The URI of the publisher identifier scheme",
+              "examples": [
+                "https://ror.org/"
+              ]
+            }
+          },
+          "required": [
+            "publisherIdentifierValue",
+            "publisherIdentifierScheme"
+          ]
+        }
+      },
+      "required": [
+        "publisherName"
+      ]
     },
-    "Size": {
+    "size": {
       "type": "array",
-      "description": "Size (e.g., bytes, pages, inches, etc.) or duration (extent), e.g., hours, minutes, days, etc., of a resource",
+      "description": "Size (e.g., bytes, pages, inches, etc.) relevant for the dataset",
       "items": {
+        "$comment": "This item and description are not in the DataCite Metadata Schema v4.5 but have been added to fit the JSON structure",
         "type": "string",
         "minLength": 1,
         "description": "A specific size item",
-        "examples": ["15 pages", "6 MB", "45 minutes"]
+        "examples": [
+          "15 pages",
+          "6 MB",
+          "45 minutes"
+        ]
       },
       "uniqueItems": true
     },
-    "FundingReference": {
+    "fundingReference": {
+      "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to suit datasets. Examples have been adapted to suits clinical research datasets.",
       "type": "array",
       "description": "Information about financial support (funding) for the dataset",
       "items": {
@@ -817,10 +1048,9 @@
           "funderName": {
             "type": "string",
             "minLength": 1,
-            "description": "The name of the entity that provided the funding",
+            "description": "Name of the funding provider.",
             "examples": [
-              "National Science Foundation (NSF)",
-              "European Commission (EC)"
+              "National Institutes of Health (NIH)"
             ]
           },
           "funderIdentifier": {
@@ -828,246 +1058,109 @@
             "additionalProperties": false,
             "properties": {
               "funderIdentifierValue": {
+                "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure. Description is from the DataCite 'funderIdentifier' key.",
                 "type": "string",
                 "minLength": 1,
-                "description": "Uniquely identifies a funding entity, according to various types."
+                "description": "Uniquely identifies a funding entity, according to various types.",
+                "examples": [
+                  "https://ror.org/01cwqze88"
+                ]
               },
               "funderIdentifierType": {
                 "type": "string",
                 "minLength": 1,
                 "description": "The type of funder identifier used.",
-                "enum": ["Crossref Funder ID", "GRID", "ISNI", "ROR", "Other"]
+                "enum": [
+                  "Crossref Funder ID",
+                  "GRID",
+                  "ISNI",
+                  "ROR",
+                  "Other"
+                ]
               },
               "schemeURI": {
                 "type": "string",
                 "minLength": 1,
-                "description": "The URI of the funder identifier scheme or authority if one is used",
+                "description": "The URI of the funder identifier scheme",
                 "examples": [
-                  "https://www.crossref.org/services/funder-registry/",
                   "https://ror.org"
                 ]
               }
             },
-            "required": ["funderIdentifierValue"]
+            "required": [
+              "funderIdentifierValue",
+              "funderIdentifierType"
+            ]
           },
           "awardNumber": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
               "awardNumberValue": {
+                "$comment": "This key is not in the DataCite Metadata Schema v4.5 but has been added to fit the JSON structure. Description is from the DataCite 'awardNumber' key.",
                 "type": "string",
                 "minLength": 1,
-                "description": "The code assigned by the funder to a sponsored award",
-                "examples": ["GBMF3859.01"]
+                "description": "The code assigned by the funder to a sponsored award (grant).",
+                "examples": [
+                  "OT2OD032644"
+                ]
               },
               "awardURI": {
                 "type": "string",
                 "minLength": 1,
                 "description": "The URI leading to a page provided by the funder for more information about the award (grant).",
                 "examples": [
-                  "https://www.moore.org/grants/list/GBMF3859.01",
-                  "https://doi.org/10.35802/221400"
+                  "https://reporter.nih.gov/search/VtCaq87pxkW1uosvSNPjHg/project-details/10858583"
                 ]
               }
             },
-            "required": ["awardNumberValue"]
+            "required": [
+              "awardNumberValue"
+            ]
           },
           "awardTitle": {
             "type": "string",
             "minLength": 1,
-            "description": "The title of the award (grant)",
-            "examples": ["The Moore-Sloan Data Science Environments"]
+            "description": "The human readable title or name of the award (grant)",
+            "examples": [
+              "The awesome project of XYZ"
+            ]
           }
         },
-        "required": ["funderName"]
+        "required": [
+          "funderName"
+        ]
       },
       "uniqueItems": true
     },
-    "RelatedItem": {
+    "format": {
+      "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to suit datasets",
       "type": "array",
-      "description": "Information about a resource related to the dataset, e.g., a journal or book of which the article or chapter is part. Can be used to provide series information or a text citation where the related resource does not have an identifier. However, it is also optional to provide an identifier here.",
+      "description": "Technical format of the data files in the dataset. Use file extension or MIME type where possible, e.g., PDF, XML, MPG or application/pdf, text/xml, video/mpeg.",
       "items": {
-        "type": "object",
-        "additionalProperties": false,
-        "description": "",
-        "properties": {
-          "relatedItemType": {
-            "$ref": "#/$defs/resourceItemType",
-            "description": "The type of the related item, e.g., journal article; book or chapter"
-          },
-          "relationType": {
-            "$ref": "#/$defs/relationType",
-            "description": "The general type of the related resource."
-          },
-          "relatedItemIdentifier": {
-            "type": "array",
-            "description": "The identifier for the related item.",
-            "items": {
-              "type": "object",
-              "description": "",
-              "additionalProperties": false,
-              "properties": {
-                "relatedItemIdentifierValue": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The identifier for the related item."
-                },
-                "relatedItemIdentifierType": {
-                  "$ref": "#/$defs/identifierType",
-                  "description": "The type of the related item identifier."
-                },
-                "relatedMetadataScheme": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The name of the scheme. Use only with this relationType pair: (HasMetadata/ IsMetadataFor)"
-                },
-                "schemeURI": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The URI of the relatedMetadataScheme. Use only with this relationType pair: (HasMetadata/ IsMetadataFor)"
-                },
-                "schemeType": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The type of the relatedMetadataScheme, linked with the schemeURI. Use only with this relationType pair: (HasMetadata/ IsMetadataFor)",
-                  "examples": ["XSD", "DDT", "Turtle"]
-                }
-              },
-              "required": ["relatedItemIdentifierValue"]
-            },
-            "uniqueItems": true
-          },
-          "creator": {
-            "type": "array",
-            "description": "The institution or person responsible for creating the related resource",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "description": "",
-              "properties": {
-                "creatorName": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The full name of the creator. Should be in the format: `family name, given name`. If the creator is an organization, the name should be in the format: `Organization name`."
-                },
-                "nameType": {
-                  "$ref": "#/$defs/typeOfNameOfPersonOrOrganization",
-                  "description": "The type of name."
-                }
-              },
-              "required": ["creatorName", "nameType"]
-            },
-            "uniqueItems": true
-          },
-          "title": {
-            "type": "array",
-            "items": {
-              "$ref": "#/$defs/titleItem"
-            },
-            "description": "The main title of the item is mandatory. Others are optional",
-            "minItems": 1,
-            "uniqueItems": true
-          },
-          "publicationYear": {
-            "$ref": "#/$defs/publicationYear",
-            "description": "The year when the item was or will be made publicly available"
-          },
-          "volume": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The volume of the related item."
-          },
-          "issue": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Issue number or name of the related item"
-          },
-          "number": {
-            "type": "object",
-            "additionalProperties": false,
-            "description": "",
-            "properties": {
-              "numberValue": {
-                "type": "string",
-                "minLength": 1,
-                "description": "Number of the related item, e.g., report number of article number"
-              },
-              "numberType": {
-                "type": "string",
-                "minLength": 1,
-                "description": "Type of the related item's number, e.g., report number or article number",
-                "enum": ["Article", "Chapter", "Report", "Other"]
-              }
-            },
-            "required": ["numberValue"]
-          },
-          "firstPage": {
-            "type": "string",
-            "minLength": 1,
-            "description": "First page of the related item, e.g., of the chapter, article, or conference paper in proceedings"
-          },
-          "lastPage": {
-            "type": "string",
-            "minLength": 1,
-            "description": "Last page of the related item, e.g., of the chapter, article, or conference paper in proceedings"
-          },
-          "publisher": {
-            "$ref": "#/$defs/publisher",
-            "description": "The name of the entity that holds, archives, publishes prints, distributes, releases, issues, or produces the resource."
-          },
-          "edition": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The edition of the related item, e.g., the edition of a book"
-          },
-          "contributor": {
-            "type": "array",
-            "description": "The institution or person responsible for contributing to the related resource",
-            "items": {
-              "type": "object",
-              "additionalProperties": false,
-              "description": "",
-              "properties": {
-                "contributorType": {
-                  "$ref": "#/$defs/contributorType",
-                  "description": "The type of contributor of the resource"
-                },
-                "contributorName": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The full name of the contributor. Should be in the format: `family name, given name`. If the contributor is an organization, the name should be in the format: `Organization name`."
-                },
-                "nameType": {
-                  "$ref": "#/$defs/typeOfNameOfPersonOrOrganization",
-                  "description": "The type of name."
-                }
-              },
-              "required": ["contributorName", "contributorType"]
-            },
-            "uniqueItems": true
-          }
-        },
-        "required": ["relatedItemType", "relationType"]
+        "type": "string"
       },
       "uniqueItems": true
     }
   },
   "required": [
-    "Identifier",
-    "Title",
-    "Creator",
-    "PublicationYear",
-    "ResourceType",
-    "DatasetRecordKeys",
-    "DatasetDeIdentLevel",
-    "DatasetConsent",
-    "ManagingOrganisation",
-    "AccessType",
-    "AccessDetails",
-    "Publisher"
+    "identifier",
+    "title",
+    "version",
+    "creator",
+    "publicationYear",
+    "resourceType",
+    "datasetDeIdentLevel",
+    "datasetConsent",
+    "managingOrganization",
+    "accessType",
+    "accessDetails",
+    "rights",
+    "publisher"
   ],
-  "$defs": {
+  "definitions": {
     "identifierType": {
+      "$comment": "The options and their description are exactly from DataCite Metadata Schema v4.5 extended with the 'Other' option from the 'object_identifiers' in the ECRIN Metadata Schema v6.0 for data object",
       "type": "string",
       "oneOf": [
         {
@@ -1147,7 +1240,7 @@
           "description": "Permanent identifier for Web applications. Mostly used to publish vocabularies and ontologies. The letters `w3` stand for `World Wide Web`."
         },
         {
-          "const": "other",
+          "const": "Other",
           "description": "None of the listed identifier types."
         }
       ]
@@ -1157,39 +1250,45 @@
       "additionalProperties": false,
       "properties": {
         "titleValue": {
+          "$comment": "This key is not in the DataCite Metadata Schema v4.5 but been added to fit the JSON structure. Description is based on the DataCite Metadata Schema v4.5 for 'title' but modified to suit datasets.",
           "type": "string",
           "minLength": 1,
-          "description": "The name by which the dataset is known."
+          "description": "A name or title by which the dataset is known."
         },
         "titleType": {
-          "$ref": "#/$defs/titleType",
-          "description": "Empty if titleValue is the main tile. Must be from the controlled values of titleType otherwise."
+          "$comment": "Description is based on the DataCite Metadata Schema v4.5 but modified to for more clarity.",
+          "$ref": "#/definitions/titleType",
+          "description": "The titleType subproperty is used when more than a single title is provided. Unless otherwise indicated by titleType, a title is considered to be the main title. Must be from the controlled values of titleType otherwise."
         }
       },
-      "required": ["titleValue"]
+      "required": [
+        "titleValue"
+      ]
     },
     "titleType": {
+      "$comment": "The options are from the DataCite Metadata schema v4.5 but descriptions are added since they are not provided by in the DataCite schema.",
       "type": "string",
       "oneOf": [
         {
           "const": "AlternativeTitle",
-          "description": ""
+          "description": "An alternate name for the dataset other than the main title"
         },
         {
           "const": "Subtitle",
-          "description": "A subtitle provided by object creators or study sponsors."
+          "description": "A subtitle for the dataset."
         },
         {
           "const": "TranslatedTitle",
-          "description": "Used in conjunction with language code to indicate language translated into."
+          "description": "Translated version of the main title in a different language"
         },
         {
+          "$comment": "Description is from the ECRIM Metadata Schema for data object v6.0",
           "const": "Other",
           "description": "Any alternative title not described elsewhere."
         }
       ]
     },
-    "typeOfNameOfPersonOrOrganization": {
+    "nameType": {
       "type": "string",
       "oneOf": [
         {
@@ -1203,6 +1302,7 @@
       ]
     },
     "contributorType": {
+      "$comment": "The options and their descriptions are exactly from DataCite Metadata Schema v4.5 extended with the options from the 'object_contributors' in the ECRIN Metadata schema v6.0 for data object. ECRIN options have been Pascal Cased to align with DataCite options.",
       "type": "string",
       "oneOf": [
         {
@@ -1263,7 +1363,7 @@
         },
         {
           "const": "Researcher",
-          "description": "A person involved in analysing data or the results of an experiment or formal study. May indicate an intern or assistant to one of the authors who helped with research but who was not so `key” as `o be listed as an author."
+          "description": "A person involved in analysing data or the results of an experiment or formal study. May indicate an intern or assistant to one of the authors who helped with research but who was not so `key\u201d as `o be listed as an author."
         },
         {
           "const": "ResearchGroup",
@@ -1290,90 +1390,112 @@
           "description": "Any person or institution making a significant contribution to the development and/or maintenance of the resource, but whose contribution is not adequately described by any of the other values for contributorType"
         },
         {
-          "const": "Study lead",
+          "$comment": "From ECRIN",
+          "const": "StudyLead",
           "description": "The individual who, if not the sponsor themselves, leads and co-ordinates the scientific and clinical activity within a clinical study, including co-ordinating the work of principal investigators at clinical sites. May be known as the Co-ordinating Investigator, the Study Chair, Study Director or similar terms."
         },
         {
+          "$comment": "From ECRIN",
           "const": "CTSitePrincipalInvestigator",
           "description": "The individual responsible for the safe conduct of a clinical trial at a particular clinical site."
         },
         {
+          "$comment": "From ECRIN",
           "const": "ClinicalStudyManager",
           "description": "An individual responsible for the operational management of a clinical study. Similar to a Project Manager but a study manager is heavily involved in the management of data and data collection."
         },
         {
+          "$comment": "From ECRIN",
           "const": "TrialSponsor",
           "description": "The organisation or individual that has the formal, legal role of a clinical trial sponsor, and is legally responsible for all aspects of a clinical trial."
         },
         {
+          "$comment": "From ECRIN",
           "const": "SponsorContact",
           "description": "An individual representing the sponsor and acting as an initial contact point."
         },
         {
+          "$comment": "From ECRIN",
           "const": "PublicContact",
           "description": "An individual designated as dealing with non-scientific queries from the public or press."
         },
         {
+          "$comment": "From ECRIN",
           "const": "RecruitmentContact",
           "description": "An individual designated as providing periodic updates on recruitment information or status, at all sites, usually for monitoring purposes."
         },
         {
+          "$comment": "From ECRIN",
           "const": "StudyFunder",
           "description": "An organisation providing some or all of the additional funds required for the study."
         },
         {
+          "$comment": "From ECRIN",
           "const": "FunderContact",
           "description": "An individual representing the funder and acting as an initial contact point."
         },
         {
+          "$comment": "From ECRIN",
           "const": "IndependentMonitoringCommitteeMember",
           "description": "A member of a safety monitoring committee for a clinical trial, independent of the researchers and research activity."
         },
         {
+          "$comment": "From ECRIN",
           "const": "MedicinalProductSupplier",
           "description": "Organisation that provides one or more of the medicines investigated in a clinical study."
         },
         {
+          "$comment": "From ECRIN",
           "const": "MedicalDeviceSupplier",
           "description": "Organisation that provides one or more of the medical devices in a clinical study."
         },
         {
+          "$comment": "From ECRIN",
           "const": "LogisticsSupportOrganisation",
           "description": "Organisation that provides logistical input, e.g. provides a drug distribution service."
         },
         {
+          "$comment": "From ECRIN",
           "const": "ScientificSupportOrganisation",
           "description": "Organisation that provides scientific support, e.g. a national or international research network."
         },
         {
+          "$comment": "From ECRIN",
           "const": "CentralLaboratory",
           "description": "Organisation that provides a central specialist laboratory testing facility.."
         },
         {
+          "$comment": "From ECRIN",
           "const": "CentralImagingFacility",
           "description": "Organisation that provides a central specialist imaging or scanning facility."
         },
         {
+          "$comment": "From ECRIN",
           "const": "ClinicalOrganisation",
           "description": "Organisation, usually a primary or secondary health care organisation, that manages one or more of the sites where a clinical study takes place."
         },
         {
+          "$comment": "From ECRIN",
           "const": "ClinicalSite",
           "description": "Organisation or location, usually in a primary or secondary health care organisation, that is one of the sites where a clinical study takes place."
         },
         {
+          "$comment": "From ECRIN",
           "const": "CollaboratingOrganisation",
           "description": "May be listed as a secondary sponsor, an organisation other than the lead sponsor involved in supporting a study."
         },
         {
+          "$comment": "From ECRIN",
           "const": "SponsorInvestigator",
           "description": "An individual with the role of sponsor as well as being the co-ordinating investigator for the study."
         },
         {
+          "$comment": "From ECRIN",
           "const": "ResultsContact",
           "description": "The individual, occasionally organisation, to be contacted for further information on the study results."
         },
         {
+          "$comment": "From ECRIN",
           "const": "ResearchGroupMember",
           "description": "From PubMed, an 'investigator' is an individual (e.g., collaborator or investigator) who is not an author of a paper but is listed as a member of a collective/corporate group that is an author of the paper."
         }
@@ -1472,7 +1594,7 @@
         },
         {
           "const": "Software",
-          "description": "A computer program other than a computational notebook, in either source code (text) or compiled form. Use this type for general software components supporting scholarly research. Use the “ComputationalNoteb ook” value for virtual notebooks."
+          "description": "A computer program other than a computational notebook, in either source code (text) or compiled form. Use this type for general software components supporting scholarly research. Use the \u201cComputationalNoteb ook\u201d value for virtual notebooks."
         },
         {
           "const": "Sound",
@@ -1498,127 +1620,127 @@
     },
     "relationType": {
       "type": "string",
-      "description": "Description of the relationship of the resource being registered (A) and the related resource (B).",
+      "description": "Description of the relationship of the dataset (A) and the related resource (B).",
       "oneOf": [
         {
           "const": "IsCitedBy",
-          "description": "indicates that B includes A in a citation"
+          "description": "Indicates that B includes A in a citation"
         },
         {
           "const": "Cites",
-          "description": "indicates that A includes B in a citation"
+          "description": "Indicates that A includes B in a citation"
         },
         {
           "const": "IsSupplementTo",
-          "description": "indicates that A is a supplement to B"
+          "description": "Indicates that A is a supplement to B"
         },
         {
           "const": "IsSupplementedBy",
-          "description": "indicates that B is a supplement to A"
+          "description": "Indicates that B is a supplement to A"
         },
         {
           "const": "IsContinuedBy",
-          "description": "indicates A is continued by the work B"
+          "description": "Indicates A is continued by the work B"
         },
         {
           "const": "Continues",
-          "description": "indicates A is a continuation of the work B"
+          "description": "Indicates A is a continuation of the work B"
         },
         {
           "const": "Describes",
-          "description": "indicates A describes B"
+          "description": "Indicates A describes B"
         },
         {
           "const": "IsDescribedBy",
-          "description": "indicates A is described by B"
+          "description": "Indicates A is described by B"
         },
         {
           "const": "HasMetadata",
-          "description": "indicates resource A has additional metadata B"
+          "description": "Indicates resource A has additional metadata B"
         },
         {
           "const": "IsMetadataFor",
-          "description": "indicates additional metadata A for a resource B"
+          "description": "Indicates additional metadata A for a resource B"
         },
         {
           "const": "HasVersion",
-          "description": "indicates A has a version (B)"
+          "description": "Indicates A has a version (B)"
         },
         {
           "const": "IsVersionOf",
-          "description": "indicates A is a version of B"
+          "description": "Indicates A is a version of B"
         },
         {
           "const": "IsNewVersionOf",
-          "description": "indicates A is a new edition of B, where the new edition has been modified or updated"
+          "description": "Indicates A is a new edition of B, where the new edition has been modified or updated"
         },
         {
           "const": "IsPreviousVersionOf",
-          "description": "indicates A is a previous edition of B"
+          "description": "Indicates A is a previous edition of B"
         },
         {
           "const": "IsPartOf",
-          "description": "indicates A is a portion of B; may be used for elements of a series"
+          "description": "Indicates A is a portion of B; may be used for elements of a series"
         },
         {
           "const": "HasPart",
-          "description": "indicates A includes the part B"
+          "description": "Indicates A includes the part B"
         },
         {
           "const": "IsPublishedIn",
-          "description": "indicates A is published inside B, but is independent of other things published inside of B"
+          "description": "Indicates A is published inside B, but is independent of other things published inside of B"
         },
         {
           "const": "IsReferencedBy",
-          "description": "indicates A is used as a source of information by B"
+          "description": "Indicates A is used as a source of information by B"
         },
         {
           "const": "References",
-          "description": "indicates B is used as a source of information for A"
+          "description": "Indicates B is used as a source of information for A"
         },
         {
           "const": "IsDocumentedBy",
-          "description": "indicates B is documentation about/ explaining A; e.g. points to software documentation"
+          "description": "Indicates B is documentation about/ explaining A; e.g. points to software documentation"
         },
         {
           "const": "Documents",
-          "description": "indicates A is documentation about B; e.g. points to software                 documentation"
+          "description": "Indicates A is documentation about B; e.g. points to software documentation"
         },
         {
           "const": "IsCompiledBy",
-          "description": "indicates B is used to compile or create A"
+          "description": "Indicates B is used to compile or create A"
         },
         {
           "const": "Compiles",
-          "description": "indicates B is the result of a compile or creation event using  A"
+          "description": "Indicates B is the result of a compile or creation event using  A"
         },
         {
           "const": "IsVariantFormOf",
-          "description": "indicates A is a variant or different form of B"
+          "description": "Indicates A is a variant or different form of B"
         },
         {
           "const": "IsOriginalFormOf",
-          "description": "indicates A is the original form of B"
+          "description": "Indicates A is the original form of B"
         },
         {
           "const": "IsIdenticalTo",
-          "description": "indicates that A is identical to B, for use when there is a need to register two separate instances of the same resource"
+          "description": "Indicates that A is identical to B, for use when there is a need to register two separate instances of the same resource"
         },
         {
           "const": "IsReviewedBy",
-          "description": "indicates that A is reviewed by B"
+          "description": "Indicates that A is reviewed by B"
         },
         {
           "const": "Reviews",
-          "description": "indicates that A is a review of B"
+          "description": "Indicates that A is a review of B"
         },
         {
           "const": "IsDerivedFrom",
-          "description": "indicates B is a source upon which A is based"
+          "description": "Indicates B is a source upon which A is based"
         },
         {
           "const": "IsSourceOf",
-          "description": "indicates A is a source upon which B is based"
+          "description": "Indicates A is a source upon which B is based"
         },
         {
           "const": "IsRequiredBy",
@@ -1635,6 +1757,14 @@
         {
           "const": "IsObsoletedBy",
           "description": "Indicates A is replaced by B"
+        },
+        {
+          "const": "IsCollectedBy",
+          "description": "Indicates A is collected by B"
+        },
+        {
+          "const": "Collects",
+          "description": "Indicates A collects B"
         }
       ]
     },
@@ -1642,16 +1772,8 @@
       "type": "string",
       "minLength": 4,
       "maxLength": 4,
-      "examples": ["2018"]
-    },
-    "publisher": {
-      "type": "string",
-      "minLength": 1,
       "examples": [
-        "World Data Center for Climate (WDCC)",
-        "GeoForschungsZentrum Potsdam (GFZ)",
-        "Geological Institute, University of Tokyo",
-        "GitHub"
+        "2022"
       ]
     }
   }

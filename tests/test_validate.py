@@ -1,4 +1,5 @@
 """Unit tests for pyfairdatatools.validate module."""
+
 # pylint: disable=too-many-lines
 from copy import deepcopy
 from typing import Any, Dict
@@ -14,12 +15,14 @@ from pyfairdatatools.validate import (
 
 
 class TestValidateDatasetDescription:
+    """Unit tests for validate_dataset_description function."""
+
     valid_data: Dict[str, Any] = {
-        "Identifier": {
+        "identifier": {
             "identifierValue": "10.5281/zenodo.1234567",
             "identifierType": "DOI",
         },
-        "Title": [
+        "title": [
             {
                 "titleValue": "Main Title",
             },
@@ -28,14 +31,14 @@ class TestValidateDatasetDescription:
                 "titleType": "Subtitle",
             },
         ],
-        "Version": "1.0.0",
-        "AlternateIdentifier": [
+        "version": "1.0.0",
+        "alternateIdentifier": [
             {
                 "alternateIdentifierValue": "10.5281/zenodo.1234567",
                 "alternateIdentifierType": "DOI",
             }
         ],
-        "Creator": [
+        "creator": [
             {
                 "creatorName": "Doe, John",
                 "nameType": "Personal",
@@ -48,10 +51,12 @@ class TestValidateDatasetDescription:
                 ],
                 "affiliation": [
                     {
-                        "affiliationValue": "White Lotus",
-                        "affiliationIdentifier": "https://ror.org/123456789",
-                        "affiliationIdentifierScheme": "ROR",
-                        "schemeURI": "https://ror.org",
+                        "affiliationName": "White Lotus",
+                        "affiliationIdentifier": {
+                            "affiliationIdentifierValue": "https://ror.org/123456789",
+                            "affiliationIdentifierScheme": "ROR",
+                            "schemeURI": "https://ror.org",
+                        },
                     }
                 ],
             },
@@ -67,7 +72,7 @@ class TestValidateDatasetDescription:
                 ],
             },
         ],
-        "Contributor": [
+        "contributor": [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -81,10 +86,12 @@ class TestValidateDatasetDescription:
                 ],
                 "affiliation": [
                     {
-                        "affiliationValue": "White Lotus",
-                        "affiliationIdentifier": "https://ror.org/123456789",
-                        "affiliationIdentifierScheme": "ROR",
-                        "schemeURI": "https://ror.org",
+                        "affiliationName": "White Lotus",
+                        "affiliationIdentifier": {
+                            "affiliationIdentifierValue": "https://ror.org/123456789",
+                            "affiliationIdentifierScheme": "ROR",
+                            "schemeURI": "https://ror.org",
+                        },
                     }
                 ],
             },
@@ -101,20 +108,19 @@ class TestValidateDatasetDescription:
                 ],
             },
         ],
-        "PublicationYear": "2023",
-        "Date": [
+        "publicationYear": "2023",
+        "date": [
             {
                 "dateValue": "2023-01-01",
                 "dateType": "Collected",
                 "dateInformation": "Some information",
             }
         ],
-        "ResourceType": {
+        "resourceType": {
             "resourceTypeValue": "Diabetes",
             "resourceTypeGeneral": "Dataset",
         },
-        "DatasetRecordKeys": {"keysType": "Anonymised", "keysDetails": "Some details"},
-        "DatasetDeIdentLevel": {
+        "datasetDeIdentLevel": {
             "deIdentType": "NoDeIdentification",
             "deIdentDirect": True,
             "deIdentHIPAA": True,
@@ -123,7 +129,7 @@ class TestValidateDatasetDescription:
             "deIdentKAnon": True,
             "deIdentDetails": "Some details",
         },
-        "DatasetConsent": {
+        "datasetConsent": {
             "consentType": "NoRestriction",
             "consentNoncommercial": True,
             "consentGeogRestrict": True,
@@ -132,52 +138,65 @@ class TestValidateDatasetDescription:
             "consentNoMethods": True,
             "consentsDetails": "Some details",
         },
-        "Description": [
+        "description": [
             {"descriptionValue": "Some description", "descriptionType": "Abstract"},
             {"descriptionValue": "Some description", "descriptionType": "Methods"},
         ],
-        "Language": "en",
-        "RelatedIdentifier": [
+        "language": "en",
+        "relatedIdentifier": [
             {
                 "relatedIdentifierValue": "10.5281/zenodo.1234567",
                 "relatedIdentifierType": "DOI",
-                "relationType": "HasMetadata",
+                "relationType": "IsCitedBy",
                 "relatedMetadataScheme": "DataCite",
-                "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",
+                "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",  # noqa: E501 pylint: disable=line-too-long
                 "schemeType": "DOI",
                 "resourceTypeGeneral": "Dataset",
             }
         ],
-        "Subject": [
+        "subject": [
             {
                 "subjectValue": "Diabetes",
-                "subjectScheme": "MeSH",
-                "schemeURI": "https://www.nlm.nih.gov/mesh/",
-                "valueURI": "https://www.nlm.nih.gov/mesh/1234567",
-                "classificationCode": "E11.9",
+                "subjectIdentifier": {
+                    "classificationCode": "E11.9",
+                    "subjectScheme": "MeSH",
+                    "schemeURI": "https://www.nlm.nih.gov/mesh/",
+                    "valueURI": "https://www.nlm.nih.gov/mesh/1234567",
+                },
             }
         ],
-        "ManagingOrganisation": {
-            "name": "Test Organisation",
+        "managingOrganization": {
+            "name": "Test Organization",
             "rorId": "https://ror.org/123456789",
         },
-        "AccessType": "PublicOnScreenAccess",
-        "AccessDetails": {
+        "accessType": "PublicOnScreenAccess",
+        "accessDetails": {
             "description": "Some description",
             "url": "https://example.com",
             "urlLastChecked": "2021-01-01",
         },
-        "Rights": [
+        "rights": [
             {
-                "rightsValue": "CC0-1.0",
+                "rightsName": "CC0-1.0",
                 "rightsURI": "https://creativecommons.org/publicdomain/zero/1.0/",
-                "rightsIdentifier": "CC0-1.0",
-                "rightsIdentifierScheme": "SPDX",
+                "rightsIdentifier": {
+                    "rightsIdentifierValue": "CC0-1.0",
+                    "rightsIdentifierScheme": "SPDX",
+                    "schemeURI": "https://spdx.org/licenses/",
+                },
             }
         ],
-        "Publisher": "GitHub",
-        "Size": ["15 pages", "15 MB"],
-        "FundingReference": [
+        "publisher": {
+            "publisherName": "Test Publisher",
+            "publisherIdentifier": {
+                "publisherIdentifierValue": "04z8jg394",
+                "publisherIdentifierScheme": "ROR",
+                "schemeURI": "https://www.crossref.org/",
+            },
+        },
+        "size": ["15 pages", "15 MB"],
+        "format": ["application/pdf", "text/csv", "dicom", "nifti"],
+        "fundingReference": [
             {
                 "funderName": "Test Funder",
                 "funderIdentifier": {
@@ -192,64 +211,25 @@ class TestValidateDatasetDescription:
                 "awardTitle": "Test Award",
             }
         ],
-        "RelatedItem": [
-            {
-                "relatedItemType": "Book",
-                "relationType": "IsMetadataFor",
-                "relatedItemIdentifier": [
-                    {
-                        "relatedItemIdentifierValue": "10.5281/zenodo.1234567",
-                        "relatedItemIdentifierType": "DOI",
-                        "relatedMetadataScheme": "DataCite",
-                        "schemeURI": "https://schema.datacite.org/meta/kernel-4.3/doc/DataCite-MetadataKernel_v4.3.pdf",
-                        "schemeType": "DDT",
-                    }
-                ],
-                "creator": [
-                    {
-                        "creatorName": "Doe, John",
-                        "nameType": "Personal",
-                    }
-                ],
-                "title": [
-                    {
-                        "titleValue": "Test title",
-                    }
-                ],
-                "publicationYear": "2021",
-                "volume": "1",
-                "issue": "1",
-                "number": {"numberValue": "1", "numberType": "Article"},
-                "firstPage": "1",
-                "lastPage": "15",
-                "publisher": "Test Publisher",
-                "edition": "1",
-                "contributor": [
-                    {
-                        "contributorType": "Editor",
-                        "contributorName": "Doe, John",
-                        "nameType": "Personal",
-                    }
-                ],
-            }
-        ],
     }
 
     def test_valid_dataset_description(self):
+        """Test valid dataset description."""
         data = deepcopy(self.valid_data)
 
         try:
             output = validate_dataset_description(data)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             print(e)
             output = False
 
-        assert output is True
+        assert output
 
     def test_identifier(self):
+        """Test identifier validation."""
         data = deepcopy(self.valid_data)
 
-        data["Identifier"] = {
+        data["identifier"] = {
             "identifierValue": "",
         }
 
@@ -258,7 +238,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Identifier"] = {
+        data["identifier"] = {
             "identifierValue": "invalid",
         }
 
@@ -266,23 +246,24 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_title(self):
+        """Test title validation."""
         data = deepcopy(self.valid_data)
 
-        data["Title"] = []
+        data["title"] = []
 
         output = validate_dataset_description(data)
         assert output is False
 
         data = deepcopy(self.valid_data)
 
-        data["Title"] = [{"titleValue": "Test", "titleType": ""}]
+        data["title"] = [{"titleValue": "Test", "titleType": ""}]
 
         output = validate_dataset_description(data)
         assert output is False
 
         data = deepcopy(self.valid_data)
 
-        data["Title"] = [
+        data["title"] = [
             {"titleValue": "Test"},
             {"titleValue": "Test", "titleType": "Invalid"},
         ]
@@ -291,17 +272,19 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_version(self):
+        """Test version validation."""
         data = deepcopy(self.valid_data)
 
-        data["Version"] = ""
+        data["version"] = ""
 
         output = validate_dataset_description(data)
         assert output is False
 
     def test_alternate_identifier(self):
+        """Test alternate identifier validation."""
         data = deepcopy(self.valid_data)
 
-        data["AlternateIdentifier"] = [
+        data["alternateIdentifier"] = [
             {"alternateIdentifierValue": "", "alternateIdentifierType": "DOI"}
         ]
 
@@ -310,7 +293,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["AlternateIdentifier"] = [
+        data["alternateIdentifier"] = [
             {
                 "alternateIdentifierValue": "10.5281/zenodo.7942786",
             }
@@ -321,7 +304,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["AlternateIdentifier"] = [
+        data["alternateIdentifier"] = [
             {
                 "alternateIdentifierValue": "10.5281/zenodo.7942786",
                 "alternateIdentifierType": "Invalid",
@@ -332,16 +315,17 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_creator(self):
+        """Test creator validation."""
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = []
+        data["creator"] = []
 
         output = validate_dataset_description(data)
         assert output is False
 
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = [
+        data["creator"] = [
             {
                 "creatorName": "Doe, John",
             }
@@ -352,7 +336,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = [
+        data["creator"] = [
             {
                 "creatorName": "Doe, John",
                 "nameType": "Invalid",
@@ -364,7 +348,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = [
+        data["creator"] = [
             {
                 "creatorName": "Doe, John",
                 "nameType": "Invalid",
@@ -377,7 +361,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = [
+        data["creator"] = [
             {
                 "creatorName": "Doe, John",
                 "nameType": "Invalid",
@@ -393,7 +377,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Creator"] = [
+        data["creator"] = [
             {
                 "creatorName": "Doe, John",
                 "nameType": "Invalid",
@@ -409,9 +393,10 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_contributor(self):
+        """Test contributor validation."""
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "invalid",
                 "contributorName": "Doe, John",
@@ -424,7 +409,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -437,7 +422,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -451,7 +436,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -469,7 +454,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -489,7 +474,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -503,7 +488,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -520,7 +505,7 @@ class TestValidateDatasetDescription:
 
         data = deepcopy(self.valid_data)
 
-        data["Contributor"] = [
+        data["contributor"] = [
             {
                 "contributorType": "ContactPerson",
                 "contributorName": "Doe, John",
@@ -536,25 +521,65 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
-    def test_publication_year(self):
+    def test_related_identifier(self):
+        """Test related identifier validation."""
         data = deepcopy(self.valid_data)
 
-        data["PublicationYear"] = "98"
+        data["relatedIdentifier"] = [
+            {
+                "relatedIdentifierValue": "",
+                "relatedIdentifierType": "DOI",
+                "relationType": "HasMetadata",
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.valid_data)
+
+        data["relatedIdentifier"] = [
+            {
+                "relatedIdentifierValue": "10.5281/zenodo.7942786",
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.valid_data)
+
+        data["relatedIdentifier"] = [
+            {
+                "relatedIdentifierValue": "10.5281/zenodo.7942786",
+                "relatedIdentifierType": "Invalid",
+            }
+        ]
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+    def test_publication_year(self):
+        """Test publication year validation."""
+        data = deepcopy(self.valid_data)
+
+        data["publicationYear"] = "98"
 
         output = validate_dataset_description(data)
         assert output is False
 
     def test_date(self):
+        """Test date validation."""
         data = deepcopy(self.valid_data)
 
-        data["Date"] = []
+        data["date"] = []
 
         output = validate_dataset_description(data)
         assert output is False
 
         data = deepcopy(self.valid_data)
 
-        data["Date"] = [
+        data["date"] = [
             {"dateValue": "2004-03-02", "dateType": "invalid", "dateInformation": ""}
         ]
 
@@ -562,351 +587,333 @@ class TestValidateDatasetDescription:
         assert output is False
 
     def test_language(self):
+        """Test language validation."""
         data = deepcopy(self.valid_data)
 
-        data["Language"] = "en-US"
+        data["language"] = "en-US"
 
         output = validate_dataset_description(data)
         assert output is True
 
         data = deepcopy(self.valid_data)
 
-        data["Language"] = ""
+        data["language"] = ""
 
         output = validate_dataset_description(data)
         assert output is False
 
         data = deepcopy(self.valid_data)
 
-        data["Language"] = ["invalid"]
+        data["language"] = ["invalid"]
 
         output = validate_dataset_description(data)
         assert output is False
 
 
 class TestValidateStudyDescription:
+    """Unit tests for validate_study_description function."""
+
     observational_study_valid_data: Dict[str, Any] = {
-        "IdentificationModule": {
-            "OrgStudyIdInfo": {
-                "OrgStudyId": "RandomStudyId",
-                "OrgStudyIdType": "Registry Identifier",
-                "OrgStudyIdDomain": "ClinicalTrials.gov",
-                "OrgStudyIdLink": "https://clinicaltrials.gov/ct2/show/NCT00000000",
+        "identificationModule": {
+            "officialTitle": "Test Title",
+            "acronym": "TT",
+            "orgStudyIdInfo": {
+                "orgStudyId": "RandomStudyId",
+                "orgStudyIdType": "Registry Identifier",
+                "orgStudyIdDomain": "ClinicalTrials.gov",
+                "orgStudyIdLink": "https://clinicaltrials.gov/ct2/show/NCT00000000",
             },
-            "SecondaryIdInfoList": [
+            "secondaryIdInfoList": [
                 {
-                    "SecondaryId": "SomeID",
-                    "SecondaryIdType": "Other Identifier",
-                    "SecondaryIdDomain": "Other",
-                    "SecondaryIdLink": "https://example.com",
+                    "secondaryId": "SomeID",
+                    "secondaryIdType": "Other Identifier",
+                    "secondaryIdDomain": "Other",
+                    "secondaryIdLink": "https://example.com",
                 }
             ],
         },
-        "StatusModule": {
-            "OverallStatus": "Suspended",
-            "WhyStopped": "Study stopped due to lack of funding",
-            "StartDateStruct": {
-                "StartDate": "July 07, 2023",
-                "StartDateType": "Actual",
+        "statusModule": {
+            "overallStatus": "Suspended",
+            "whyStopped": "Study stopped due to lack of funding",
+            "startDateStruct": {
+                "startDate": "2023-06",
+                "startDateType": "Actual",
             },
-            "CompletionDateStruct": {
-                "CompletionDate": "July 08, 2024",
-                "CompletionDateType": "Actual",
+            "completionDateStruct": {
+                "completionDate": "2024-06",
+                "completionDateType": "Actual",
             },
         },
-        "SponsorCollaboratorsModule": {
-            "ResponsibleParty": {
-                "ResponsiblePartyType": "Principal Investigator",
-                "ResponsiblePartyInvestigatorFullName": "Harper Spiller",
-                "ResponsiblePartyInvestigatorTitle": "Principal Investigator",
-                "ResponsiblePartyInvestigatorAffiliation": "White Lotus",
+        "sponsorCollaboratorsModule": {
+            "responsibleParty": {
+                "responsiblePartyType": "Principal Investigator",
+                "responsiblePartyInvestigatorFirstName": "Harper",
+                "responsiblePartyInvestigatorLastName": "Spiller",
+                "responsiblePartyInvestigatorTitle": "Principal Investigator",
+                "responsiblePartyInvestigatorAffiliation": {
+                    "responsiblePartyInvestigatorAffiliationName": "White Lotus",
+                },
             },
-            "LeadSponsor": {"LeadSponsorName": "Harper Spiller"},
-            "CollaboratorList": [
-                {"CollaboratorName": "Nicole Mossbacher"},
-                {"CollaboratorName": "Olivia Mossbacher"},
+            "leadSponsor": {"leadSponsorName": "Harper Spiller"},
+            "collaboratorList": [
+                {"collaboratorName": "Nicole Mossbacher"},
+                {"collaboratorName": "Olivia Mossbacher"},
             ],
         },
-        "OversightModule": {
-            "OversightHasDMC": "No",
+        "oversightModule": {
+            "isFDARegulatedDrug": "No",
+            "isFDARegulatedDevice": "No",
+            "humanSubjectReviewStatus": "Request not yet submitted",
+            "oversightHasDMC": "No",
         },
-        "DescriptionModule": {
-            "BriefSummary": "This is a brief summary",
-            "DetailedDescription": "This is a detailed description",
+        "descriptionModule": {
+            "briefSummary": "This is a brief summary",
+            "detailedDescription": "This is a detailed description",
         },
-        "ConditionsModule": {
-            "ConditionList": ["Condition 1", "Condition 2"],
-            "KeywordList": ["Keyword 1", "Keyword 2"],
-        },
-        "DesignModule": {
-            "StudyType": "Observational",
-            "DesignInfo": {
-                "DesignObservationalModelList": ["Cohort"],
-                "DesignTimePerspectiveList": ["Prospective"],
-            },
-            "BioSpec": {
-                "BioSpecRetention": "Samples With DNA",
-                "BioSpecDescription": "This is a description of the biospecs",
-            },
-            "EnrollmentInfo": {
-                "EnrollmentCount": "34",
-                "EnrollmentType": "Anticipated",
-            },
-            "TargetDuration": "4 Years",
-            "NumberGroupsCohorts": "1",
-        },
-        "ArmsInterventionsModule": {
-            "ArmGroupList": [
-                {"ArmGroupLabel": "Arm 1", "ArmGroupDescription": "Experimental"}
+        "conditionsModule": {
+            "conditionList": [
+                {"conditionName": "Condition 1"},
+                {"conditionName": "Condition 2"},
             ],
-            "InterventionList": [
+            "keywordList": [
+                {"keywordValue": "Keyword 1"},
+                {"keywordValue": "Keyword 2"},
+            ],
+        },
+        "designModule": {
+            "studyType": "Observational",
+            "designInfo": {
+                "designObservationalModelList": ["Cohort"],
+                "designTimePerspectiveList": ["Prospective"],
+            },
+            "bioSpec": {
+                "bioSpecRetention": "Samples With DNA",
+                "bioSpecDescription": "This is a description of the biospecs",
+            },
+            "enrollmentInfo": {
+                "enrollmentCount": "34",
+                "enrollmentType": "Anticipated",
+            },
+            "targetDuration": "4 Years",
+            "numberGroupsCohorts": "1",
+            "isPatientRegistry": "Yes",
+        },
+        "armsInterventionsModule": {
+            "armGroupList": [
+                {"armGroupLabel": "Arm 1", "armGroupDescription": "Experimental"}
+            ],
+            "interventionList": [
                 {
-                    "InterventionType": "Drug",
-                    "InterventionName": "Drug 1",
-                    "InterventionDescription": "description of the intervention",
-                    "InterventionArmGroupLabelList": ["Arm 1"],
-                    "InterventionOtherNameList": ["Other Name 1"],
+                    "interventionType": "Drug",
+                    "interventionName": "Drug 1",
+                    "interventionDescription": "description of the intervention",
+                    "interventionOtherNameList": ["Other Name 1"],
                 },
             ],
         },
-        "EligibilityModule": {
-            "Gender": "All",
-            "GenderBased": "No",
-            "MinimumAge": "18 Years",
-            "MaximumAge": "65 Years",
-            "EligibilityCriteria": "This is the eligibility criteria",
-            "StudyPopulation": "This is the study population",
-            "SamplingMethod": "Non-Probability Sample",
+        "eligibilityModule": {
+            "sex": "All",
+            "genderBased": "No",
+            "minimumAge": "18 Years",
+            "maximumAge": "65 Years",
+            "eligibilityCriteria": {
+                "eligibilityCriteriaInclusion": ["crietia 1", "crietia 2"],
+                "eligibilityCriteriaExclusion": ["crietia 1", "crietia 2"],
+            },
+            "studyPopulation": "This is the study population",
+            "healthyVolunteers": "No",
+            "samplingMethod": "Non-Probability Sample",
         },
-        "ContactsLocationsModule": {
-            "CentralContactList": [
+        "contactsLocationsModule": {
+            "centralContactList": [
                 {
-                    "CentralContactName": "Ethan Spiller",
-                    "CentralContactAffiliation": "White Lotus",
-                    "CentralContactPhone": "805-555-5555",
-                    "CentralContactPhoneExt": "123",
-                    "CentralContactEMail": "e.spiller@hbo.com",
+                    "centralContactFirstName": "Ethan",
+                    "centralContactLastName": "Spiller",
+                    "centralContactAffiliation": {
+                        "centralContactAffiliationName": "White Lotus",
+                    },
+                    "centralContactPhone": "805-555-5555",
+                    "centralContactPhoneExt": "123",
+                    "centralContactEMail": "e.spiller@hbo.com",
                 }
             ],
-            "OverallOfficialList": [
+            "overallOfficialList": [
                 {
-                    "OverallOfficialName": "Daphne Sullivan",
-                    "OverallOfficialAffiliation": "White Lotus",
-                    "OverallOfficialRole": "Study Principal Investigator",
+                    "overallOfficialFirstName": "Daphne",
+                    "overallOfficialLastName": "Sullivan",
+                    "overallOfficialAffiliation": {
+                        "overallOfficialAffiliationName": "White Lotus",
+                    },
+                    "overallOfficialRole": "Study Principal Investigator",
                 }
             ],
-            "LocationList": [
+            "locationList": [
                 {
-                    "LocationFacility": "White Lotus",
-                    "LocationStatus": "Recruiting",
-                    "LocationCity": "Kihei",
-                    "LocationState": "Hawaii",
-                    "LocationZip": "96753",
-                    "LocationCountry": "United States",
-                }
-            ],
-        },
-        "IPDSharingStatementModule": {
-            "IPDSharing": "Yes",
-            "IPDSharingDescription": "description of the IPD sharing statement",
-            "IPDSharingInfoTypeList": [
-                "Study Protocol",
-                "Statistical Analysis Plan (SAP)",
-            ],
-            "IPDSharingTimeFrame": "Beginning 9 Months and ending 36 months",
-            "IPDSharingAccessCriteria": "This is the IPD sharing access criteria",
-            "IPDSharingURL": "https://example.com",
-        },
-        "ReferencesModule": {
-            "ReferenceList": [
-                {
-                    "ReferenceID": "12345678",
-                    "ReferenceType": "Yes",
-                    "ReferenceCitation": "This is a reference citation",
-                }
-            ],
-            "SeeAlsoLinkList": [
-                {
-                    "SeeAlsoLinkLabel": "This is a link label",
-                    "SeeAlsoLinkURL": "https://example.com",
-                }
-            ],
-            "AvailIPDList": [
-                {
-                    "AvailIPDId": "123456",
-                    "AvailIPDType": "Clinical Study Report",
-                    "AvailIPDURL": "https://example.com",
-                    "AvailIPDComment": "This is the avail IPD access criteria",
+                    "locationFacility": "White Lotus",
+                    "locationStatus": "Recruiting",
+                    "locationCity": "Kihei",
+                    "locationState": "Hawaii",
+                    "locationZip": "96753",
+                    "locationCountry": "United States",
                 }
             ],
         },
     }
 
     interventional_study_valid_data: Dict[str, Any] = {
-        "IdentificationModule": {
-            "OrgStudyIdInfo": {
-                "OrgStudyId": "RandomStudyId",
-                "OrgStudyIdType": "Registry Identifier",
-                "OrgStudyIdDomain": "ClinicalTrials.gov",
-                "OrgStudyIdLink": "https://clinicaltrials.gov/ct2/show/NCT00000000",
+        "identificationModule": {
+            "officialTitle": "Test Title",
+            "acronym": "TT",
+            "orgStudyIdInfo": {
+                "orgStudyId": "RandomStudyId",
+                "orgStudyIdType": "Registry Identifier",
+                "orgStudyIdDomain": "ClinicalTrials.gov",
+                "orgStudyIdLink": "https://clinicaltrials.gov/ct2/show/NCT00000000",
             },
-            "SecondaryIdInfoList": [
+            "secondaryIdInfoList": [
                 {
-                    "SecondaryId": "SomeID",
-                    "SecondaryIdType": "Other Identifier",
-                    "SecondaryIdDomain": "Other",
-                    "SecondaryIdLink": "https://example.com",
+                    "secondaryId": "SomeID",
+                    "secondaryIdType": "Other Identifier",
+                    "secondaryIdDomain": "Other",
+                    "secondaryIdLink": "https://example.com",
                 }
             ],
         },
-        "StatusModule": {
-            "OverallStatus": "Suspended",
-            "WhyStopped": "Study stopped due to lack of funding",
-            "StartDateStruct": {
-                "StartDate": "July 07, 2023",
-                "StartDateType": "Actual",
+        "statusModule": {
+            "overallStatus": "Suspended",
+            "whyStopped": "Study stopped due to lack of funding",
+            "startDateStruct": {
+                "startDate": "2023-06",
+                "startDateType": "Actual",
             },
-            "CompletionDateStruct": {
-                "CompletionDate": "July 08, 2024",
-                "CompletionDateType": "Actual",
+            "completionDateStruct": {
+                "completionDate": "2024-06",
+                "completionDateType": "Actual",
             },
         },
-        "SponsorCollaboratorsModule": {
-            "ResponsibleParty": {
-                "ResponsiblePartyType": "Principal Investigator",
-                "ResponsiblePartyInvestigatorFullName": "Harper Spiller",
-                "ResponsiblePartyInvestigatorTitle": "Principal Investigator",
-                "ResponsiblePartyInvestigatorAffiliation": "White Lotus",
-            },
-            "LeadSponsor": {"LeadSponsorName": "Harper Spiller"},
-            "CollaboratorList": [
-                {"CollaboratorName": "Nicole Mossbacher"},
-                {"CollaboratorName": "Olivia Mossbacher"},
-            ],
-        },
-        "OversightModule": {
-            "OversightHasDMC": "No",
-        },
-        "DescriptionModule": {
-            "BriefSummary": "This is a brief summary",
-            "DetailedDescription": "This is a detailed description",
-        },
-        "ConditionsModule": {
-            "ConditionList": ["Condition 1", "Condition 2"],
-            "KeywordList": ["Keyword 1", "Keyword 2"],
-        },
-        "DesignModule": {
-            "StudyType": "Interventional",
-            "DesignInfo": {
-                "DesignAllocation": "Randomized",
-                "DesignInterventionModel": "Prevention",
-                "DesignInterventionModelDescription": "description",
-                "DesignPrimaryPurpose": "Parallel Assignment",
-                "DesignMaskingInfo": {
-                    "DesignMasking": "Blinded (no details)",
-                    "DesignMaskingDescription": "description of the design masking",
-                    "DesignWhoMaskedList": ["Participant", "Care Provider"],
+        "sponsorCollaboratorsModule": {
+            "responsibleParty": {
+                "responsiblePartyType": "Principal Investigator",
+                "responsiblePartyInvestigatorFirstName": "Harper",
+                "responsiblePartyInvestigatorLastName": "Spiller",
+                "responsiblePartyInvestigatorTitle": "Principal Investigator",
+                "responsiblePartyInvestigatorAffiliation": {
+                    "responsiblePartyInvestigatorAffiliationName": "White Lotus",
                 },
             },
-            "PhaseList": ["Phase 1/2"],
-            "EnrollmentInfo": {
-                "EnrollmentCount": "34",
-                "EnrollmentType": "Anticipated",
-            },
-            "NumberArms": "1",
+            "leadSponsor": {"leadSponsorName": "Harper Spiller"},
+            "collaboratorList": [
+                {"collaboratorName": "Nicole Mossbacher"},
+                {"collaboratorName": "Olivia Mossbacher"},
+            ],
         },
-        "ArmsInterventionsModule": {
-            "ArmGroupList": [
+        "oversightModule": {
+            "isFDARegulatedDrug": "No",
+            "isFDARegulatedDevice": "No",
+            "humanSubjectReviewStatus": "Request not yet submitted",
+            "oversightHasDMC": "No",
+        },
+        "descriptionModule": {
+            "briefSummary": "This is a brief summary",
+            "detailedDescription": "This is a detailed description",
+        },
+        "conditionsModule": {
+            "conditionList": [
+                {"conditionName": "Condition 1"},
+                {"conditionName": "Condition 2"},
+            ],
+            "keywordList": [
+                {"keywordValue": "Keyword 1"},
+                {"keywordValue": "Keyword 2"},
+            ],
+        },
+        "designModule": {
+            "studyType": "Interventional",
+            "designInfo": {
+                "designAllocation": "Randomized",
+                "designInterventionModel": "Prevention",
+                "designInterventionModelDescription": "description",
+                "designPrimaryPurpose": "Parallel Assignment",
+                "designMaskingInfo": {
+                    "designMasking": "Blinded (no details)",
+                    "designMaskingDescription": "description of the design masking",
+                    "designWhoMaskedList": ["Participant", "Care Provider"],
+                },
+            },
+            "phaseList": ["Phase 1/2"],
+            "enrollmentInfo": {
+                "enrollmentCount": "34",
+                "enrollmentType": "Anticipated",
+            },
+            "numberArms": "1",
+        },
+        "armsInterventionsModule": {
+            "armGroupList": [
                 {
-                    "ArmGroupLabel": "Arm 1",
-                    "ArmGroupType": "Placebo Comparator",
-                    "ArmGroupDescription": "Experimental",
-                    "ArmGroupInterventionList": ["Drug 1"],
+                    "armGroupLabel": "Arm 1",
+                    "armGroupType": "Placebo Comparator",
+                    "armGroupDescription": "Experimental",
+                    "armGroupInterventionList": ["Drug 1"],
                 }
             ],
-            "InterventionList": [
+            "interventionList": [
                 {
-                    "InterventionType": "Drug",
-                    "InterventionName": "Drug 1",
-                    "InterventionDescription": "description of the intervention",
-                    "InterventionArmGroupLabelList": ["Arm 1"],
-                    "InterventionOtherNameList": ["Other Name 1"],
+                    "interventionType": "Drug",
+                    "interventionName": "Drug 1",
+                    "interventionDescription": "description of the intervention",
+                    "interventionOtherNameList": ["Other Name 1"],
                 },
             ],
         },
-        "EligibilityModule": {
-            "Gender": "All",
-            "GenderBased": "No",
-            "MinimumAge": "18 Years",
-            "MaximumAge": "65 Years",
-            "HealthyVolunteers": "No",
-            "EligibilityCriteria": "This is the eligibility criteria",
+        "eligibilityModule": {
+            "sex": "All",
+            "genderBased": "No",
+            "minimumAge": "18 Years",
+            "maximumAge": "65 Years",
+            "healthyVolunteers": "No",
+            "eligibilityCriteria": {
+                "eligibilityCriteriaInclusion": ["crietia 1", "crietia 2"],
+                "eligibilityCriteriaExclusion": ["crietia 1", "crietia 2"],
+            },
         },
-        "ContactsLocationsModule": {
-            "CentralContactList": [
+        "contactsLocationsModule": {
+            "centralContactList": [
                 {
-                    "CentralContactName": "Ethan Spiller",
-                    "CentralContactAffiliation": "White Lotus",
-                    "CentralContactPhone": "805-555-5555",
-                    "CentralContactPhoneExt": "123",
-                    "CentralContactEMail": "e.spiller@hbo.com",
+                    "centralContactFirstName": "Ethan",
+                    "centralContactLastName": "Spiller",
+                    "centralContactAffiliation": {
+                        "centralContactAffiliationName": "White Lotus",
+                    },
+                    "centralContactPhone": "805-555-5555",
+                    "centralContactPhoneExt": "123",
+                    "centralContactEMail": "e.spiller@hbo.com",
                 }
             ],
-            "OverallOfficialList": [
+            "overallOfficialList": [
                 {
-                    "OverallOfficialName": "Daphne Sullivan",
-                    "OverallOfficialAffiliation": "White Lotus",
-                    "OverallOfficialRole": "Study Principal Investigator",
+                    "overallOfficialFirstName": "Daphne",
+                    "overallOfficialLastName": "Sullivan",
+                    "overallOfficialAffiliation": {
+                        "overallOfficialAffiliationName": "White Lotus",
+                    },
+                    "overallOfficialRole": "Study Principal Investigator",
                 }
             ],
-            "LocationList": [
+            "locationList": [
                 {
-                    "LocationFacility": "White Lotus",
-                    "LocationStatus": "Recruiting",
-                    "LocationCity": "Kihei",
-                    "LocationState": "Hawaii",
-                    "LocationZip": "96753",
-                    "LocationCountry": "United States",
-                }
-            ],
-        },
-        "IPDSharingStatementModule": {
-            "IPDSharing": "Yes",
-            "IPDSharingDescription": "description of the IPD sharing statement",
-            "IPDSharingInfoTypeList": [
-                "Study Protocol",
-                "Statistical Analysis Plan (SAP)",
-            ],
-            "IPDSharingTimeFrame": "Beginning 9 Months and ending 36 months ",
-            "IPDSharingAccessCriteria": "This is the IPD sharing access criteria",
-            "IPDSharingURL": "https://example.com",
-        },
-        "ReferencesModule": {
-            "ReferenceList": [
-                {
-                    "ReferenceID": "12345678",
-                    "ReferenceType": "Yes",
-                    "ReferenceCitation": "This is a reference citation",
-                }
-            ],
-            "SeeAlsoLinkList": [
-                {
-                    "SeeAlsoLinkLabel": "This is a link label",
-                    "SeeAlsoLinkURL": "https://example.com",
-                }
-            ],
-            "AvailIPDList": [
-                {
-                    "AvailIPDId": "123456",
-                    "AvailIPDType": "Clinical Study Report",
-                    "AvailIPDURL": "https://example.com",
-                    "AvailIPDComment": "This is the avail IPD access criteria",
+                    "locationFacility": "White Lotus",
+                    "locationStatus": "Recruiting",
+                    "locationCity": "Kihei",
+                    "locationState": "Hawaii",
+                    "locationZip": "96753",
+                    "locationCountry": "United States",
                 }
             ],
         },
     }
 
     def test_observational_valid_study_description(self):
+        """Test valid observational study description."""
         data = deepcopy(self.observational_study_valid_data)
 
         output = validate_study_description(data)
@@ -914,6 +921,7 @@ class TestValidateStudyDescription:
         assert output is True
 
     def test_interventional_valid_study_description(self):
+        """Test valid interventional study description."""
         data = deepcopy(self.interventional_study_valid_data)
 
         output = validate_study_description(data)
@@ -921,13 +929,14 @@ class TestValidateStudyDescription:
         assert output is True
 
     def test_invalid_identification_module(self):
+        """Test invalid identification module."""
         data = deepcopy(self.observational_study_valid_data)
 
-        data["IdentificationModule"]["OrgStudyIdInfo"][
-            "OrgStudyIdType"
+        data["identificationModule"]["orgStudyIdInfo"][
+            "orgStudyIdType"
         ] = "Registry Identifier"
 
-        del data["IdentificationModule"]["OrgStudyIdInfo"]["OrgStudyIdDomain"]
+        del data["identificationModule"]["orgStudyIdInfo"]["orgStudyIdDomain"]
 
         output = validate_study_description(data)
 
@@ -935,34 +944,37 @@ class TestValidateStudyDescription:
 
         data = deepcopy(self.observational_study_valid_data)
 
-        for item in data["IdentificationModule"]["SecondaryIdInfoList"]:
-            item["SecondaryIdType"] = "Other Identifier"
-            del item["SecondaryIdDomain"]
+        # sourcery skip: no-loop-in-tests
+        for item in data["identificationModule"]["secondaryIdInfoList"]:
+            item["secondaryIdType"] = "Other Identifier"
+            del item["secondaryIdDomain"]
 
         output = validate_study_description(data)
 
         assert output is False
 
     def test_invalid_status_module(self):
+        """Test invalid status module."""
         data = deepcopy(self.observational_study_valid_data)
 
-        data["StatusModule"]["OverallStatus"] = "Terminated"
+        data["statusModule"]["overallStatus"] = "Terminated"
 
-        del data["StatusModule"]["WhyStopped"]
+        del data["statusModule"]["whyStopped"]
 
         output = validate_study_description(data)
 
         assert output is False
 
     def test_invalid_sponsor_collaborators_module(self):
+        """Test invalid sponsor collaborators module."""
         data = deepcopy(self.observational_study_valid_data)
 
-        data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyType"
+        data["sponsorCollaboratorsModule"]["responsibleParty"][
+            "responsiblePartyType"
         ] = "Sponsor-Investigator"
 
-        del data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyInvestigatorFullName"
+        del data["sponsorCollaboratorsModule"]["responsibleParty"][
+            "responsiblePartyInvestigatorFirstName"
         ]
 
         output = validate_study_description(data)
@@ -971,12 +983,12 @@ class TestValidateStudyDescription:
 
         data = deepcopy(self.observational_study_valid_data)
 
-        data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyType"
+        data["sponsorCollaboratorsModule"]["responsibleParty"][
+            "responsiblePartyType"
         ] = "Sponsor-Investigator"
 
-        del data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyInvestigatorTitle"
+        del data["sponsorCollaboratorsModule"]["responsibleParty"][
+            "responsiblePartyInvestigatorTitle"
         ]
 
         output = validate_study_description(data)
@@ -985,12 +997,12 @@ class TestValidateStudyDescription:
 
         data = deepcopy(self.observational_study_valid_data)
 
-        data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyType"
+        data["sponsorCollaboratorsModule"]["responsibleParty"][
+            "responsiblePartyType"
         ] = "Sponsor-Investigator"
 
-        del data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyInvestigatorAffiliation"
+        del data["sponsorCollaboratorsModule"]["responsibleParty"][
+            "responsiblePartyInvestigatorAffiliation"
         ]
 
         output = validate_study_description(data)
@@ -998,19 +1010,21 @@ class TestValidateStudyDescription:
         assert output is False
 
     def test_invalid_arms_interventions_module(self):
+        """Test invalid arms interventions module."""
         data = deepcopy(self.interventional_study_valid_data)
 
-        for item in data["ArmsInterventionsModule"]["ArmGroupList"]:
-            del item["ArmGroupType"]
+        for item in data["armsInterventionsModule"]["armGroupList"]:
+            del item["armGroupType"]
 
         output = validate_study_description(data)
 
         assert output is False
 
     def test_invalid_eligibilty_module(self):
+        """Test invalid eligibility module."""
         data = deepcopy(self.interventional_study_valid_data)
 
-        del data["EligibilityModule"]["HealthyVolunteers"]
+        del data["eligibilityModule"]["healthyVolunteers"]
 
         output = validate_study_description(data)
 
@@ -1018,7 +1032,7 @@ class TestValidateStudyDescription:
 
         data = deepcopy(self.observational_study_valid_data)
 
-        del data["EligibilityModule"]["SamplingMethod"]
+        del data["eligibilityModule"]["samplingMethod"]
 
         output = validate_study_description(data)
 
@@ -1026,16 +1040,17 @@ class TestValidateStudyDescription:
 
         data = deepcopy(self.observational_study_valid_data)
 
-        del data["EligibilityModule"]["StudyPopulation"]
+        del data["eligibilityModule"]["studyPopulation"]
 
         output = validate_study_description(data)
 
         assert output is False
 
     def test_invalid_contacts_locations_module(self):
+        """Test invalid contacts locations module."""
         data = deepcopy(self.observational_study_valid_data)
 
-        del data["ContactsLocationsModule"]["CentralContactList"]
+        del data["contactsLocationsModule"]["centralContactList"]
 
         output = validate_study_description(data)
 
@@ -1045,6 +1060,8 @@ class TestValidateStudyDescription:
 
 
 class TestValidateReadme:
+    """Unit tests for validate_readme function."""
+
     def test_minimal_valid_readme(self):
         data = {"Title": "Test Title"}
 
@@ -1095,7 +1112,10 @@ class TestValidateReadme:
 
 
 class TestValidateLicense:
+    """Unit tests for validate_license function."""
+
     def test_valid_license(self):
+        """Test valid license."""
         data = "CC-BY-4.0"
 
         output = validate_license(data)
@@ -1103,6 +1123,7 @@ class TestValidateLicense:
         assert output is True
 
     def test_fail_invalid_license(self):
+        """Test invalid license."""
         data = {
             "License": "Invalid",
         }
@@ -1113,7 +1134,10 @@ class TestValidateLicense:
 
 
 class TestValidateParticipants:
+    """Unit tests for validate_participants function."""
+
     def test_minimal_valid_participant(self):
+        """Test minimal valid participant."""
         data = [
             {
                 "participant_id": "sub-user1",
@@ -1125,6 +1149,7 @@ class TestValidateParticipants:
         assert output is True
 
     def test_valid_participant_with_all_fields(self):
+        """Test valid participant with all fields."""
         data = [
             {
                 "participant_id": "sub-user1",

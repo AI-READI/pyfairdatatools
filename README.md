@@ -144,7 +144,7 @@ If you would like to update the package, please follow the instructions below.
    If you are using Anaconda, you can create a virtual environment with:
 
    ```bash
-   conda create -n pyfairdatatools-env python
+   conda create -n pyfairdatatools-env python=3.8
    conda activate pyfairdatatools-env
    ```
 

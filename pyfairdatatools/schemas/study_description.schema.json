@@ -1,135 +1,235 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schema.aireadi.org/files/study_description.json",
+  "$schema": "http://json-schema.org/draft-07/schema",
   "title": "Study Description",
-  "description": "Add a description of the study and the dataset.",
+  "description": "This is the schema for the study_description.json metadata file from the Clinical Dataset Structure (CDS). It is based on the ClinicalTrials.gov study protocol registration schema, unless specified otherwise in $comment. The keys are based on the the Clinicaltrials.gov JSON study record (https://classic.clinicaltrials.gov/api/info/study_structure?fmt=JSON) where we kept only the keys relevant to the study protocol registration as per the Clinicaltrials.gov Data Elements (https://prsinfo.clinicaltrials.gov/definitions.html). The descriptions, requirements, and controlled lists are based on the Clinicaltrials.gov Data Elements (https://prsinfo.clinicaltrials.gov/definitions.html) and extended with the ClinicalTrials.gov XML schema descriptor (https://prsinfo.clinicaltrials.gov/ProtocolRecordSchema.xsd) when necessary. Character limits have been removed unless otherwise specified. Note that the 'BriefTitle', 'OutcomesModule', 'IPDSharingStatementModule', and 'ReferencesModule' properties from ClinicalTrials.gov are not included as they were not deemed relevant for the use case in the CDS. Some keys, values in controlled lists, etc. are from the the ECRIN Metadata Schema for study v6.0. We have also introduced some modifications as necessary for tailoring the schema to clinical research datasets. All keys are camelCase.",
   "type": "object",
   "additionalProperties": false,
   "properties": {
-    "IdentificationModule": {
+    "identificationModule": {
+      "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#identification",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "OrgStudyIdInfo": {
+        "officialTitle": {
+          "$comment": "Description is based on the ClinicalTrials.gov Data Elements but modified to suit datasets",
+          "type": "string",
+          "description": "The title of the clinical study"
+        },
+        "acronym": {
+          "type": "string",
+          "description": "An acronym or abbreviation used publicly to identify the clinical study, if any"
+        },
+        "orgStudyIdInfo": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "OrgStudyId": {
+            "orgStudyId": {
+              "$comment": "Description is based on the ClinicalTrials.gov Data Elements but modified to suit datasets",
               "type": "string",
               "description": "Main unique identifier assigned to the study.",
               "minLength": 1
             },
-            "OrgStudyIdType": {
-              "$ref": "#/$defs/studyIdType",
+            "orgStudyIdType": {
+              "$comment": "Description has been added here (based on SecondaryIdType) since this property is included in the ClinicalTrials.gov JSON study record but not in the Data Elements",
+              "$ref": "#/definitions/studyIdType",
               "description": "A description of the type of main ID."
             },
-            "OrgStudyIdDomain": {
+            "orgStudyIdDomain": {
+              "$comment": "Description has been added here (based on SecondaryIdDomain) since this property is included in the ClinicalTrials.gov JSON study record but not in the Data Elements",
               "type": "string",
-              "description": "If an ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected, provide the name of the funding organization, clinical trial registry, or organization that issued the identifier.  (required if ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected)",
+              "description": "If an ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected, provide the name of the funding organization, clinical trial registry, or organization that issued the identifier",
               "minLength": 1
             },
-            "OrgStudyIdLink": {
+            "orgStudyIdLink": {
+              "$comment": "Description has been added here (based on SecondaryIdLink) since this property is included in the ClinicalTrials.gov JSON study record but not in the Data Elements",
               "type": "string",
+              "description": "If the ID has a resolvable link, optionally provide the full link here. For instance, if ID is 'K01HL147713' then the ID link is 'https://reporter.nih.gov/quickSearch/K01HL147713'",
               "format": "uri",
               "minLength": 1
             }
           },
-          "required": ["OrgStudyId", "OrgStudyIdType"]
+          "required": ["orgStudyId", "orgStudyIdType"],
+          "if": {
+            "properties": {
+              "orgStudyIdType": {
+                "enum": [
+                  "Other Grant/Funding Number",
+                  "Registry Identifier",
+                  "Other Identifier"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": ["orgStudyIdDomain"]
+          }
         },
-        "SecondaryIdInfoList": {
+        "secondaryIdInfoList": {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "SecondaryId": {
+              "secondaryId": {
+                "$comment": "Description is based on the ClinicalTrials.gov Data Elements but modified to suit datasets",
                 "type": "string",
-                "description": "An identifier(s) (ID), if any, other than the main identifier.",
+                "description": "An identifier, if any, other than the main identifier.",
                 "minLength": 1
               },
-              "SecondaryIdType": {
-                "$ref": "#/$defs/studyIdType",
+              "secondaryIdType": {
+                "$comment": "Description is based on the ClinicalTrials.gov Data Elements but modified to suit datasets",
+                "$ref": "#/definitions/studyIdType",
                 "description": "A description of the type of secondary ID."
               },
-              "SecondaryIdDomain": {
+              "secondaryIdDomain": {
+                "$comment": "Description is based on the ClinicalTrials.gov Data Elements but modified to suit datasets",
                 "type": "string",
-                "description": "If an ID Type of 'Other Grant/Funding Number,' 'Registry Identifier,' or 'Other Identifier' is selected, provide the name of the funding organization, clinical trial registry, or organization that issued the identifier. (required if Secondary ID Type of 'Other Grant/Funding Number', 'Registry Identifier', or 'Other Identifier' is selected)",
+                "description": "If an ID Type of 'Other Grant/Funding Number,' 'Registry Identifier,' or 'Other Identifier' is selected, provide the name of the funding organization, clinical trial registry, or organization that issued the identifier.",
                 "minLength": 1
               },
-              "SecondaryIdLink": {
+              "secondaryIdLink": {
+                "$comment": "Description is based on the ClinicalTrials.gov Data Elements but modified to suit datasets",
                 "type": "string",
                 "format": "uri",
                 "description": "If the ID has a resolvable link, optionally provide the full link here. For instance, if ID is 'K01HL147713' then the ID link is 'https://reporter.nih.gov/quickSearch/K01HL147713'",
                 "minLength": 1
               }
             },
-            "required": ["SecondaryId", "SecondaryIdType"]
+            "required": ["secondaryId", "secondaryIdType"],
+            "if": {
+              "properties": {
+                "secondaryIdType": {
+                  "enum": [
+                    "Other Grant/Funding Number",
+                    "Registry Identifier",
+                    "Other Identifier"
+                  ]
+                }
+              }
+            },
+            "then": {
+              "required": ["secondaryIdDomain"]
+            }
           },
           "minItems": 1,
           "uniqueItems": true
         }
       },
-      "required": ["OrgStudyIdInfo"]
+      "required": ["orgStudyIdInfo"]
     },
-    "StatusModule": {
+    "statusModule": {
+      "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#status",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "OverallStatus": {
-          "$ref": "#/$defs/statusOptions",
+        "overallStatus": {
+          "$ref": "#/definitions/statusOptions",
           "description": "The recruitment status for the clinical study as a whole, based upon the status of the individual sites. If at least one facility in a multi-site clinical study has an Individual Site Status of 'Recruiting', then the Overall Recruitment Status for the study must be 'Recruiting'."
         },
-        "WhyStopped": {
+        "whyStopped": {
           "type": "string",
-          "description": "A brief explanation of the reason(s) why such clinical study was stopped (for a clinical study that is 'Suspended', 'Terminated', or 'Withdrawn' prior to its planned completion as anticipated by the protocol). Required if OverallStatus is 'Suspended', 'Terminated', or 'Withdrawn'",
+          "description": "A brief explanation of the reason(s) why such clinical study was stopped (for a clinical study that is 'Suspended', 'Terminated', or 'Withdrawn' prior to its planned completion as anticipated by the protocol)",
           "minLength": 1
         },
-        "StartDateStruct": {
+        "startDateStruct": {
           "type": "object",
           "additionalProperties": false,
           "description": "The estimated date on which the clinical study will be open for recruitment of participants, or the actual date on which the first participant was enrolled. Note: 'Enrolled' means a participant's, or their legally authorized representative's, agreement to participate in a clinical study following completion of the informed consent process. Potential participants who are screened for the purpose of determining eligibility for the study, but do not participate in the study, are not considered enrolled, unless otherwise specified by the protocol.",
           "properties": {
-            "StartDate": {
+            "startDate": {
+              "$comment": "The date format is from the XML schema descriptor. This has been added here in the description.",
               "type": "string",
-              "description": "Format like 'June 12, 2023'",
+              "description": "Format must be 'YYYY-MM'",
+              "format": "date",
               "minLength": 1
             },
-            "StartDateType": {
+            "startDateType": {
+              "$comment": "Description added here",
+              "description": "Specify if the start date is actual or anticipated",
               "type": "string",
               "enum": ["Actual", "Anticipated"]
             }
           },
-          "required": ["StartDate", "StartDateType"]
+          "required": ["startDate", "startDateType"]
         },
-        "CompletionDateStruct": {
+        "completionDateStruct": {
+          "$comment": "Description is based on the ClinicalTrials.gov Data Elements but modified to suit datasets",
           "type": "object",
           "additionalProperties": false,
-          "description": "The date the final participant was examined or received an intervention for purposes of final collection of data (for example, last participant's last visit), whether the clinical study concluded according to the pre-specified protocol or was terminated.",
+          "description": "The date the final participant was examined or received an intervention for purposes of final collection of data (for example, last participant's last visit), whether the clinical study concluded according to the pre-specified protocol or was terminated. If the study is not completed yet, an anticipated date can be provided.",
           "properties": {
-            "CompletionDate": {
+            "completionDate": {
+              "$comment": "The date format is from the XML schema descriptor. This has been added here in the description.",
               "type": "string",
-              "description": "Format like 'June 12, 2023'",
+              "description": "Format must be 'YYYY-MM'",
+              "format": "date",
               "minLength": 1
             },
-            "CompletionDateType": {
+            "completionDateType": {
+              "$comment": "Description added here",
+              "description": "Specify if the start date is actual or anticipated",
               "type": "string",
               "enum": ["Actual", "Anticipated"]
             }
           },
-          "required": ["CompletionDate", "CompletionDateType"]
+          "required": ["completionDate", "completionDateType"]
         }
       },
-      "required": ["OverallStatus", "StartDateStruct"]
+      "required": ["overallStatus", "startDateStruct", "completionDateStruct"]
     },
-    "SponsorCollaboratorsModule": {
+    "sponsorCollaboratorsModule": {
+      "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#sponsors",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "ResponsibleParty": {
+        "leadSponsor": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "ResponsiblePartyType": {
+            "leadSponsorName": {
+              "type": "string",
+              "description": "The name of the entity or the individual who is the sponsor of the clinical study. Note: When a clinical study is conducted under an investigational new drug application (IND) or investigational device exemption (IDE), the IND or IDE holder is considered the sponsor. When a clinical study is not conducted under an IND or IDE, the single person or entity who initiates the study, by preparing and/or planning the study, and who has authority and control over the study, is considered the sponsor.",
+              "minLength": 1
+            },
+            "leadSponsorIdentifier": {
+              "$comment": "Key added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely identify sponsor and make schema more FAIR. Description and examples are based on the dataset_description schema but modified to suit here.",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "leadSponsorIdentifierValue": {
+                  "type": "string",
+                  "description": "Uniquely identifies sponsor, according to various schemes.",
+                  "minLength": 1,
+                  "examples": ["https://ror.org/04aj4c18"]
+                },
+                "leadSponsorIdentifierScheme": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The name of the identifier scheme.",
+                  "examples": ["ROR"]
+                },
+                "schemeURI": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "The URI of the name identifier scheme.",
+                  "examples": ["https://ror.org"]
+                }
+              },
+              "required": [
+                "leadSponsorIdentifierValue",
+                "leadSponsorIdentifierScheme"
+              ]
+            }
+          },
+          "required": ["leadSponsorName"]
+        },
+        "responsibleParty": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "responsiblePartyType": {
+              "description": "An indication of whether the responsible party is the sponsor, the sponsor-investigator, or a principal investigator designated by the sponsor to be the responsible party. The sponsor may designate a principal investigator as the responsible party if such principal investigator meets all of the following requirements: is responsible for conducting the study; has access to and control over the data from the study; has the right to publish the results of the study; and has the ability to meet all of the requirements for submitting and updating clinical study information.",
               "type": "string",
               "oneOf": [
                 {
@@ -146,121 +246,345 @@
                 }
               ]
             },
-            "ResponsiblePartyInvestigatorFullName": {
+            "responsiblePartyInvestigatorFirstName": {
+              "$comment": "Name split into first and last here",
               "type": "string",
-              "description": "Name of the investigator, including first and last name. (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
+              "description": "First name of the investigator. Required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator'",
               "minLength": 1,
-              "examples": ["John Smith"]
+              "examples": ["James"]
             },
-            "ResponsiblePartyInvestigatorTitle": {
+            "responsiblePartyInvestigatorLastName": {
+              "$comment": "Name split into first and last here",
               "type": "string",
-              "description": "Professional title of the investigator (for example, Professor of Medicine). (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
+              "description": "Last name of the investigator. Required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator'",
+              "minLength": 1,
+              "examples": ["Smith"]
+            },
+            "responsiblePartyInvestigatorTitle": {
+              "type": "string",
+              "description": "The official title of the investigator at the primary organizational affiliation (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
               "minLength": 1,
               "examples": ["Professor of Medicine"]
             },
-            "ResponsiblePartyInvestigatorAffiliation": {
-              "type": "string",
-              "description": "Name of the organization to which the investigator is affiliated. (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
-              "minLength": 1,
-              "examples": ["University of California, San Diego"]
+            "responsiblePartyInvestigatorIdentifier": {
+              "$comment": "Key added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely identify the investigator and make schema more FAIR. Description and examples are based on the dataset_description schema but modified to suit here.",
+              "type": "array",
+              "description": "Uniquely identifies an investigator, according to various schemes.",
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "responsiblePartyInvestigatorIdentifierValue": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Uniquely identifies an investigator.",
+                    "examples": ["https://orcid.org/0000-0001-5727-2427"]
+                  },
+                  "responsiblePartyInvestigatorIdentifierScheme": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The name of the name identifier scheme.",
+                    "examples": ["ORCID"]
+                  },
+                  "schemeURI": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The URI of the name identifier scheme.",
+                    "examples": ["https://orcid.org"]
+                  }
+                },
+                "required": [
+                  "responsiblePartyInvestigatorIdentifierValue",
+                  "responsiblePartyInvestigatorIdentifierScheme"
+                ]
+              },
+              "uniqueItems": true
+            },
+            "responsiblePartyInvestigatorAffiliation": {
+              "$comment": "Made into an object. Description is based on the ClinicalTrials.gov Data Elements but modified for clarity ('investigator' used instead of 'individual')",
+              "description": "Primary organizational affiliation of the investigator (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "responsiblePartyInvestigatorAffiliationName": {
+                  "$comment": "Key added to fit the name in the object",
+                  "type": "string",
+                  "description": "The name of the affiliation of the investigator",
+                  "minLength": 1,
+                  "examples": ["University of California, San Diego"]
+                },
+                "responsiblePartyInvestigatorAffiliationIdentifier": {
+                  "$comment": "Key added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely identify sponsor and make schema more FAIR. Description and examples are based on the dataset_description schema but modified to suit here.",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "responsiblePartyInvestigatorAffiliationIdentifierValue": {
+                      "type": "string",
+                      "description": "Uniquely identifies affiliation, according to various schemes.",
+                      "minLength": 1,
+                      "examples": ["https://ror.org/04aj4c18"]
+                    },
+                    "responsiblePartyInvestigatorAffiliationIdentifierScheme": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The name of the identifier scheme.",
+                      "examples": ["ROR"]
+                    },
+                    "schemeURI": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The URI of the name identifier scheme.",
+                      "examples": ["https://ror.org"]
+                    }
+                  },
+                  "required": [
+                    "responsiblePartyInvestigatorAffiliationIdentifierValue",
+                    "responsiblePartyInvestigatorAffiliationIdentifierScheme"
+                  ]
+                }
+              },
+              "required": ["responsiblePartyInvestigatorAffiliationName"]
             }
           },
-          "required": ["ResponsiblePartyType"]
-        },
-        "LeadSponsor": {
-          "type": "object",
-          "additionalProperties": false,
-          "properties": {
-            "LeadSponsorName": {
-              "type": "string",
-              "description": "The name of the entity or the individual who is the sponsor of the clinical study. Note: When a clinical study is conducted under an investigational new drug application (IND) or investigational device exemption (IDE), the IND or IDE holder is considered the sponsor. When a clinical study is not conducted under an IND or IDE, the single person or entity who initiates the study, by preparing and/or planning the study, and who has authority and control over the study, is considered the sponsor.",
-              "minLength": 1
+          "required": ["responsiblePartyType"],
+          "if": {
+            "properties": {
+              "responsiblePartyType": {
+                "enum": ["Principal Investigator", "Sponsor-Investigator"]
+              }
             }
           },
-          "required": ["LeadSponsorName"]
+          "then": {
+            "required": [
+              "responsiblePartyInvestigatorFirstName",
+              "responsiblePartyInvestigatorLastName",
+              "responsiblePartyInvestigatorTitle",
+              "responsiblePartyInvestigatorAffiliation"
+            ]
+          }
         },
-        "CollaboratorList": {
+        "collaboratorList": {
           "type": "array",
           "description": "Other organizations (if any) providing support. Support may include funding, design, implementation, data analysis or reporting. The responsible party is responsible for confirming all collaborators before listing them.",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "CollaboratorName": {
+              "collaboratorName": {
+                "$comment": "Description added here since the ClinicalTrials.gov Data Elements document only provide a high-level description of the collaborators",
                 "type": "string",
-                "description": "The name of the entity or the individual who is the collaborator of the clinical study."
+                "description": "The name of the collaborating organization"
+              },
+              "collaboratorNameIdentifier": {
+                "$comment": "Key added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely identify collaborator and make schema more FAIR. Description and examples are based on the dataset_description schema but modified to suit here.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "collaboratorNameIdentifierValue": {
+                    "type": "string",
+                    "description": "Uniquely identifies the collaborating organization, according to various schemes.",
+                    "minLength": 1,
+                    "examples": ["https://ror.org/04aj4c18"]
+                  },
+                  "collaboratorNameIdentifierScheme": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The name of the identifier scheme.",
+                    "examples": ["ROR"]
+                  },
+                  "schemeURI": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The URI of the name identifier scheme.",
+                    "examples": ["https://ror.org"]
+                  }
+                },
+                "required": [
+                  "collaboratorNameIdentifierValue",
+                  "collaboratorNameIdentifierScheme"
+                ]
               }
             },
-            "required": ["CollaboratorName"]
+            "required": ["collaboratorName"]
           },
           "minItems": 1,
           "uniqueItems": true
         }
       },
-      "required": ["ResponsibleParty", "LeadSponsor"]
+      "required": ["leadSponsor", "responsibleParty"]
     },
-    "OversightModule": {
+    "oversightModule": {
+      "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#oversight. 'Device Product Not Approved or Cleared by U.S. FDA', 'Post Prior to U.S. FDA Approval or Clearance', 'Pediatric Postmarket Surveillance of a Device Product', 'Investigational New Drug Application (IND)/Investigational Device Exemption (IDE) Information' (and subitems), and 'Product Manufactured in and Exported from the U.S.' Data Elements were not kept here as they were deemed not relevant for datasets. ",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "OversightHasDMC": {
+        "isFDARegulatedDrug": {
           "type": "string",
-          "description": "Indicate whether a data monitoring committee has been appointed for this study. The data monitoring committee (board) is a group of independent scientists who are appointed to monitor the safety and scientific integrity of a human research intervention, and to make recommendations to the sponsor regarding the stopping of the trial for efficacy, for harms or for futility. The composition of the committee is dependent upon the scientific skills and knowledge required for monitoring the particular study. Select Yes/No.",
+          "description": "Indication that a clinical study is studying a drug product (including a biological product) subject to section 505 of the Federal Food, Drug, and Cosmetic Act or to section 351 of the Public Health Service Act.",
+          "enum": ["Yes", "No"]
+        },
+        "isFDARegulatedDevice": {
+          "type": "string",
+          "description": "Indication that a clinical study is studying a device product subject to section 510(k), 515, or 520(m) of the Federal Food, Drug, and Cosmetic Act.",
+          "enum": ["Yes", "No"]
+        },
+        "humanSubjectReviewStatus": {
+          "$comment": "This key is not in the ClinicalTrials.gov JSON study record but it has been added here to match the corresponding the Data Elements. 'Board Approval Number', 'Board Name', 'Board Affiliation', and 'Board Contact' Data Elements were not kept here as they were deemed not relevant for datasets.",
+          "description": "Indicate whether a clinical study has been reviewed and approved by at least one human subjects protection review board or such review is not required per applicable law (for example, 21 CFR Part 56, 45 CFR Part 46, or other applicable regulation)",
+          "$ref": "#/definitions/humanSubjectReviewStatus"
+        },
+        "oversightHasDMC": {
+          "type": "string",
+          "description": "Indicate whether a data monitoring committee has been appointed for this study. The data monitoring committee (board) is a group of independent scientists who are appointed to monitor the safety and scientific integrity of a human research intervention, and to make recommendations to the sponsor regarding the stopping of the trial for efficacy, for harms or for futility. The composition of the committee is dependent upon the scientific skills and knowledge required for monitoring the particular study.",
           "enum": ["Yes", "No"]
         }
-      }
+      },
+      "required": ["humanSubjectReviewStatus"]
     },
-    "DescriptionModule": {
+    "descriptionModule": {
+      "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#description",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "BriefSummary": {
+        "briefSummary": {
+          "$comment": "Description is based on the ClinicalTrials.gov Data Elements but modified to suit datasets. Character limit has been kept here to ensure the summary is brief.",
           "type": "string",
           "description": "A short description of the clinical study, written in language intended for the lay public. Limit: 5000 characters",
-          "minLength": 1
+          "minLength": 1,
+          "maxLength": 5000
         },
-        "DetailedDescription": {
+        "detailedDescription": {
+          "$comment": "Description is based on the ClinicalTrials.gov Data Elements but modified to suit datasets",
           "type": "string",
-          "description": "Extended description of the study, including more technical information (as compared to the Brief Summary), if desired. Do not include the entire protocol; do not duplicate information recorded in other data elements, such as Eligibility Criteria or outcome measures.For Patient Registries: Also describe the applicable registry procedures and other quality factors (for example, third party certification, on-site audit). In particular, summarize any procedures implemented as part of the patient registry, including, but not limited to the following: Quality assurance plan that addresses data validation and registry procedures, including any plans for site monitoring and auditing. Data checks to compare data entered into the registry against predefined rules for range or consistency with other data fields in the registry. Source data verification to assess the accuracy, completeness, or representativeness of registry data by comparing the data to external data sources (for example, medical records, paper or electronic case report forms, or interactive voice response systems). Data dictionary that contains detailed descriptions of each variable used by the registry, including the source of the variable, coding information if used (for example, World Health Organization Drug Dictionary, MedDRA), and normal ranges if relevant. Standard Operating Procedures to address registry operations and analysis activities, such as patient recruitment, data collection, data management, data analysis, reporting for adverse events, and change management. Sample size assessment to specify the number of participants or participant years necessary to demonstrate an effect. Plan for missing data to address situations where variables are reported as missing, unavailable, non-reported, uninterpretable, or considered missing because of data inconsistency or out-of-range results. Statistical analysis plan describing the analytical principles and statistical techniques to be employed in order to address the primary and secondary objectives, as specified in the study protocol or plan.",
+          "description": "Extended description of the study, including more technical information (as compared to the Brief Summary), if desired. Do not include the entire protocol; do not duplicate information recorded in other data elements, such as Eligibility Criteria or outcome measures.",
           "minLength": 1
         }
       },
-      "required": ["BriefSummary"]
+      "required": ["briefSummary"]
     },
-    "ConditionsModule": {
+    "conditionsModule": {
+      "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#Conditions",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "ConditionList": {
+        "conditionList": {
+          "$comment": "Besides 'conditionName' all keys have been added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely map condition names to controlled vocabulary and make schema more FAIR. Descriptions and examples are based on the dataset_description schema but modified to suit here.",
           "type": "array",
-          "description": "The name(s) of the disease(s) or condition(s) studied in the clinical study, or the focus of the clinical study. Use, if available, appropriate descriptors from NLM's Medical Subject Headings (MeSH)-controlled vocabulary thesaurus or terms from another vocabulary, such as the Systematized Nomenclature of Medicine—Clinical Terms (SNOMED CT), that has been mapped to MeSH within the Unified Medical Language System (UMLS) Metathesaurus.",
+          "description": "The name(s) of the disease(s) or condition(s) studied in the clinical study, or the focus of the clinical study. Use, if available, appropriate descriptors from NLM's Medical Subject Headings (MeSH)-controlled vocabulary thesaurus or terms from another vocabulary, such as the Systematized Nomenclature of Medicine\u2014Clinical Terms (SNOMED CT), that has been mapped to MeSH within the Unified Medical Language System (UMLS) Metathesaurus.",
           "items": {
-            "type": "string",
-            "minLength": 1
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "conditionName": {
+                "type": "string",
+                "description": "Name of the condition",
+                "minLength": 1,
+                "examples": ["Diabetes mellitus"]
+              },
+              "conditionIdentifier": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "conditionClassificationCode": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The classification code used for the condition name in the scheme",
+                    "examples": ["45636-8"]
+                  },
+                  "conditionScheme": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The name of the scheme or classification code or authority if one is used (e.g., name of ontology) for the condition name",
+                    "examples": [
+                      "Logical Observation Identifier Names and Codes (LOINC)"
+                    ]
+                  },
+                  "schemeURI": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The URI of the condition identifier scheme",
+                    "examples": ["https://loinc.org/"]
+                  },
+                  "conditionURI": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The URI of the condition name in the scheme",
+                    "examples": ["https://loinc.org/45636-8"]
+                  }
+                },
+                "required": ["conditionClassificationCode", "conditionScheme"]
+              }
+            },
+            "required": ["conditionName"]
           },
           "minItems": 1,
           "uniqueItems": true
         },
-        "KeywordList": {
+        "keywordList": {
           "type": "array",
-          "description": "Words or phrases that best describe the study. Keywords help users find studies in the database. Use NLM's Medical Subject Heading (MeSH)-controlled vocabulary terms where appropriate. Be as specific and precise as possible. Avoid acronyms and abbreviations.",
+          "description": "Words or phrases that best describe the study. Use NLM's Medical Subject Heading (MeSH)-controlled vocabulary terms or terms from another vocabulary where appropriate. Be as specific and precise as possible. Avoid acronyms and abbreviations.",
           "items": {
-            "type": "string",
-            "minLength": 1
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "keywordValue": {
+                "type": "string",
+                "description": "Keyword or phrase",
+                "minLength": 1,
+                "examples": ["Artificial intelligence"]
+              },
+              "keywordIdentifier": {
+                "$comment": "Added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely map condition keywords to controlled vocabulary and make schema more FAIR. Descriptions and examples are based on the dataset_description schema but modified to suit here. Description has been modified to allow terms from another vocabulary than MeSH",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "keywordClassificationCode": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The classification code used for the keyword in the scheme",
+                    "examples": ["D001185"]
+                  },
+                  "keywordScheme": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The name of the scheme or classification code or authority if one is used (e.g., name of ontology) for the keyword",
+                    "examples": ["Medical Subject Headings (MeSH)"]
+                  },
+                  "schemeURI": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The URI of the keyword identifier scheme",
+                    "examples": ["https://meshb.nlm.nih.gov/"]
+                  },
+                  "keywordURI": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The URI of the keyword in the scheme",
+                    "examples": [
+                      "https://meshb.nlm.nih.gov/record/ui?ui=D001185"
+                    ]
+                  }
+                },
+                "required": ["keywordClassificationCode", "keywordScheme"]
+              }
+            },
+            "required": ["keywordValue"]
           },
           "minItems": 1,
           "uniqueItems": true
         }
       },
-      "required": ["ConditionList"]
+      "required": ["conditionList"]
     },
-    "DesignModule": {
+    "designModule": {
+      "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#StudyDesign",
       "type": "object",
-      "required": ["StudyType"],
+      "required": ["studyType"],
       "properties": {
-        "StudyType": {
+        "studyType": {
+          "$comment": "Maps to https://prsinfo.clinicaltrials.gov/definitions.html#StudyType",
           "type": "string",
-          "description": "The type of study being registered.",
+          "description": "The nature of the investigation",
           "oneOf": [
             {
               "const": "Interventional",
@@ -271,12 +595,9 @@
               "description": "Studies in human beings in which biomedical and/or health outcomes are assessed in pre-defined groups of individuals. Participants in the study may receive diagnostic, therapeutic, or other interventions, but the investigator does not assign specific interventions to the study participants. This includes when participants receive interventions as part of routine medical care, and a researcher studies the effect of the intervention."
             },
             {
-              "const": "Observational Patient Registry",
-              "description": "An observational study that is also considered to be a Patient Registry. Note: The Agency for Healthcare Research and Quality (AHRQ) defines a Patient Registry as including an organized system that uses observational methods to collect uniform data (clinical and other) prospectively for a population defined by a particular disorder/disease, condition (including susceptibility to a disorder), or exposure (including products, healthcare services, and/or procedures) and that serves a predetermined scientific, clinical, or policy purpose. Patient registries may be single purpose or on-going data collection programs that address one or more questions."
-            },
-            {
+              "$comment": "Description changed to suit dataset",
               "const": "Expanded Access",
-              "description": "An investigational drug product (including biological product) available through expanded access for patients who do not qualify for enrollment in a clinical trial. Expanded Access includes all expanded access types under section 561 of the Federal Food, Drug, and Cosmetic Act: (1) for individual patients, including emergency use; (2) for intermediate-size patient populations; and (3) under a treatment IND or treatment protocol. (For more information on data requirements for this Study Type, see Expanded Access Data Element $defs)."
+              "description": "An investigational drug product (including biological product) available through expanded access for patients who do not qualify for enrollment in a clinical trial. Expanded Access includes all expanded access types under section 561 of the Federal Food, Drug, and Cosmetic Act: (1) for individual patients, including emergency use; (2) for intermediate-size patient populations; and (3) under a treatment IND or treatment protocol."
             }
           ]
         }
@@ -285,19 +606,19 @@
         {
           "if": {
             "properties": {
-              "StudyType": {
+              "studyType": {
                 "const": "Interventional"
               }
             }
           },
           "then": {
             "properties": {
-              "DesignInfo": {
+              "designInfo": {
                 "type": "object",
                 "description": "A description of the manner in which the clinical trial will be conducted.",
                 "additionalProperties": false,
                 "properties": {
-                  "DesignAllocation": {
+                  "designAllocation": {
                     "type": "string",
                     "description": "The process by which participants are assigned to a clinical study. Types of allocation include randomized and nonrandomized. Interventions in a nonrandomized study are not assigned randomly.",
                     "oneOf": [
@@ -315,7 +636,7 @@
                       }
                     ]
                   },
-                  "DesignInterventionModel": {
+                  "designInterventionModel": {
                     "type": "string",
                     "description": "The strategy for assigning interventions to participants.",
                     "oneOf": [
@@ -353,12 +674,12 @@
                       }
                     ]
                   },
-                  "DesignInterventionModelDescription": {
+                  "designInterventionModelDescription": {
                     "type": "string",
                     "description": "Provide details about the Interventional Study Model",
                     "minLength": 1
                   },
-                  "DesignPrimaryPurpose": {
+                  "designPrimaryPurpose": {
                     "type": "string",
                     "description": "The main objective of the intervention(s) being evaluated by the clinical trial.",
                     "oneOf": [
@@ -384,12 +705,12 @@
                       }
                     ]
                   },
-                  "DesignMaskingInfo": {
+                  "designMaskingInfo": {
                     "type": "object",
-                    "description": " The party or parties involved in the clinical trial who are prevented from having knowledge of the interventions assigned to individual participants.",
+                    "description": "The party or parties involved in the clinical trial who are prevented from having knowledge of the interventions assigned to individual participants.",
                     "additionalProperties": false,
                     "properties": {
-                      "DesignMasking": {
+                      "designMasking": {
                         "type": "string",
                         "oneOf": [
                           {
@@ -417,12 +738,7 @@
                           }
                         ]
                       },
-                      "DesignMaskingDescription": {
-                        "type": "string",
-                        "description": "Provide information about other parties who may be masked in the clinical trial, if any.",
-                        "minLength": 1
-                      },
-                      "DesignWhoMaskedList": {
+                      "designWhoMaskedList": {
                         "type": "array",
                         "items": {
                           "type": "string",
@@ -444,19 +760,24 @@
                         },
                         "minItems": 1,
                         "uniqueItems": true
+                      },
+                      "designMaskingDescription": {
+                        "type": "string",
+                        "description": "Provide information about other parties who may be masked in the clinical trial, if any.",
+                        "minLength": 1
                       }
                     },
-                    "required": ["DesignMasking", "DesignWhoMaskedList"]
+                    "required": ["designMasking", "designWhoMaskedList"]
                   }
                 },
                 "required": [
-                  "DesignAllocation",
-                  "DesignInterventionModel",
-                  "DesignPrimaryPurpose",
-                  "DesignMaskingInfo"
+                  "designAllocation",
+                  "designInterventionModel",
+                  "designPrimaryPurpose",
+                  "designMaskingInfo"
                 ]
               },
-              "PhaseList": {
+              "phaseList": {
                 "type": "array",
                 "description": "For a clinical trial of a drug product (including a biological product), the numerical phase of such clinical trial, consistent with terminology in 21 CFR 312.21 and in 21 CFR 312.85 for phase 4 studies. Select only one.",
                 "items": {
@@ -500,10 +821,11 @@
                 "maxItems": 1,
                 "uniqueItems": true
               },
-              "EnrollmentInfo": {
-                "$ref": "#/$defs/enrollmentInfo"
+              "enrollmentInfo": {
+                "$ref": "#/definitions/enrollmentInfo"
               },
-              "NumberArms": {
+              "numberArms": {
+                "$comment": "This key is not in the ClinicalTrials.gov JSON study record but it has been added here to match the corresponding the Data Elements",
                 "type": "string",
                 "pattern": "^[0-9]+$",
                 "minLength": 1,
@@ -511,29 +833,36 @@
               }
             },
             "required": [
-              "DesignInfo",
-              "PhaseList",
-              "EnrollmentInfo",
-              "NumberArms"
+              "designInfo",
+              "phaseList",
+              "enrollmentInfo",
+              "numberArms"
             ]
           }
         },
         {
           "if": {
             "properties": {
-              "StudyType": {
+              "studyType": {
                 "const": "Observational"
               }
             }
           },
           "then": {
             "properties": {
-              "DesignInfo": {
+              "isPatientRegistry": {
+                "$comment": "This key is not in the ClinicalTrials.gov JSON study record but it has been added here to specify if an observational study is a Patient Registry.",
+                "type": "string",
+                "description": "Indicate if the observational study is a Patient Registry, i.e., an observational study that is also considered to be a Patient Registry. Note: The Agency for Healthcare Research and Quality (AHRQ) defines a Patient Registry as including an organized system that uses observational methods to collect uniform data (clinical and other) prospectively for a population defined by a particular disorder/disease, condition (including susceptibility to a disorder), or exposure (including products, healthcare services, and/or procedures) and that serves a predetermined scientific, clinical, or policy purpose. Patient registries may be single purpose or on-going data collection programs that address one or more questions.",
+                "enum": ["Yes", "No"]
+              },
+              "designInfo": {
+                "$comment": "Description has been added here since none was provided in the ClinicalTrials.gov Data Elements",
                 "type": "object",
                 "description": "A description of the manner in which the observational study will be conducted",
                 "additionalProperties": false,
                 "properties": {
-                  "DesignObservationalModelList": {
+                  "designObservationalModelList": {
                     "type": "array",
                     "description": "Primary strategy for participant identification and follow-up.",
                     "items": {
@@ -565,14 +894,14 @@
                         },
                         {
                           "const": "Other",
-                          "description": "Explain in Detailed Description.."
+                          "description": "Explain in Detailed Description."
                         }
                       ]
                     },
                     "minItems": 1,
                     "uniqueItems": true
                   },
-                  "DesignTimePerspectiveList": {
+                  "designTimePerspectiveList": {
                     "type": "array",
                     "description": "Temporal relationship of the observation period to the time of participant enrollment.",
                     "items": {
@@ -601,15 +930,16 @@
                   }
                 },
                 "required": [
-                  "DesignObservationalModelList",
-                  "DesignTimePerspectiveList"
+                  "designObservationalModelList",
+                  "designTimePerspectiveList"
                 ]
               },
-              "BioSpec": {
+              "bioSpec": {
+                "$comment": "Made mandatory here",
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
-                  "BioSpecRetention": {
+                  "bioSpecRetention": {
                     "type": "string",
                     "description": "Indicate whether samples of material from research participants are retained in a biorepository.",
                     "oneOf": [
@@ -627,58 +957,64 @@
                       }
                     ]
                   },
-                  "BioSpecDescription": {
+                  "bioSpecDescription": {
                     "type": "string",
                     "description": "Specify all types of biospecimens to be retained (e.g., whole blood, serum, white cells, urine, tissue).",
                     "minLength": 1
                   }
                 },
-                "required": ["BioSpecRetention"]
+                "required": ["bioSpecRetention", "bioSpecDescription"]
               },
-              "EnrollmentInfo": {
-                "$ref": "#/$defs/enrollmentInfo"
+              "enrollmentInfo": {
+                "$ref": "#/definitions/enrollmentInfo"
               },
-              "TargetDuration": {
+              "targetDuration": {
                 "type": "string",
                 "description": "For Patient Registries, the anticipated time period over which each participant is to be followed.",
                 "minLength": 1,
-                "examples": ["3 Years", "5 Days", "10 Weeks"]
-              },
-              "NumberGroupsCohorts": {
-                "type": "string",
-                "pattern": "^[0-9]+$",
-                "minLength": 1,
-                "description": "Number of study groups/cohorts. Enter `1` for a single-group study. Many observational studies have one group/cohort; case control studies typically have two. The minimum value is '1'."
+                "pattern": "^[0-9]+(\\.[0-9]+)?\\s*(Years|Months|Weeks|Days|Hours)?$"
               }
             },
             "required": [
-              "DesignInfo",
-              "EnrollmentInfo",
-              "TargetDuration",
-              "NumberGroupsCohorts"
-            ]
+              "isPatientRegistry",
+              "designInfo",
+              "bioSpec",
+              "enrollmentInfo"
+            ],
+            "if": {
+              "properties": {
+                "isPatientRegistry": {
+                  "const": "Yes"
+                }
+              }
+            },
+            "then": {
+              "required": ["targetDuration"]
+            }
           }
         }
       ]
     },
-    "ArmsInterventionsModule": {
+    "armsInterventionsModule": {
+      "$comment": "https://prsinfo.clinicaltrials.gov/definitions.html#ArmsGroupsInterventions",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "ArmGroupList": {
+        "armGroupList": {
           "type": "array",
           "items": {
             "type": "object",
             "description": "If the study is interventional: A description of each arm of the clinical trial that indicates its role in the clinical trial; provides an informative title; and, if necessary, additional descriptive information (including which interventions are administered in each arm) to differentiate each arm from other arms in the clinical trial. || If the study is observational: Specify the predefined participant groups (cohorts) to be studied, corresponding to Number of Groups specified under Study Design (for single-group studies, the following data elements are optional). Do not use this section to specify strata (Detailed Description can be used for that purpose, if desired).",
             "additionalProperties": false,
             "properties": {
-              "ArmGroupLabel": {
+              "armGroupLabel": {
+                "description": "If the study is interventional: The short name used to identify the arm. || If the study is observational: The short name used to identify the group.",
                 "type": "string",
                 "minLength": 1
               },
-              "ArmGroupType": {
+              "armGroupType": {
                 "type": "string",
-                "description": "required if study type is interventional",
+                "description": "Required only if study type is interventional",
                 "enum": [
                   "Experimental",
                   "Active Comparator",
@@ -688,13 +1024,15 @@
                   "Other"
                 ]
               },
-              "ArmGroupDescription": {
+              "armGroupDescription": {
+                "$comment": "Made mandatory here since otherwise it would not be possible to understand the labels",
+                "description": "If the study is interventional:  If needed, additional descriptive information (including which interventions are administered in each arm) to differentiate each arm from other arms in the clinical trial. || Explanation of the nature of the study group (for example, those with a condition and those without a condition; those with an exposure and those without an exposure).",
                 "type": "string",
                 "minLength": 1
               },
-              "ArmGroupInterventionList": {
+              "armGroupInterventionList": {
                 "type": "array",
-                "description": "required if study type is interventional and there is more than one intervention",
+                "description": "Indicate which Interventions (from the intervention list) are in this Arm/Group (must match with interventionName)",
                 "items": {
                   "type": "string",
                   "minLength": 1
@@ -703,19 +1041,20 @@
                 "uniqueItems": true
               }
             },
-            "required": ["ArmGroupLabel"]
+            "required": ["armGroupLabel", "armGroupDescription"]
           },
           "minItems": 1,
           "uniqueItems": true
         },
-        "InterventionList": {
+        "interventionList": {
+          "$comment": "'interventionArmGroupLabelList' has been removed here since it the cross-connection information between interventions and arms/groups is already captured in 'armGroupInterventionList'",
           "type": "array",
           "description": "Specify the intervention(s) associated with each arm or group; at least one intervention must be specified for interventional studies. For observational studies, specify the intervention(s)/exposure(s) of interest, if any. If the same intervention is associated with more than one arm or group, provide the information once and use the Arm or Group/Intervention Cross-Reference to associate it with more than one arm or group.",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "InterventionType": {
+              "interventionType": {
                 "type": "string",
                 "description": "For each intervention studied in the clinical study, the general type of intervention. Select one.",
                 "oneOf": [
@@ -765,27 +1104,17 @@
                   }
                 ]
               },
-              "InterventionName": {
+              "interventionName": {
                 "type": "string",
                 "description": "A brief descriptive name used to refer to the intervention(s) studied in each arm of the clinical study. A non-proprietary name of the intervention must be used, if available. If a non-proprietary name is not available, a brief descriptive name or identifier must be used.",
                 "minLength": 1
               },
-              "InterventionDescription": {
+              "interventionDescription": {
                 "type": "string",
                 "description": "Details that can be made public about the intervention, other than the Intervention Name(s) and Other Intervention Name(s), sufficient to distinguish the intervention from other, similar interventions studied in the same or another clinical study. For example, interventions involving drugs may include dosage form, dosage, frequency, and duration",
                 "minLength": 1
               },
-              "InterventionArmGroupLabelList": {
-                "type": "array",
-                "description": "The name of the arm or group associated with the intervention studied in this clinical study. At least one Arm Group Label must be provided.",
-                "items": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "minItems": 1,
-                "uniqueItems": true
-              },
-              "InterventionOtherNameList": {
+              "interventionOtherNameList": {
                 "type": "array",
                 "description": "Other current and former name(s) or alias(es), if any, different from the Intervention Name(s), that the sponsor has used publicly to identify the intervention(s), including, but not limited to, past or present names such as brand name(s), or serial numbers.",
                 "items": {
@@ -797,22 +1126,23 @@
               }
             },
             "required": [
-              "InterventionType",
-              "InterventionName",
-              "InterventionArmGroupLabelList"
+              "interventionType",
+              "interventionName",
+              "interventionDescription"
             ]
           },
           "minItems": 1,
           "uniqueItems": true
         }
       },
-      "required": ["ArmGroupList", "InterventionList"]
+      "required": ["armGroupList", "interventionList"]
     },
-    "EligibilityModule": {
+    "eligibilityModule": {
+      "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#Eligibility",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "Gender": {
+        "sex": {
           "type": "string",
           "description": "The sex and, if applicable, gender of the participants eligible to participate in the clinical study. The sex of the participants eligible to participate in the clinical study. Note: 'Sex' means a person's classification as male or female based on biological distinctions.",
           "oneOf": [
@@ -830,45 +1160,71 @@
             }
           ]
         },
-        "GenderBased": {
+        "genderBased": {
           "type": "string",
           "description": "If applicable, indicate whether participant eligibility is based on gender. Note: 'Gender' means a person's self-representation of gender identity.",
           "enum": ["Yes", "No"]
         },
-        "GenderDescription": {
+        "genderDescription": {
           "type": "string",
           "description": "If eligibility is based on gender, provide descriptive information about Gender criteria."
         },
-        "MinimumAge": {
+        "minimumAge": {
           "type": "string",
           "description": "The numerical value, if any, for the minimum age a potential participant must meet to be eligible for the clinical study. Include a whole number followed by units, if no limit use 'N/A' - see controlled values for units",
           "pattern": "^[0-9]+(\\.[0-9]+)?\\s*(Years|Months|Weeks|Days|Hours|N/A)?$",
           "minLength": 1
         },
-        "MaximumAge": {
+        "maximumAge": {
           "type": "string",
           "description": "The numerical value, if any, for the maximum age a potential participant must meet to be eligible for the clinical study. Include a whole number followed by units, if no limit use 'N/A' - see controlled values for units",
           "pattern": "^[0-9]+(\\.[0-9]+)?\\s*(Years|Months|Weeks|Days|Hours|N/A)?$",
           "minLength": 1
         },
-        "HealthyVolunteers": {
+        "healthyVolunteers": {
+          "$comment": "Made mandatory for both interventional and observational studies",
           "type": "string",
-          "description": "Indication that participants who do not have a disease or condition, or related conditions or symptoms, under study in the clinical study are permitted to participate in the clinical study. Required if the study type is Interventional.",
+          "description": "Indication that participants who do not have a disease or condition, or related conditions or symptoms, under study in the clinical study are permitted to participate in the clinical study.",
           "enum": ["Yes", "No"]
         },
-        "EligibilityCriteria": {
+        "eligibilityCriteria": {
+          "$comment": "This is a string in the ClinicalTrials.gov JSON study record but made an object here to better separate inclusion and exclusion criteria. Description has been modified to suit datasets.",
+          "type": "object",
+          "description": "A limited list of criteria for selection of participants in the clinical study, provided in terms of inclusion and exclusion criteria.",
+          "properties": {
+            "eligibilityCriteriaInclusion": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "description": "An inclusion criterion",
+                "minLength": 1
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "eligibilityCriteriaExclusion": {
+              "items": {
+                "type": "string",
+                "description": "An exclusion criterion",
+                "minLength": 1
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            }
+          },
+          "required": [
+            "eligibilityCriteriaInclusion",
+            "eligibilityCriteriaExclusion"
+          ]
+        },
+        "studyPopulation": {
           "type": "string",
-          "description": "A limited list of criteria for selection of participants in the clinical study, provided in terms of inclusion and exclusion criteria and suitable for assisting potential participants in identifying clinical studies of interest. Use a bulleted list for each criterion below the headers 'Inclusion Criteria' and 'Exclusion Criteria'",
+          "description": "A description of the population from which the groups or cohorts will be selected (for example, primary care clinic, community sample, residents of a certain town). Required for observational studies only.",
           "minLength": 1
         },
-        "StudyPopulation": {
+        "samplingMethod": {
           "type": "string",
-          "description": "A description of the population from which the groups or cohorts will be selected (for example, primary care clinic, community sample, residents of a certain town). Required for observational studies.",
-          "minLength": 1
-        },
-        "SamplingMethod": {
-          "type": "string",
-          "description": "The method used to select participants to be studied. Required for observational studies.",
+          "description": "The method used to select participants to be studied. Required for observational studies only.",
           "oneOf": [
             {
               "const": "Probability Sample",
@@ -882,76 +1238,239 @@
         }
       },
       "required": [
-        "Gender",
-        "GenderBased",
-        "MinimumAge",
-        "MaximumAge",
-        "EligibilityCriteria"
+        "sex",
+        "genderBased",
+        "minimumAge",
+        "maximumAge",
+        "healthyVolunteers",
+        "eligibilityCriteria"
       ]
     },
-    "ContactsLocationsModule": {
+    "contactsLocationsModule": {
+      "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#Locations",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "CentralContactList": {
+        "centralContactList": {
+          "$comment": "Description is based on the ClinicalTrials.gov Data Elements but modified to suit datasets",
           "type": "array",
-          "description": "The name or title, toll-free telephone number, and email address of a person to whom questions concerning enrollment at any location of the study can be addressed.",
+          "description": "The contact of a person to whom questions about the study can be addressed.",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "CentralContactName": {
+              "centralContactFirstName": {
+                "$comment": "Added in lieu of centralContactName",
                 "type": "string",
                 "minLength": 1
               },
-              "CentralContactAffiliation": {
+              "centralContactLastName": {
+                "$comment": "Added in lieu of centralContactName",
                 "type": "string",
-                "description": "If none, specify Unaffiliated.",
                 "minLength": 1
               },
-              "CentralContactPhone": {
+              "centralContactDegree": {
+                "$comment": "Added here",
+                "type": "string",
+                "minLength": 1
+              },
+              "centralContactIdentifier": {
+                "$comment": "Key added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely identify the central contact and make schema more FAIR. Description and examples are based on the dataset_description schema but modified to suit here.",
+                "type": "array",
+                "description": "Uniquely identifies a central contract, according to various schemes.",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "centralContactIdentifierValue": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Uniquely identifies an central contact.",
+                      "examples": ["https://orcid.org/0000-0001-5727-2427"]
+                    },
+                    "centralContactIdentifierScheme": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The name of the central contact identifier scheme.",
+                      "examples": ["ORCID"]
+                    },
+                    "schemeURI": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The URI of the central contact identifier scheme.",
+                      "examples": ["https://orcid.org"]
+                    }
+                  },
+                  "required": [
+                    "centralContactIdentifierValue",
+                    "centralContactIdentifierScheme"
+                  ]
+                },
+                "uniqueItems": true
+              },
+              "centralContactAffiliation": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "centralContactAffiliationName": {
+                    "type": "string",
+                    "description": "The name of the affiliation of the central contact",
+                    "minLength": 1
+                  },
+                  "centralContactAffiliationIdentifier": {
+                    "$comment": "Key added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely identify central contact affiliation and make schema more FAIR. Description and examples are based on the dataset_description schema but modified to suit here.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "centralContactAffiliationIdentifierValue": {
+                        "type": "string",
+                        "description": "Uniquely identifies central contact affiliation, according to various schemes.",
+                        "minLength": 1,
+                        "examples": ["https://ror.org/04aj4c18"]
+                      },
+                      "centralContactAffiliationIdentifierScheme": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "The name of the identifier scheme.",
+                        "examples": ["ROR"]
+                      },
+                      "schemeURI": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "The URI of the name identifier scheme.",
+                        "examples": ["https://ror.org"]
+                      }
+                    },
+                    "required": [
+                      "centralContactAffiliationIdentifierValue",
+                      "centralContactAffiliationIdentifierScheme"
+                    ]
+                  }
+                },
+                "required": ["centralContactAffiliationName"]
+              },
+              "centralContactPhone": {
                 "type": "string",
                 "description": "Toll-free phone number of the Central Contact Person. Use the format 800-555-5555 within the United States and Canada. If outside the United States and Canada, provide the full phone number, including the country code. 30 characters",
                 "minLength": 1,
                 "maxLength": 30
               },
-              "CentralContactPhoneExt": {
+              "centralContactPhoneExt": {
                 "type": "string",
                 "description": "phone extension, if needed.",
                 "minLength": 1
               },
-              "CentralContactEMail": {
+              "centralContactEMail": {
                 "type": "string",
                 "description": "Email address of the Central Contact Person",
                 "minLength": 1
               }
             },
             "required": [
-              "CentralContactName",
-              "CentralContactAffiliation",
-              "CentralContactPhone",
-              "CentralContactEMail"
+              "centralContactFirstName",
+              "centralContactLastName",
+              "centralContactAffiliation",
+              "centralContactEMail"
             ]
           },
           "minItems": 1,
           "uniqueItems": true
         },
-        "OverallOfficialList": {
+        "overallOfficialList": {
           "type": "array",
+          "description": "Person(s) responsible for the overall scientific leadership of the protocol, including study principal investigator.",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "OverallOfficialName": {
+              "overallOfficialFirstName": {
                 "type": "string",
                 "minLength": 1
               },
-              "OverallOfficialAffiliation": {
+              "overallOfficialLastName": {
                 "type": "string",
-                "description": "Full name of the official's organization. If none, specify Unaffiliated.",
                 "minLength": 1
               },
-              "OverallOfficialRole": {
+              "overallOfficialDegree": {
+                "type": "string",
+                "minLength": 1
+              },
+              "overallOfficialIdentifier": {
+                "$comment": "Key added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely identify the official and make schema more FAIR. Description and examples are based on the dataset_description schema but modified to suit here.",
+                "type": "array",
+                "description": "Uniquely identifies an official, according to various schemes.",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "overallOfficialIdentifierValue": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Uniquely identifies an official.",
+                      "examples": ["https://orcid.org/0000-0001-5727-2427"]
+                    },
+                    "overallOfficialIdentifierScheme": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The name of the official identifier scheme.",
+                      "examples": ["ORCID"]
+                    },
+                    "schemeURI": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The URI of the official identifier scheme.",
+                      "examples": ["https://orcid.org"]
+                    }
+                  },
+                  "required": [
+                    "overallOfficialIdentifierValue",
+                    "overallOfficialIdentifierScheme"
+                  ]
+                },
+                "uniqueItems": true
+              },
+              "overallOfficialAffiliation": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "overallOfficialAffiliationName": {
+                    "type": "string",
+                    "description": "Full name of the official's organization.",
+                    "minLength": 1
+                  },
+                  "overallOfficialAffiliationIdentifier": {
+                    "$comment": "Key added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely identify official affiliation and make schema more FAIR. Description and examples are based on the dataset_description schema but modified to suit here.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "overallOfficialAffiliationIdentifierValue": {
+                        "type": "string",
+                        "description": "Uniquely identifies official affiliation, according to various schemes.",
+                        "minLength": 1,
+                        "examples": ["https://ror.org/04aj4c18"]
+                      },
+                      "overallOfficialAffiliationIdentifierScheme": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "The name of the identifier scheme.",
+                        "examples": ["ROR"]
+                      },
+                      "schemeURI": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "The URI of the name identifier scheme.",
+                        "examples": ["https://ror.org"]
+                      }
+                    },
+                    "required": [
+                      "overallOfficialAffiliationIdentifierValue",
+                      "overallOfficialAffiliationIdentifierScheme"
+                    ]
+                  }
+                },
+                "required": ["overallOfficialAffiliationName"]
+              },
+              "overallOfficialRole": {
                 "type": "string",
                 "description": "Position or function of the official.",
                 "enum": [
@@ -962,50 +1481,80 @@
               }
             },
             "required": [
-              "OverallOfficialName",
-              "OverallOfficialAffiliation",
-              "OverallOfficialRole"
+              "overallOfficialFirstName",
+              "overallOfficialLastName",
+              "overallOfficialAffiliation",
+              "overallOfficialRole"
             ]
           },
           "minItems": 1,
           "uniqueItems": true
         },
-        "LocationList": {
+        "locationList": {
           "type": "array",
           "items": {
             "type": "object",
             "additionalProperties": false,
             "properties": {
-              "LocationFacility": {
+              "locationFacility": {
                 "type": "string",
                 "description": "Full name of the organization where the clinical study is being conducted.",
                 "minLength": 1
               },
-              "LocationStatus": {
-                "$ref": "#/$defs/statusOptions",
+              "locationStatus": {
+                "$ref": "#/definitions/statusOptions",
                 "description": "The recruitment status of each participating facility in a clinical study."
               },
-              "LocationCity": {
+              "locationCity": {
                 "type": "string",
                 "description": "City of the location of the clinical study.",
                 "minLength": 1
               },
-              "LocationState": {
+              "locationState": {
                 "type": "string",
                 "description": "State or province of the location of the clinical study. Required for U.S. locations (including territories of the United States)",
                 "minLength": 1
               },
-              "LocationZip": {
+              "locationZip": {
                 "type": "string",
                 "description": "Zip or postal code of the location of the clinical study. Required for U.S. locations (including territories of the United States)",
                 "minLength": 1
               },
-              "LocationCountry": {
+              "locationCountry": {
                 "type": "string",
                 "description": "Country of the location of the clinical study.",
                 "minLength": 1
               },
-              "LocationContactList": {
+              "locationIdentifier": {
+                "$comment": "Key added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely identify location and make schema more FAIR. Description and examples are based on the dataset_description schema but modified to suit here.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "locationIdentifierValue": {
+                    "type": "string",
+                    "description": "Uniquely identifies location, according to various schemes.",
+                    "minLength": 1,
+                    "examples": ["https://ror.org/04aj4c18"]
+                  },
+                  "locationIdentifierScheme": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The name of the identifier scheme.",
+                    "examples": ["ROR"]
+                  },
+                  "schemeURI": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The URI of the name identifier scheme.",
+                    "examples": ["https://ror.org"]
+                  }
+                },
+                "required": [
+                  "locationIdentifierValue",
+                  "locationIdentifierScheme"
+                ]
+              },
+              "locationContactList": {
                 "type": "array",
                 "description": "Required if Central Contact is not provided",
                 "items": {
@@ -1013,36 +1562,77 @@
                   "description": "For each facility participating in a clinical study, including the name or title, telephone number, and email address of a person to whom questions concerning the study and enrollment at that site can be addressed. Include the following information.",
                   "additionalProperties": false,
                   "properties": {
-                    "LocationContactName": {
+                    "locationContactFirstName": {
                       "type": "string",
                       "minLength": 1
                     },
-                    "LocationContactRole": {
+                    "locationContactLastName": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "locationContactIdentifier": {
+                      "$comment": "Key added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely identify the location contact and make schema more FAIR. Description and examples are based on the dataset_description schema but modified to suit here.",
+                      "type": "array",
+                      "description": "Uniquely identifies a location contract, according to various schemes.",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "locationContactIdentifierValue": {
+                            "type": "string",
+                            "minLength": 1,
+                            "description": "Uniquely identifies a location contact.",
+                            "examples": [
+                              "https://orcid.org/0000-0001-5727-2427"
+                            ]
+                          },
+                          "locationContactIdentifierScheme": {
+                            "type": "string",
+                            "minLength": 1,
+                            "description": "The name of the location contact identifier scheme.",
+                            "examples": ["ORCID"]
+                          },
+                          "schemeURI": {
+                            "type": "string",
+                            "minLength": 1,
+                            "description": "The URI of the location contact identifier scheme.",
+                            "examples": ["https://orcid.org"]
+                          }
+                        },
+                        "required": [
+                          "centralContactIdentifierValue",
+                          "locationContactIdentifierScheme"
+                        ]
+                      },
+                      "uniqueItems": true
+                    },
+                    "locationContactRole": {
                       "type": "string",
                       "description": "Position or function of the contact person.",
                       "enum": ["Principal Investigator", "Sub-Investigator"]
                     },
-                    "LocationContactPhone": {
+                    "locationContactPhone": {
                       "type": "string",
                       "description": "Office phone of the Facility Contact.",
                       "minLength": 1
                     },
-                    "LocationContactPhoneExt": {
+                    "locationContactPhoneExt": {
                       "type": "string",
                       "description": "phone extension, if needed.",
                       "minLength": 1
                     },
-                    "LocationContactEMail": {
+                    "locationContactEMail": {
                       "type": "string",
                       "description": "Electronic mail address of the facility contact person",
                       "minLength": 1
                     }
                   },
                   "required": [
-                    "LocationContactName",
-                    "LocationContactRole",
-                    "LocationContactPhone",
-                    "LocationContactEMail"
+                    "locationContactFirstName",
+                    "locationContactLastName",
+                    "locationContactRole",
+                    "locationContactPhone",
+                    "locationContactEMail"
                   ]
                 },
                 "minItems": 1,
@@ -1050,234 +1640,64 @@
               }
             },
             "required": [
-              "LocationFacility",
-              "LocationStatus",
-              "LocationCity",
-              "LocationCountry"
+              "locationFacility",
+              "locationStatus",
+              "locationCity",
+              "locationCountry"
             ]
           },
           "minItems": 1,
           "uniqueItems": true
         }
       },
-      "required": ["LocationList"]
-    },
-    "IPDSharingStatementModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": ["IPDSharing"],
-      "properties": {
-        "IPDSharing": {
-          "type": "string",
-          "description": "Indicate whether there is a plan to make individual participant data (IPD) collected in this study, including data dictionaries, available to other researchers (typically after the end of the study).",
-          "oneOf": [
-            {
-              "const": "Yes",
-              "description": "There is a plan to make IPD and related data dictionaries available."
-            },
-            {
-              "const": "No",
-              "description": "There is no plan to make IPD available."
-            },
-            {
-              "const": "Undecided",
-              "description": "It is not yet known if there will be a plan to make IPD available."
-            }
-          ]
-        },
-        "IPDSharingDescription": {
-          "type": "string",
-          "description": "If Plan to Share IPD is 'Yes' briefly describe what specific individual participant data sets are to be shared (for example, all collected IPD, all IPD that underlie results in a publication). If the Plan to Share IPD is 'No' or 'Undecided' an explanation may be provided for why IPD will not be shared or why it is not yet decided.",
-          "minLength": 1
-        },
-        "IPDSharingInfoTypeList": {
-          "type": "array",
-          "description": "The type(s) of supporting information that will be shared, in addition to the individual participant data set and data dictionaries for the IPD itself.",
-          "items": {
-            "type": "string",
-            "enum": [
-              "Study Protocol",
-              "Statistical Analysis Plan (SAP)",
-              "Informed Consent Form (ICF)",
-              "Clinical Study Report (CSR)",
-              "Analytic Code"
-            ]
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "IPDSharingTimeFrame": {
-          "type": "string",
-          "description": "A description of when the IPD and any additional supporting information will become available and for how long, including the start and end dates or period of availability. This may be provided as an absolute date (for example, starting in January 2025) or as a date relative to the time when summary data are published or otherwise made available (for example, starting 6 months after publication).",
-          "minLength": 1
-        },
-        "IPDSharingAccessCriteria": {
-          "type": "string",
-          "description": "Describe by what access criteria IPD and any additional supporting information will be shared, including with whom, for what types of analyses, and by what mechanism. Information about who will review requests and criteria for reviewing requests may also be provided.",
-          "minLength": 1
-        },
-        "IPDSharingURL": {
-          "type": "string",
-          "description": "The web address, if any, used to find additional information about the plan to share IPD.",
-          "format": "uri",
-          "minLength": 1
-        }
-      },
-      "if": {
-        "properties": {
-          "IPDSharing": {
-            "const": "Yes"
-          }
-        }
-      },
-      "then": {
-        "required": [
-          "IPDSharingDescription",
-          "IPDSharingInfoTypeList",
-          "IPDSharingTimeFrame",
-          "IPDSharingAccessCriteria",
-          "IPDSharingURL"
-        ]
-      }
-    },
-    "ReferencesModule": {
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "ReferenceList": {
-          "type": "array",
-          "description": "Citations to publications related to the study: background and/or results. Provide either the PubMed Unique Identifier (PMID) or the DOI of an article or enter the full bibliographic citation.",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "ReferenceID": {
-                "type": "string",
-                "description": "The PubMed Unique Identifier (PMID) or the DOI of an article.",
-                "minLength": 1
-              },
-              "ReferenceType": {
-                "type": "string",
-                "description": "Indicate if the reference provided reports on results from this clinical study.",
-                "enum": ["Yes", "No"]
-              },
-              "ReferenceCitation": {
-                "type": "string",
-                "description": "A bibliographic reference in NLM's MEDLINE format.",
-                "minLength": 1
-              }
-            },
-            "required": ["ReferenceCitation"]
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "SeeAlsoLinkList": {
-          "type": "array",
-          "description": "A website directly relevant to the protocol may be entered, if desired. Do not include sites that aim to advertise or sell commercial products or services. Links to educational, research, government, and other non-profit web pages are acceptable. All submitted links are subject to review by ClinicalTrials.gov.",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "SeeAlsoLinkLabel": {
-                "type": "string",
-                "description": "Title or brief description of the linked page.",
-                "minLength": 1
-              },
-              "SeeAlsoLinkURL": {
-                "type": "string",
-                "description": "Complete URL, including http:// or https://",
-                "format": "uri",
-                "minLength": 1
-              }
-            },
-            "required": ["SeeAlsoLinkURL"]
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        },
-        "AvailIPDList": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": false,
-            "properties": {
-              "AvailIPDId": {
-                "type": "string",
-                "description": "The unique identifier used by a data repository for the data set or supporting information.",
-                "minLength": 1
-              },
-              "AvailIPDType": {
-                "type": "string",
-                "description": "The type of data set or supporting information.",
-                "enum": [
-                  "Individual Participant Data Set",
-                  "Study Protocol",
-                  "Statistical Analysis Plan",
-                  "Informed Consent Form",
-                  "Clinical Study Report",
-                  "Analytic Code",
-                  "Other"
-                ]
-              },
-              "AvailIPDURL": {
-                "type": "string",
-                "description": "The web address, if any, used to find additional information about the availability of the data set or supporting information.",
-                "format": "uri",
-                "minLength": 1
-              },
-              "AvailIPDComment": {
-                "type": "string",
-                "description": "Additional information including the name of the data repository or other location where the data set or supporting information is available. Provide any additional explanations about the data set or supporting information and instructions for obtaining access, particularly if a URL is not provided.",
-                "minLength": 1
-              }
-            },
-            "required": ["AvailIPDId", "AvailIPDType", "AvailIPDURL"]
-          },
-          "minItems": 1,
-          "uniqueItems": true
-        }
-      }
+      "required": ["locationList"]
     }
   },
   "required": [
-    "IdentificationModule",
-    "StatusModule",
-    "SponsorCollaboratorsModule",
-    "DescriptionModule",
-    "DesignModule",
-    "ArmsInterventionsModule",
-    "ConditionsModule",
-    "EligibilityModule",
-    "ContactsLocationsModule"
+    "identificationModule",
+    "statusModule",
+    "sponsorCollaboratorsModule",
+    "descriptionModule",
+    "designModule",
+    "armsInterventionsModule",
+    "conditionsModule",
+    "eligibilityModule",
+    "contactsLocationsModule"
   ],
-  "$defs": {
+  "definitions": {
     "studyIdType": {
+      "$comment": "Maps to controlled list in https://prsinfo.clinicaltrials.gov/definitions.html#SecondaryIdType. 'ClinicalTrials.gov' option has been introduced here. Descriptions have been modified to suit datasets. Could be extended in the future to include other identifier types used for clinical research studies",
       "type": "string",
       "oneOf": [
         {
-          "const": "NIH Grant Number",
+          "$comment": "Description based on https://classic.clinicaltrials.gov/ct2/about-studies/glossary#:~:text=A%20unique%20identification%20code%20given,called%20the%20ClinicalTrials.gov%20identifier.",
+          "const": "ClinicalTrials.gov",
+          "description": "A unique identification code given to each clinical study record registered on ClinicalTrials.gov. The format is 'NCT' followed by an 8-digit number (for example, NCT00000419)."
+        },
+        {
+          "const": "U.S. National Institutes of Health (NIH) Grant/Contract Award Number",
           "description": "In the ID field, include activity code, institute code, and 6-digit serial number. Other components of the full award number (type code, support year, and suffix) are optional."
         },
         {
           "const": "Other Grant/Funding Number",
-          "description": "Identifier assigned by a funding organization other than the U.S. NIH; also required to enter the name of the funding organization."
+          "description": "Identifier assigned by a funding organization other than the U.S. NIH; also required to enter the name of the funding organization in the ID domain field."
         },
         {
           "const": "Registry Identifier",
-          "description": "Number assigned by a clinical trial registry (for example, a registry that is part of the World Health Organization [WHO] Registry Network); also required to enter the name of the clinical trial registry.."
+          "description": "Number assigned by a clinical trial registry (for example, a registry that is part of the World Health Organization [WHO] Registry Network); also required to enter the name of the clinical trial registry in the ID domain field."
         },
         {
           "const": "EudraCT Number",
-          "description": "Identifier assigned by the European Medicines Agency Clinical Trials Database (EudraCT).."
+          "description": "Identifier assigned by the European Medicines Agency Clinical Trials Database (EudraCT)."
         },
         {
           "const": "Other Identifier",
-          "description": "Also required to enter a brief description of the identifier (for example, the name of the organization that issued the identifier).."
+          "description": "Also required to enter a brief description of the identifier (for example, the name of the organization that issued the identifier) in the ID domain field."
         }
       ]
     },
     "statusOptions": {
+      "$comment": "Maps to controlled list in https://prsinfo.clinicaltrials.gov/definitions.html#OverallStatus",
       "type": "string",
       "oneOf": [
         {
@@ -1314,22 +1734,53 @@
         }
       ]
     },
+    "humanSubjectReviewStatus": {
+      "$comment": "Maps to controlled list in https://prsinfo.clinicaltrials.gov/definitions.html#HumanSubject",
+      "type": "string",
+      "oneOf": [
+        {
+          "const": "Request not yet submitted",
+          "description": "Review board approval is required but has not yet been requested"
+        },
+        {
+          "const": "Submitted, pending",
+          "description": "Review board approval has been requested but not yet granted"
+        },
+        {
+          "const": "Submitted, approved",
+          "description": "Review board approval has been requested and obtained"
+        },
+        {
+          "const": "Exempt",
+          "description": "An exemption in accord with applicable law and regulation has been granted"
+        },
+        {
+          "const": "Submitted, denied",
+          "description": "Review board has denied the approval request"
+        },
+        {
+          "const": "Submission not required",
+          "description": "Review board approval is not required because the study is not subject to laws, regulations, or applicable institutional policies requiring human subjects review"
+        }
+      ]
+    },
     "enrollmentInfo": {
+      "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#IntEnrollment",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "EnrollmentCount": {
+        "enrollmentCount": {
           "type": "string",
           "pattern": "^[0-9]+$",
           "minLength": 1,
           "description": "The estimated total number of participants to be enrolled (target number) or the actual total number of participants that are enrolled in the clinical study. Note: 'Enrolled' means a participant's, or their legally authorized representative's, agreement to participate in a clinical study following completion of the informed consent process. Potential participants who are screened for the purpose of determining eligibility for a study, but do not participate in the study, are not considered enrolled, unless otherwise specified by the protocol. The min value is '1'."
         },
-        "EnrollmentType": {
+        "enrollmentType": {
           "type": "string",
           "enum": ["Anticipated", "Actual"]
         }
       },
-      "required": ["EnrollmentCount", "EnrollmentType"]
+      "required": ["enrollmentCount", "enrollmentType"]
     }
   }
 }
