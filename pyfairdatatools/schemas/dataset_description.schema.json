@@ -163,30 +163,41 @@
                   ]
                 },
                 "affiliationIdentifier": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "Uniquely identifies the organizational affiliation of the creator.",
-                  "examples": [
-                    "https://ror.org/04aj4c181",
-                    "https://isni.org/isni/0000000492299539"
-                  ]
-                },
-                "affiliationIdentifierScheme": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The name of the name identifier scheme. If affiliationIdentifier is used, affiliationIdentifierScheme is mandatory.",
-                  "examples": [
-                    "ISNI",
-                    "ROR"
-                  ]
-                },
-                "schemeURI": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The URI of the name identifier scheme.",
-                  "examples": [
-                    "https://isni.org",
-                    "https://ror.org"
+                  "$comment": "Created an object for the identifier here to better handle requirements",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "affiliationIdentifierValue": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Uniquely identifies the organizational affiliation of the creator.",
+                      "examples": [
+                        "https://ror.org/04aj4c181",
+                        "https://isni.org/isni/0000000492299539"
+                      ]
+                    },
+                    "affiliationIdentifierScheme": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The name of the name identifier scheme. If affiliationIdentifier is used, affiliationIdentifierScheme is mandatory.",
+                      "examples": [
+                        "ISNI",
+                        "ROR"
+                      ]
+                    },
+                    "schemeURI": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The URI of the name identifier scheme.",
+                      "examples": [
+                        "https://isni.org",
+                        "https://ror.org"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "affiliationIdentifierValue",
+                    "affiliationIdentifierScheme"
                   ]
                 }
               },
@@ -293,30 +304,41 @@
                   ]
                 },
                 "affiliationIdentifier": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "Uniquely identifies the organizational affiliation of the creator.",
-                  "examples": [
-                    "https://ror.org/04aj4c181",
-                    "https://isni.org/isni/0000000492299539"
-                  ]
-                },
-                "affiliationIdentifierScheme": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The name of the name identifier scheme. If affiliationIdentifier is used, affiliationIdentifierScheme is mandatory.",
-                  "examples": [
-                    "ISNI",
-                    "ROR"
-                  ]
-                },
-                "schemeURI": {
-                  "type": "string",
-                  "minLength": 1,
-                  "description": "The URI of the name identifier scheme.",
-                  "examples": [
-                    "https://isni.org",
-                    "https://ror.org"
+                  "$comment": "Created an object for the identifier here to better handle requirements",
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "affiliationIdentifierValue": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Uniquely identifies the organizational affiliation of the creator.",
+                      "examples": [
+                        "https://ror.org/04aj4c181",
+                        "https://isni.org/isni/0000000492299539"
+                      ]
+                    },
+                    "affiliationIdentifierScheme": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The name of the name identifier scheme. If affiliationIdentifier is used, affiliationIdentifierScheme is mandatory.",
+                      "examples": [
+                        "ISNI",
+                        "ROR"
+                      ]
+                    },
+                    "schemeURI": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "The URI of the name identifier scheme.",
+                      "examples": [
+                        "https://isni.org",
+                        "https://ror.org"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "affiliationIdentifierValue",
+                    "affiliationIdentifierScheme"
                   ]
                 }
               },
@@ -720,37 +742,49 @@
               "Diabetes mellitus"
             ]
           },
-          "subjectScheme": {
-            "$comment": "Description is based on the DataCite Metadata Schema v4.5 but extended to provide more clarity.",
-            "type": "string",
-            "minLength": 1,
-            "description": "The name of the subject scheme or classification code or authority if one is used (e.g., name of ontology)",
-            "examples": [
-              "Logical Observation Identifier Names and Codes (LOINC)"
-            ]
-          },
-          "schemeURI": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The URI of the subject identifier scheme",
-            "examples": [
-              "https://loinc.org/"
-            ]
-          },
-          "valueURI": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The URI of the subject term",
-            "examples": [
-              "https://loinc.org/45636-8"
-            ]
-          },
-          "classificationCode": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The classification code used for the subject term in the subject scheme",
-            "examples": [
-              "45636-8"
+          "subjectIdentifier": {
+            "$comment": "Created an object for the identifier here to better handle requirements",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "classificationCode": {
+                "$comment": "Made required here as part of the identifier object",
+                "type": "string",
+                "minLength": 1,
+                "description": "The classification code used for the subject term in the subject scheme",
+                "examples": [
+                  "45636-8"
+                ]
+              },
+              "subjectScheme": {
+                "$comment": "Made required here as part of the identifier object. Description is based on the DataCite Metadata Schema v4.5 but extended to provide more clarity.",
+                "type": "string",
+                "minLength": 1,
+                "description": "The name of the subject scheme or classification code or authority if one is used (e.g., name of ontology)",
+                "examples": [
+                  "Logical Observation Identifier Names and Codes (LOINC)"
+                ]
+              },
+              "schemeURI": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The URI of the subject identifier scheme",
+                "examples": [
+                  "https://loinc.org/"
+                ]
+              },
+              "valueURI": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The URI of the subject term",
+                "examples": [
+                  "https://loinc.org/45636-8"
+                ]
+              }
+            },
+            "required": [
+              "classificationCode",
+              "subjectScheme"
             ]
           }
         },
@@ -761,7 +795,7 @@
       "uniqueItems": true
     },
     "managingOrganization": {
-      "$comment": "This key is from the ECRIN Metadata Schema for data objects v6.0 'F.1 Managing Organisation'",
+      "$comment": "This key is from the ECRIN Metadata Schema for data objects v6.0 'F.1 Managing Organization'",
       "type": "object",
       "additionalProperties": false,
       "properties": {
@@ -782,7 +816,7 @@
       ]
     },
     "accessType": {
-      "$comment": "The 'NotKnownYet' option has been removed since it is not releveant here. The options have been Pascal Cased to align with the overall controlled values",
+      "$comment": "The 'NotKnownYet' option has been removed since it is not relevant here. The options have been Pascal Cased to align with the overall controlled values",
       "type": "string",
       "description": "The type of access to the dataset. Must be from controlled list",
       "oneOf": [
@@ -850,7 +884,7 @@
           "description": "A url of a web page that provides details of the access available, possibly including the practical details required or a form to use to apply for access"
         },
         "urlLastChecked": {
-          "$coment": "Format changed to match DataCite date format",
+          "$comment": "Format changed to match DataCite date format",
           "type": "string",
           "format": "date-time",
           "description": "If a check has been carried out, the date the url last responded with a 200 (success) message, as a string "
@@ -886,27 +920,40 @@
             ]
           },
           "rightsIdentifier": {
-            "type": "string",
-            "minLength": 1,
-            "description": "A short, standardized version of the license name. A list of identifiers for commonly-used licenses may be found here: (https://spdx.org/licenses/)",
-            "examples": [
-              "CC-BY-4.0"
-            ]
-          },
-          "rightsIdentifierScheme": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The name of the scheme",
-            "examples": [
-              "SPDX"
-            ]
-          },
-          "schemeURI": {
-            "type": "string",
-            "minLength": 1,
-            "description": "The URI of the rightsIdentifierScheme",
-            "examples": [
-              "https://spdx.org/licenses/"
+            "$comment": "Created an object for the identifier here to better handle requirements",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "rightsIdentifierValue": {
+                "$comment": "Made required here as part of the object",
+                "type": "string",
+                "minLength": 1,
+                "description": "A short, standardized version of the license name. A list of identifiers for commonly-used licenses may be found here: (https://spdx.org/licenses/)",
+                "examples": [
+                  "CC-BY-4.0"
+                ]
+              },
+              "rightsIdentifierScheme": {
+                "$comment": "Made required here as part of the object",
+                "type": "string",
+                "minLength": 1,
+                "description": "The name of the scheme",
+                "examples": [
+                  "SPDX"
+                ]
+              },
+              "schemeURI": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The URI of the rightsIdentifierScheme",
+                "examples": [
+                  "https://spdx.org/licenses/"
+                ]
+              }
+            },
+            "required": [
+              "rightsIdentifierValue",
+              "rightsIdentifierScheme"
             ]
           }
         },
@@ -932,27 +979,40 @@
           ]
         },
         "publisherIdentifier": {
-          "type": "string",
-          "minLength": 1,
-          "description": "Uniquely identifies the publisher, according to various schemes",
-          "examples": [
-            "https://ror.org/04z8jg394"
-          ]
-        },
-        "publisherIdentifierScheme": {
-          "type": "string",
-          "minLength": 1,
-          "description": "The name of the publisher identifier scheme. If publisherIdentifier is used, publisherIdentifierScheme is mandatory",
-          "examples": [
-            "ROR"
-          ]
-        },
-        "schemeURI": {
-          "type": "string",
-          "minLength": 1,
-          "description": "The URI of the publisher identifier scheme",
-          "examples": [
-            "https://ror.org/"
+          "$comment": "Created an object for the identifier here to better handle requirements",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "publisherIdentifierValue": {
+              "$comment": "Made required here as part of the object",
+              "type": "string",
+              "minLength": 1,
+              "description": "Uniquely identifies the publisher, according to various schemes",
+              "examples": [
+                "https://ror.org/04z8jg394"
+              ]
+            },
+            "publisherIdentifierScheme": {
+              "$comment": "Made required here as part of the object",
+              "type": "string",
+              "minLength": 1,
+              "description": "The name of the publisher identifier scheme. If publisherIdentifier is used, publisherIdentifierScheme is mandatory",
+              "examples": [
+                "ROR"
+              ]
+            },
+            "schemeURI": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The URI of the publisher identifier scheme",
+              "examples": [
+                "https://ror.org/"
+              ]
+            }
+          },
+          "required": [
+            "publisherIdentifierValue",
+            "publisherIdentifierScheme"
           ]
         }
       },
@@ -1092,7 +1152,7 @@
     "resourceType",
     "datasetDeIdentLevel",
     "datasetConsent",
-    "managingOrganisation",
+    "managingOrganization",
     "accessType",
     "accessDetails",
     "rights",
@@ -1100,7 +1160,7 @@
   ],
   "definitions": {
     "identifierType": {
-      "$comment": "The options and their description are exactly from DataCite Metadata Schema v4.5 extended with the 'Other' option from the 'object_identifiers' in the ECRIN Metadata Sschema v6.0 for data object",
+      "$comment": "The options and their description are exactly from DataCite Metadata Schema v4.5 extended with the 'Other' option from the 'object_identifiers' in the ECRIN Metadata Schema v6.0 for data object",
       "type": "string",
       "oneOf": [
         {

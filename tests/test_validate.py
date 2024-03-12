@@ -52,9 +52,11 @@ class TestValidateDatasetDescription:
                 "affiliation": [
                     {
                         "affiliationName": "White Lotus",
-                        "affiliationIdentifier": "https://ror.org/123456789",
-                        "affiliationIdentifierScheme": "ROR",
-                        "schemeURI": "https://ror.org",
+                        "affiliationIdentifier": {
+                            "affiliationIdentifierValue": "https://ror.org/123456789",
+                            "affiliationIdentifierScheme": "ROR",
+                            "schemeURI": "https://ror.org",
+                        },
                     }
                 ],
             },
@@ -85,9 +87,11 @@ class TestValidateDatasetDescription:
                 "affiliation": [
                     {
                         "affiliationName": "White Lotus",
-                        "affiliationIdentifier": "https://ror.org/123456789",
-                        "affiliationIdentifierScheme": "ROR",
-                        "schemeURI": "https://ror.org",
+                        "affiliationIdentifier": {
+                            "affiliationIdentifierValue": "https://ror.org/123456789",
+                            "affiliationIdentifierScheme": "ROR",
+                            "schemeURI": "https://ror.org",
+                        },
                     }
                 ],
             },
@@ -153,14 +157,16 @@ class TestValidateDatasetDescription:
         "subject": [
             {
                 "subjectValue": "Diabetes",
-                "subjectScheme": "MeSH",
-                "schemeURI": "https://www.nlm.nih.gov/mesh/",
-                "valueURI": "https://www.nlm.nih.gov/mesh/1234567",
-                "classificationCode": "E11.9",
+                "subjectIdentifier": {
+                    "classificationCode": "E11.9",
+                    "subjectScheme": "MeSH",
+                    "schemeURI": "https://www.nlm.nih.gov/mesh/",
+                    "valueURI": "https://www.nlm.nih.gov/mesh/1234567",
+                },
             }
         ],
-        "managingOrganisation": {
-            "name": "Test Organisation",
+        "managingOrganization": {
+            "name": "Test Organization",
             "rorId": "https://ror.org/123456789",
         },
         "accessType": "PublicOnScreenAccess",
@@ -173,16 +179,20 @@ class TestValidateDatasetDescription:
             {
                 "rightsName": "CC0-1.0",
                 "rightsURI": "https://creativecommons.org/publicdomain/zero/1.0/",
-                "rightsIdentifier": "CC0-1.0",
-                "rightsIdentifierScheme": "SPDX",
-                "schemeURI": "https://spdx.org/licenses/",
+                "rightsIdentifier": {
+                    "rightsIdentifierValue": "CC0-1.0",
+                    "rightsIdentifierScheme": "SPDX",
+                    "schemeURI": "https://spdx.org/licenses/",
+                },
             }
         ],
         "publisher": {
             "publisherName": "Test Publisher",
-            "publisherIdentifier": "04z8jg394",
-            "publisherIdentifierScheme": "ROR",
-            "schemeURI": "https://www.crossref.org/",
+            "publisherIdentifier": {
+                "publisherIdentifierValue": "04z8jg394",
+                "publisherIdentifierScheme": "ROR",
+                "schemeURI": "https://www.crossref.org/",
+            },
         },
         "size": ["15 pages", "15 MB"],
         "format": ["application/pdf", "text/csv", "dicom", "nifti"],
@@ -604,321 +614,299 @@ class TestValidateStudyDescription:
     """Unit tests for validate_study_description function."""
 
     observational_study_valid_data: Dict[str, Any] = {
-        "IdentificationModule": {
-            "OrgStudyIdInfo": {
-                "OrgStudyId": "RandomStudyId",
-                "OrgStudyIdType": "Registry Identifier",
-                "OrgStudyIdDomain": "ClinicalTrials.gov",
-                "OrgStudyIdLink": "https://clinicaltrials.gov/ct2/show/NCT00000000",
+        "identificationModule": {
+            "officialTitle": "Test Title",
+            "acronym": "TT",
+            "orgStudyIdInfo": {
+                "orgStudyId": "RandomStudyId",
+                "orgStudyIdType": "Registry Identifier",
+                "orgStudyIdDomain": "ClinicalTrials.gov",
+                "orgStudyIdLink": "https://clinicaltrials.gov/ct2/show/NCT00000000",
             },
-            "SecondaryIdInfoList": [
+            "secondaryIdInfoList": [
                 {
-                    "SecondaryId": "SomeID",
-                    "SecondaryIdType": "Other Identifier",
-                    "SecondaryIdDomain": "Other",
-                    "SecondaryIdLink": "https://example.com",
+                    "secondaryId": "SomeID",
+                    "secondaryIdType": "Other Identifier",
+                    "secondaryIdDomain": "Other",
+                    "secondaryIdLink": "https://example.com",
                 }
             ],
         },
-        "StatusModule": {
-            "OverallStatus": "Suspended",
-            "WhyStopped": "Study stopped due to lack of funding",
-            "StartDateStruct": {
-                "StartDate": "July 07, 2023",
-                "StartDateType": "Actual",
+        "statusModule": {
+            "overallStatus": "Suspended",
+            "whyStopped": "Study stopped due to lack of funding",
+            "startDateStruct": {
+                "startDate": "2023-06",
+                "startDateType": "Actual",
             },
-            "CompletionDateStruct": {
-                "CompletionDate": "July 08, 2024",
-                "CompletionDateType": "Actual",
+            "completionDateStruct": {
+                "completionDate": "2024-06",
+                "completionDateType": "Actual",
             },
         },
-        "SponsorCollaboratorsModule": {
-            "ResponsibleParty": {
-                "ResponsiblePartyType": "Principal Investigator",
-                "ResponsiblePartyInvestigatorFullName": "Harper Spiller",
-                "ResponsiblePartyInvestigatorTitle": "Principal Investigator",
-                "ResponsiblePartyInvestigatorAffiliation": "White Lotus",
+        "sponsorCollaboratorsModule": {
+            "responsibleParty": {
+                "responsiblePartyType": "Principal Investigator",
+                "responsiblePartyInvestigatorFirstName": "Harper",
+                "responsiblePartyInvestigatorLastName": "Spiller",
+                "responsiblePartyInvestigatorTitle": "Principal Investigator",
+                "responsiblePartyInvestigatorAffiliation": {
+                    "responsiblePartyInvestigatorAffiliationName": "White Lotus",
+                },
             },
-            "LeadSponsor": {"LeadSponsorName": "Harper Spiller"},
-            "CollaboratorList": [
-                {"CollaboratorName": "Nicole Mossbacher"},
-                {"CollaboratorName": "Olivia Mossbacher"},
+            "leadSponsor": {"leadSponsorName": "Harper Spiller"},
+            "collaboratorList": [
+                {"collaboratorName": "Nicole Mossbacher"},
+                {"collaboratorName": "Olivia Mossbacher"},
             ],
         },
-        "OversightModule": {
-            "OversightHasDMC": "No",
+        "oversightModule": {
+            "isFDARegulatedDrug": "No",
+            "isFDARegulatedDevice": "No",
+            "humanSubjectReviewStatus": "Request not yet submitted",
+            "oversightHasDMC": "No",
         },
-        "DescriptionModule": {
-            "BriefSummary": "This is a brief summary",
-            "DetailedDescription": "This is a detailed description",
+        "descriptionModule": {
+            "briefSummary": "This is a brief summary",
+            "detailedDescription": "This is a detailed description",
         },
-        "ConditionsModule": {
-            "ConditionList": ["Condition 1", "Condition 2"],
-            "KeywordList": ["Keyword 1", "Keyword 2"],
-        },
-        "DesignModule": {
-            "StudyType": "Observational",
-            "DesignInfo": {
-                "DesignObservationalModelList": ["Cohort"],
-                "DesignTimePerspectiveList": ["Prospective"],
-            },
-            "BioSpec": {
-                "BioSpecRetention": "Samples With DNA",
-                "BioSpecDescription": "This is a description of the biospecs",
-            },
-            "EnrollmentInfo": {
-                "EnrollmentCount": "34",
-                "EnrollmentType": "Anticipated",
-            },
-            "TargetDuration": "4 Years",
-            "NumberGroupsCohorts": "1",
-        },
-        "ArmsInterventionsModule": {
-            "ArmGroupList": [
-                {"ArmGroupLabel": "Arm 1", "ArmGroupDescription": "Experimental"}
+        "conditionsModule": {
+            "conditionList": [
+                {"conditionName": "Condition 1"},
+                {"conditionName": "Condition 2"},
             ],
-            "InterventionList": [
+            "keywordList": [
+                {"keywordValue": "Keyword 1"},
+                {"keywordValue": "Keyword 2"},
+            ],
+        },
+        "designModule": {
+            "studyType": "Observational",
+            "designInfo": {
+                "designObservationalModelList": ["Cohort"],
+                "designTimePerspectiveList": ["Prospective"],
+            },
+            "bioSpec": {
+                "bioSpecRetention": "Samples With DNA",
+                "bioSpecDescription": "This is a description of the biospecs",
+            },
+            "enrollmentInfo": {
+                "enrollmentCount": "34",
+                "enrollmentType": "Anticipated",
+            },
+            "targetDuration": "4 Years",
+            "numberGroupsCohorts": "1",
+            "isPatientRegistry": "Yes",
+        },
+        "armsInterventionsModule": {
+            "armGroupList": [
+                {"armGroupLabel": "Arm 1", "armGroupDescription": "Experimental"}
+            ],
+            "interventionList": [
                 {
-                    "InterventionType": "Drug",
-                    "InterventionName": "Drug 1",
-                    "InterventionDescription": "description of the intervention",
-                    "InterventionArmGroupLabelList": ["Arm 1"],
-                    "InterventionOtherNameList": ["Other Name 1"],
+                    "interventionType": "Drug",
+                    "interventionName": "Drug 1",
+                    "interventionDescription": "description of the intervention",
+                    "interventionOtherNameList": ["Other Name 1"],
                 },
             ],
         },
-        "EligibilityModule": {
-            "Gender": "All",
-            "GenderBased": "No",
-            "MinimumAge": "18 Years",
-            "MaximumAge": "65 Years",
-            "EligibilityCriteria": "This is the eligibility criteria",
-            "StudyPopulation": "This is the study population",
-            "SamplingMethod": "Non-Probability Sample",
+        "eligibilityModule": {
+            "sex": "All",
+            "genderBased": "No",
+            "minimumAge": "18 Years",
+            "maximumAge": "65 Years",
+            "eligibilityCriteria": {
+                "eligibilityCriteriaInclusion": ["crietia 1", "crietia 2"],
+                "eligibilityCriteriaExclusion": ["crietia 1", "crietia 2"],
+            },
+            "studyPopulation": "This is the study population",
+            "healthyVolunteers": "No",
+            "samplingMethod": "Non-Probability Sample",
         },
-        "ContactsLocationsModule": {
-            "CentralContactList": [
+        "contactsLocationsModule": {
+            "centralContactList": [
                 {
-                    "CentralContactName": "Ethan Spiller",
-                    "CentralContactAffiliation": "White Lotus",
-                    "CentralContactPhone": "805-555-5555",
-                    "CentralContactPhoneExt": "123",
-                    "CentralContactEMail": "e.spiller@hbo.com",
+                    "centralContactFirstName": "Ethan",
+                    "centralContactLastName": "Spiller",
+                    "centralContactAffiliation": {
+                        "centralContactAffiliationName": "White Lotus",
+                    },
+                    "centralContactPhone": "805-555-5555",
+                    "centralContactPhoneExt": "123",
+                    "centralContactEMail": "e.spiller@hbo.com",
                 }
             ],
-            "OverallOfficialList": [
+            "overallOfficialList": [
                 {
-                    "OverallOfficialName": "Daphne Sullivan",
-                    "OverallOfficialAffiliation": "White Lotus",
-                    "OverallOfficialRole": "Study Principal Investigator",
+                    "overallOfficialFirstName": "Daphne",
+                    "overallOfficialLastName": "Sullivan",
+                    "overallOfficialAffiliation": {
+                        "overallOfficialAffiliationName": "White Lotus",
+                    },
+                    "overallOfficialRole": "Study Principal Investigator",
                 }
             ],
-            "LocationList": [
+            "locationList": [
                 {
-                    "LocationFacility": "White Lotus",
-                    "LocationStatus": "Recruiting",
-                    "LocationCity": "Kihei",
-                    "LocationState": "Hawaii",
-                    "LocationZip": "96753",
-                    "LocationCountry": "United States",
-                }
-            ],
-        },
-        "IPDSharingStatementModule": {
-            "IPDSharing": "Yes",
-            "IPDSharingDescription": "description of the IPD sharing statement",
-            "IPDSharingInfoTypeList": [
-                "Study Protocol",
-                "Statistical Analysis Plan (SAP)",
-            ],
-            "IPDSharingTimeFrame": "Beginning 9 Months and ending 36 months",
-            "IPDSharingAccessCriteria": "This is the IPD sharing access criteria",
-            "IPDSharingURL": "https://example.com",
-        },
-        "ReferencesModule": {
-            "ReferenceList": [
-                {
-                    "ReferenceID": "12345678",
-                    "ReferenceType": "Yes",
-                    "ReferenceCitation": "This is a reference citation",
-                }
-            ],
-            "SeeAlsoLinkList": [
-                {
-                    "SeeAlsoLinkLabel": "This is a link label",
-                    "SeeAlsoLinkURL": "https://example.com",
-                }
-            ],
-            "AvailIPDList": [
-                {
-                    "AvailIPDId": "123456",
-                    "AvailIPDType": "Clinical Study Report",
-                    "AvailIPDURL": "https://example.com",
-                    "AvailIPDComment": "This is the avail IPD access criteria",
+                    "locationFacility": "White Lotus",
+                    "locationStatus": "Recruiting",
+                    "locationCity": "Kihei",
+                    "locationState": "Hawaii",
+                    "locationZip": "96753",
+                    "locationCountry": "United States",
                 }
             ],
         },
     }
 
     interventional_study_valid_data: Dict[str, Any] = {
-        "IdentificationModule": {
-            "OrgStudyIdInfo": {
-                "OrgStudyId": "RandomStudyId",
-                "OrgStudyIdType": "Registry Identifier",
-                "OrgStudyIdDomain": "ClinicalTrials.gov",
-                "OrgStudyIdLink": "https://clinicaltrials.gov/ct2/show/NCT00000000",
+        "identificationModule": {
+            "officialTitle": "Test Title",
+            "acronym": "TT",
+            "orgStudyIdInfo": {
+                "orgStudyId": "RandomStudyId",
+                "orgStudyIdType": "Registry Identifier",
+                "orgStudyIdDomain": "ClinicalTrials.gov",
+                "orgStudyIdLink": "https://clinicaltrials.gov/ct2/show/NCT00000000",
             },
-            "SecondaryIdInfoList": [
+            "secondaryIdInfoList": [
                 {
-                    "SecondaryId": "SomeID",
-                    "SecondaryIdType": "Other Identifier",
-                    "SecondaryIdDomain": "Other",
-                    "SecondaryIdLink": "https://example.com",
+                    "secondaryId": "SomeID",
+                    "secondaryIdType": "Other Identifier",
+                    "secondaryIdDomain": "Other",
+                    "secondaryIdLink": "https://example.com",
                 }
             ],
         },
-        "StatusModule": {
-            "OverallStatus": "Suspended",
-            "WhyStopped": "Study stopped due to lack of funding",
-            "StartDateStruct": {
-                "StartDate": "July 07, 2023",
-                "StartDateType": "Actual",
+        "statusModule": {
+            "overallStatus": "Suspended",
+            "whyStopped": "Study stopped due to lack of funding",
+            "startDateStruct": {
+                "startDate": "2023-06",
+                "startDateType": "Actual",
             },
-            "CompletionDateStruct": {
-                "CompletionDate": "July 08, 2024",
-                "CompletionDateType": "Actual",
+            "completionDateStruct": {
+                "completionDate": "2024-06",
+                "completionDateType": "Actual",
             },
         },
-        "SponsorCollaboratorsModule": {
-            "ResponsibleParty": {
-                "ResponsiblePartyType": "Principal Investigator",
-                "ResponsiblePartyInvestigatorFullName": "Harper Spiller",
-                "ResponsiblePartyInvestigatorTitle": "Principal Investigator",
-                "ResponsiblePartyInvestigatorAffiliation": "White Lotus",
-            },
-            "LeadSponsor": {"LeadSponsorName": "Harper Spiller"},
-            "CollaboratorList": [
-                {"CollaboratorName": "Nicole Mossbacher"},
-                {"CollaboratorName": "Olivia Mossbacher"},
-            ],
-        },
-        "OversightModule": {
-            "OversightHasDMC": "No",
-        },
-        "DescriptionModule": {
-            "BriefSummary": "This is a brief summary",
-            "DetailedDescription": "This is a detailed description",
-        },
-        "ConditionsModule": {
-            "ConditionList": ["Condition 1", "Condition 2"],
-            "KeywordList": ["Keyword 1", "Keyword 2"],
-        },
-        "DesignModule": {
-            "StudyType": "Interventional",
-            "DesignInfo": {
-                "DesignAllocation": "Randomized",
-                "DesignInterventionModel": "Prevention",
-                "DesignInterventionModelDescription": "description",
-                "DesignPrimaryPurpose": "Parallel Assignment",
-                "DesignMaskingInfo": {
-                    "DesignMasking": "Blinded (no details)",
-                    "DesignMaskingDescription": "description of the design masking",
-                    "DesignWhoMaskedList": ["Participant", "Care Provider"],
+        "sponsorCollaboratorsModule": {
+            "responsibleParty": {
+                "responsiblePartyType": "Principal Investigator",
+                "responsiblePartyInvestigatorFirstName": "Harper",
+                "responsiblePartyInvestigatorLastName": "Spiller",
+                "responsiblePartyInvestigatorTitle": "Principal Investigator",
+                "responsiblePartyInvestigatorAffiliation": {
+                    "responsiblePartyInvestigatorAffiliationName": "White Lotus",
                 },
             },
-            "PhaseList": ["Phase 1/2"],
-            "EnrollmentInfo": {
-                "EnrollmentCount": "34",
-                "EnrollmentType": "Anticipated",
-            },
-            "NumberArms": "1",
+            "leadSponsor": {"leadSponsorName": "Harper Spiller"},
+            "collaboratorList": [
+                {"collaboratorName": "Nicole Mossbacher"},
+                {"collaboratorName": "Olivia Mossbacher"},
+            ],
         },
-        "ArmsInterventionsModule": {
-            "ArmGroupList": [
+        "oversightModule": {
+            "isFDARegulatedDrug": "No",
+            "isFDARegulatedDevice": "No",
+            "humanSubjectReviewStatus": "Request not yet submitted",
+            "oversightHasDMC": "No",
+        },
+        "descriptionModule": {
+            "briefSummary": "This is a brief summary",
+            "detailedDescription": "This is a detailed description",
+        },
+        "conditionsModule": {
+            "conditionList": [
+                {"conditionName": "Condition 1"},
+                {"conditionName": "Condition 2"},
+            ],
+            "keywordList": [
+                {"keywordValue": "Keyword 1"},
+                {"keywordValue": "Keyword 2"},
+            ],
+        },
+        "designModule": {
+            "studyType": "Interventional",
+            "designInfo": {
+                "designAllocation": "Randomized",
+                "designInterventionModel": "Prevention",
+                "designInterventionModelDescription": "description",
+                "designPrimaryPurpose": "Parallel Assignment",
+                "designMaskingInfo": {
+                    "designMasking": "Blinded (no details)",
+                    "designMaskingDescription": "description of the design masking",
+                    "designWhoMaskedList": ["Participant", "Care Provider"],
+                },
+            },
+            "phaseList": ["Phase 1/2"],
+            "enrollmentInfo": {
+                "enrollmentCount": "34",
+                "enrollmentType": "Anticipated",
+            },
+            "numberArms": "1",
+        },
+        "armsInterventionsModule": {
+            "armGroupList": [
                 {
-                    "ArmGroupLabel": "Arm 1",
-                    "ArmGroupType": "Placebo Comparator",
-                    "ArmGroupDescription": "Experimental",
-                    "ArmGroupInterventionList": ["Drug 1"],
+                    "armGroupLabel": "Arm 1",
+                    "armGroupType": "Placebo Comparator",
+                    "armGroupDescription": "Experimental",
+                    "armGroupInterventionList": ["Drug 1"],
                 }
             ],
-            "InterventionList": [
+            "interventionList": [
                 {
-                    "InterventionType": "Drug",
-                    "InterventionName": "Drug 1",
-                    "InterventionDescription": "description of the intervention",
-                    "InterventionArmGroupLabelList": ["Arm 1"],
-                    "InterventionOtherNameList": ["Other Name 1"],
+                    "interventionType": "Drug",
+                    "interventionName": "Drug 1",
+                    "interventionDescription": "description of the intervention",
+                    "interventionOtherNameList": ["Other Name 1"],
                 },
             ],
         },
-        "EligibilityModule": {
-            "Gender": "All",
-            "GenderBased": "No",
-            "MinimumAge": "18 Years",
-            "MaximumAge": "65 Years",
-            "HealthyVolunteers": "No",
-            "EligibilityCriteria": "This is the eligibility criteria",
+        "eligibilityModule": {
+            "sex": "All",
+            "genderBased": "No",
+            "minimumAge": "18 Years",
+            "maximumAge": "65 Years",
+            "healthyVolunteers": "No",
+            "eligibilityCriteria": {
+                "eligibilityCriteriaInclusion": ["crietia 1", "crietia 2"],
+                "eligibilityCriteriaExclusion": ["crietia 1", "crietia 2"],
+            },
         },
-        "ContactsLocationsModule": {
-            "CentralContactList": [
+        "contactsLocationsModule": {
+            "centralContactList": [
                 {
-                    "CentralContactName": "Ethan Spiller",
-                    "CentralContactAffiliation": "White Lotus",
-                    "CentralContactPhone": "805-555-5555",
-                    "CentralContactPhoneExt": "123",
-                    "CentralContactEMail": "e.spiller@hbo.com",
+                    "centralContactFirstName": "Ethan",
+                    "centralContactLastName": "Spiller",
+                    "centralContactAffiliation": {
+                        "centralContactAffiliationName": "White Lotus",
+                    },
+                    "centralContactPhone": "805-555-5555",
+                    "centralContactPhoneExt": "123",
+                    "centralContactEMail": "e.spiller@hbo.com",
                 }
             ],
-            "OverallOfficialList": [
+            "overallOfficialList": [
                 {
-                    "OverallOfficialName": "Daphne Sullivan",
-                    "OverallOfficialAffiliation": "White Lotus",
-                    "OverallOfficialRole": "Study Principal Investigator",
+                    "overallOfficialFirstName": "Daphne",
+                    "overallOfficialLastName": "Sullivan",
+                    "overallOfficialAffiliation": {
+                        "overallOfficialAffiliationName": "White Lotus",
+                    },
+                    "overallOfficialRole": "Study Principal Investigator",
                 }
             ],
-            "LocationList": [
+            "locationList": [
                 {
-                    "LocationFacility": "White Lotus",
-                    "LocationStatus": "Recruiting",
-                    "LocationCity": "Kihei",
-                    "LocationState": "Hawaii",
-                    "LocationZip": "96753",
-                    "LocationCountry": "United States",
-                }
-            ],
-        },
-        "IPDSharingStatementModule": {
-            "IPDSharing": "Yes",
-            "IPDSharingDescription": "description of the IPD sharing statement",
-            "IPDSharingInfoTypeList": [
-                "Study Protocol",
-                "Statistical Analysis Plan (SAP)",
-            ],
-            "IPDSharingTimeFrame": "Beginning 9 Months and ending 36 months ",
-            "IPDSharingAccessCriteria": "This is the IPD sharing access criteria",
-            "IPDSharingURL": "https://example.com",
-        },
-        "ReferencesModule": {
-            "ReferenceList": [
-                {
-                    "ReferenceID": "12345678",
-                    "ReferenceType": "Yes",
-                    "ReferenceCitation": "This is a reference citation",
-                }
-            ],
-            "SeeAlsoLinkList": [
-                {
-                    "SeeAlsoLinkLabel": "This is a link label",
-                    "SeeAlsoLinkURL": "https://example.com",
-                }
-            ],
-            "AvailIPDList": [
-                {
-                    "AvailIPDId": "123456",
-                    "AvailIPDType": "Clinical Study Report",
-                    "AvailIPDURL": "https://example.com",
-                    "AvailIPDComment": "This is the avail IPD access criteria",
+                    "locationFacility": "White Lotus",
+                    "locationStatus": "Recruiting",
+                    "locationCity": "Kihei",
+                    "locationState": "Hawaii",
+                    "locationZip": "96753",
+                    "locationCountry": "United States",
                 }
             ],
         },
@@ -944,11 +932,11 @@ class TestValidateStudyDescription:
         """Test invalid identification module."""
         data = deepcopy(self.observational_study_valid_data)
 
-        data["IdentificationModule"]["OrgStudyIdInfo"][
-            "OrgStudyIdType"
+        data["identificationModule"]["orgStudyIdInfo"][
+            "orgStudyIdType"
         ] = "Registry Identifier"
 
-        del data["IdentificationModule"]["OrgStudyIdInfo"]["OrgStudyIdDomain"]
+        del data["identificationModule"]["orgStudyIdInfo"]["orgStudyIdDomain"]
 
         output = validate_study_description(data)
 
@@ -957,9 +945,9 @@ class TestValidateStudyDescription:
         data = deepcopy(self.observational_study_valid_data)
 
         # sourcery skip: no-loop-in-tests
-        for item in data["IdentificationModule"]["SecondaryIdInfoList"]:
-            item["SecondaryIdType"] = "Other Identifier"
-            del item["SecondaryIdDomain"]
+        for item in data["identificationModule"]["secondaryIdInfoList"]:
+            item["secondaryIdType"] = "Other Identifier"
+            del item["secondaryIdDomain"]
 
         output = validate_study_description(data)
 
@@ -969,9 +957,9 @@ class TestValidateStudyDescription:
         """Test invalid status module."""
         data = deepcopy(self.observational_study_valid_data)
 
-        data["StatusModule"]["OverallStatus"] = "Terminated"
+        data["statusModule"]["overallStatus"] = "Terminated"
 
-        del data["StatusModule"]["WhyStopped"]
+        del data["statusModule"]["whyStopped"]
 
         output = validate_study_description(data)
 
@@ -981,12 +969,12 @@ class TestValidateStudyDescription:
         """Test invalid sponsor collaborators module."""
         data = deepcopy(self.observational_study_valid_data)
 
-        data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyType"
+        data["sponsorCollaboratorsModule"]["responsibleParty"][
+            "responsiblePartyType"
         ] = "Sponsor-Investigator"
 
-        del data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyInvestigatorFullName"
+        del data["sponsorCollaboratorsModule"]["responsibleParty"][
+            "responsiblePartyInvestigatorFirstName"
         ]
 
         output = validate_study_description(data)
@@ -995,12 +983,12 @@ class TestValidateStudyDescription:
 
         data = deepcopy(self.observational_study_valid_data)
 
-        data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyType"
+        data["sponsorCollaboratorsModule"]["responsibleParty"][
+            "responsiblePartyType"
         ] = "Sponsor-Investigator"
 
-        del data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyInvestigatorTitle"
+        del data["sponsorCollaboratorsModule"]["responsibleParty"][
+            "responsiblePartyInvestigatorTitle"
         ]
 
         output = validate_study_description(data)
@@ -1009,12 +997,12 @@ class TestValidateStudyDescription:
 
         data = deepcopy(self.observational_study_valid_data)
 
-        data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyType"
+        data["sponsorCollaboratorsModule"]["responsibleParty"][
+            "responsiblePartyType"
         ] = "Sponsor-Investigator"
 
-        del data["SponsorCollaboratorsModule"]["ResponsibleParty"][
-            "ResponsiblePartyInvestigatorAffiliation"
+        del data["sponsorCollaboratorsModule"]["responsibleParty"][
+            "responsiblePartyInvestigatorAffiliation"
         ]
 
         output = validate_study_description(data)
@@ -1025,8 +1013,8 @@ class TestValidateStudyDescription:
         """Test invalid arms interventions module."""
         data = deepcopy(self.interventional_study_valid_data)
 
-        for item in data["ArmsInterventionsModule"]["ArmGroupList"]:
-            del item["ArmGroupType"]
+        for item in data["armsInterventionsModule"]["armGroupList"]:
+            del item["armGroupType"]
 
         output = validate_study_description(data)
 
@@ -1036,7 +1024,7 @@ class TestValidateStudyDescription:
         """Test invalid eligibility module."""
         data = deepcopy(self.interventional_study_valid_data)
 
-        del data["EligibilityModule"]["HealthyVolunteers"]
+        del data["eligibilityModule"]["healthyVolunteers"]
 
         output = validate_study_description(data)
 
@@ -1044,7 +1032,7 @@ class TestValidateStudyDescription:
 
         data = deepcopy(self.observational_study_valid_data)
 
-        del data["EligibilityModule"]["SamplingMethod"]
+        del data["eligibilityModule"]["samplingMethod"]
 
         output = validate_study_description(data)
 
@@ -1052,7 +1040,7 @@ class TestValidateStudyDescription:
 
         data = deepcopy(self.observational_study_valid_data)
 
-        del data["EligibilityModule"]["StudyPopulation"]
+        del data["eligibilityModule"]["studyPopulation"]
 
         output = validate_study_description(data)
 
@@ -1062,7 +1050,7 @@ class TestValidateStudyDescription:
         """Test invalid contacts locations module."""
         data = deepcopy(self.observational_study_valid_data)
 
-        del data["ContactsLocationsModule"]["CentralContactList"]
+        del data["contactsLocationsModule"]["centralContactList"]
 
         output = validate_study_description(data)
 

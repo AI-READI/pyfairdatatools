@@ -38,9 +38,9 @@ def generate_dataset_description(data, file_path, file_type):
         if not path.exists(path.dirname(file_path)):
             makedirs(path.dirname(file_path))
 
-        RelatedIdentifier = data["relatedIdentifier"]
+        relatedIdentifier = data["relatedIdentifier"]
 
-        for identifier in RelatedIdentifier:
+        for identifier in relatedIdentifier:
             relation_type = identifier["relationType"]
 
             if relation_type not in ["HasMetadata", "IsMetadataFor"]:
@@ -117,42 +117,33 @@ def generate_study_description(data, file_path, file_type):
         if not path.exists(path.dirname(file_path)):
             makedirs(path.dirname(file_path))
 
-        StudyType = data["DesignModule"]["StudyType"]
+        studyType = data["designModule"]["studyType"]
 
-        if StudyType == "Interventional":
-            if "TargetDuration" in data["DesignModule"]:
-                del data["DesignModule"]["TargetDuration"]
+        if studyType == "Interventional":
+            if "targetDuration" in data["designModule"]:
+                del data["designModule"]["targetDuration"]
 
-            if "NumberGroupsCohorts" in data["DesignModule"]:
-                del data["DesignModule"]["NumberGroupsCohorts"]
+            if "numberGroupsCohorts" in data["designModule"]:
+                del data["designModule"]["numberGroupsCohorts"]
 
-            if "BioSpec" in data["DesignModule"]:
-                del data["DesignModule"]["BioSpec"]
+            if "bioSpec" in data["designModule"]:
+                del data["designModule"]["bioSpec"]
 
-            if "StudyPopulation" in data["EligibilityModule"]:
-                del data["EligibilityModule"]["StudyPopulation"]
+            if "studyPopulation" in data["eligibilityModule"]:
+                del data["eligibilityModule"]["studyPopulation"]
 
-            if "SamplingMethod" in data["EligibilityModule"]:
-                del data["EligibilityModule"]["SamplingMethod"]
+            if "samplingMethod" in data["eligibilityModule"]:
+                del data["eligibilityModule"]["SamplingMethod"]
 
-        if StudyType == "Observational":
-            if "PhaseList" in data["DesignModule"]:
-                del data["DesignModule"]["PhaseList"]
+        elif studyType == "Observational":
+            if "phaseList" in data["designModule"]:
+                del data["designModule"]["phaseList"]
 
-            if "NumberArms" in data["DesignModule"]:
-                del data["DesignModule"]["NumberArms"]
+            if "numberArms" in data["designModule"]:
+                del data["designModule"]["numberArms"]
 
-            ArmGroupList = data["ArmsInterventionsModule"]["ArmGroupList"]
-
-            for ArmGroup in ArmGroupList:
-                if "ArmGroupType" in ArmGroup:
-                    del ArmGroup["ArmGroupType"]
-
-                if "ArmGroupInterventionList" in ArmGroup:
-                    del ArmGroup["ArmGroupInterventionList"]
-
-            if "HealthyVolunteers" in data["EligibilityModule"]:
-                del data["EligibilityModule"]["HealthyVolunteers"]
+            if "isPatientRegistry" in data["designModule"]:
+                del data["designModule"]["isPatientRegistry"]
 
         if file_type == "json":
             try:
