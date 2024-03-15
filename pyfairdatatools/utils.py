@@ -50,3 +50,8 @@ def validate_url(url_string):
     result = validators.url(url_string)
 
     return False if isinstance(result, ValidationFailure) else result
+
+
+def convert_for_datasite(data):
+    """Converts a dictionary to a format that is compatible with the DOI registration payload"""
+    print(data)
