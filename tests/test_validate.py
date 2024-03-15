@@ -167,7 +167,11 @@ class TestValidateDatasetDescription:
         ],
         "managingOrganization": {
             "name": "Test Organization",
-            "rorId": "https://ror.org/123456789",
+            "managingOrganizationIdentifier": {
+                "managingOrganizationIdentifierValue": "04z8jg394",
+                "managingOrganizationScheme": "ROR",
+                "schemeURI": "https://www.crossref.org/",
+            },
         },
         "accessType": "PublicOnScreenAccess",
         "accessDetails": {
@@ -195,7 +199,7 @@ class TestValidateDatasetDescription:
             },
         },
         "size": ["15 pages", "15 MB"],
-        "format": ["application/pdf", "text/csv", "dicom", "nifti"],
+        "format": ["application/pdf", "text/xml", "MOPG", "nifti"],
         "fundingReference": [
             {
                 "funderName": "Test Funder",
@@ -212,18 +216,6 @@ class TestValidateDatasetDescription:
             }
         ],
     }
-
-    def test_valid_dataset_description(self):
-        """Test valid dataset description."""
-        data = deepcopy(self.valid_data)
-
-        try:
-            output = validate_dataset_description(data)
-        except Exception as e:  # pylint: disable=broad-except
-            print(e)
-            output = False
-
-        assert output
 
     def test_identifier(self):
         """Test identifier validation."""
@@ -609,6 +601,35 @@ class TestValidateDatasetDescription:
         output = validate_dataset_description(data)
         assert output is False
 
+    def test_resource_type(self):
+        """Test valid resource type."""
+        data = deepcopy(self.valid_data)
+
+        data["resourceType"] = {
+            "resourceTypeValue": "Diabetes",
+            "resourceTypeGeneral": "Invalid",
+        }
+
+        output = validate_dataset_description(data)
+        assert output is False
+
+        data = deepcopy(self.valid_data)
+
+        output = validate_dataset_description(data)
+        assert output is True
+
+    def test_valid_dataset_description(self):
+        """Test valid dataset description."""
+        data = deepcopy(self.valid_data)
+
+        try:
+            output = validate_dataset_description(data)
+        except Exception as e:  # pylint: disable=broad-except
+            print(e)
+            output = False
+
+        assert output
+
 
 class TestValidateStudyDescription:
     """Unit tests for validate_study_description function."""
@@ -953,6 +974,15 @@ class TestValidateStudyDescription:
 
         assert output is False
 
+        data = deepcopy(self.observational_study_valid_data)
+
+        for item in data["identificationModule"]["secondaryIdInfoList"]:
+            item["secondaryIdType"] = "Invalid"
+
+        output = validate_study_description(data)
+
+        assert output is False
+
     def test_invalid_status_module(self):
         """Test invalid status module."""
         data = deepcopy(self.observational_study_valid_data)
@@ -962,6 +992,32 @@ class TestValidateStudyDescription:
         del data["statusModule"]["whyStopped"]
 
         output = validate_study_description(data)
+
+        assert output is False
+
+        data = deepcopy(self.observational_study_valid_data)
+
+        data["statusModule"]["overallStatus"] = "Completed"
+
+        output = validate_study_description(data)
+
+        assert output is True
+
+        data = deepcopy(self.observational_study_valid_data)
+
+        data["statusModule"]["overallStatus"] = "Suspended"
+
+        del data["statusModule"]["whyStopped"]
+
+        output = validate_dataset_description(data)
+
+        assert output is False
+
+        data = deepcopy(self.observational_study_valid_data)
+
+        data["statusModule"]["completionDateStruct"]["completionDate"] = "1996"
+
+        output = validate_dataset_description(data)
 
         assert output is False
 

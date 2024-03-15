@@ -496,8 +496,9 @@
               "description": "Confirmed that no de-identification measures have been applied to the data set."
             },
             {
+              "$comment": "Description modified to suit datasets",
               "const": "DeIdentificationApplied",
-              "description": "Some de-identification measures have been applied. Details should be described in comments and / or indicated in the linked boolean fields, or in separate documents."
+              "description": "Some de-identification measures have been applied. Details should be described indicated in the linked boolean fields and/or in separate documents."
             },
             {
               "const": "DeIdentificationAppliedPrimaryOutcomesReAssessed",
@@ -632,7 +633,7 @@
             "oneOf": [
               {
                 "const": "Abstract",
-                "description": "A brief description of the  resource and the context in  which the resource was created",
+                "description": "A brief description of the  resource and the context in which the resource was created",
                 "examples": [
                   "https://data.datacite.org/application/vnd.datacite.datacit e+xml/10.1594/PANGAEA.771774"
                 ]
@@ -805,10 +806,43 @@
           "minLength": 1,
           "description": "The name of the organization managing the dataset, in particular that determines access to it"
         },
-        "rorId": {
-          "type": "string",
-          "minLength": 1,
-          "description": "The id of the organization, if known, within the ROR (Research Organization Registry) system. This is a URL linking to the ROR resource."
+        "managingOrganizationIdentifier": {
+          "$comment": "ECRIN only allow for ROR Id but it has been extended here following the example of other organization identifier in DataCite schema to be more flexible and accomodate other identifiers",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "managingOrganizationIdentifierValue": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Uniquely identifies the managing organization.",
+              "examples": [
+                "https://ror.org/04aj4c181",
+                "https://isni.org/isni/0000000492299539"
+              ]
+            },
+            "managingOrganizationScheme": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The name of the organization identifier scheme. If affiliationIdentifier is used, affiliationIdentifierScheme is mandatory.",
+              "examples": [
+                "ISNI",
+                "ROR"
+              ]
+            },
+            "schemeURI": {
+              "type": "string",
+              "minLength": 1,
+              "description": "The URI of the identifier scheme.",
+              "examples": [
+                "https://isni.org",
+                "https://ror.org"
+              ]
+            }
+          },
+          "required": [
+            "managingOrganizationIdentifierValue",
+            "managingOrganizationScheme"
+          ]
         }
       },
       "required": [
@@ -1140,7 +1174,15 @@
       "items": {
         "type": "string"
       },
-      "uniqueItems": true
+      "uniqueItems": true,
+      "examples": [
+        "PDF",
+        "XML",
+        "MPG",
+        "application/pdf",
+        "text/xml",
+        "video/mpeg"
+      ]
     }
   },
   "required": [
@@ -1602,7 +1644,7 @@
         },
         {
           "const": "Standard",
-          "description": "Something  established by  authority, custom, or general consent as a model, example, or point of reference"
+          "description": "Something  established by authority, custom, or general consent as a model, example, or point of reference"
         },
         {
           "const": "Text",
