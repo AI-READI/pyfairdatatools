@@ -62,7 +62,7 @@ def generate_random_identifier(k):
     return "".join(random.choices(string.ascii_lowercase + string.digits, k=k))
 
 
-def convert_for_datasite(data):
+def convert_for_datacite(data):
     """Converts a dictionary to a format that is compatible with the DOI registration payload"""
     doi = f"10.82914/fairhub.{generate_random_identifier(7)}"
     creators = []

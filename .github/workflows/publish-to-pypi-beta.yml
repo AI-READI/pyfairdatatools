@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - staging
-      - conversion-function
   pull_request:
     types: [closed]
     branches:
