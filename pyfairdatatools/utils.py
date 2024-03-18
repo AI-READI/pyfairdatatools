@@ -1,8 +1,10 @@
 import os
 
 import requests
+import random
 import validators
 from validators import ValidationFailure
+import string
 
 
 def feet_to_meters(feet):
@@ -17,6 +19,7 @@ def feet_to_meters(feet):
 
 
 def requestJSON(url):
+    """Make a GET request to a URL and return the JSON response."""
     try:
         response = requests.request("GET", url, headers={}, data={}, timeout=5)
 
@@ -26,6 +29,7 @@ def requestJSON(url):
 
 
 def validate_file_path(file_path, preexisting_file=False, writable=False):
+    """Validate a file path. Checks if the file exists, is a file, and is writable."""
     if file_path == "":
         print("File path is empty.")
         raise ValueError("Invalid input")
@@ -47,6 +51,7 @@ def validate_file_path(file_path, preexisting_file=False, writable=False):
 
 
 def validate_url(url_string):
+    """Validate a URL string"""
     result = validators.url(url_string)
 
     return False if isinstance(result, ValidationFailure) else result
@@ -71,14 +76,14 @@ def convert_for_datasite(data):
     rights_list = []
     descriptions = []
 
-    for description in dataset_description["Description"]:
+    for description in data["Description"]:
         description_obj = {
             "description": description["descriptionValue"],
             "descriptionType": description["descriptionType"],
         }
         descriptions.append(description_obj)
 
-    for rights in dataset_description["Rights"]:
+    for rights in data["Rights"]:
         rights_obj = {"rights": rights["rightsValue"]}
         if "rightsURI" in rights:
             rights_obj["rightsUri"] = rights["rightsURI"]
@@ -88,7 +93,7 @@ def convert_for_datasite(data):
             rights_obj["rightsIdentifierScheme"] = rights["rightsIdentifierScheme"]
         rights_list.append(rights_obj)
 
-    for funder in dataset_description["FundingReference"]:
+    for funder in data["FundingReference"]:
         funder_obj = {
             "funderName": funder["funderName"],
             "funderIdentifier": funder["funderIdentifier"]["funderIdentifierValue"],
@@ -104,7 +109,7 @@ def convert_for_datasite(data):
             ]
         funding_references.append(funder_obj)
 
-    for related_item in dataset_description["RelatedItem"]:
+    for related_item in data["RelatedItem"]:
         if "relatedItemIdentifier" in related_item:
             related_item_identifiers = []
             for identifier in related_item["relatedItemIdentifier"]:
@@ -127,9 +132,7 @@ def convert_for_datasite(data):
         if "title" in related_item:
             related_item_titles = []
             for title in related_item["title"]:
-                title_obj = {
-                    "title": title["titleValue"]
-                }
+                title_obj = {"title": title["titleValue"]}
                 if "titleType" in title:
                     title_obj["titleType"] = title["titleType"]
                 related_item_titles.append(title_obj)
@@ -185,7 +188,7 @@ def convert_for_datasite(data):
 
         related_items.append(related_item_obj)
 
-    for alternate_identifier in dataset_description["AlternateIdentifier"]:
+    for alternate_identifier in data["AlternateIdentifier"]:
         alternate_identifiers.append(
             {
                 "alternateIdentifier": alternate_identifier["alternateIdentifierValue"],
@@ -195,7 +198,7 @@ def convert_for_datasite(data):
             }
         )
 
-    for date in dataset_description["Date"]:
+    for date in data["Date"]:
         date_obj = {
             "date": date["dateValue"],
             "dateType": date["dateType"],
@@ -204,7 +207,7 @@ def convert_for_datasite(data):
             date_obj["dateInformation"] = date["dateInformation"]
         dates.append(date_obj)
 
-    for contributor in dataset_description["Contributor"]:
+    for contributor in data["Contributor"]:
         if "affiliation" in contributor:
             contributor_affiliations = []
             for affiliation in contributor["affiliation"]:
@@ -247,7 +250,7 @@ def convert_for_datasite(data):
 
         contributors.append(contributor_obj)
 
-    for subject in dataset_description["Subject"]:
+    for subject in data["Subject"]:
         subject_obj = {}
         if "classificationCode" in subject:
             subject_obj["classificationCode"] = subject["classificationCode"]
@@ -258,13 +261,13 @@ def convert_for_datasite(data):
         subject_obj["subject"] = subject["subjectValue"]
         subjects.append(subject_obj)
 
-    for title in dataset_description["Title"]:
+    for title in data["Title"]:
         title_obj = {"title": title["titleValue"]}
         if "titleType" in title:
             title_obj["titleType"] = title["titleType"]
         titles.append(title_obj)
 
-    for creator in dataset_description["Creator"]:
+    for creator in data["Creator"]:
         if "affiliation" in creator:
             creator_affiliations = []
             for affiliation in creator["affiliation"]:
@@ -305,7 +308,7 @@ def convert_for_datasite(data):
 
         creators.append(creator_obj)
 
-    for funding_reference in dataset_description["FundingReference"]:
+    for funding_reference in data["FundingReference"]:
         funder_obj = {"funderName": funding_reference["funderName"]}
         if (
             "funderIdentifier" in funding_reference
@@ -330,29 +333,27 @@ def convert_for_datasite(data):
                 "doi": doi,
                 "creators": creators,
                 "titles": titles,
-                "publisher": {"name": dataset_description["Publisher"]},
-                "publicationYear": dataset_description["PublicationYear"],
+                "publisher": {"name": data["Publisher"]},
+                "publicationYear": data["PublicationYear"],
                 "subjects": subjects,
-                "contributors": dataset_description["Contributor"],
+                "contributors": data["Contributor"],
                 "dates": dates,
                 "alternateIdentifiers": alternate_identifiers,
-                "language": dataset_description["Language"],
-                "types": dataset_description["ResourceType"],
+                "language": data["Language"],
+                "types": data["ResourceType"],
                 "relatedItems": related_items,
                 "rightsList": rights_list,
                 "description": descriptions,
-                "version": dataset_description["Version"],
+                "version": data["Version"],
                 "fundingReferences": funding_references,
                 "url": "https://staging.fairhub.io/datasets/2",
             },
         }
     }
 
-    if len(dataset_description["RelatedIdentifier"]) > 0:
-        payload["data"]["attributes"]["relatedIdentifiers"] = dataset_description[
-            "RelatedIdentifier"
-        ]
-    if len(dataset_description["Size"]) > 0:
-        payload["data"]["attributes"]["sizes"] = dataset_description["Size"]
+    if len(data["RelatedIdentifier"]) > 0:
+        payload["data"]["attributes"]["relatedIdentifiers"] = data["RelatedIdentifier"]
+    if len(data["Size"]) > 0:
+        payload["data"]["attributes"]["sizes"] = data["Size"]
 
     return payload
