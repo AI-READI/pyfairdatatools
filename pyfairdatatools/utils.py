@@ -75,12 +75,43 @@ def convert_for_datacite(data):
     rights_list = []
     descriptions = []
     identifiers_list = []
+    related_identifiers = []
+
+    resource_type = {
+        "resourceTypeGeneral": data["resourceType"]["resourceTypeGeneral"],
+        "resourceType": data["resourceType"]["resourceTypeValue"],
+    }
 
     identifier_obj = {
         "identifier": data["identifier"]["identifierValue"],
         "identifierType": data["identifier"]["identifierType"],
     }
     identifiers_list.append(identifier_obj)
+
+    if "relatedIdentifier" in data:
+        for related_identifier in data["relatedIdentifier"]:
+            related_id_obj = {
+                "relatedIdentifier": related_identifier["relatedIdentifierValue"],
+                "relatedIdentifierType": related_identifier["relatedIdentifierType"],
+                "relationType": related_identifier["relationType"],
+            }
+            if "relatedMetadataScheme" in related_identifier:
+                related_id_obj["relatedMetadataScheme"] = related_identifier[
+                    "relatedMetadataScheme"
+                ]
+
+            if "schemeURI" in related_identifier:
+                related_id_obj["schemeUri"] = related_identifier["schemeURI"]
+
+            if "schemeType" in related_identifier:
+                related_id_obj["schemeType"] = related_identifier["schemeType"]
+
+            if "resourceTypeGeneral" in related_identifier:
+                related_id_obj["resourceTypeGeneral"] = related_identifier[
+                    "resourceTypeGeneral"
+                ]
+
+            related_identifiers.append(related_id_obj)
 
     if "description" in data:
         for description in data["description"]:
@@ -306,10 +337,10 @@ def convert_for_datacite(data):
                 "identifiers": identifiers_list,
                 "creators": creators,
                 "titles": titles,
-                "publisher": {"name": data["publisher"]},
+                "publisher": {"name": data["publisher"]["publisherName"]},
                 "publicationYear": data["publicationYear"],
                 "rightsList": rights_list,
-                "types": data["resourceType"],
+                "types": resource_type,
                 "version": data["version"],
                 "url": "https://staging.fairhub.io/datasets/2",
             },
@@ -337,5 +368,7 @@ def convert_for_datacite(data):
         payload["data"]["attributes"]["subjects"] = subjects
     if len(dates) > 0:
         payload["data"]["attributes"]["dates"] = dates
+    if len(related_identifiers) > 0:
+        payload["data"]["attributes"]["relatedIdentifiers"] = related_identifiers
 
     return payload
