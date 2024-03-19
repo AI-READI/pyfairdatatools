@@ -339,7 +339,7 @@ def convert_for_datacite(data):
                 "rightsList": rights_list,
                 "types": resource_type,
                 "version": data["version"],
-                "url": "https://staging.fairhub.io/datasets/1",
+                "url": "https://staging.fairhub.io/datasets/3",
             },
         }
     }
