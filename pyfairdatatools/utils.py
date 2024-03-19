@@ -328,6 +328,20 @@ def convert_for_datacite(data):
                     "funderIdentifier"
                 ]["funderIdentifierType"]
 
+            if "awardNumber" in funding_reference:
+                funder_obj["awardNumber"] = funding_reference["awardNumber"][
+                    "awardNumberValue"
+                ]
+                if "awardURI" in funding_reference["awardNumber"]:
+                    funder_obj["awardURI"] = funding_reference["awardNumber"][
+                        "awardURI"
+                    ]
+            if "awardTitle" in funding_reference["awardNumber"]:
+                funder_obj["awardTitle"] = funding_reference["awardNumber"][
+                    "awardTitle"
+                ]
+            funding_references.append(funder_obj)
+
     payload = {
         "data": {
             "type": "dois",
@@ -342,7 +356,7 @@ def convert_for_datacite(data):
                 "rightsList": rights_list,
                 "types": resource_type,
                 "version": data["version"],
-                "url": "https://staging.fairhub.io/datasets/2",
+                "url": "https://staging.fairhub.io/datasets/1",
             },
         }
     }
