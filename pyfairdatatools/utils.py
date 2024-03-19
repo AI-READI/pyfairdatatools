@@ -74,14 +74,13 @@ def convert_for_datacite(data):
     funding_references = []
     rights_list = []
     descriptions = []
-    identifiers = []
+    identifiers_list = []
 
-    for identifier in data["identifier"]:
-        identifier_obj = {
-            "identifier": identifier["identifierValue"],
-            "identifierType": identifier["identifierType"],
-        }
-        identifiers.append(identifier_obj)
+    identifier_obj = {
+        "identifier": data["identifier"]["identifierValue"],
+        "identifierType": data["identifier"]["identifierType"],
+    }
+    identifiers_list.append(identifier_obj)
 
     if "description" in data:
         for description in data["description"]:
@@ -304,7 +303,7 @@ def convert_for_datacite(data):
             "attributes": {
                 "event": "publish",
                 "doi": doi,
-                "identifiers": identifiers,
+                "identifiers": identifiers_list,
                 "creators": creators,
                 "titles": titles,
                 "publisher": {"name": data["publisher"]},

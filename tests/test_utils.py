@@ -1,4 +1,5 @@
 """Sample unit test module using pytest-describe and expecter."""
+
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison # noqa: E501
 
 # import os
@@ -7,7 +8,12 @@ import pytest
 from copy import deepcopy
 from typing import Any, Dict
 
-from pyfairdatatools.utils import feet_to_meters, requestJSON, validate_file_path, convert_for_datacite
+from pyfairdatatools.utils import (
+    feet_to_meters,
+    requestJSON,
+    validate_file_path,
+    convert_for_datacite,
+)
 
 
 class TestDescribeFeetToMeters:
@@ -47,6 +53,7 @@ class TestValidateFilePath:
 
 class TestConvertToDatacite:
     """Test the convert_to_datacite function."""
+
     valid_data: Dict[str, Any] = {
         "identifier": {
             "identifierValue": "10.5281/zenodo.1234567",
@@ -248,8 +255,9 @@ class TestConvertToDatacite:
     }
 
     def test_when_valid_data(self):
+        """Test when valid data is provided."""
         data = deepcopy(self.valid_data)
-        
+
         output = convert_for_datacite(data)
 
         assert output is not None
