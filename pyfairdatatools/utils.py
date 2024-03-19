@@ -143,23 +143,6 @@ def convert_for_datacite(data):
             rights_obj["schemeUri"] = rights["rightsIdentifier"]["schemeURI"]
         rights_list.append(rights_obj)
 
-    if "fundingReference" in data:
-        for funder in data["fundingReference"]:
-            funder_obj = {
-                "funderName": funder["funderName"],
-                "funderIdentifier": funder["funderIdentifier"]["funderIdentifierValue"],
-                "awardNumber": funder["awardNumber"]["awardNumberValue"],
-            }
-            if "awardURI" in funder["awardNumber"]:
-                funder_obj["awardUri"] = funder["awardNumber"]["awardURI"]
-            if "awardTitle" in funder["awardNumber"]:
-                funder_obj["awardTitle"] = funder["awardNumber"]["awardTitle"]
-            if "funderIentifierType" in funder["funderIdentifier"]:
-                funder_obj["funderIdentifierType"] = funder["funderIdentifier"][
-                    "funderIdentifierType"
-                ]
-            funding_references.append(funder_obj)
-
     if "alternateIdentifier" in data:
         for alternate_identifier in data["alternateIdentifier"]:
             alternate_identifiers.append(
