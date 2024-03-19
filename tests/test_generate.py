@@ -167,7 +167,11 @@ class TestGenerateDatasetDescription:
             ],
             "managingOrganization": {
                 "name": "Test Organization",
-                "rorId": "https://ror.org/123456789",
+                "managingOrganizationIdentifier": {
+                    "managingOrganizationIdentifierValue": "04z8jg394",
+                    "managingOrganizationScheme": "ROR",
+                    "schemeURI": "https://www.crossref.org/",
+                },
             },
             "accessType": "PublicOnScreenAccess",
             "accessDetails": {
@@ -195,7 +199,7 @@ class TestGenerateDatasetDescription:
                 },
             },
             "size": ["15 pages", "15 MB"],
-            "format": ["application/pdf", "text/csv", "dicom", "nifti"],
+            "format": ["application/pdf", "text/xml", "MOPG", "nifti"],
             "fundingReference": [
                 {
                     "funderName": "Test Funder",

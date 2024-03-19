@@ -49,7 +49,10 @@
               "minLength": 1
             }
           },
-          "required": ["orgStudyId", "orgStudyIdType"],
+          "required": [
+            "orgStudyId",
+            "orgStudyIdType"
+          ],
           "if": {
             "properties": {
               "orgStudyIdType": {
@@ -62,7 +65,9 @@
             }
           },
           "then": {
-            "required": ["orgStudyIdDomain"]
+            "required": [
+              "orgStudyIdDomain"
+            ]
           }
         },
         "secondaryIdInfoList": {
@@ -96,7 +101,10 @@
                 "minLength": 1
               }
             },
-            "required": ["secondaryId", "secondaryIdType"],
+            "required": [
+              "secondaryId",
+              "secondaryIdType"
+            ],
             "if": {
               "properties": {
                 "secondaryIdType": {
@@ -109,14 +117,18 @@
               }
             },
             "then": {
-              "required": ["secondaryIdDomain"]
+              "required": [
+                "secondaryIdDomain"
+              ]
             }
           },
           "minItems": 1,
           "uniqueItems": true
         }
       },
-      "required": ["orgStudyIdInfo"]
+      "required": [
+        "orgStudyIdInfo"
+      ]
     },
     "statusModule": {
       "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#status",
@@ -148,10 +160,16 @@
               "$comment": "Description added here",
               "description": "Specify if the start date is actual or anticipated",
               "type": "string",
-              "enum": ["Actual", "Anticipated"]
+              "enum": [
+                "Actual",
+                "Anticipated"
+              ]
             }
           },
-          "required": ["startDate", "startDateType"]
+          "required": [
+            "startDate",
+            "startDateType"
+          ]
         },
         "completionDateStruct": {
           "$comment": "Description is based on the ClinicalTrials.gov Data Elements but modified to suit datasets",
@@ -170,13 +188,23 @@
               "$comment": "Description added here",
               "description": "Specify if the start date is actual or anticipated",
               "type": "string",
-              "enum": ["Actual", "Anticipated"]
+              "enum": [
+                "Actual",
+                "Anticipated"
+              ]
             }
           },
-          "required": ["completionDate", "completionDateType"]
+          "required": [
+            "completionDate",
+            "completionDateType"
+          ]
         }
       },
-      "required": ["overallStatus", "startDateStruct", "completionDateStruct"]
+      "required": [
+        "overallStatus",
+        "startDateStruct",
+        "completionDateStruct"
+      ]
     },
     "sponsorCollaboratorsModule": {
       "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#sponsors",
@@ -201,19 +229,25 @@
                   "type": "string",
                   "description": "Uniquely identifies sponsor, according to various schemes.",
                   "minLength": 1,
-                  "examples": ["https://ror.org/04aj4c18"]
+                  "examples": [
+                    "https://ror.org/04aj4c18"
+                  ]
                 },
                 "leadSponsorIdentifierScheme": {
                   "type": "string",
                   "minLength": 1,
                   "description": "The name of the identifier scheme.",
-                  "examples": ["ROR"]
+                  "examples": [
+                    "ROR"
+                  ]
                 },
                 "schemeURI": {
                   "type": "string",
                   "minLength": 1,
                   "description": "The URI of the name identifier scheme.",
-                  "examples": ["https://ror.org"]
+                  "examples": [
+                    "https://ror.org"
+                  ]
                 }
               },
               "required": [
@@ -222,7 +256,9 @@
               ]
             }
           },
-          "required": ["leadSponsorName"]
+          "required": [
+            "leadSponsorName"
+          ]
         },
         "responsibleParty": {
           "type": "object",
@@ -251,20 +287,26 @@
               "type": "string",
               "description": "First name of the investigator. Required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator'",
               "minLength": 1,
-              "examples": ["James"]
+              "examples": [
+                "James"
+              ]
             },
             "responsiblePartyInvestigatorLastName": {
               "$comment": "Name split into first and last here",
               "type": "string",
               "description": "Last name of the investigator. Required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator'",
               "minLength": 1,
-              "examples": ["Smith"]
+              "examples": [
+                "Smith"
+              ]
             },
             "responsiblePartyInvestigatorTitle": {
               "type": "string",
               "description": "The official title of the investigator at the primary organizational affiliation (required if ResponsiblePartyType is 'Principal Investigator' or 'Sponsor-Investigator')",
               "minLength": 1,
-              "examples": ["Professor of Medicine"]
+              "examples": [
+                "Professor of Medicine"
+              ]
             },
             "responsiblePartyInvestigatorIdentifier": {
               "$comment": "Key added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely identify the investigator and make schema more FAIR. Description and examples are based on the dataset_description schema but modified to suit here.",
@@ -278,19 +320,25 @@
                     "type": "string",
                     "minLength": 1,
                     "description": "Uniquely identifies an investigator.",
-                    "examples": ["https://orcid.org/0000-0001-5727-2427"]
+                    "examples": [
+                      "https://orcid.org/0000-0001-5727-2427"
+                    ]
                   },
                   "responsiblePartyInvestigatorIdentifierScheme": {
                     "type": "string",
                     "minLength": 1,
                     "description": "The name of the name identifier scheme.",
-                    "examples": ["ORCID"]
+                    "examples": [
+                      "ORCID"
+                    ]
                   },
                   "schemeURI": {
                     "type": "string",
                     "minLength": 1,
                     "description": "The URI of the name identifier scheme.",
-                    "examples": ["https://orcid.org"]
+                    "examples": [
+                      "https://orcid.org"
+                    ]
                   }
                 },
                 "required": [
@@ -311,7 +359,9 @@
                   "type": "string",
                   "description": "The name of the affiliation of the investigator",
                   "minLength": 1,
-                  "examples": ["University of California, San Diego"]
+                  "examples": [
+                    "University of California, San Diego"
+                  ]
                 },
                 "responsiblePartyInvestigatorAffiliationIdentifier": {
                   "$comment": "Key added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely identify sponsor and make schema more FAIR. Description and examples are based on the dataset_description schema but modified to suit here.",
@@ -322,19 +372,25 @@
                       "type": "string",
                       "description": "Uniquely identifies affiliation, according to various schemes.",
                       "minLength": 1,
-                      "examples": ["https://ror.org/04aj4c18"]
+                      "examples": [
+                        "https://ror.org/04aj4c18"
+                      ]
                     },
                     "responsiblePartyInvestigatorAffiliationIdentifierScheme": {
                       "type": "string",
                       "minLength": 1,
                       "description": "The name of the identifier scheme.",
-                      "examples": ["ROR"]
+                      "examples": [
+                        "ROR"
+                      ]
                     },
                     "schemeURI": {
                       "type": "string",
                       "minLength": 1,
                       "description": "The URI of the name identifier scheme.",
-                      "examples": ["https://ror.org"]
+                      "examples": [
+                        "https://ror.org"
+                      ]
                     }
                   },
                   "required": [
@@ -343,14 +399,21 @@
                   ]
                 }
               },
-              "required": ["responsiblePartyInvestigatorAffiliationName"]
+              "required": [
+                "responsiblePartyInvestigatorAffiliationName"
+              ]
             }
           },
-          "required": ["responsiblePartyType"],
+          "required": [
+            "responsiblePartyType"
+          ],
           "if": {
             "properties": {
               "responsiblePartyType": {
-                "enum": ["Principal Investigator", "Sponsor-Investigator"]
+                "enum": [
+                  "Principal Investigator",
+                  "Sponsor-Investigator"
+                ]
               }
             }
           },
@@ -384,19 +447,25 @@
                     "type": "string",
                     "description": "Uniquely identifies the collaborating organization, according to various schemes.",
                     "minLength": 1,
-                    "examples": ["https://ror.org/04aj4c18"]
+                    "examples": [
+                      "https://ror.org/04aj4c18"
+                    ]
                   },
                   "collaboratorNameIdentifierScheme": {
                     "type": "string",
                     "minLength": 1,
                     "description": "The name of the identifier scheme.",
-                    "examples": ["ROR"]
+                    "examples": [
+                      "ROR"
+                    ]
                   },
                   "schemeURI": {
                     "type": "string",
                     "minLength": 1,
                     "description": "The URI of the name identifier scheme.",
-                    "examples": ["https://ror.org"]
+                    "examples": [
+                      "https://ror.org"
+                    ]
                   }
                 },
                 "required": [
@@ -405,13 +474,18 @@
                 ]
               }
             },
-            "required": ["collaboratorName"]
+            "required": [
+              "collaboratorName"
+            ]
           },
           "minItems": 1,
           "uniqueItems": true
         }
       },
-      "required": ["leadSponsor", "responsibleParty"]
+      "required": [
+        "leadSponsor",
+        "responsibleParty"
+      ]
     },
     "oversightModule": {
       "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#oversight. 'Device Product Not Approved or Cleared by U.S. FDA', 'Post Prior to U.S. FDA Approval or Clearance', 'Pediatric Postmarket Surveillance of a Device Product', 'Investigational New Drug Application (IND)/Investigational Device Exemption (IDE) Information' (and subitems), and 'Product Manufactured in and Exported from the U.S.' Data Elements were not kept here as they were deemed not relevant for datasets. ",
@@ -421,12 +495,18 @@
         "isFDARegulatedDrug": {
           "type": "string",
           "description": "Indication that a clinical study is studying a drug product (including a biological product) subject to section 505 of the Federal Food, Drug, and Cosmetic Act or to section 351 of the Public Health Service Act.",
-          "enum": ["Yes", "No"]
+          "enum": [
+            "Yes",
+            "No"
+          ]
         },
         "isFDARegulatedDevice": {
           "type": "string",
           "description": "Indication that a clinical study is studying a device product subject to section 510(k), 515, or 520(m) of the Federal Food, Drug, and Cosmetic Act.",
-          "enum": ["Yes", "No"]
+          "enum": [
+            "Yes",
+            "No"
+          ]
         },
         "humanSubjectReviewStatus": {
           "$comment": "This key is not in the ClinicalTrials.gov JSON study record but it has been added here to match the corresponding the Data Elements. 'Board Approval Number', 'Board Name', 'Board Affiliation', and 'Board Contact' Data Elements were not kept here as they were deemed not relevant for datasets.",
@@ -436,10 +516,15 @@
         "oversightHasDMC": {
           "type": "string",
           "description": "Indicate whether a data monitoring committee has been appointed for this study. The data monitoring committee (board) is a group of independent scientists who are appointed to monitor the safety and scientific integrity of a human research intervention, and to make recommendations to the sponsor regarding the stopping of the trial for efficacy, for harms or for futility. The composition of the committee is dependent upon the scientific skills and knowledge required for monitoring the particular study.",
-          "enum": ["Yes", "No"]
+          "enum": [
+            "Yes",
+            "No"
+          ]
         }
       },
-      "required": ["humanSubjectReviewStatus"]
+      "required": [
+        "humanSubjectReviewStatus"
+      ]
     },
     "descriptionModule": {
       "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#description",
@@ -460,7 +545,9 @@
           "minLength": 1
         }
       },
-      "required": ["briefSummary"]
+      "required": [
+        "briefSummary"
+      ]
     },
     "conditionsModule": {
       "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#Conditions",
@@ -479,7 +566,9 @@
                 "type": "string",
                 "description": "Name of the condition",
                 "minLength": 1,
-                "examples": ["Diabetes mellitus"]
+                "examples": [
+                  "Diabetes mellitus"
+                ]
               },
               "conditionIdentifier": {
                 "type": "object",
@@ -489,7 +578,9 @@
                     "type": "string",
                     "minLength": 1,
                     "description": "The classification code used for the condition name in the scheme",
-                    "examples": ["45636-8"]
+                    "examples": [
+                      "45636-8"
+                    ]
                   },
                   "conditionScheme": {
                     "type": "string",
@@ -503,19 +594,28 @@
                     "type": "string",
                     "minLength": 1,
                     "description": "The URI of the condition identifier scheme",
-                    "examples": ["https://loinc.org/"]
+                    "examples": [
+                      "https://loinc.org/"
+                    ]
                   },
                   "conditionURI": {
                     "type": "string",
                     "minLength": 1,
                     "description": "The URI of the condition name in the scheme",
-                    "examples": ["https://loinc.org/45636-8"]
+                    "examples": [
+                      "https://loinc.org/45636-8"
+                    ]
                   }
                 },
-                "required": ["conditionClassificationCode", "conditionScheme"]
+                "required": [
+                  "conditionClassificationCode",
+                  "conditionScheme"
+                ]
               }
             },
-            "required": ["conditionName"]
+            "required": [
+              "conditionName"
+            ]
           },
           "minItems": 1,
           "uniqueItems": true
@@ -531,7 +631,9 @@
                 "type": "string",
                 "description": "Keyword or phrase",
                 "minLength": 1,
-                "examples": ["Artificial intelligence"]
+                "examples": [
+                  "Artificial intelligence"
+                ]
               },
               "keywordIdentifier": {
                 "$comment": "Added based on the dataset_description.json schema https://schema.aireadi.org/files/dataset_description.json (which is based on DataCite) to uniquely map condition keywords to controlled vocabulary and make schema more FAIR. Descriptions and examples are based on the dataset_description schema but modified to suit here. Description has been modified to allow terms from another vocabulary than MeSH",
@@ -542,19 +644,25 @@
                     "type": "string",
                     "minLength": 1,
                     "description": "The classification code used for the keyword in the scheme",
-                    "examples": ["D001185"]
+                    "examples": [
+                      "D001185"
+                    ]
                   },
                   "keywordScheme": {
                     "type": "string",
                     "minLength": 1,
                     "description": "The name of the scheme or classification code or authority if one is used (e.g., name of ontology) for the keyword",
-                    "examples": ["Medical Subject Headings (MeSH)"]
+                    "examples": [
+                      "Medical Subject Headings (MeSH)"
+                    ]
                   },
                   "schemeURI": {
                     "type": "string",
                     "minLength": 1,
                     "description": "The URI of the keyword identifier scheme",
-                    "examples": ["https://meshb.nlm.nih.gov/"]
+                    "examples": [
+                      "https://meshb.nlm.nih.gov/"
+                    ]
                   },
                   "keywordURI": {
                     "type": "string",
@@ -565,21 +673,30 @@
                     ]
                   }
                 },
-                "required": ["keywordClassificationCode", "keywordScheme"]
+                "required": [
+                  "keywordClassificationCode",
+                  "keywordScheme"
+                ]
               }
             },
-            "required": ["keywordValue"]
+            "required": [
+              "keywordValue"
+            ]
           },
           "minItems": 1,
           "uniqueItems": true
         }
       },
-      "required": ["conditionList"]
+      "required": [
+        "conditionList"
+      ]
     },
     "designModule": {
       "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#StudyDesign",
       "type": "object",
-      "required": ["studyType"],
+      "required": [
+        "studyType"
+      ],
       "properties": {
         "studyType": {
           "$comment": "Maps to https://prsinfo.clinicaltrials.gov/definitions.html#StudyType",
@@ -767,7 +884,10 @@
                         "minLength": 1
                       }
                     },
-                    "required": ["designMasking", "designWhoMaskedList"]
+                    "required": [
+                      "designMasking",
+                      "designWhoMaskedList"
+                    ]
                   }
                 },
                 "required": [
@@ -854,7 +974,10 @@
                 "$comment": "This key is not in the ClinicalTrials.gov JSON study record but it has been added here to specify if an observational study is a Patient Registry.",
                 "type": "string",
                 "description": "Indicate if the observational study is a Patient Registry, i.e., an observational study that is also considered to be a Patient Registry. Note: The Agency for Healthcare Research and Quality (AHRQ) defines a Patient Registry as including an organized system that uses observational methods to collect uniform data (clinical and other) prospectively for a population defined by a particular disorder/disease, condition (including susceptibility to a disorder), or exposure (including products, healthcare services, and/or procedures) and that serves a predetermined scientific, clinical, or policy purpose. Patient registries may be single purpose or on-going data collection programs that address one or more questions.",
-                "enum": ["Yes", "No"]
+                "enum": [
+                  "Yes",
+                  "No"
+                ]
               },
               "designInfo": {
                 "$comment": "Description has been added here since none was provided in the ClinicalTrials.gov Data Elements",
@@ -963,7 +1086,10 @@
                     "minLength": 1
                   }
                 },
-                "required": ["bioSpecRetention", "bioSpecDescription"]
+                "required": [
+                  "bioSpecRetention",
+                  "bioSpecDescription"
+                ]
               },
               "enrollmentInfo": {
                 "$ref": "#/definitions/enrollmentInfo"
@@ -989,7 +1115,9 @@
               }
             },
             "then": {
-              "required": ["targetDuration"]
+              "required": [
+                "targetDuration"
+              ]
             }
           }
         }
@@ -1041,7 +1169,10 @@
                 "uniqueItems": true
               }
             },
-            "required": ["armGroupLabel", "armGroupDescription"]
+            "required": [
+              "armGroupLabel",
+              "armGroupDescription"
+            ]
           },
           "minItems": 1,
           "uniqueItems": true
@@ -1135,7 +1266,10 @@
           "uniqueItems": true
         }
       },
-      "required": ["armGroupList", "interventionList"]
+      "required": [
+        "armGroupList",
+        "interventionList"
+      ]
     },
     "eligibilityModule": {
       "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#Eligibility",
@@ -1163,7 +1297,10 @@
         "genderBased": {
           "type": "string",
           "description": "If applicable, indicate whether participant eligibility is based on gender. Note: 'Gender' means a person's self-representation of gender identity.",
-          "enum": ["Yes", "No"]
+          "enum": [
+            "Yes",
+            "No"
+          ]
         },
         "genderDescription": {
           "type": "string",
@@ -1185,7 +1322,10 @@
           "$comment": "Made mandatory for both interventional and observational studies",
           "type": "string",
           "description": "Indication that participants who do not have a disease or condition, or related conditions or symptoms, under study in the clinical study are permitted to participate in the clinical study.",
-          "enum": ["Yes", "No"]
+          "enum": [
+            "Yes",
+            "No"
+          ]
         },
         "eligibilityCriteria": {
           "$comment": "This is a string in the ClinicalTrials.gov JSON study record but made an object here to better separate inclusion and exclusion criteria. Description has been modified to suit datasets.",
@@ -1286,19 +1426,25 @@
                       "type": "string",
                       "minLength": 1,
                       "description": "Uniquely identifies an central contact.",
-                      "examples": ["https://orcid.org/0000-0001-5727-2427"]
+                      "examples": [
+                        "https://orcid.org/0000-0001-5727-2427"
+                      ]
                     },
                     "centralContactIdentifierScheme": {
                       "type": "string",
                       "minLength": 1,
                       "description": "The name of the central contact identifier scheme.",
-                      "examples": ["ORCID"]
+                      "examples": [
+                        "ORCID"
+                      ]
                     },
                     "schemeURI": {
                       "type": "string",
                       "minLength": 1,
                       "description": "The URI of the central contact identifier scheme.",
-                      "examples": ["https://orcid.org"]
+                      "examples": [
+                        "https://orcid.org"
+                      ]
                     }
                   },
                   "required": [
@@ -1326,19 +1472,25 @@
                         "type": "string",
                         "description": "Uniquely identifies central contact affiliation, according to various schemes.",
                         "minLength": 1,
-                        "examples": ["https://ror.org/04aj4c18"]
+                        "examples": [
+                          "https://ror.org/04aj4c18"
+                        ]
                       },
                       "centralContactAffiliationIdentifierScheme": {
                         "type": "string",
                         "minLength": 1,
                         "description": "The name of the identifier scheme.",
-                        "examples": ["ROR"]
+                        "examples": [
+                          "ROR"
+                        ]
                       },
                       "schemeURI": {
                         "type": "string",
                         "minLength": 1,
                         "description": "The URI of the name identifier scheme.",
-                        "examples": ["https://ror.org"]
+                        "examples": [
+                          "https://ror.org"
+                        ]
                       }
                     },
                     "required": [
@@ -1347,7 +1499,9 @@
                     ]
                   }
                 },
-                "required": ["centralContactAffiliationName"]
+                "required": [
+                  "centralContactAffiliationName"
+                ]
               },
               "centralContactPhone": {
                 "type": "string",
@@ -1407,19 +1561,25 @@
                       "type": "string",
                       "minLength": 1,
                       "description": "Uniquely identifies an official.",
-                      "examples": ["https://orcid.org/0000-0001-5727-2427"]
+                      "examples": [
+                        "https://orcid.org/0000-0001-5727-2427"
+                      ]
                     },
                     "overallOfficialIdentifierScheme": {
                       "type": "string",
                       "minLength": 1,
                       "description": "The name of the official identifier scheme.",
-                      "examples": ["ORCID"]
+                      "examples": [
+                        "ORCID"
+                      ]
                     },
                     "schemeURI": {
                       "type": "string",
                       "minLength": 1,
                       "description": "The URI of the official identifier scheme.",
-                      "examples": ["https://orcid.org"]
+                      "examples": [
+                        "https://orcid.org"
+                      ]
                     }
                   },
                   "required": [
@@ -1447,19 +1607,25 @@
                         "type": "string",
                         "description": "Uniquely identifies official affiliation, according to various schemes.",
                         "minLength": 1,
-                        "examples": ["https://ror.org/04aj4c18"]
+                        "examples": [
+                          "https://ror.org/04aj4c18"
+                        ]
                       },
                       "overallOfficialAffiliationIdentifierScheme": {
                         "type": "string",
                         "minLength": 1,
                         "description": "The name of the identifier scheme.",
-                        "examples": ["ROR"]
+                        "examples": [
+                          "ROR"
+                        ]
                       },
                       "schemeURI": {
                         "type": "string",
                         "minLength": 1,
                         "description": "The URI of the name identifier scheme.",
-                        "examples": ["https://ror.org"]
+                        "examples": [
+                          "https://ror.org"
+                        ]
                       }
                     },
                     "required": [
@@ -1468,7 +1634,9 @@
                     ]
                   }
                 },
-                "required": ["overallOfficialAffiliationName"]
+                "required": [
+                  "overallOfficialAffiliationName"
+                ]
               },
               "overallOfficialRole": {
                 "type": "string",
@@ -1534,19 +1702,25 @@
                     "type": "string",
                     "description": "Uniquely identifies location, according to various schemes.",
                     "minLength": 1,
-                    "examples": ["https://ror.org/04aj4c18"]
+                    "examples": [
+                      "https://ror.org/04aj4c18"
+                    ]
                   },
                   "locationIdentifierScheme": {
                     "type": "string",
                     "minLength": 1,
                     "description": "The name of the identifier scheme.",
-                    "examples": ["ROR"]
+                    "examples": [
+                      "ROR"
+                    ]
                   },
                   "schemeURI": {
                     "type": "string",
                     "minLength": 1,
                     "description": "The URI of the name identifier scheme.",
-                    "examples": ["https://ror.org"]
+                    "examples": [
+                      "https://ror.org"
+                    ]
                   }
                 },
                 "required": [
@@ -1590,13 +1764,17 @@
                             "type": "string",
                             "minLength": 1,
                             "description": "The name of the location contact identifier scheme.",
-                            "examples": ["ORCID"]
+                            "examples": [
+                              "ORCID"
+                            ]
                           },
                           "schemeURI": {
                             "type": "string",
                             "minLength": 1,
                             "description": "The URI of the location contact identifier scheme.",
-                            "examples": ["https://orcid.org"]
+                            "examples": [
+                              "https://orcid.org"
+                            ]
                           }
                         },
                         "required": [
@@ -1609,7 +1787,10 @@
                     "locationContactRole": {
                       "type": "string",
                       "description": "Position or function of the contact person.",
-                      "enum": ["Principal Investigator", "Sub-Investigator"]
+                      "enum": [
+                        "Principal Investigator",
+                        "Sub-Investigator"
+                      ]
                     },
                     "locationContactPhone": {
                       "type": "string",
@@ -1650,7 +1831,9 @@
           "uniqueItems": true
         }
       },
-      "required": ["locationList"]
+      "required": [
+        "locationList"
+      ]
     }
   },
   "required": [
@@ -1777,10 +1960,16 @@
         },
         "enrollmentType": {
           "type": "string",
-          "enum": ["Anticipated", "Actual"]
+          "enum": [
+            "Anticipated",
+            "Actual"
+          ]
         }
       },
-      "required": ["enrollmentCount", "enrollmentType"]
+      "required": [
+        "enrollmentCount",
+        "enrollmentType"
+      ]
     }
   }
 }
