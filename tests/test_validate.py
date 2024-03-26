@@ -628,7 +628,7 @@ class TestValidateDatasetDescription:
             print(e)
             output = False
 
-        assert output is True
+        assert output
 
 
 class TestValidateStudyDescription:
