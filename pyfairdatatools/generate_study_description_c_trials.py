@@ -1,7 +1,9 @@
 import re
 import requests
 import json
-from . import validate
+# from . import validate
+import validate
+
 
 def fetch_the_clinical_trials_data(identifier):
     if not (isinstance(identifier, str) and re.match(r"^NCT\d{8}$", identifier.strip())):
@@ -199,67 +201,6 @@ def fetch_the_clinical_trials_data(identifier):
     #     print("Dataset description is invalid.")
     #     raise ValueError("Invalid input data")
 
-    # StudyType = data["DesignModule"]["StudyType"]
-    #
-    # if StudyType == "Interventional":
-    #     if "TargetDuration" in data["DesignModule"]:
-    #         del data["DesignModule"]["TargetDuration"]
-    #
-    #     if "NumberGroupsCohorts" in data["DesignModule"]:
-    #         del data["DesignModule"]["NumberGroupsCohorts"]
-    #
-    #     if "BioSpec" in data["DesignModule"]:
-    #         del data["DesignModule"]["BioSpec"]
-    #
-    #     if "StudyPopulation" in data["EligibilityModule"]:
-    #         del data["EligibilityModule"]["StudyPopulation"]
-    #
-    #     if "SamplingMethod" in data["EligibilityModule"]:
-    #         del data["EligibilityModule"]["SamplingMethod"]
-    #
-    # if StudyType == "Observational":
-    #     if "PhaseList" in data["DesignModule"]:
-    #         del data["DesignModule"]["PhaseList"]
-    #
-    #     if "NumberArms" in data["DesignModule"]:
-    #         del data["DesignModule"]["NumberArms"]
-    #
-    #     ArmGroupList = data["ArmsInterventionsModule"]["ArmGroupList"]
-    #
-    #     for ArmGroup in ArmGroupList:
-    #         if "ArmGroupType" in ArmGroup:
-    #             del ArmGroup["ArmGroupType"]
-    #
-    #         if "ArmGroupInterventionList" in ArmGroup:
-    #             del ArmGroup["ArmGroupInterventionList"]
-    #
-    #     if "HealthyVolunteers" in data["EligibilityModule"]:
-    #         del data["EligibilityModule"]["HealthyVolunteers"]
-    # #
-    # if file_type == "json":
-    #     try:
-    #         with open(file_path, "w", encoding="utf8") as f:
-    #             json.dump(data, f, indent=4)
-    #     except Exception as error:
-    #         print(error)
-    #         raise error
-    #
-    # elif file_type == "xml":
-    #     try:
-    #         with open(file_path, "w", encoding="utf8") as f:
-    #             xml = dicttoxml.dicttoxml(
-    #                 data,
-    #                 custom_root="study_description",
-    #                 attr_type=False,
-    #             )
-    #
-    #             dom = parseString(xml)  # type: ignore
-    #             f.write(dom.toprettyxml())
-    #
-    #     except Exception as error:
-    #         print(error)
-    #         raise error
-    #
     # elif file_type not in ["xlsx", "csv"]:
     #     print("File type is invalid.")
     #     raise ValueError("Invalid file type")
@@ -271,4 +212,4 @@ def fetch_the_clinical_trials_data(identifier):
     return data
 
 
-fetch_the_clinical_trials_data("NCT02901184")
+# fetch_the_clinical_trials_data("NCT02901184")
