@@ -29,198 +29,200 @@ def fetch_the_clinical_trials_data(identifier):
         "TERMINATED": "Terminated",
     }
     raw_status = cds_data.get("statusModule", {}).get("overallStatus", "")
+    identification = cds_data.get("identificationModule", {})
     conditions = cds_data.get("conditionsModule", {}).get("conditions", [])
     design = cds_data.get("designModule", {})
     arms_int = cds_data.get("armsInterventionsModule", {})
     eligibility = cds_data.get("eligibilityModule", {})
-    ipd = cds_data.get("ipdSharingStatementModule", {})
     contacts = cds_data.get("contactsLocationsModule", {})
+    collaborators = cds_data.get("sponsorCollaboratorsModule", {})
     data = {
         "schema": "",
-        "IdentificationModule": {
-            "officialTitle": cds_data.get("identificationModule", {}).get("officialTitle", ""),
+        "identificationModule": {
+            "officialTitle":identification.get("officialTitle", ""),
             "acronym": "",
-            "OrgStudyIdInfo": {
-                "OorgStudyId": cds_data.get("identificationModule", {}).get("orgStudyIdInfo", {}).get("id", ""),
-                "OrgStudyIdType": cds_data.get("identificationModule", {}).get("orgStudyIdType", {}).get("info", ""),
-                "OrgStudyIdLink": cds_data.get("identificationModule", {}).get("orgStudyIdLink", {}).get("link", "")
+            "orgStudyIdInfo": {
+                "orgStudyId":identification.get("orgStudyIdInfo", {}).get("id", ""),
+                "orgStudyIdType":identification.get("orgStudyIdType", {}).get("info", ""),
+                "orgStudyIdLink":identification.get("orgStudyIdLink", {}).get("link", ""),
+                "orgStudyIdDomain": ""
             },
-            "SecondaryIdInfoList": [{
-                "SecondaryId":s.get("id", ""),
-                "SecondaryIdType":s.get("type", ""),
-                "SecondaryIdLink":s.get("link", ""),
-            } for s in cds_data.get("identificationModule", {}).get("secondaryIdInfos", [])],},
-        "StatusModule": {
-            "OverallStatus": status_map.get(raw_status, raw_status.replace("_", " ").title()),
-            "StartDateStruct": cds_data.get("statusModule", {}).get("startDateStruct", {}).get("date", ""),
-            "WhyStopped": cds_data.get("statusModule", {}).get("whyStopped", {}).get("date", ""),
-            "CompletionDateStruct": cds_data.get("statusModule", {}).get("completionDateStruct", {}).get("date", ""),
+            "secondaryIdInfoList": [{
+                "secondaryId": s.get("id", ""),
+                "secondaryIdType": s.get("type", ""),
+                "secondaryIdLink": s.get("link", ""),
+                "secondaryIdDomain": "",
+            } for s in identification.get("secondaryIdInfos", [])],},
+        "statusModule": {
+            "overallStatus": status_map.get(raw_status, raw_status.replace("_", " ").title()),
+            "startDateStruct": cds_data.get("statusModule", {}).get("startDateStruct", {}).get("date", ""),
+            "whyStopped": cds_data.get("statusModule", {}).get("whyStopped", {}).get("date", ""),
+            "completionDateStruct": cds_data.get("statusModule", {}).get("completionDateStruct", {}).get("date", ""),
         },
-        "SponsorCollaboratorsModule": {
-            "LeadSponsor": {"LeadSponsorName": cds_data.get("sponsorCollaboratorsModule", {}).get("leadSponsor", {}).get("name", "")},
-            "ResponsiblePartyInvestigatorFirstName": cds_data.get("sponsorCollaboratorsModule", {}).get("responsibleParty", {}).get("investigatorFirstName", ""),
-            "ResponsiblePartyInvestigatorLastName": cds_data.get("sponsorCollaboratorsModule", {}).get("responsibleParty", {}).get("investigatorLastName", ""),
-            "ResponsiblePartyInvestigatorTitle": cds_data.get("sponsorCollaboratorsModule", {}).get("responsibleParty", {}).get("investigatorTitle", ""),
-            "ResponsiblePartyInvestigatorIdentifier": cds_data.get("sponsorCollaboratorsModule", {}).get("responsibleParty", {}).get("investigatorIdentifier", ""),
-            "ResponsiblePartyInvestigatorAffiliation": cds_data.get("sponsorCollaboratorsModule", {}).get("responsibleParty", {}).get("investigatorAffiliation", ""),
-            "ResponsibleParty": cds_data.get("sponsorCollaboratorsModule", {}).get("responsibleParty", {}).get("type", ""),
-            "CollaboratorList": [
+        "sponsorCollaboratorsModule": {
+            "leadSponsor": {
+                "LeadSponsorName": collaborators.get("leadSponsor", {}).get("name", "")
+            },
+            "responsiblePartyInvestigatorFirstName": collaborators.get("responsibleParty", {}).get(
+                "investigatorFirstName", ""),
+            "responsiblePartyInvestigatorLastName": collaborators.get("responsibleParty", {}).get(
+                "investigatorLastName", ""),
+            "responsiblePartyInvestigatorTitle": collaborators.get("responsibleParty", {}).get("investigatorTitle", ""),
+            "responsiblePartyInvestigatorIdentifier": collaborators.get("responsibleParty", {}).get(
+                "investigatorIdentifier", ""),
+            "responsiblePartyInvestigatorAffiliation": collaborators.get("responsibleParty", {}).get(
+                "investigatorAffiliation", ""),
+            "responsibleParty": collaborators.get("responsibleParty", {}).get("type", ""),
+            "collaboratorList": [
                 {
-                    "CollaboratorName": c.get("name"),
-                    "CollaboratorNameIdentifier": c.get("identifier"),
+                    "collaboratorName": c.get("name", ""),
+                    "collaboratorNameIdentifier": c.get("identifier", ""),
                 }
-                for c in cds_data.get("sponsorCollaboratorsModule", {}).get("collaborators", [])
-            ]
+                for c in collaborators.get("collaboratorList", [])
+            ],
         },
-        "OversightModule": {
-            "OversightHasDMC": cds_data.get("oversightModule", {}).get("oversightHasDmc", ""),
-            "IsFDARegulatedDrug": cds_data.get("oversightModule", {}).get("isFdaRegulatedDrug", ""),
-            "IsFDARegulatedDevice": cds_data.get("oversightModule", {}).get("isFdaRegulatedDevice", ""),
-            "HumanSubjectReviewStatus": cds_data.get("oversightModule", {}).get("humanSubjectReviewStatus", "")
+        "oversightModule": {
+            "oversightHasDMC": cds_data.get("oversightModule", {}).get("oversightHasDmc", ""),
+            "isFDARegulatedDrug": cds_data.get("oversightModule", {}).get("isFdaRegulatedDrug", ""),
+            "isFDARegulatedDevice": cds_data.get("oversightModule", {}).get("isFdaRegulatedDevice", ""),
+            "humanSubjectReviewStatus": cds_data.get("oversightModule", {}).get("humanSubjectReviewStatus", "")
         },
-        "DescriptionModule":
+        "descriptionModule":
             {
-                "BriefSummary": cds_data["descriptionModule"]["briefSummary"],
-                "DetailedDescription": cds_data.get("descriptionModule", {}).get("detailedDescription", ""),
+                "briefSummary": cds_data["descriptionModule"]["briefSummary"],
+                "detailedDescription": cds_data.get("descriptionModule", {}).get("detailedDescription", ""),
 
              },
-        "ConditionsModule": {
-            "ConditionList": [
+        "conditionsModule": {
+            "conditionList": [
                 {
-                    "ConditionName": cnd,
-                    "ConditionIdentifier": {
-                        "ConditionClassificationCode":"",
-                        "ConditionScheme": "",
-                        "SchemeURI": "",
-                        "ConditionURI": "",
+                    "conditionName": cnd,
+                    "conditionIdentifier": {
+                        "conditionClassificationCode":"",
+                        "conditionScheme": "",
+                        "schemeURI": "",
+                        "conditionURI": "",
                     },
                  } for cnd in conditions],
-            "KeywordList": [
-                {"KeywordValue": kw}
+            "keywordList": [
+                {
+                    "keywordValue": kw,
+                    "keywordIdentifier": "",
+                 }
                 for kw in cds_data.get("conditionsModule", {}).get("keywords", [])
             ],
         },
-        "DesignModule": {
-            "StudyType": design.get("studyType", ""),
-            "DesignInfo": design.get("designInfo", ""),
-            "DesignTimePerspectiveList": "",
-            "EnrollmentInfo": design.get("enrollmentInfo", ""),
+        "designModule": {
+            "studyType": design.get("studyType", ""),
+            "designInfo": design.get("designInfo", ""),
+            "designTimePerspectiveList": "",
+            "enrollmentInfo": design.get("enrollmentInfo", ""),
             # TODO finish all design types
         },
         "armsInterventionsModule": {
-            "ArmGroupList": [
-                {"ArmGroupLabel": a.get("label", ""),
-                 "ArmGroupType": a.get("type", ""),
-                 "ArmGroupDescription": a.get("description", ""),
-                 "ArmGroupInterventionList": a.get("interventionNames", [])}
+            "armGroupList": [
+                {"armGroupLabel": a.get("label", ""),
+                 "armGroupType": a.get("type", ""),
+                 "armGroupDescription": a.get("description", ""),
+                 "armGroupInterventionList": a.get("interventionNames", [])}
                 for a in arms_int.get("armGroups", {})],
-            "InterventionList": [
+            "interventionList": [
                 {
-                 "InterventionType": i.get("type", ""),
-                 "InterventionName": i.get("name", ""),
-                 "InterventionDescription": i.get("description", ""),
-                 "InterventionArmGroupLabelList": i.get("armGroupLabels", ""),
-                 "InterventionOtherNameList": ""
+                 "interventionType": i.get("type", ""),
+                 "interventionName": i.get("name", ""),
+                 "interventionDescription": i.get("description", ""),
+                 "interventionOtherNameList": i.get("armGroupLabels", "")
                 } for i in arms_int.get("interventions", {})
         ],},
-        "EligibilityModule": {
-            "Gender": eligibility.get("sex", ""),
-            "GenderBased": eligibility.get("genderBased", ""),
-            "GenderDescription": eligibility.get("genderDescription", ""),
-            "MinimumAge": eligibility.get("minimumAge", ""),
-            "MaximumAge": eligibility.get("maximumAge", ""),
-            "HealthyVolunteers": eligibility.get("healthyVolunteers", ""),
-            "EligibilityCriteria": eligibility.get("eligibilityCriteria", ""),
-            "StudyPopulation": eligibility.get("studyPopulation", ""),
-            "SamplingMethod": eligibility.get("samplingMethod", ""),
+        "eligibilityModule": {
+            "sex": eligibility.get("sex", ""),
+            "genderBased": eligibility.get("genderBased", ""),
+            "genderDescription": eligibility.get("genderDescription", ""),
+            "minimumAge": eligibility.get("minimumAge", ""),
+            "maximumAge": eligibility.get("maximumAge", ""),
+            "healthyVolunteers": eligibility.get("healthyVolunteers", ""),
+            "eligibilityCriteria": eligibility.get("eligibilityCriteria", ""),
+            "studyPopulation": eligibility.get("studyPopulation", ""),
+            "samplingMethod": eligibility.get("samplingMethod", ""),
         },
-        "ContactsLocationsModule": {
-            "CentralContactList": [
+        "contactsLocationsModule": {
+            "centralContactList": [
                 {
-                    "CentralContactName": c.get("name", ""),
-                    "CentralContactAffiliation": c.get("role", ""),
-                    "CentralContactPhone": c.get("phone", ""),
-                    "CentralContactPhoneExt": c.get("phoneExt", ""),
-                    "CentralContactEMail": c.get("email", ""),
+                    "centralContactFirstName": c.get("name", ""),
+                    "centralContactLastName": c.get("name", ""),
+                    "centralContactDegree": "",
+                    "centralContactIdentifier": [],
+                    "centralContactAffiliation": c.get("role", ""),
+                    "centralContactPhone": c.get("phone", ""),
+                    "centralContactPhoneExt": c.get("phoneExt", ""),
+                    "centralContactEMail": c.get("email", ""),
                  }
                 for c in contacts.get("centralContacts", [])],
-
-            "OverallOfficials": [
+            "overallOfficials": [
                 {
-                    "OverallOfficialName": c.get("name", ""),
-                    "OverallOfficialAffiliation": c.get("affiliation", ""),
-                    "OverallOfficialRole": c.get("role", ""),
+                    "overallOfficialFirstName": c.get("name", ""),
+                    "overallOfficialLastName": c.get("name", ""),
+                    "overallOfficialDegree": "",
+                    "overallOfficialIdentifier": "",
+                    "overallOfficialAffiliation": c.get("affiliation", ""),
+                    "overallOfficialRole": c.get("role", ""),
                 }
                 for c in contacts.get("overallOfficials", [])],
-            "LocationList": [
+            "locationList": [
                 {
-                    "LocationFacility": c.get("facility", ""),
-                    "LocationStatus": c.get("status", ""),
-                    "LocationCity": c.get("city", ""),
-                    "LocationState": c.get("state", ""),
-                    "LocationZip": c.get("zip", ""),
-                    "LocationCountry": c.get("county", ""),
-                    "LocationContactList": c.get("contactList", ""),
+                    "locationFacility": c.get("facility", ""),
+                    "locationStatus": c.get("status", ""),
+                    "locationCity": c.get("city", ""),
+                    "locationState": c.get("state", ""),
+                    "locationZip": c.get("zip", ""),
+                    "locationCountry": c.get("county", ""),
+                    "locationContactList": c.get("contactList", ""),
                 }
                 for c in contacts.get("locations", [])],
         },
-        "IPDSharingStatementModule": {
-            "IPDSharing": ipd.get("ipdSharing", "").capitalize(),
-            "IPDSharingDescription": ipd.get("ipdSharingDescription", ""),
-            "IPDSharingInfoTypeList": ipd.get("ipdSharingInfoTypeList", ""),
-            "IPDSharingTimeFrame": ipd.get("ipdSharingTimeFrame", ""),
-            "IPDSharingAccessCriteria": ipd.get("ipdSharingAccessCriteria", ""),
-            "IPDSharingURL": ipd.get("ipdSharingURL", ""),
-
-        },
-        "ReferencesModule": {
-            "ReferenceList": [],
-            "SeeAlsoLinkList": [],
-            "AvailIPDList": [],
-        },
     }
 
-    if not validate.validate_dataset_description(data):
-        print("Dataset description is invalid.")
-        raise ValueError("Invalid input data")
+    # if not validate.validate_dataset_description(data):
+    #     print("Dataset description is invalid.")
+    #     raise ValueError("Invalid input data")
 
-    StudyType = data["DesignModule"]["StudyType"]
-
-    if StudyType == "Interventional":
-        if "TargetDuration" in data["DesignModule"]:
-            del data["DesignModule"]["TargetDuration"]
-
-        if "NumberGroupsCohorts" in data["DesignModule"]:
-            del data["DesignModule"]["NumberGroupsCohorts"]
-
-        if "BioSpec" in data["DesignModule"]:
-            del data["DesignModule"]["BioSpec"]
-
-        if "StudyPopulation" in data["EligibilityModule"]:
-            del data["EligibilityModule"]["StudyPopulation"]
-
-        if "SamplingMethod" in data["EligibilityModule"]:
-            del data["EligibilityModule"]["SamplingMethod"]
-
-    if StudyType == "Observational":
-        if "PhaseList" in data["DesignModule"]:
-            del data["DesignModule"]["PhaseList"]
-
-        if "NumberArms" in data["DesignModule"]:
-            del data["DesignModule"]["NumberArms"]
-
-        ArmGroupList = data["ArmsInterventionsModule"]["ArmGroupList"]
-
-        for ArmGroup in ArmGroupList:
-            if "ArmGroupType" in ArmGroup:
-                del ArmGroup["ArmGroupType"]
-
-            if "ArmGroupInterventionList" in ArmGroup:
-                del ArmGroup["ArmGroupInterventionList"]
-
-        if "HealthyVolunteers" in data["EligibilityModule"]:
-            del data["EligibilityModule"]["HealthyVolunteers"]
+    # StudyType = data["DesignModule"]["StudyType"]
     #
+    # if StudyType == "Interventional":
+    #     if "TargetDuration" in data["DesignModule"]:
+    #         del data["DesignModule"]["TargetDuration"]
+    #
+    #     if "NumberGroupsCohorts" in data["DesignModule"]:
+    #         del data["DesignModule"]["NumberGroupsCohorts"]
+    #
+    #     if "BioSpec" in data["DesignModule"]:
+    #         del data["DesignModule"]["BioSpec"]
+    #
+    #     if "StudyPopulation" in data["EligibilityModule"]:
+    #         del data["EligibilityModule"]["StudyPopulation"]
+    #
+    #     if "SamplingMethod" in data["EligibilityModule"]:
+    #         del data["EligibilityModule"]["SamplingMethod"]
+    #
+    # if StudyType == "Observational":
+    #     if "PhaseList" in data["DesignModule"]:
+    #         del data["DesignModule"]["PhaseList"]
+    #
+    #     if "NumberArms" in data["DesignModule"]:
+    #         del data["DesignModule"]["NumberArms"]
+    #
+    #     ArmGroupList = data["ArmsInterventionsModule"]["ArmGroupList"]
+    #
+    #     for ArmGroup in ArmGroupList:
+    #         if "ArmGroupType" in ArmGroup:
+    #             del ArmGroup["ArmGroupType"]
+    #
+    #         if "ArmGroupInterventionList" in ArmGroup:
+    #             del ArmGroup["ArmGroupInterventionList"]
+    #
+    #     if "HealthyVolunteers" in data["EligibilityModule"]:
+    #         del data["EligibilityModule"]["HealthyVolunteers"]
+    # #
     # if file_type == "json":
     #     try:
     #         with open(file_path, "w", encoding="utf8") as f:
@@ -248,10 +250,10 @@ def fetch_the_clinical_trials_data(identifier):
     # elif file_type not in ["xlsx", "csv"]:
     #     print("File type is invalid.")
     #     raise ValueError("Invalid file type")
-    file_name = f"clinical_study_description_{identifier}.json"
-    with open(file_name, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4)
-    print(f"Saved study description to: {file_name}")
+    # file_name = f"clinical_study_description_{identifier}.json"
+    # with open(file_name, "w", encoding="utf-8") as f:
+    #     json.dump(data, f, indent=4)
+    # print(f"Saved study description to: {file_name}")
     print(data, "kkk")
     return data
 
