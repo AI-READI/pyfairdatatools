@@ -2,7 +2,7 @@ import re
 import requests
 import json
 from . import validate
-import validate
+# import validate
 
 
 def fetch_the_clinical_trials_data(identifier):
