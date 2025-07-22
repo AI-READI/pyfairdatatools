@@ -1,7 +1,7 @@
 import re
 import requests
 import json
-import validate
+from . import validate
 
 def fetch_the_clinical_trials_data(identifier):
     if not (isinstance(identifier, str) and re.match(r"^NCT\d{8}$", identifier.strip())):
