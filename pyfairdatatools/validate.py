@@ -113,6 +113,7 @@ def validate_study_description(data):  # sourcery skip: extract-method, low-code
         studyType = data["designModule"]["studyType"]
 
         if studyType == "Interventional":
+
             armGroupList = data["armsInterventionsModule"]["armGroupList"]
 
             for armGroup in armGroupList:
@@ -121,8 +122,31 @@ def validate_study_description(data):  # sourcery skip: extract-method, low-code
                         "armGroupType is required is required for interventional studies."  # pylint: disable=line-too-long
                     )
                     return False
+            if "targetDuration" in data["designModule"]:
+                del data["designModule"]["targetDuration"]
+
+            if "numberGroupsCohorts" in data["designModule"]:
+                del data["designModule"]["numberGroupsCohorts"]
+
+            if "bioSpec" in data["designModule"]:
+                del data["designModule"]["bioSpec"]
+
+            if "studyPopulation" in data["eligibilityModule"]:
+                del data["eligibilityModule"]["studyPopulation"]
+
+            if "samplingMethod" in data["eligibilityModule"]:
+                del data["eligibilityModule"]["SamplingMethod"]
 
         elif studyType == "Observational":
+            if "phaseList" in data["designModule"]:
+                del data["designModule"]["phaseList"]
+
+            if "numberArms" in data["designModule"]:
+                del data["designModule"]["numberArms"]
+
+            if "isPatientRegistry" in data["designModule"]:
+                del data["designModule"]["isPatientRegistry"]
+
             # check if the StudyPopulation key exists and is not empty
             if "studyPopulation" not in data["eligibilityModule"]:
                 print("studyPopulation is required for observational studies.")
@@ -140,6 +164,7 @@ def validate_study_description(data):  # sourcery skip: extract-method, low-code
             if "samplingMethod" not in data["eligibilityModule"]:
                 print("samplingMethod is required for observational studies.")
                 return False
+            
 
         if (
             "centralContactList" not in data["contactsLocationsModule"]

@@ -1,8 +1,8 @@
 import re
 import requests
 import json
-from . import validate
-# import validate
+# from . import validate
+import validate
 
 
 def fetch_the_clinical_trials_data(identifier):
@@ -196,14 +196,11 @@ def fetch_the_clinical_trials_data(identifier):
                 for c in contacts.get("locations", [])],
         },
     }
-    #
-    # if not validate.validate_study_description(data):
-    #     print("Dataset description is invalid.")
-    #     raise ValueError("Invalid input data")
 
-    # elif file_type not in ["xlsx", "csv"]:
-    #     print("File type is invalid.")
-    #     raise ValueError("Invalid file type")
+    if not validate.validate_study_description(data):
+        print("Dataset description is invalid.")
+        raise ValueError("Invalid input data")
+
     file_name = f"clinical_study_description_{identifier}.json"
     with open(file_name, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
@@ -212,4 +209,4 @@ def fetch_the_clinical_trials_data(identifier):
     return data
 
 
-# fetch_the_clinical_trials_data("NCT02901184")
+fetch_the_clinical_trials_data("NCT02901184")
