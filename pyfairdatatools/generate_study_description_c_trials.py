@@ -40,7 +40,7 @@ def fetch_the_clinical_trials_data(identifier):
     collaborators = cds_data.get("sponsorCollaboratorsModule", {})
 
     data = {
-        "schema": "",
+        # "schema": "",
         "identificationModule": {
             "officialTitle":identification.get("officialTitle", ""),
             "acronym": "",
@@ -197,15 +197,17 @@ def fetch_the_clinical_trials_data(identifier):
         },
     }
 
-    if not validate.validate_study_description(data):
-        print("Dataset description is invalid.")
-        raise ValueError("Invalid input data")
+    try:
+        if not validate.validate_study_description(data):
+            print("Study description is invalid.")
+    except ValueError as ve:
+        print("Validation errors:")
+        raise
 
     file_name = f"clinical_study_description_{identifier}.json"
     with open(file_name, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
     print(f"Saved study description to: {file_name}")
-    print(data, "kkk")
     return data
 
 
