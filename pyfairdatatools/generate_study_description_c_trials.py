@@ -1,8 +1,8 @@
 import re
 import requests
 import json
-# from . import validate
-import validate
+from . import validate
+# import validate
 
 
 def fetch_the_clinical_trials_data(identifier):
@@ -211,4 +211,4 @@ def fetch_the_clinical_trials_data(identifier):
     return data
 
 
-fetch_the_clinical_trials_data("NCT02901184")
+# fetch_the_clinical_trials_data("NCT02901184")
