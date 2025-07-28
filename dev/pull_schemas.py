@@ -5,11 +5,11 @@ import requests
 
 schema_paths = [
     {
-        "sourceURL": "https://raw.githubusercontent.com/AI-READI/cds-specification/main/docs/public/schemas/dataset_description.schema.json",  # noqa: E501 # pylint: disable=line-too-long
+        "sourceURL": "https://raw.githubusercontent.com/AI-READI/cds-specification/main/docs/schemas/dataset_description.schema.json",  # noqa: E501 # pylint: disable=line-too-long
         "destinationFileName": "dataset_description.schema.json",
     },
     {
-        "sourceURL": "https://raw.githubusercontent.com/AI-READI/cds-specification/main/docs/public/schemas/study_description.schema.json",  # noqa: E501 # pylint: disable=line-too-long
+        "sourceURL": "https://raw.githubusercontent.com/AI-READI/cds-specification/main/docs/schemas/study_description.schema.json",  # noqa: E501 # pylint: disable=line-too-long
         "destinationFileName": "study_description.schema.json",
     },
     {
