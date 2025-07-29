@@ -184,8 +184,8 @@ def fetch_the_clinical_trials_data(ct_identifier):
                 for c in contacts.get("centralContacts", [])],
             "overallOfficialList": [
                 {
-                    "overallOfficialFirstName": c.get("name", ""),
-                    "overallOfficialLastName": c.get("name", ""),
+                    "overallOfficialFirstName": c.get("name", "").split()[0] if c.get("name") else "",
+                    "overallOfficialLastName": " ".join(c.get("name", "").split()[1:]) if c.get("name") else "",
                     "overallOfficialAffiliation": {
                         "overallOfficialAffiliationName": c.get("name", ""),
                         "overallOfficialAffiliationIdentifier": c.get("identifier", "")
@@ -233,11 +233,14 @@ def fetch_the_clinical_trials_data(ct_identifier):
     # Fix optional responsible party type for the sponsors
     rp = collaborators.get("responsibleParty", {})
     rpd = data["sponsorCollaboratorsModule"]["responsibleParty"]
-    for k, v in [
-        ("investigatorFullName", ["responsiblePartyInvestigatorFirstName", "responsiblePartyInvestigatorLastName"]),
-        ("investigatorTitle", "responsiblePartyInvestigatorTitle")]:
-        x = rp.get(k)
-        if x: [rpd.update({i: x}) for i in (v if isinstance(v, list) else [v])]
+    # Split full name
+    name = rp.get("investigatorFullName", "").strip().split()
+    if name:
+        rpd["responsiblePartyInvestigatorFirstName"] = name[0]
+        rpd["responsiblePartyInvestigatorLastName"] = " ".join(name[1:])
+    # Title
+    if rp.get("investigatorTitle"):
+        rpd["responsiblePartyInvestigatorTitle"] = rp["investigatorTitle"]
 
     # Affiliation object handling
     aff = rp.get("investigatorAffiliation")
