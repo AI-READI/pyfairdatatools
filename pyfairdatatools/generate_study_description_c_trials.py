@@ -1,7 +1,5 @@
 import requests
 import json
-# from . import validate
-import validate
 import re
 
 
