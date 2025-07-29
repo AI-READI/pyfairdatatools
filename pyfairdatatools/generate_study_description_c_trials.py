@@ -1,8 +1,8 @@
 import re
 import requests
 import json
-# from . import validate
-import validate
+from . import validate
+# import validate
 import re
 
 def fetch_the_clinical_trials_data(identifier):
@@ -104,8 +104,7 @@ def fetch_the_clinical_trials_data(identifier):
             "isFDARegulatedDevice": bool_to_yes_no(oversight.get("isFdaRegulatedDevice")),
             "humanSubjectReviewStatus": oversight.get("humanSubjectReviewStatus", "Request not yet submitted")
         },
-        "descriptionModule":
-            {
+        "descriptionModule": {
                 "briefSummary": cds_data["descriptionModule"]["briefSummary"],
 
              },
@@ -179,12 +178,15 @@ def fetch_the_clinical_trials_data(identifier):
                     "centralContactAffiliation": c.get("role", ""),
                     "centralContactEMail": c.get("email", ""),
                  }
-                for c in contacts.get("centralContacts", [{}])],
+                for c in contacts.get("centralContacts", [])],
             "overallOfficialList": [
                 {
                     "overallOfficialFirstName": c.get("name", ""),
                     "overallOfficialLastName": c.get("name", ""),
-                    "overallOfficialAffiliation": c.get("affiliation", ""),
+                    "overallOfficialAffiliation": {
+                        "overallOfficialAffiliationName": c.get("name", ""),
+                        "overallOfficialAffiliationIdentifier": c.get("identifier", "")
+                    },
                     "overallOfficialRole": c.get("role", ""),
 
                 }
@@ -192,7 +194,7 @@ def fetch_the_clinical_trials_data(identifier):
             "locationList": [
                 {
                     "locationFacility": c.get("facility", ""),
-                    "locationStatus": c.get("status", ""),
+                    "locationStatus": c.get("status", "Not yet recruiting"),
                     "locationCity": c.get("city", ""),
                     "locationCountry": c.get("county", ""),
 
@@ -201,7 +203,7 @@ def fetch_the_clinical_trials_data(identifier):
                     "locationContactList": c.get("contactList", ""),
                     "locationIdentifier": c.get("identifier", ""),
                 }
-                for c in contacts.get("locations", [{}])],
+                for c in contacts.get("locations", [])],
         },
     }
     # Handling optional leadsponsor fields
@@ -323,6 +325,25 @@ def fetch_the_clinical_trials_data(identifier):
                      "PROBABILITY_SAMPLE": "Probability Sample"}.get(v, v)
             data["eligibilityModule"][k] = v
 
+    # convert an overall officials type
+    oo_list = data["contactsLocationsModule"]["overallOfficialList"]
+    if not oo_list:
+        data["contactsLocationsModule"].pop("overallOfficialList", None)
+    else:
+        role_map = {
+            "PRINCIPAL_INVESTIGATOR": "Study Principal Investigator",
+            "CHAIR": "Study Chair",
+            "DIRECTOR": "Study Director"
+        }
+
+        for o in oo_list:
+            raw_role = o.get("overallOfficialRole", "").upper()
+            o["overallOfficialRole"] = role_map.get(raw_role, "Study Principal Investigator")
+
+    cc_list = data["contactsLocationsModule"]["centralContactList"]
+    if not cc_list:
+        data["contactsLocationsModule"].pop("centralContactList", None)
+
     try:
         if not validate.validate_study_description(data):
             print("Study metadata field(s) is invalid.")
@@ -336,6 +357,3 @@ def fetch_the_clinical_trials_data(identifier):
     print(f"Saved study description to: {file_name}")
     return data
 
-
-fetch_the_clinical_trials_data("NCT06002048")
-#  NCT04091373 NCT06002048
