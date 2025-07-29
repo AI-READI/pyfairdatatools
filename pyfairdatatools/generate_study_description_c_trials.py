@@ -1,7 +1,7 @@
 import requests
 import json
-from . import validate
-# import validate
+# from . import validate
+import validate
 import re
 
 
@@ -352,5 +352,3 @@ def fetch_the_clinical_trials_data(ct_identifier):
         json.dump(data, f, indent=4)
     print(f"Saved study description to: {file_name}")
     return data
-
-fetch_the_clinical_trials_data(ct_identifier="NCT06002048")
