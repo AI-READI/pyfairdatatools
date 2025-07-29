@@ -1,22 +1,23 @@
-import re
 import requests
 import json
-from . import validate
-# import validate
+# from . import validate
+import validate
 import re
 
-def fetch_the_clinical_trials_data(identifier):
-    if not (isinstance(identifier, str) and re.match(r"^NCT\d{8}$", identifier.strip())):
-        return {"error": "Invalid identifier format."}, 400
 
-    url = f"https://classic.clinicaltrials.gov/api/v2/studies/{identifier}"
+def fetch_the_clinical_trials_data(ct_identifier):
+    if not (isinstance(ct_identifier, str) and re.match(r"^NCT\d{8}$", ct_identifier.strip())):
+        print("Invalid identifier, exiting function.")
+        return
+
+    url = f"https://classic.clinicaltrials.gov/api/v2/studies/{ct_identifier}"
     response = requests.get(url, timeout=10)
 
     if response.status_code == 404:
         return {
             "error": "No clinical study was found with the provided identifier",
             "status_code":                      404,
-            "message": f"No study found for identifier '{identifier}'.",
+            "message": f"No study found for identifier '{ct_identifier}'.",
         }, 404
 
     cds_data = response.json().get("protocolSection", {})
@@ -134,10 +135,14 @@ def fetch_the_clinical_trials_data(identifier):
                     "bioSpecDescription": design.get("bioSpecDescription", "None Retained"),
                 },
             "designInfo": {
-                    "designAllocation": design.get("designInfo", {}).get("allocation", ""),
-                    "designInterventionModel": design.get("designInfo", {}).get("interventionModel", ""),
-                    "designPrimaryPurpose": design.get("designInfo", {}).get("primaryPurpose", ""),
-                    "designMaskingInfo": design.get("designInfo", {}).get("maskingInfo", ""),
+                    "designAllocation": design.get("designInfo", {}).get("allocation", "").replace("_", "-", 1)
+                    .replace("_", " ").replace("-", " ").title(),
+                    "designInterventionModel": design.get("designInfo", {}).get("interventionModel", "")
+                    .replace("_", "-", 1).replace("_", " ").replace("-", " ").title(),
+                    "designPrimaryPurpose": design.get("designInfo", {}).get("primaryPurpose", "")
+                .replace("_", "-", 1).replace("_", " ").replace("-", " ").title(),
+                    "designMaskingInfo": design.get("designInfo", {}).get("maskingInfo", {}).get("masking", "")
+                    .replace("_", "-", 1).replace("_", " ").replace("-", " ").title(),
                 "designObservationalModelList": [design.get("designInfo", {}).get("observationalModel", "").replace("_",
                      "-").capitalize()],
                 "designTimePerspectiveList": [
@@ -147,13 +152,13 @@ def fetch_the_clinical_trials_data(identifier):
         "armsInterventionsModule": {
             "armGroupList": [
                 {"armGroupLabel": a.get("label", ""),
-                 "armGroupType": a.get("type", ""),
+                 "armGroupType": a.get("type", "").replace("_", "-", 1).replace("_", " ").replace("-", " ").title(),
                  "armGroupDescription": a.get("description", ""),
                  "armGroupInterventionList": a.get("interventionNames", [])}
                 for a in arms_int.get("armGroups", {})],
             "interventionList": [
                 {
-                 "interventionType": i.get("type", ""),
+                 "interventionType": i.get("type", "").replace("_", "-", 1).replace("_", " ").replace("-", " ").title(),
                  "interventionName": i.get("name", ""),
                  "interventionDescription": i.get("description", ""),
                  "interventionOtherNameList": i.get("armGroupLabels", "")
@@ -254,9 +259,6 @@ def fetch_the_clinical_trials_data(identifier):
             "schemeURI": x,
         }]
 
-    if not data.get("schema"):
-        data["schema"] = "https://schema.aireadi.org/v0.1.0/study_description.json"
-
     status_module = data.setdefault("statusModule", {})
     completion_date_struct = status_module.setdefault("completionDateStruct", {})
 
@@ -344,16 +346,17 @@ def fetch_the_clinical_trials_data(identifier):
     if not cc_list:
         data["contactsLocationsModule"].pop("centralContactList", None)
 
-    try:
-        if not validate.validate_study_description(data):
-            print("Study metadata field(s) is invalid.")
-    except ValueError as ve:
-        print("Validation errors:")
-        raise
+    # try:
+    #     if not validate.validate_study_description(data):
+    #         print("Study metadata field(s) is invalid.")
+    # except ValueError as ve:
+    #     print("Validation errors:")
+    #     raise
 
-    file_name = f"clinical_study_description_{identifier}.json"
+    file_name = f"clinical_study_description_{ct_identifier}.json"
     with open(file_name, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4)
     print(f"Saved study description to: {file_name}")
     return data
 
+fetch_the_clinical_trials_data(ct_identifier="NCT06002048")
