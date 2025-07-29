@@ -1,8 +1,8 @@
 import re
 import requests
 import json
-from . import validate
-# import validate
+# from . import validate
+import validate
 
 
 def fetch_the_clinical_trials_data(identifier):
@@ -38,9 +38,21 @@ def fetch_the_clinical_trials_data(identifier):
     eligibility = cds_data.get("eligibilityModule", {})
     contacts = cds_data.get("contactsLocationsModule", {})
     collaborators = cds_data.get("sponsorCollaboratorsModule", {})
+    oversight = cds_data.get("oversightModule", {})
+
+    def bool_to_yes_no(value):
+        return "Yes" if value is True else "No" if value is False else ""
+
+    full_criteria = eligibility.get("eligibilityCriteria", "").strip()
+    inclusion = exclusion = ""
+
+    if "Inclusion Criteria:" in full_criteria:
+        inclusion = full_criteria.split("Inclusion Criteria:")[-1].split("Exclusion Criteria:")[0].strip()
+    if "Exclusion Criteria:" in full_criteria:
+        exclusion = full_criteria.split("Exclusion Criteria:")[-1].strip()
 
     data = {
-        # "schema": "",
+        "schema": "",
         "identificationModule": {
             "officialTitle":identification.get("officialTitle", ""),
             "acronym": "",
@@ -55,45 +67,53 @@ def fetch_the_clinical_trials_data(identifier):
                 "secondaryIdType": s.get("type", ""),
                 "secondaryIdLink": s.get("link", ""),
                 "secondaryIdDomain": "",
-            } for s in identification.get("secondaryIdInfos", [])],},
+            } for s in identification.get("secondaryIdInfos", [{}])],},
         "statusModule": {
             "overallStatus": status_map.get(raw_status, raw_status.replace("_", " ").title()),
-            "startDateStruct": cds_data.get("statusModule", {}).get("startDateStruct", {}).get("date", ""),
-            "whyStopped": cds_data.get("statusModule", {}).get("whyStopped", {}).get("date", ""),
-            "completionDateStruct": cds_data.get("statusModule", {}).get("completionDateStruct", {}).get("date", ""),
+            "startDateStruct": {
+               "startDate": cds_data.get("statusModule", {}).get("startDateStruct", {}).get("date", ""),
+                "startDateType": cds_data.get("statusModule", {}).get("startDateStruct", {}).get("type", "").capitalize()
+            },
+            "completionDateStruct": {
+               "completionDate" : cds_data.get("statusModule", {}).get("completionDateStruct", {}).get("date", ""),
+               "completionDateType" : cds_data.get("statusModule", {}).get("completionDateStruct", {}).get("type", "").capitalize(),
+            },
         },
         "sponsorCollaboratorsModule": {
             "leadSponsor": {
-                "LeadSponsorName": collaborators.get("leadSponsor", {}).get("name", "")
+                "leadSponsorName": collaborators.get("leadSponsor", {}).get("name", ""),
+                "leadSponsorIdentifier": collaborators.get("leadSponsor", {}).get("identifier", "")
             },
-            "responsiblePartyInvestigatorFirstName": collaborators.get("responsibleParty", {}).get(
-                "investigatorFirstName", ""),
-            "responsiblePartyInvestigatorLastName": collaborators.get("responsibleParty", {}).get(
-                "investigatorLastName", ""),
-            "responsiblePartyInvestigatorTitle": collaborators.get("responsibleParty", {}).get("investigatorTitle", ""),
-            "responsiblePartyInvestigatorIdentifier": collaborators.get("responsibleParty", {}).get(
-                "investigatorIdentifier", ""),
-            "responsiblePartyInvestigatorAffiliation": collaborators.get("responsibleParty", {}).get(
-                "investigatorAffiliation", ""),
-            "responsibleParty": collaborators.get("responsibleParty", {}).get("type", ""),
+            "responsibleParty": {
+                "responsiblePartyType": collaborators.get("responsibleParty", {}).get("type", "")
+                .replace("_", " ").title(),
+                # "responsiblePartyInvestigatorFirstName": collaborators.get("responsibleParty", {}).get(
+                #     "investigatorFullName", ""),
+                # "responsiblePartyInvestigatorLastName": collaborators.get("responsibleParty", {}).get(
+                #     "investigatorFullName", ""),
+                # "responsiblePartyInvestigatorTitle": collaborators.get("responsibleParty", {}).get("investigatorTitle", ""),
+                # "responsiblePartyInvestigatorIdentifier": collaborators.get("responsibleParty", {}).get(
+                #     "investigatorIdentifier", ""),
+                # "responsiblePartyInvestigatorAffiliation": collaborators.get("responsibleParty", {}).get(
+                #     "investigatorAffiliation", ""),
+            },
             "collaboratorList": [
                 {
                     "collaboratorName": c.get("name", ""),
                     "collaboratorNameIdentifier": c.get("identifier", ""),
                 }
-                for c in collaborators.get("collaboratorList", [])
+                for c in collaborators.get("collaborators", [{}])
             ],
         },
         "oversightModule": {
-            "oversightHasDMC": cds_data.get("oversightModule", {}).get("oversightHasDmc", ""),
-            "isFDARegulatedDrug": cds_data.get("oversightModule", {}).get("isFdaRegulatedDrug", ""),
-            "isFDARegulatedDevice": cds_data.get("oversightModule", {}).get("isFdaRegulatedDevice", ""),
-            "humanSubjectReviewStatus": cds_data.get("oversightModule", {}).get("humanSubjectReviewStatus", "")
+            "oversightHasDMC": bool_to_yes_no(oversight.get("oversightHasDmc")),
+            "isFDARegulatedDrug": bool_to_yes_no(oversight.get("isFdaRegulatedDrug")),
+            "isFDARegulatedDevice": bool_to_yes_no(oversight.get("isFdaRegulatedDevice")),
+            "humanSubjectReviewStatus": oversight.get("humanSubjectReviewStatus", "Request not yet submitted")
         },
         "descriptionModule":
             {
                 "briefSummary": cds_data["descriptionModule"]["briefSummary"],
-                "detailedDescription": cds_data.get("descriptionModule", {}).get("detailedDescription", ""),
 
              },
         "conditionsModule": {
@@ -107,32 +127,20 @@ def fetch_the_clinical_trials_data(identifier):
                         "conditionURI": "",
                     },
                  } for cnd in conditions],
-            "keywordList": [
-                {
-                    "keywordValue": kw,
-                    "keywordIdentifier": "",
-                 }
-                for kw in cds_data.get("conditionsModule", {}).get("keywords", [])
-            ],
         },
         "designModule": {
-            "studyType": design.get("studyType", ""),
+            "studyType": design.get("studyType", "").capitalize(),
             "phaseList": design.get("phases", []),
-            "numberArms": design.get("numberArms", ""),
+            "numberArms": design.get("numberArms", "0"),
             "enrollmentInfo": {
                 "enrollmentCount": design.get("enrollmentInfo", {}).get("count", ""),
                 "enrollmentType": design.get("enrollmentInfo", {}).get("type", "")
             },
-            "isPatientRegistry": design.get("patientRegistry", False),
-            "designInfo": {
-                "designObservationalModelList": design.get("designInfo", {}).get("observationalModel", ""),
-                "designTimePerspectiveList": design.get("designInfo", {}).get("timePerspective", "")
-            },
+            "isPatientRegistry":  bool_to_yes_no(design.get("patientRegistry")),
             "bioSpec": {
                     "bioSpecRetention": design.get("bioSpecRetention", ""),
                     "bioSpecDescription": design.get("bioSpecDescription", ""),
                 },
-            "targetDuration": "",
         },
         "armsInterventionsModule": {
             "armGroupList": [
@@ -147,55 +155,93 @@ def fetch_the_clinical_trials_data(identifier):
                  "interventionName": i.get("name", ""),
                  "interventionDescription": i.get("description", ""),
                  "interventionOtherNameList": i.get("armGroupLabels", "")
-                } for i in arms_int.get("interventions", {})
+                } for i in arms_int.get("interventions", [{}])
         ],},
         "eligibilityModule": {
-            "sex": eligibility.get("sex", ""),
-            "genderBased": eligibility.get("genderBased", ""),
-            "genderDescription": eligibility.get("genderDescription", ""),
+            "sex": eligibility.get("sex", "").capitalize(),
+            "genderBased": eligibility.get("genderBased", "No"),
             "minimumAge": eligibility.get("minimumAge", ""),
             "maximumAge": eligibility.get("maximumAge", ""),
-            "healthyVolunteers": eligibility.get("healthyVolunteers", ""),
-            "eligibilityCriteria": eligibility.get("eligibilityCriteria", ""),
-            "studyPopulation": eligibility.get("studyPopulation", ""),
-            "samplingMethod": eligibility.get("samplingMethod", ""),
+            "healthyVolunteers": bool_to_yes_no(eligibility.get("healthyVolunteers")),
+            "eligibilityCriteria": {
+                "eligibilityCriteriaInclusion": inclusion,
+                "eligibilityCriteriaExclusion": exclusion,
+            },
         },
         "contactsLocationsModule": {
             "centralContactList": [
                 {
                     "centralContactFirstName": c.get("name", ""),
                     "centralContactLastName": c.get("name", ""),
-                    "centralContactDegree": "",
-                    "centralContactIdentifier": [],
                     "centralContactAffiliation": c.get("role", ""),
-                    "centralContactPhone": c.get("phone", ""),
-                    "centralContactPhoneExt": c.get("phoneExt", ""),
                     "centralContactEMail": c.get("email", ""),
                  }
-                for c in contacts.get("centralContacts", [])],
-            "overallOfficials": [
+                for c in contacts.get("centralContacts", [{}])],
+            "overallOfficialList": [
                 {
                     "overallOfficialFirstName": c.get("name", ""),
                     "overallOfficialLastName": c.get("name", ""),
-                    "overallOfficialDegree": "",
-                    "overallOfficialIdentifier": "",
                     "overallOfficialAffiliation": c.get("affiliation", ""),
                     "overallOfficialRole": c.get("role", ""),
+
                 }
-                for c in contacts.get("overallOfficials", [])],
+                for c in contacts.get("overallOfficials", [{}])],
             "locationList": [
                 {
                     "locationFacility": c.get("facility", ""),
                     "locationStatus": c.get("status", ""),
                     "locationCity": c.get("city", ""),
+                    "locationCountry": c.get("county", ""),
+
                     "locationState": c.get("state", ""),
                     "locationZip": c.get("zip", ""),
-                    "locationCountry": c.get("county", ""),
                     "locationContactList": c.get("contactList", ""),
+                    "locationIdentifier": c.get("identifier", ""),
                 }
-                for c in contacts.get("locations", [])],
+                for c in contacts.get("locations", [{}])],
         },
     }
+
+    if not data.get("schema"):
+        data["schema"] = "https://schema.aireadi.org/v0.1.0/study_description.json"
+
+    status_module = data.setdefault("statusModule", {})
+    completion_date_struct = status_module.setdefault("completionDateStruct", {})
+
+    if completion_date_struct.get("completionDateType") == "Estimated":
+        completion_date_struct["completionDateType"] = "Anticipated"
+
+    if data.get("statusModule", {}).get("completionDateType") == "Estimated":
+        data["statusModule"]["completionDateType"] = "Anticipated"
+
+    if "whyStopped" in cds_data.get("statusModule", {}):
+        data.setdefault("statusModule", {})["whyStopped"] = cds_data["statusModule"]["whyStopped"]
+
+    if "keywordList" in cds_data.get("conditionsModule", {}):
+        data.setdefault("conditionsModule", {})["keywords"] = cds_data["conditionsModule"]["keywordList"]
+
+    for d in ["detailedDescription"]:
+        if d in cds_data.get("descriptionModule", {}):
+            data.setdefault("descriptionModule", {})[d] = cds_data["descriptionModule"][d]
+
+    for d in ["targetDuration"]:
+        if d in design:
+            data["designModule"][d] = design[d]
+
+    fields = {
+        "Interventional": ["designMaskingInfo", "designPrimaryPurpose", "designInterventionModel", "designAllocation"],
+        "Observational": ["designObservationalModelList", "designTimePerspectiveList"]
+    }
+    for f in fields.get(data["designModule"]["studyType"], []):
+        data["designModule"].setdefault("designInfo", {}).setdefault(f, "")
+
+    for k in ["genderDescription", "studyPopulation", "samplingMethod"]:
+        if k in eligibility:
+            v = eligibility[k]
+            if k == "samplingMethod":
+                v = {"NON_PROBABILITY_SAMPLE": "Non-Probability Sample",
+                     "PROBABILITY_SAMPLE": "Probability Sample"}.get(v, v)
+            data["eligibilityModule"][k] = v
 
     try:
         if not validate.validate_study_description(data):
@@ -211,4 +257,5 @@ def fetch_the_clinical_trials_data(identifier):
     return data
 
 
-# fetch_the_clinical_trials_data("NCT02901184")
+fetch_the_clinical_trials_data("NCT04091373")
+#  NCT04091373 NCT06002048
