@@ -1,7 +1,7 @@
 import requests
 import json
-# from . import validate
-import validate
+from . import validate
+# import validate
 import re
 
 
@@ -346,12 +346,6 @@ def fetch_the_clinical_trials_data(ct_identifier):
     if not cc_list:
         data["contactsLocationsModule"].pop("centralContactList", None)
 
-    # try:
-    #     if not validate.validate_study_description(data):
-    #         print("Study metadata field(s) is invalid.")
-    # except ValueError as ve:
-    #     print("Validation errors:")
-    #     raise
 
     file_name = f"clinical_study_description_{ct_identifier}.json"
     with open(file_name, "w", encoding="utf-8") as f:
