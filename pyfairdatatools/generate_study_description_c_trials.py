@@ -3,7 +3,7 @@ import requests
 import json
 # from . import validate
 import validate
-
+import re
 
 def fetch_the_clinical_trials_data(identifier):
     if not (isinstance(identifier, str) and re.match(r"^NCT\d{8}$", identifier.strip())):
@@ -42,14 +42,18 @@ def fetch_the_clinical_trials_data(identifier):
 
     def bool_to_yes_no(value):
         return "Yes" if value is True else "No" if value is False else ""
-
+    #Assign criteria for the eligibility
     full_criteria = eligibility.get("eligibilityCriteria", "").strip()
-    inclusion = exclusion = ""
+    inclusion = []
+    exclusion = []
 
     if "Inclusion Criteria:" in full_criteria:
-        inclusion = full_criteria.split("Inclusion Criteria:")[-1].split("Exclusion Criteria:")[0].strip()
+        inclusion_text = full_criteria.split("Inclusion Criteria:")[-1].split("Exclusion Criteria:")[0].strip()
+        inclusion = [line.strip() for line in inclusion_text.splitlines() if line.strip()]
+
     if "Exclusion Criteria:" in full_criteria:
-        exclusion = full_criteria.split("Exclusion Criteria:")[-1].strip()
+        exclusion_text = full_criteria.split("Exclusion Criteria:")[-1].strip()
+        exclusion = [line.strip() for line in exclusion_text.splitlines() if line.strip()]
 
     data = {
         "schema": "",
@@ -58,16 +62,16 @@ def fetch_the_clinical_trials_data(identifier):
             "acronym": "",
             "orgStudyIdInfo": {
                 "orgStudyId":identification.get("orgStudyIdInfo", {}).get("id", ""),
-                "orgStudyIdType":identification.get("orgStudyIdType", {}).get("info", ""),
-                "orgStudyIdLink":identification.get("orgStudyIdLink", {}).get("link", ""),
-                "orgStudyIdDomain": ""
+                "orgStudyIdType":identification.get("orgStudyIdType", {}).get("info", "Other Identifier"),
+                "orgStudyIdDomain": identification.get("orgStudyIdDomain", {}).get("link", "clinicaltrials.gov")
             },
             "secondaryIdInfoList": [{
                 "secondaryId": s.get("id", ""),
                 "secondaryIdType": s.get("type", ""),
                 "secondaryIdLink": s.get("link", ""),
-                "secondaryIdDomain": "",
-            } for s in identification.get("secondaryIdInfos", [{}])],},
+                "secondaryIdDomain": s.get("domain", "nih.gov"),
+            } for s in identification.get("secondaryIdInfos", [])],
+        },
         "statusModule": {
             "overallStatus": status_map.get(raw_status, raw_status.replace("_", " ").title()),
             "startDateStruct": {
@@ -82,25 +86,14 @@ def fetch_the_clinical_trials_data(identifier):
         "sponsorCollaboratorsModule": {
             "leadSponsor": {
                 "leadSponsorName": collaborators.get("leadSponsor", {}).get("name", ""),
-                "leadSponsorIdentifier": collaborators.get("leadSponsor", {}).get("identifier", "")
             },
             "responsibleParty": {
                 "responsiblePartyType": collaborators.get("responsibleParty", {}).get("type", "")
                 .replace("_", " ").title(),
-                # "responsiblePartyInvestigatorFirstName": collaborators.get("responsibleParty", {}).get(
-                #     "investigatorFullName", ""),
-                # "responsiblePartyInvestigatorLastName": collaborators.get("responsibleParty", {}).get(
-                #     "investigatorFullName", ""),
-                # "responsiblePartyInvestigatorTitle": collaborators.get("responsibleParty", {}).get("investigatorTitle", ""),
-                # "responsiblePartyInvestigatorIdentifier": collaborators.get("responsibleParty", {}).get(
-                #     "investigatorIdentifier", ""),
-                # "responsiblePartyInvestigatorAffiliation": collaborators.get("responsibleParty", {}).get(
-                #     "investigatorAffiliation", ""),
             },
             "collaboratorList": [
                 {
                     "collaboratorName": c.get("name", ""),
-                    "collaboratorNameIdentifier": c.get("identifier", ""),
                 }
                 for c in collaborators.get("collaborators", [{}])
             ],
@@ -130,17 +123,27 @@ def fetch_the_clinical_trials_data(identifier):
         },
         "designModule": {
             "studyType": design.get("studyType", "").capitalize(),
-            "phaseList": design.get("phases", []),
+            "phaseList": [re.sub(r'(\d+)', r' \1', p).title() for p in design.get("phases", [])],
             "numberArms": design.get("numberArms", "0"),
             "enrollmentInfo": {
-                "enrollmentCount": design.get("enrollmentInfo", {}).get("count", ""),
-                "enrollmentType": design.get("enrollmentInfo", {}).get("type", "")
+                "enrollmentCount": str(design.get("enrollmentInfo", {}).get("count", "")),
+                "enrollmentType": design.get("enrollmentInfo", {}).get("type", "").capitalize(),
             },
             "isPatientRegistry":  bool_to_yes_no(design.get("patientRegistry")),
             "bioSpec": {
-                    "bioSpecRetention": design.get("bioSpecRetention", ""),
-                    "bioSpecDescription": design.get("bioSpecDescription", ""),
+                    "bioSpecRetention": design.get("bioSpecRetention", "None Retained"),
+                    "bioSpecDescription": design.get("bioSpecDescription", "None Retained"),
                 },
+            "designInfo": {
+                    "designAllocation": design.get("designInfo", {}).get("allocation", ""),
+                    "designInterventionModel": design.get("designInfo", {}).get("interventionModel", ""),
+                    "designPrimaryPurpose": design.get("designInfo", {}).get("primaryPurpose", ""),
+                    "designMaskingInfo": design.get("designInfo", {}).get("maskingInfo", ""),
+                "designObservationalModelList": [design.get("designInfo", {}).get("observationalModel", "").replace("_",
+                     "-").capitalize()],
+                "designTimePerspectiveList": [
+                    design.get("designInfo", {}).get("timePerspective", "").replace("_", "-").capitalize()]
+            },
         },
         "armsInterventionsModule": {
             "armGroupList": [
@@ -201,6 +204,53 @@ def fetch_the_clinical_trials_data(identifier):
                 for c in contacts.get("locations", [{}])],
         },
     }
+    # Handling optional leadsponsor fields
+    lead = collaborators.get("leadSponsor", {})
+    identifier = lead.get("identifier")
+
+    # convert an identification type
+    info_type_list = data["identificationModule"]["secondaryIdInfoList"]
+    if not info_type_list:
+        data["identificationModule"].pop("secondaryIdInfoList", None)
+    else:
+        for item in info_type_list:
+            if item.get("secondaryIdType") == "NIH":
+                item["secondaryIdType"] = "U.S. National Institutes of Health (NIH) Grant/Contract Award Number"
+
+    # Add optional sponsor identifier
+    if identifier:
+        data["leadSponsorIdentifier"] = {
+            "leadSponsorIdentifierValue": identifier.get("value", ""),
+            "leadSponsorIdentifierScheme": identifier.get("scheme", ""),
+            "schemeURI": identifier.get("scheme", ""),
+        }
+
+    # Fix optional responsible party type for the sponsors
+    rp = collaborators.get("responsibleParty", {})
+    rpd = data["sponsorCollaboratorsModule"]["responsibleParty"]
+    for k, v in [
+        ("investigatorFullName", ["responsiblePartyInvestigatorFirstName", "responsiblePartyInvestigatorLastName"]),
+        ("investigatorTitle", "responsiblePartyInvestigatorTitle")]:
+        x = rp.get(k)
+        if x: [rpd.update({i: x}) for i in (v if isinstance(v, list) else [v])]
+
+    # Affiliation object handling
+    aff = rp.get("investigatorAffiliation")
+    if aff:
+        rpd["responsiblePartyInvestigatorAffiliation"] = {
+            "responsiblePartyInvestigatorAffiliationName": aff,
+            **({"responsiblePartyInvestigatorAffiliationIdentifier": rp["investigatorAffiliationIdentifier"]}
+               if "investigatorAffiliationIdentifier" in rp else {})
+        }
+
+    # Identifier object
+    x = rp.get("investigatorIdentifier")
+    if x:
+        rpd["responsiblePartyInvestigatorIdentifier"] = [{
+            "responsiblePartyInvestigatorIdentifierValue": x,
+            "responsiblePartyInvestigatorIdentifierScheme": x,
+            "schemeURI": x,
+        }]
 
     if not data.get("schema"):
         data["schema"] = "https://schema.aireadi.org/v0.1.0/study_description.json"
@@ -211,8 +261,13 @@ def fetch_the_clinical_trials_data(identifier):
     if completion_date_struct.get("completionDateType") == "Estimated":
         completion_date_struct["completionDateType"] = "Anticipated"
 
-    if data.get("statusModule", {}).get("completionDateType") == "Estimated":
-        data["statusModule"]["completionDateType"] = "Anticipated"
+    # design enrollment info
+    enrollment_info = data.setdefault("designModule", {}).setdefault("enrollmentInfo", {})
+    if enrollment_info.get("enrollmentType") == "Estimated":
+        enrollment_info["enrollmentType"] = "Anticipated"
+
+    if data.get("statusModule", {}).get("completionDateStruct", {}).get("completionDateType") == "Estimated":
+        data["statusModule"]["completionDateStruct"]["completionDateType"] = "Anticipated"
 
     if "whyStopped" in cds_data.get("statusModule", {}):
         data.setdefault("statusModule", {})["whyStopped"] = cds_data["statusModule"]["whyStopped"]
@@ -224,17 +279,42 @@ def fetch_the_clinical_trials_data(identifier):
         if d in cds_data.get("descriptionModule", {}):
             data.setdefault("descriptionModule", {})[d] = cds_data["descriptionModule"][d]
 
-    for d in ["targetDuration"]:
-        if d in design:
-            data["designModule"][d] = design[d]
+    if "orgStudyIdLink" in identification.get("orgStudyIdInfo", {}):
+        data["identificationModule"]["orgStudyIdInfo"]["orgStudyIdLink"] = identification["orgStudyIdInfo"][
+            "orgStudyIdLink"]
 
-    fields = {
-        "Interventional": ["designMaskingInfo", "designPrimaryPurpose", "designInterventionModel", "designAllocation"],
-        "Observational": ["designObservationalModelList", "designTimePerspectiveList"]
-    }
-    for f in fields.get(data["designModule"]["studyType"], []):
-        data["designModule"].setdefault("designInfo", {}).setdefault(f, "")
+    if "targetDuration" in design:
+        data["designModule"]["targetDuration"] = design["targetDuration"]
+    #Design assignment
+    study_type = data["designModule"].get("studyType", "")
 
+    if study_type == "Interventional":
+        design_info = data.get("designModule", {}).get("designInfo", {})
+        for key in ["designTimePerspectiveList", "designObservationalModelList"]:
+            design_info.pop(key, None)
+
+        bio_spec = data.get("designModule", {}).get("bioSpec", {})
+        for key in ["bioSpecRetention", "bioSpecDescription"]:
+            bio_spec.pop(key, None)
+
+    if study_type == "Observational":
+        design_info = data.get("designModule", {}).get("designInfo", {})
+        for key in ["designAllocation", "designInterventionModel", "designPrimaryPurpose", "designMaskingInfo"]:
+            design_info.pop(key, None)
+
+    # add optional collab element
+    collab_info = collaborators.get("collaboratorList", {})
+    identifier = collab_info.get("collaboratorNameIdentifier")
+
+    if (
+            isinstance(identifier, dict)
+            and "collaboratorNameIdentifierValue" in identifier
+            and "collaboratorNameIdentifierScheme" in identifier
+    ):
+        data.setdefault("collaboratorModule", {}).setdefault("collaboratorList", {})[
+            "collaboratorNameIdentifier"] = identifier
+
+    # Eligibility
     for k in ["genderDescription", "studyPopulation", "samplingMethod"]:
         if k in eligibility:
             v = eligibility[k]
@@ -245,7 +325,7 @@ def fetch_the_clinical_trials_data(identifier):
 
     try:
         if not validate.validate_study_description(data):
-            print("Study description is invalid.")
+            print("Study metadata field(s) is invalid.")
     except ValueError as ve:
         print("Validation errors:")
         raise
@@ -257,5 +337,5 @@ def fetch_the_clinical_trials_data(identifier):
     return data
 
 
-fetch_the_clinical_trials_data("NCT04091373")
+fetch_the_clinical_trials_data("NCT06002048")
 #  NCT04091373 NCT06002048
