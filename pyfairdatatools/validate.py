@@ -159,7 +159,9 @@ def validate_study_description(data):  # sourcery skip: extract-method, low-code
 
         return True
     except ValidationError as e:
-        print(e.schema["error_msg"] if "error_msg" in e.schema else e.message)
+        print(f" Validation Error: {e.message}")
+        print(f"→ Field Path: {'.'.join(str(p) for p in e.path)}")
+        print(f"→ Schema Rule Path: {'.'.join(str(p) for p in e.schema_path)}")
         return False
     except Exception as error:
         print(error)

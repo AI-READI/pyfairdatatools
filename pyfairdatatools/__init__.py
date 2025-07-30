@@ -1,6 +1,6 @@
 from importlib.metadata import PackageNotFoundError, version
 
-from . import generate, utils, validate
+from . import generate, utils, validate, generate_study_description_c_trials
 
 try:
     __version__ = version("pyfairdatatools")

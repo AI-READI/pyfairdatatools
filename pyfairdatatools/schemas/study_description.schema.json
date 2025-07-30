@@ -1,11 +1,16 @@
 {
-  "$id": "https://schema.aireadi.org/files/study_description.json",
+  "$id": "https://schema.aireadi.org/v0.1.0/study_description.json",
   "$schema": "http://json-schema.org/draft-07/schema",
   "title": "Study Description",
   "description": "This is the schema for the study_description.json metadata file from the Clinical Dataset Structure (CDS). It is based on the ClinicalTrials.gov study protocol registration schema, unless specified otherwise in $comment. The keys are based on the the Clinicaltrials.gov JSON study record (https://classic.clinicaltrials.gov/api/info/study_structure?fmt=JSON) where we kept only the keys relevant to the study protocol registration as per the Clinicaltrials.gov Data Elements (https://prsinfo.clinicaltrials.gov/definitions.html). The descriptions, requirements, and controlled lists are based on the Clinicaltrials.gov Data Elements (https://prsinfo.clinicaltrials.gov/definitions.html) and extended with the ClinicalTrials.gov XML schema descriptor (https://prsinfo.clinicaltrials.gov/ProtocolRecordSchema.xsd) when necessary. Character limits have been removed unless otherwise specified. Note that the 'BriefTitle', 'OutcomesModule', 'IPDSharingStatementModule', and 'ReferencesModule' properties from ClinicalTrials.gov are not included as they were not deemed relevant for the use case in the CDS. Some keys, values in controlled lists, etc. are from the the ECRIN Metadata Schema for study v6.0. We have also introduced some modifications as necessary for tailoring the schema to clinical research datasets. All keys are camelCase.",
   "type": "object",
   "additionalProperties": false,
   "properties": {
+    "schema": {
+      "description": "Link to the schema to be included so that users of the resulting JSON file can find the related schema easily",
+      "type": "string",
+      "const": "https://schema.aireadi.org/v0.1.0/study_description.json"
+    },
     "identificationModule": {
       "$comment": "Maps to Data Elements in https://prsinfo.clinicaltrials.gov/definitions.html#identification",
       "type": "object",
@@ -1837,6 +1842,7 @@
     }
   },
   "required": [
+    "schema",
     "identificationModule",
     "statusModule",
     "sponsorCollaboratorsModule",

@@ -32,7 +32,7 @@ Provide the data required for your `dataset_description` file in this paramater.
 
 More information about the required data can be found in the [dataset_description](https://github.com/AI-READI/high-level-dataset-structure/blob/specifications/main/v1.0.0/schemas/dataset_description.schema.json) schema.
 
-You can the hosted validator [here](https://www.jsonschemavalidator.net/s/aNSmlcv1) if you want a better understanding or visualization of the schema for the input.
+You can the hosted validator [here](https://www.jsonschemavalidator.net/s/makBzCFq) if you want a better understanding or visualization of the schema for the input.
 
 #### Returns
 
@@ -72,7 +72,7 @@ Provide the data required for your `study_description` file in this paramater.
 
 More information about the required data can be found in the [study_description](https://github.com/AI-READI/high-level-dataset-structure/blob/specifications/main/v1.0.0/schemas/dataset_description.schema.json) schema.
 
-You can the hosted validator [here](https://www.jsonschemavalidator.net/s/aNSmlcv1) if you want a better understanding or visualization of the schema for the input.
+You can the hosted validator [here](https://www.jsonschemavalidator.net/s/cmkkqm9P) if you want a better understanding or visualization of the schema for the input.
 
 #### Returns
 
