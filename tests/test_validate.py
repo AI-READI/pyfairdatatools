@@ -18,6 +18,7 @@ class TestValidateDatasetDescription:
     """Unit tests for validate_dataset_description function."""
 
     valid_data: Dict[str, Any] = {
+        "schema": "https://schema.aireadi.org/v0.1.0/dataset_description.json",
         "identifier": {
             "identifierValue": "10.5281/zenodo.1234567",
             "identifierType": "DOI",
@@ -635,6 +636,7 @@ class TestValidateStudyDescription:
     """Unit tests for validate_study_description function."""
 
     observational_study_valid_data: Dict[str, Any] = {
+        "schema": "https://schema.aireadi.org/v0.1.0/study_description.json",
         "identificationModule": {
             "officialTitle": "Test Title",
             "acronym": "TT",
@@ -782,6 +784,7 @@ class TestValidateStudyDescription:
     }
 
     interventional_study_valid_data: Dict[str, Any] = {
+        "schema": "https://schema.aireadi.org/v0.1.0/study_description.json",
         "identificationModule": {
             "officialTitle": "Test Title",
             "acronym": "TT",
@@ -946,7 +949,6 @@ class TestValidateStudyDescription:
         data = deepcopy(self.interventional_study_valid_data)
 
         output = validate_study_description(data)
-
         assert output is True
 
     def test_invalid_identification_module(self):
