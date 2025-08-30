@@ -30,9 +30,9 @@ Provide the data required for your `dataset_description` file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
-More information about the required data can be found in the [dataset_description](https://github.com/AI-READI/high-level-dataset-structure/blob/specifications/main/v1.0.0/schemas/dataset_description.schema.json) schema.
+More information about the required data can be found in the [dataset_description](https://github.com/AI-READI/cds-specification/tree/main/docs/schemas/dataset_description.schema.json) schema.
 
-You can the hosted validator [here](https://www.jsonschemavalidator.net/s/makBzCFq) if you want a better understanding or visualization of the schema for the input.
+You can the hosted validator [here](https://www.jsonschemavalidator.net/s/Uaohwh1p) if you want a better understanding or visualization of the schema for the input.
 
 #### Returns
 
@@ -46,9 +46,9 @@ You can the hosted validator [here](https://www.jsonschemavalidator.net/s/makBzC
 from pyfairdatatools import validate
 
 data  = {
-    "Title": "My Dataset",
-    "Identifier": "10.5281/zenodo.1234567",
-    "IdentifierType": "DOI"
+    "title": "My Dataset",
+    "identifier": "10.5281/zenodo.1234567",
+    "identifierType": "DOI"
 }
 
 output = validate.validate_dataset_description(data = data)
@@ -70,9 +70,9 @@ Provide the data required for your `study_description` file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
-More information about the required data can be found in the [study_description](https://github.com/AI-READI/high-level-dataset-structure/blob/specifications/main/v1.0.0/schemas/dataset_description.schema.json) schema.
+More information about the required data can be found in the [study_description](https://github.com/AI-READI/cds-specification/tree/main/docs/schemas/study_description.schema.json) schema.
 
-You can the hosted validator [here](https://www.jsonschemavalidator.net/s/cmkkqm9P) if you want a better understanding or visualization of the schema for the input.
+You can host the validator [here](https://www.jsonschemavalidator.net/s/pfpR4Klf) if you want a better understanding or visualization of the schema for the input.
 
 #### Returns
 
@@ -110,9 +110,9 @@ Provide the data required for your `README` file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
-More information about the required data can be found in the [README](../schemas/README.md) schema.
+More information about the required data can be found in the [README](https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/readme.schema.json) schema.
 
-You can the hosted validator [here](https://www.jsonschemavalidator.net/s/aNSmlcv1) if you want a better understanding or visualization of the schema for the input.
+You can host the validator [here](https://www.jsonschemavalidator.net/s/qGe6d1wH) if you want a better understanding or visualization of the schema for the input.
 
 #### Returns
 
@@ -126,9 +126,9 @@ You can the hosted validator [here](https://www.jsonschemavalidator.net/s/aNSmlc
 from pyfairdatatools import validate
 
 data  = {
-    "Title": "My Dataset",
-    "Identifier": "10.5281/zenodo.1234567",
-    "Version": "1.0.0",
+    "title": "My Dataset",
+    "identifier": "10.5281/zenodo.1234567",
+    "version": "1.0.0",
 }
 
 output = validate.validate_readme(data = data)
@@ -184,9 +184,9 @@ Provide the data required for your `participants.tsv` file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
-More information about the required data can be found in the [participants](../schemas/participants.md) schema.
+More information about the required data can be found in the [participants](https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/participants.schema.json) schema.
 
-You can the hosted validator [here](https://www.jsonschemavalidator.net/s/aNSmlcv1) if you want a better understanding or visualization of the schema for the input.
+You can host the validator [here](https://www.jsonschemavalidator.net/s/AGbykeCI) if you want a better understanding or visualization of the schema for the input.
 
 #### Returns
 
