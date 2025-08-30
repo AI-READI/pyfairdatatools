@@ -30,7 +30,7 @@ Provide the data required for your `dataset_description` file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
-More information about the required data can be found in the [dataset_description](../schemas/dataset_description.md) schema.
+More information about the required data can be found in the [dataset_description](https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/dataset_description.schema.json) schema.
 
 ##### file_path
 
@@ -84,7 +84,7 @@ Provide the data required for your `study_description` file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
-More information about the required data can be found in the [study_description](../schemas/study_description.md) schema.
+More information about the required data can be found in the [study_description](https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/study_description.schema.json) schema.
 
 ##### file_path
 
@@ -138,7 +138,7 @@ Provide the data required for your readme file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
-More information about the required data can be found in the [readme](../schemas/readme.md) schema.
+More information about the required data can be found in the [readme](https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/readme.schema.json) schema.
 
 ##### file_path
 

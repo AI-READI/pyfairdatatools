@@ -30,7 +30,7 @@ Provide the data required for your `dataset_description` file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
-More information about the required data can be found in the [dataset_description](https://github.com/AI-READI/cds-specification/tree/main/docs/schemas/dataset_description.schema.json) schema.
+More information about the required data can be found in the [dataset_description](https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/dataset_description.schema.json) schema.
 
 You can the hosted validator [here](https://www.jsonschemavalidator.net/s/Uaohwh1p) if you want a better understanding or visualization of the schema for the input.
 
@@ -70,7 +70,7 @@ Provide the data required for your `study_description` file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
-More information about the required data can be found in the [study_description](https://github.com/AI-READI/cds-specification/tree/main/docs/schemas/study_description.schema.json) schema.
+More information about the required data can be found in the [study_description](https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/study_description.schema.json) schema.
 
 You can host the validator [here](https://www.jsonschemavalidator.net/s/pfpR4Klf) if you want a better understanding or visualization of the schema for the input.
 
