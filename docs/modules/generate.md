@@ -60,9 +60,9 @@ Provide the file type of the file where you want to save the generated dataset_d
 from pyfairdatatools import generate
 
 data  = {
-    "Title": "My Dataset",
-    "Identifier": "10.5281/zenodo.1234567",
-    "IdentifierType": "DOI"
+    "title": "My Dataset",
+    "identifier": "10.5281/zenodo.1234567",
+    "identifierType": "DOI"
 }
 
 output = generate.generate_dataset_description(data = data, file_path = "dataset_description.json", file_type = "json")
@@ -114,9 +114,9 @@ Provide the file type of the file where you want to save the generated study_des
 from pyfairdatatools import generate
 
 data  = {
-    "Title": "My Dataset",
-    "Identifier": "10.5281/zenodo.1234567",
-    "IdentifierType": "DOI"
+    "title": "My Dataset",
+    "identifier": "10.5281/zenodo.1234567",
+    "identifierType": "DOI"
 }
 
 output = generate.generate_study_description(data = data, file_path = "study_description.json", file_type = "json")
