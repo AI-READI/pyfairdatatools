@@ -30,7 +30,7 @@ Provide the data required for your `dataset_description` file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
-More information about the required data can be found in the [dataset_description](../schemas/dataset_description.md) schema.
+More information about the required data can be found in the [dataset_description](https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/dataset_description.schema.json) schema.
 
 ##### file_path
 
@@ -60,9 +60,9 @@ Provide the file type of the file where you want to save the generated dataset_d
 from pyfairdatatools import generate
 
 data  = {
-    "Title": "My Dataset",
-    "Identifier": "10.5281/zenodo.1234567",
-    "IdentifierType": "DOI"
+    "title": "My Dataset",
+    "identifier": "10.5281/zenodo.1234567",
+    "identifierType": "DOI"
 }
 
 output = generate.generate_dataset_description(data = data, file_path = "dataset_description.json", file_type = "json")
@@ -74,6 +74,10 @@ print(output)  # dataset_description.json
 
 You can call the `generate_study_description` method to generate a study_description file.
 
+#### Generate Study Description from Clinical Trial integration
+
+You can call the `generate_study_description_from_clinical_trials` method to generate an initial study_description file.
+
 #### Parameters
 
 ##### data
@@ -84,7 +88,7 @@ Provide the data required for your `study_description` file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
-More information about the required data can be found in the [study_description](../schemas/study_description.md) schema.
+More information about the required data can be found in the [study_description](https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/study_description.schema.json) schema.
 
 ##### file_path
 
@@ -114,9 +118,9 @@ Provide the file type of the file where you want to save the generated study_des
 from pyfairdatatools import generate
 
 data  = {
-    "Title": "My Dataset",
-    "Identifier": "10.5281/zenodo.1234567",
-    "IdentifierType": "DOI"
+    "title": "My Dataset",
+    "identifier": "10.5281/zenodo.1234567",
+    "identifierType": "DOI"
 }
 
 output = generate.generate_study_description(data = data, file_path = "study_description.json", file_type = "json")
@@ -138,7 +142,7 @@ Provide the data required for your readme file in this paramater.
 | ------ | ------------- | -------- | ------------------------------------------ |
 | Object | {}            | yes      | Data object following the required schemas |
 
-More information about the required data can be found in the [readme](../schemas/readme.md) schema.
+More information about the required data can be found in the [readme](https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/readme.schema.json) schema.
 
 ##### file_path
 
