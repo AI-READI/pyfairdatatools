@@ -74,6 +74,10 @@ print(output)  # dataset_description.json
 
 You can call the `generate_study_description` method to generate a study_description file.
 
+#### Generate Study Description from Clinical Trial integration
+
+You can call the `generate_study_description_from_clinical_trials` method to generate an initial study_description file.
+
 #### Parameters
 
 ##### data
