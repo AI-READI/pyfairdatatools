@@ -78,7 +78,7 @@ pyfairdatatools is a Python package that includes functions of fairhub.io for ma
 
 You will need the following installed on your system:
 
-- Python 3.8+
+- [Python](https://www.python.org/) 
 - [Pip](https://pip.pypa.io/en/stable/)
 - [Poetry](https://poetry.eustace.io/)
 
@@ -144,7 +144,7 @@ If you would like to update the package, please follow the instructions below.
    If you are using Anaconda, you can create a virtual environment with:
 
    ```bash
-   conda create -n pyfairdatatools-env python=3.8
+   conda create -n pyfairdatatools-env python
    conda activate pyfairdatatools-env
    ```
 
