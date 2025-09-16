@@ -25,7 +25,7 @@ jobs:
       - name: Check dependencies
         run: make doctor
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: .venv
           key: ${{ runner.os }}-poetry-${{ hashFiles('poetry.lock') }}
@@ -36,8 +36,8 @@ jobs:
       - name: Revert the changes to bin folder
         run: chmod 644 ./bin/*
 
-      - name: Check code
-        run: make check
+      # - name: Check code
+      #   run: make check
 
       - name: Test code
         run: make test

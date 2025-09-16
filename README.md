@@ -78,7 +78,7 @@ pyfairdatatools is a Python package that includes functions of fairhub.io for ma
 
 You will need the following installed on your system:
 
-- Python 3.8+
+- [Python](https://www.python.org/) 
 - [Pip](https://pip.pypa.io/en/stable/)
 - [Poetry](https://poetry.eustace.io/)
 

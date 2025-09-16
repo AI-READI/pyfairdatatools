@@ -1,7 +1,7 @@
 [tool.poetry]
 
 name = "pyfairdatatools"
-version = "1.0.2"
+version = "1.2.0b11"
 description = "Tools for AI-READI"
 
 packages = [{ include = "pyfairdatatools" }]
@@ -16,7 +16,6 @@ repository = "https://github.com/AI-READI/pyfairdatatools"
 
 keywords = []
 classifiers = [
-    # TODO: update this list to match your application: https://pypi.org/pypi?%3Aaction=list_classifiers
     "Development Status :: 1 - Planning",
     "Intended Audience :: Developers",
     "License :: OSI Approved",
@@ -33,7 +32,6 @@ classifiers = [
 python = "^3.8"
 urllib3 = "<2.0"
 
-# TODO: Remove these and add your library's requirements
 click = "*"
 minilog = "*"
 jsonschema = "^4.17.3"
@@ -42,9 +40,11 @@ types-requests = "^2.30.0.0"
 pymdown-extensions = "^10.0.1"
 validators = "^0.20.0"
 art = "^6.0"
+pyyaml = "^6.0.1"
+types-pyyaml = "^6.0.12.12"
 
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 
 # Formatters
 black = "^22.1"
@@ -78,15 +78,11 @@ sniffer = "*"
 MacFSEvents = { version = "*", platform = "darwin" }
 pync = { version = "*", platform = "darwin" }
 ipython = "^7.12.0"
+poethepoet = "^0.20.0"
 
 [tool.poetry.scripts]
 
 pyfairdatatools = "pyfairdatatools.cli:main"
-
-
-[tool.poetry.group.dev.dependencies]
-poethepoet = "^0.20.0"
-jupyter = "^1.0.0"
 
 [tool.poe.tasks]
 
@@ -103,9 +99,12 @@ pylint = "pylint pyfairdatatools tests --rcfile=.pylint.ini"
 
 precommit = ["format", "typecheck", "pylint"]
 
-test = "pytest -rx"
+test = "pytest -rx -W ignore::DeprecationWarning"
+test_with_capture = "pytest -s -W ignore::DeprecationWarning"
 
 jupyter = "jupyter notebook"
+
+sync_schemas = "python ./dev/pull_schemas.py"
 
 [tool.black]
 

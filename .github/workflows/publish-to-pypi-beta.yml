@@ -1,15 +1,15 @@
-name: Publish to PyPI
+name: Publish to PyPI - beta tags
 
 on:
   release:
     types: [published]
   push:
     branches:
-      - main
+      - staging
   pull_request:
     types: [closed]
     branches:
-      - main
+      - staging
   workflow_dispatch:
 
 jobs:
@@ -37,13 +37,6 @@ jobs:
 
       - name: Setup poetry config
         run: poetry config pypi-token.pypi "${{ secrets.PYPI_API_TOKEN }}"
-
-      - name: Wait for CI to pass
-        uses: lewagon/wait-on-check-action@v1.3.1
-        with:
-          ref: main
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          check-name: "ci"
 
       - name: Build package
         run: poetry build

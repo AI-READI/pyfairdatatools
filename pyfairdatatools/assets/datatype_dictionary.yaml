@@ -1,0 +1,142 @@
+datatype_dictionary:
+  - code_name: clinical_data
+    datatype_description: 
+      description_text: All clinical data (survey responses, blood/urine test results, etc.). Typically collected through REDCap.
+      description_source:  
+        organization: 
+          full_name: AI-READI Consortium
+          link: https://aireadi.org/
+    aliases: 
+     - redcap_data
+    related_terms:
+     - ncit:C15783
+    related_standards:
+      - full_name: The Observational Medical Outcomes Partnership (OMOP) Common Data Model (CDM)
+        reference: https://www.ohdsi.org/data-standardization/ 
+        standard_description: Data standard designed to standardize the structure and content of observational data and to enable efficient analyses that can produce reliable evidence.
+
+  - code_name: ekg
+    datatype_description: 
+      description_text: Recording of the moment-to-moment electromotive forces of the heart as projected onto various sites on the body's surface, delineated as a scalar function of time. The recording is monitored by a tracing on slow moving chart paper or by observing it on a cardioscope, which is a cathode ray tube display.
+      source: 
+        link: https://meshb.nlm.nih.gov/record/ui?ui=D004562
+    aliases: 
+      - ecg
+      - electrocardiogram
+      - electrocardiography
+      - ekg_data
+      - ecg_data
+      - electrocardiogram_data
+      - electrocardiography_data
+      - ekg_measurements
+      - ecg_measurements
+      - electrocardiogram_measurements
+      - electrocardiography_measurements
+    related_terms:
+      - mesh:D004562
+      - ncit:C168186
+
+  - code_name: eye_fundus_photography
+    datatype_description: 
+      description_text: Data collected using a fundus camera to record color images of the condition of the interior surface of the eye.
+      description_source:  
+        organization: 
+            full_name: AI-READI Consortium
+            link: https://aireadi.org/
+    aliases: 
+     - eye_fundus_photography_data
+     - eye_fundus_photography_images
+     - color_fundus_retinal_photography
+     - color_fundus_retinal_photography_data
+     - color_fundus_retinal_photography_images
+    related_terms:
+     - ncit:C147467
+
+  - code_name: oct
+    datatype_description: 
+      description_text: Data collected using optical coherence tomography (OCT), an imaging method using lasers that is used for mapping subsurface structure.
+      description_source:  
+        organization: 
+            full_name: AI-READI Consortium
+            link: https://aireadi.org/
+    aliases: 
+     - optical_coherence_tomography
+     - oct_data
+     - optical_coherence_tomography_data
+     - oct_images
+     - optical_coherence tomography_images
+    related_terms:
+     - mesh:D041623
+     - ncit:C20828 
+    related_standards:
+     - full_name: Digital Imaging and Communications in Medicine (DICOM)
+       reference: https://dicom.nema.org/medical/dicom/2020b/output/chtml/part03/sect_C.8.17.14.html
+       standard_description: Standard for the digital storage and transmission of medical images and related information
+
+  - code_name: octa
+    datatype_description: 
+      description_text: Data collected using optical coherence tomography angiography (OCTA), a non-invasive imaging technique that generates volumetric angiography images.
+      description_source:  
+        organization: 
+            full_name: AI-READI Consortium
+            link: https://aireadi.org/
+    aliases: 
+     - optical_coherence_tomography_angiography
+     - octa_data
+     - optical_coherence_tomography_angiography_data
+     - octa_images
+     - optical_coherence tomography_angiography_images
+    related_standards:
+     - full_name: Digital Imaging and Communications in Medicine (DICOM)
+       reference: https://www.dicomstandard.org/news/supplements/view/ophthalmic-tomography-angiographic-(oct-a)-image-storage-sop-classes
+       standard_description: Standard for the digital storage and transmission of medical images and related information
+
+  - code_name: flio
+    datatype_description: 
+      description_text: Data collected through fluorescence lifetime imaging ophthalmoscopy (FLIO), an imaging modality for in vivo measurement of lifetimes of endogenous retinal fluorophores.
+      description_source:  
+        organization: 
+            full_name: AI-READI Consortium
+            link: https://aireadi.org/
+    aliases: 
+     - flio_data
+     - flio_images
+     - fluorescence_lifetime_imaging_ophthalmoscopy_data
+     - fluorescence_lifetime_imaging_ophthalmoscopy_images
+
+  - code_name: continuous_glucose_monitoring    
+    datatype_description: 
+      description_text: Data collected through continuous glucose monitoring device.
+      description_source:  
+        organization: 
+            full_name: AI-READI Consortium
+            link: https://aireadi.org/
+    aliases: 
+     - continuous_glucose_monitoring_data
+     - continuous_glucose_monitoring_measurements
+    related_terms:
+     - ncit:C159776
+
+  - code_name: activity_monitoring
+    datatype_description: 
+      description_text: Data collected through an activity monitoring device such as Fitbit, Apple Watch, etc.
+      description_source:  
+        organization: 
+            full_name: AI-READI Consortium
+            link: https://aireadi.org/
+    aliases: 
+     - phyisical_activity_monitoring
+     - activity_monitoring_data
+     - phyisical_activity_monitoring_data
+     - activity_monitoring_measurements
+     - phyisical_activity_monitoring_measurements
+
+  - code_name: environmental_sensor_measurements
+    datatype_description: 
+      description_text: Data collected through environmental sensor device. Typically measures of air quality, light intensity, etc.
+      description_source:  
+        organization: 
+            full_name: AI-READI Consortium
+            link: https://aireadi.org/
+    aliases: 
+     - environmental_sensor_measurements_data

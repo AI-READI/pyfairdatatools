@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.aireadi.org/files/datatype_dictionary.json",
+  "title": "Datatype dictionary",
+  "description": "This is the schema for the datatype_dictionary.json metadata file from the Clinical Dataset Structure (CDS)",
+  "type": "object",
+  "properties": {
+    "datatype": {
+      "type": "array",
+      "additionalProperties": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "code_name": {
+            "type": "string",
+            "description": "Main name used to refer to the datatype. Must use lower case alphanumerical and use underscore for white space (snake_case).",
+            "pattern": "[a-zA-Z]+(_[a-zA-Z]+)*"
+          },
+          "datatype_description": {
+            "type": "object",
+            "properties": {
+              "description_text": {
+                "type": "string",
+                "description": "Brief text that explains what the datatype is. Specify what type of files are expected, what device(s) or platform(s) they are typically collecting with, etc."
+              },
+              "description_source": {
+                "type": "object",
+                "description": "Information about the resource/person/organization that provided the description text.",
+                "properties": {
+                  "resource": {
+                    "type": "object",
+                    "properties": {
+                      "resource_name": {
+                        "type": "string",
+                        "description": "Name of the resource"
+                      },
+                      "resource_links": {
+                        "type": "array",
+                        "description": "URL(s) that provides additional information about the organization, e.g. website of the organization.",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "resource_name"
+                    ]
+                  },
+                  "organization": {
+                    "type": "object",
+                    "properties": {
+                      "organization_name": {
+                        "type": "string",
+                        "description": "Name of the organization"
+                      },
+                      "rorid": {
+                        "type": "string",
+                        "description": "Research Organization Registry (ROR) ID (https://ror.org/) of the organization"
+                      },
+                      "organization_links": {
+                        "type": "array",
+                        "description": "URL(s) that provides additional information about the organization, e.g. website of the organization.",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "organization_name"
+                    ]
+                  },
+                  "person": {
+                    "type": "object",
+                    "properties": {
+                      "person_name": {
+                        "type": "string",
+                        "description": "Name of the person"
+                      },
+                      "orcid": {
+                        "type": "string",
+                        "description": "ORCID iD (https://orcid.org/) of the person"
+                      },
+                      "person_links": {
+                        "type": "array",
+                        "description": "URL(s) that provides additional information about the person, e.g. website of the person.",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                      "person_name"
+                    ]
+                  },
+                  "comment": {
+                    "type": "string",
+                    "description": "Details about how the description was established, e.g., link to resources that insipired the description."
+                  }
+                },
+                "additionalProperties": false,
+                "oneOf": [
+                  {
+                    "required": [
+                      "resource"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "organization"
+                    ]
+                  },
+                  {
+                    "required": [
+                      "person"
+                    ]
+                  }
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "description_text",
+              "description_source"
+            ]
+          },
+          "aliases": {
+            "type": "array",
+            "description": "Alternate name(s) for the datatype. Must use lower case alphanumerical and use underscore for white space (snake_case).",
+            "items": {
+              "type": "string",
+              "pattern": "[a-zA-Z]+(_[a-zA-Z]+)*"
+            }
+          },
+          "related_terms": {
+            "type": "object",
+            "description": "IDs or links of related terms found in well established ontologies and dictionaries such as the Medical Subject Headings (MeSH, https://meshb.nlm.nih.gov/) and the National Cancer Institute (NCIT) Thesaurus (https://ncit.nci.nih.gov/ncitbrowser).",
+            "properties": {
+              "ncit": {
+                "type": "array",
+                "description": "NCI Thesaurus (NCIt) ID(s) of related term(s) (https://ncithesaurus.nci.nih.gov/ncitbrowser/).",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "mesh": {
+                "type": "array",
+                "description": "Medical Subject Headings (MeSH) ID of a related term (https://meshb.nlm.nih.gov/).",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "other": {
+                "type": "array",
+                "description": "Link(s) to other related term(s)",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false,
+            "anyOf": [
+              {
+                "required": [
+                  "ncit"
+                ]
+              },
+              {
+                "required": [
+                  "mesh"
+                ]
+              },
+              {
+                "required": [
+                  "other"
+                ]
+              }
+            ]
+          },
+          "related_standards": {
+            "type": "array",
+            "description": "Standards that are relevant to this data type for organizing data files, selecting file format, including metadata, etc.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "standard_name": {
+                  "type": "string",
+                  "description": "Name of the standard"
+                },
+                "standard_reference": {
+                  "type": "string",
+                  "description": "Main reference providing additional information about the standard"
+                },
+                "standard_description": {
+                  "type": "string",
+                  "description": "Description of the standard. Explain what this standard is for (organizing data files, selecting file format, including metadata, etc.)."
+                },
+                "standard_resources": {
+                  "type": "array",
+                  "description": "Link(s) to additional resources for learning about or implementing the standard",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "standard_name",
+                "standard_reference"
+              ]
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code_name",
+          "datatype_description"
+        ]
+      }
+    }
+  }
+}
