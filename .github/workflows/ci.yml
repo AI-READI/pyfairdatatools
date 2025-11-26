@@ -5,9 +5,6 @@ on: [push]
 jobs:
   ci:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.11"]
 
     steps:
       - uses: actions/checkout@v2
@@ -41,8 +38,3 @@ jobs:
 
       - name: Test code
         run: make test
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v1
-        with:
-          fail_ci_if_error: true
