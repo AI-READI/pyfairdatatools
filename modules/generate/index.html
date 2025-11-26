@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="FAIR Data Innovations Hub" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Generate - pyfairdatatools</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Generate";
+        var mkdocs_page_input_path = "modules/generate.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> pyfairdatatools
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Modules</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../validate/">Validate</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Generate</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#methods">Methods</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#generate-dataset-description">Generate Dataset Description</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#parameters">Parameters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#returns">Returns</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#how-to-use">How to use</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#generate-study-description">Generate Study Description</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#generate-study-description-from-clinical-trial-integration">Generate Study Description from Clinical Trial integration</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#parameters_1">Parameters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#returns_1">Returns</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#how-to-use_1">How to use</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#generate-readme">Generate Readme</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#parameters_2">Parameters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#returns_2">Returns</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#how-to-use_2">How to use</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#generate-changelog">Generate Changelog</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#parameters_3">Parameters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#returns_3">Returns</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#how-to-use_3">How to use</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#generate-license">Generate License</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#parameters_4">Parameters</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#returns_4">Returns</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#how-to-use_4">How to use</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">About</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../about/changelog/">Release Notes</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../about/contributing/">Contributor Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../about/license/">License</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">pyfairdatatools</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Modules</li>
+      <li class="breadcrumb-item active">Generate</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/AI-READI/pyfairdatatools/edit/main/docs/modules/generate.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="generation">Generation<a class="headerlink" href="#generation" title="Permanent link">'</a></h1>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">'</a></h2>
+<p>The generate module provides a way of generating metadata files that follow the FAIR guidelines adopted by the AI-READI project.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The generate module is still under development.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>generate</code> module of this package uses the <code>validate</code> module internally to verify that the input data follows the required schema.</p>
+</div>
+<h2 id="methods">Methods<a class="headerlink" href="#methods" title="Permanent link">'</a></h2>
+<p>The following methods are available in the <code>generate</code> module. Each method is described in detail below.</p>
+<h3 id="generate-dataset-description">Generate Dataset Description<a class="headerlink" href="#generate-dataset-description" title="Permanent link">'</a></h3>
+<p>You can call the <code>generate_dataset_description</code> method to generate a dataset_description file.</p>
+<h4 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">'</a></h4>
+<h5 id="data">data<a class="headerlink" href="#data" title="Permanent link">'</a></h5>
+<p>Provide the data required for your <code>dataset_description</code> file in this paramater.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Object</td>
+<td>{}</td>
+<td>yes</td>
+<td>Data object following the required schemas</td>
+</tr>
+</tbody>
+</table>
+<p>More information about the required data can be found in the <a href="https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/dataset_description.schema.json">dataset_description</a> schema.</p>
+<h5 id="file_path">file_path<a class="headerlink" href="#file_path" title="Permanent link">'</a></h5>
+<p>Provide the path to the file where you want to save the generated dataset_description file.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>None</td>
+<td>yes</td>
+<td>Any string</td>
+</tr>
+</tbody>
+</table>
+<h5 id="file_type">file_type<a class="headerlink" href="#file_type" title="Permanent link">'</a></h5>
+<p>Provide the file type of the file where you want to save the generated dataset_description file.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>None</td>
+<td>yes</td>
+<td><code>json</code>, <code>xml</code>, <code>xlsx</code>, <code>csv</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns">Returns<a class="headerlink" href="#returns" title="Permanent link">'</a></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>Returns the path to the generated dataset_description file as a string.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="how-to-use">How to use<a class="headerlink" href="#how-to-use" title="Permanent link">'</a></h4>
+<pre class="codehilite"><code class="language-python">from pyfairdatatools import generate
+
+data  = {
+    &quot;title&quot;: &quot;My Dataset&quot;,
+    &quot;identifier&quot;: &quot;10.5281/zenodo.1234567&quot;,
+    &quot;identifierType&quot;: &quot;DOI&quot;
+}
+
+output = generate.generate_dataset_description(data = data, file_path = &quot;dataset_description.json&quot;, file_type = &quot;json&quot;)
+
+print(output)  # dataset_description.json
+</code></pre>
+
+<h3 id="generate-study-description">Generate Study Description<a class="headerlink" href="#generate-study-description" title="Permanent link">'</a></h3>
+<p>You can call the <code>generate_study_description</code> method to generate a study_description file.</p>
+<h4 id="generate-study-description-from-clinical-trial-integration">Generate Study Description from Clinical Trial integration<a class="headerlink" href="#generate-study-description-from-clinical-trial-integration" title="Permanent link">'</a></h4>
+<p>You can call the <code>generate_study_description_from_clinical_trials</code> method to generate an initial study_description file.</p>
+<h4 id="parameters_1">Parameters<a class="headerlink" href="#parameters_1" title="Permanent link">'</a></h4>
+<h5 id="data_1">data<a class="headerlink" href="#data_1" title="Permanent link">'</a></h5>
+<p>Provide the data required for your <code>study_description</code> file in this paramater.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Object</td>
+<td>{}</td>
+<td>yes</td>
+<td>Data object following the required schemas</td>
+</tr>
+</tbody>
+</table>
+<p>More information about the required data can be found in the <a href="https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/study_description.schema.json">study_description</a> schema.</p>
+<h5 id="file_path_1">file_path<a class="headerlink" href="#file_path_1" title="Permanent link">'</a></h5>
+<p>Provide the path to the file where you want to save the generated study_description file.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>None</td>
+<td>yes</td>
+<td>Any string</td>
+</tr>
+</tbody>
+</table>
+<h5 id="file_type_1">file_type<a class="headerlink" href="#file_type_1" title="Permanent link">'</a></h5>
+<p>Provide the file type of the file where you want to save the generated study_description file.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>None</td>
+<td>yes</td>
+<td><code>json</code>, <code>xml</code>, <code>xlsx</code>, <code>csv</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_1">Returns<a class="headerlink" href="#returns_1" title="Permanent link">'</a></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>Returns the path to the generated study_description file as a string.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="how-to-use_1">How to use<a class="headerlink" href="#how-to-use_1" title="Permanent link">'</a></h4>
+<pre class="codehilite"><code class="language-python">from pyfairdatatools import generate
+
+data  = {
+    &quot;title&quot;: &quot;My Dataset&quot;,
+    &quot;identifier&quot;: &quot;10.5281/zenodo.1234567&quot;,
+    &quot;identifierType&quot;: &quot;DOI&quot;
+}
+
+output = generate.generate_study_description(data = data, file_path = &quot;study_description.json&quot;, file_type = &quot;json&quot;)
+
+print(output)  # study_description.json
+</code></pre>
+
+<h3 id="generate-readme">Generate Readme<a class="headerlink" href="#generate-readme" title="Permanent link">'</a></h3>
+<p>You can call the <code>generate_readme</code> method to generate a readme file.</p>
+<h4 id="parameters_2">Parameters<a class="headerlink" href="#parameters_2" title="Permanent link">'</a></h4>
+<h5 id="data_2">data<a class="headerlink" href="#data_2" title="Permanent link">'</a></h5>
+<p>Provide the data required for your readme file in this paramater.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Object</td>
+<td>{}</td>
+<td>yes</td>
+<td>Data object following the required schemas</td>
+</tr>
+</tbody>
+</table>
+<p>More information about the required data can be found in the <a href="https://github.com/AI-READI/pyfairdatatools/blob/main/pyfairdatatools/schemas/readme.schema.json">readme</a> schema.</p>
+<h5 id="file_path_2">file_path<a class="headerlink" href="#file_path_2" title="Permanent link">'</a></h5>
+<p>Provide the path to the file where you want to save the generated readme file.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>None</td>
+<td>yes</td>
+<td>Any string</td>
+</tr>
+</tbody>
+</table>
+<h5 id="file_type_2">file_type<a class="headerlink" href="#file_type_2" title="Permanent link">'</a></h5>
+<p>Provide the file type of the file where you want to save the generated readme file.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>None</td>
+<td>yes</td>
+<td><code>md</code>, <code>txt</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_2">Returns<a class="headerlink" href="#returns_2" title="Permanent link">'</a></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>Returns the path to the generated readme file as a string.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="how-to-use_2">How to use<a class="headerlink" href="#how-to-use_2" title="Permanent link">'</a></h4>
+<pre class="codehilite"><code class="language-python">from pyfairdatatools import generate
+
+data  = {
+    &quot;Title&quot;: &quot;My Dataset&quot;,
+    &quot;Identifier&quot;: &quot;10.5281/zenodo.1234567&quot;,
+    &quot;Version&quot;: &quot;1.0.0&quot;,
+}
+
+output = generate.generate_readme(data = data, file_path = &quot;readme.md&quot;, file_type = &quot;md&quot;)
+
+print(output)  # readme.md
+</code></pre>
+
+<h3 id="generate-changelog">Generate Changelog<a class="headerlink" href="#generate-changelog" title="Permanent link">'</a></h3>
+<p>You can call the <code>generate_changelog</code> method to generate a changelog file.</p>
+<h4 id="parameters_3">Parameters<a class="headerlink" href="#parameters_3" title="Permanent link">'</a></h4>
+<h5 id="data_3">data<a class="headerlink" href="#data_3" title="Permanent link">'</a></h5>
+<p>Provide the content of the changelog file in this paramater.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>None</td>
+<td>yes</td>
+<td>Any string</td>
+</tr>
+</tbody>
+</table>
+<h5 id="file_path_3">file_path<a class="headerlink" href="#file_path_3" title="Permanent link">'</a></h5>
+<p>Provide the path to the file where you want to save the generated changelog file.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>None</td>
+<td>yes</td>
+<td>Any string</td>
+</tr>
+</tbody>
+</table>
+<h5 id="file_type_3">file_type<a class="headerlink" href="#file_type_3" title="Permanent link">'</a></h5>
+<p>Provide the file type of the file where you want to save the generated changelog file.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>None</td>
+<td>yes</td>
+<td><code>md</code>, <code>txt</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_3">Returns<a class="headerlink" href="#returns_3" title="Permanent link">'</a></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>Returns the path to the generated changelog file as a string.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="how-to-use_3">How to use<a class="headerlink" href="#how-to-use_3" title="Permanent link">'</a></h4>
+<pre class="codehilite"><code class="language-python">from pyfairdatatools import generate
+
+data  = &quot;&quot;&quot;
+# Changelog
+
+## 1.0.0
+
+- Initial release
+&quot;&quot;&quot;
+
+output = generate.generate_changelog(data = data, file_path = &quot;changelog.md&quot;, file_type = &quot;md&quot;)
+
+print(output)  # changelog.md
+</code></pre>
+
+<h3 id="generate-license">Generate License<a class="headerlink" href="#generate-license" title="Permanent link">'</a></h3>
+<p>You can call the <code>generate_license</code> method to generate a license file.</p>
+<h4 id="parameters_4">Parameters<a class="headerlink" href="#parameters_4" title="Permanent link">'</a></h4>
+<h5 id="identifier">identifier<a class="headerlink" href="#identifier" title="Permanent link">'</a></h5>
+<p>Provide the identifier of the license you want to use in this paramater.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>""</td>
+<td>yes</td>
+<td>SPDX license identifier</td>
+</tr>
+</tbody>
+</table>
+<p>For a list of all SPDX license identifiers, see <a href="https://spdx.org/licenses/">here</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you provide an invalid identifier, the method will raise an error. If you want to use a custom license, use the <code>data</code> parameter instead and provide the content of the license file. Leave this parameter empty if you are using  custom license text.</p>
+</div>
+<h5 id="data_4">data<a class="headerlink" href="#data_4" title="Permanent link">'</a></h5>
+<p>Provide the content of the license file in this paramater.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>None</td>
+<td>yes</td>
+<td>Any string</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Use this parameter if you want to use a custom license. Leave this parameter empty if you are using a SPDX license identifier. If you provide a SPDX license identifier, the method will prioritize this parameter over the <code>identifier</code> parameter.</p>
+</div>
+<h5 id="file_path_4">file_path<a class="headerlink" href="#file_path_4" title="Permanent link">'</a></h5>
+<p>Provide the path to the file where you want to save the generated license file.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>None</td>
+<td>yes</td>
+<td>Any string</td>
+</tr>
+</tbody>
+</table>
+<h5 id="file_type_4">file_type<a class="headerlink" href="#file_type_4" title="Permanent link">'</a></h5>
+<p>Provide the file type of the file where you want to save the generated license file.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Default value</th>
+<th>Required</th>
+<th>Accepted values</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>None</td>
+<td>yes</td>
+<td><code>md</code>, <code>txt</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="returns_4">Returns<a class="headerlink" href="#returns_4" title="Permanent link">'</a></h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>Returns the path to the generated license file as a string.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="how-to-use_4">How to use<a class="headerlink" href="#how-to-use_4" title="Permanent link">'</a></h4>
+<pre class="codehilite"><code class="language-python">from pyfairdatatools import generate
+
+data  = &quot;&quot;&quot;
+MIT License
+
+SPDX short identifier: MIT
+
+Further resources on the MIT License
+
+- [Text](https://spdx.org/licenses/MIT.html)
+- [JSON](https://spdx.org/licenses/MIT.json)
+- [RDF](https://spdx.org/licenses/MIT.rdf)
+- [HTML](https://spdx.org/licenses/MIT.html)
+&quot;&quot;&quot;
+
+output = generate.generate_license(identifier = &quot;MIT&quot;, data = data, file_path = &quot;LICENSE.md&quot;, file_type = &quot;md&quot;)
+
+print(output)  # LICENSE.md
+</code></pre>
+
+<p>To create a license file using a SPDX license identifier:</p>
+<pre class="codehilite"><code class="language-python">from pyfairdatatools import generate
+
+identifier = &quot;MIT&quot;
+
+output = generate.generate_license(identifier = identifier, file_path = &quot;LICENSE.md&quot;, file_type = &quot;md&quot;)
+
+print(output)  # LICENSE.md
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../validate/" class="btn btn-neutral float-left" title="Validate"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../about/changelog/" class="btn btn-neutral float-right" title="Release Notes">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/AI-READI/pyfairdatatools" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../validate/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../about/changelog/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
