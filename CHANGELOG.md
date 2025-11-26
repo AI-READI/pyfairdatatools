@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/AI-READI/pyfairdatatools/compare/v1.0.2...v1.0.3) (2025-11-26)
+
+
+### Bug Fixes
+
+* remove matrix from ci workflow ([#23](https://github.com/AI-READI/pyfairdatatools/issues/23)) ([44df713](https://github.com/AI-READI/pyfairdatatools/commit/44df713f25add43cedfb3eba4e9f20b32d4823cf))
+
 ## [1.0.2](https://github.com/AI-READI/pyfairdatatools/compare/v1.0.1...v1.0.2) (2023-11-16)
 
 
