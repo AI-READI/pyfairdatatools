@@ -1,0 +1,4 @@
+/* Expand the main content area width */
+.wy-nav-content {
+max-width: 1200px !important; /* Change this number to your liking */    width: 100% !important;
+}
