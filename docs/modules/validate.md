@@ -16,6 +16,49 @@ The validation module provides a way to validate data against a set of rules.
 
 The following methods are available in the `validate` module. Each method is described in detail below.
 
+### Validate Folder Structure
+
+You can call the `validate_folder_structure` method to validate the data needed to create a dataset_description file.
+
+#### Required or optional files
+
+Following files are required to have inside the directory path:
+
+-   `dataset_description.json`
+-   `study_description.json`
+-   `README\[.md\|.rst\|.txt\]`
+-   `CITATION.cff`
+-   `CHANGELOG\[.md\|.rst\|.txt\]`
+-   `LICENSE\[.md\|.rst\|.txt\]`
+
+------------------------------------------------------------------------
+
+## dataset_description.json Fields
+
+The file `dataset_description.json` is a JSON file describing the dataset.
+
+
+#### Returns-
+
+| Field    | Type    | Description                                              |
+|----------|---------|----------------------------------------------------------|
+| valid    | Boolean | Returns `True` if the dataset is valid, `False` otherwise. |
+| errors   | List    | List of validation errors (blocking issues).             |
+| warnings | List    | List of validation warnings (non-blocking issues).       |
+
+#### How to use
+
+```python
+from pyfairdatatools import validate
+
+folder_path = "/dataset_path"
+
+output = validate.validate_folder_structure(folder_path=folder_path)
+
+print(output)  # True
+
+```
+
 ### Validate Dataset Description
 
 You can call the `validate_dataset_description` method to validate the data needed to create a dataset_description file.

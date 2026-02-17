@@ -21,7 +21,6 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Modules:
-      - Required Paths: modules/required-paths.md
       - Validate: modules/validate.md
       - Generate: modules/generate.md
   - About:

@@ -3,8 +3,47 @@ import os
 
 import yaml
 from jsonschema import ValidationError, validate
+import logging
+import sys
+import re
+import csv
 
-# from . import utils
+SUCCESS = 25
+logging.addLevelName(SUCCESS, "SUCCESS")
+
+def success(self, message, *args, **kwargs):
+    if self.isEnabledFor(SUCCESS):
+        self._log(SUCCESS, message, args, **kwargs)
+
+logging.Logger.success = success
+
+# Color Formatter
+class ColorFormatter(logging.Formatter):
+
+    COLORS = {
+        logging.DEBUG: "\033[90m",     # Gray
+        logging.INFO: "\033[94m",      # Blue
+        logging.WARNING: "\033[93m",   # Yellow
+        logging.ERROR: "\033[91m",     # Red
+        logging.CRITICAL: "\033[95m",  # Magenta
+        SUCCESS: "\033[92m",           # Green
+    }
+
+    RESET = "\033[0m"
+
+    def format(self, record):
+        color = self.COLORS.get(record.levelno, self.RESET)
+        msg = super().format(record)
+        return f"{color}{msg}{self.RESET}"
+
+# Logger Setup
+handler = logging.StreamHandler(sys.stdout)
+handler.setFormatter(ColorFormatter("%(levelname)s ▶ %(message)s"))
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logger.handlers.clear()
+logger.addHandler(handler)
 
 
 def validate_dataset_description(data, verbose=False):  # sourcery skip: extract-method
@@ -229,12 +268,24 @@ def validate_participants(data):
     """
     schema = {}
 
-    # Import the schema from the schemas folder
     with open(
         os.path.join(os.path.dirname(__file__), "schemas", "participants.schema.json"),
         encoding="utf-8",
     ) as f:
         schema = json.load(f)
+
+    # Allow person_id as an alternative to participant_id
+    if "items" in schema and "required" in schema["items"]:
+        if "participant_id" in schema["items"]["properties"]:
+            schema["items"]["properties"]["participant_id"].pop("pattern", None)
+        if "person_id" not in schema["items"]["properties"]:
+            schema["items"]["properties"]["person_id"] = schema["items"]["properties"]["participant_id"].copy()
+
+        for participant in data:
+            if "person_id" in participant and "participant_id" not in participant:
+                participant["participant_id"] = participant["person_id"]
+            if "age" in participant and participant["age"]:
+                participant["age"] = float(participant["age"])
 
     try:
         validate(instance=data, schema=schema)
@@ -242,61 +293,6 @@ def validate_participants(data):
         # TODO: validate species
         # TODO: validate strain
         # TODO: validate strain_rrid
-
-        return True
-    except ValidationError as e:
-        print(e.schema["error_msg"] if "error_msg" in e.schema else e.message)
-        return False
-    except Exception as error:
-        print(error)
-        raise error
-
-
-def validate_folder_structure(folder_path):
-    """Validate that a folder structure is valid.
-
-    We do this by generating a json tree of the folder and file structure and
-    validating it against a schema.
-    This will allow us to expand the schema in the future to include more complex
-    folder structures.
-    Certain folder structures (ones inside of dynamic folders) will not be able to
-    be validated by this method.
-
-    Args:
-        folder_path (str): The path to the folder to validate
-    Returns:
-        bool: True if the folder structure is valid, False otherwise
-    """
-
-    def path_to_dict(path):
-        d = {}  # type: dict
-
-        if not os.path.exists(path):
-            return d
-
-        for x in os.listdir(path):
-            key = os.path.basename(x)
-
-            if os.path.isdir(os.path.join(path, x)):
-                d[key] = path_to_dict(os.path.join(path, x))
-            else:
-                d[key] = "file"
-
-        return d
-
-    # Import the schema from the schemas folder
-    with open(
-        os.path.join(
-            os.path.dirname(__file__), "schemas", "folder_structure.schema.json"
-        ),
-        encoding="utf-8",
-    ) as f:
-        schema = json.load(f)
-
-    folder_structure_as_dict = path_to_dict(folder_path)
-
-    try:
-        validate(instance=folder_structure_as_dict, schema=schema)
 
         return True
     except ValidationError as e:
@@ -350,3 +346,286 @@ def validate_datatype_dictionary(data):
     except Exception as error:
         print(error)
         raise error
+
+
+def validate_file_path(file_path, preexisting_file=False, writable=False):
+    """Validate a file path. Checks if the file exists, is a file, and is writable."""
+    if file_path == "":
+        print("File path is empty.")
+        raise ValueError("Invalid input")
+
+    if preexisting_file:
+        if not os.path.exists(file_path):
+            print("File path does not exist.")
+            raise FileNotFoundError("File not found")
+
+        if not os.path.isfile(file_path):
+            print("File path is not a file.")
+            raise ValueError("Invalid input")
+
+    if writable and not os.access(file_path, os.W_OK):  # ← DÜZELTİLDİ: 'not' eklendi
+        print("File path is not writable.")
+        raise PermissionError("Permission denied")
+
+    return True
+
+
+REQUIRED_FILES = [
+    "dataset_description.json",
+    "CHANGELOG.md",
+    "LICENSE.txt",
+    "README.md",
+    "participants.json",
+    "participants.tsv"
+]
+
+OPTIONAL_FILES = [
+    "readme.md",
+    "changelog.md",
+    "study_description.txt",
+    "license.txt",
+]
+
+ALLOWED_TEXT_EXTS = {".md", ".txt", ".rst"}
+
+NAME_PATTERN = re.compile(r'^[a-z0-9._-]+$')
+
+WINDOWS_RESERVED = {
+    "con", "prn", "aux", "nul",
+    "com1","com2","com3","com4","com5","com6","com7","com8","com9",
+    "lpt1","lpt2","lpt3","lpt4","lpt5","lpt6","lpt7","lpt8","lpt9"
+}
+
+ALLOWED_UPPERCASE_FILES = {
+    "readme.md", "readme.txt", "readme.rst",
+    "changelog.md", "changelog.txt", "changelog.rst",
+    "license.md", "license.txt", "license.rst", "license",
+}
+
+
+def validate_names(root):
+
+    errors = []
+    warnings = []
+
+    for dirpath, dirnames, filenames in os.walk(root):
+
+        for name in dirnames + filenames:
+
+            full = os.path.join(dirpath, name)
+            base = os.path.splitext(name)[0].lower()
+            name_lower = name.lower()
+
+            # Spaces
+            if " " in name:
+                errors.append(f"Space in name: {full}")
+
+            # Uppercase - but allow certain conventional files
+            if any(c.isupper() for c in name):
+                if name_lower not in ALLOWED_UPPERCASE_FILES:
+                    errors.append(f"Uppercase in name: {full}")
+
+            # Invalid chars - skip check for allowed uppercase files
+            if name_lower not in ALLOWED_UPPERCASE_FILES:  # ← YENİ SATIR
+                if not NAME_PATTERN.match(name):
+                    errors.append(f"Invalid characters: {full}")
+
+            # Hidden files
+            if name.startswith("."):
+                warnings.append(f"Hidden file/folder: {full}")
+
+            # Windows reserved
+            if base in WINDOWS_RESERVED:
+                errors.append(f"Windows reserved name: {full}")
+
+            # Long name
+            if len(name) > 150:
+                warnings.append(f"Very long name: {full}")
+
+    return errors, warnings
+
+
+def validate_folder_structure(folder_path):
+
+    logger.info("Starting folder structure validation...")
+
+    if not os.path.isdir(folder_path):
+        logger.error("Folder not found: %s", folder_path)
+        return False
+
+    name_errors, name_warnings = validate_names(folder_path)
+
+    for w in name_warnings:
+        logger.warning(w)
+
+    if name_errors:
+        for e in name_errors:
+            logger.error(e)
+        return False
+
+    # SCHEMA CHECK
+    def path_to_dict(path):
+        d = {}
+        for x in os.listdir(path):
+            p = os.path.join(path, x)
+            if os.path.isdir(p):
+                d[x] = path_to_dict(p)
+            else:
+                d[x] = "file"
+        return d
+
+    try:
+        with open(
+            os.path.join(os.path.dirname(__file__), "schemas", "folder_structure.schema.json"),
+            encoding="utf-8"
+        ) as f:
+            schema = json.load(f)
+
+        tree = path_to_dict(folder_path)
+        validate(instance=tree, schema=schema)
+        logger.info("Folder structure matches schema")
+
+    except ValidationError as e:
+        logger.error("FAILED: Folder structure invalid (%s)", e.message)
+        return False
+    except Exception as e:
+        logger.error("Schema error: %s", e)
+        return False
+
+    # FILE VALIDATION
+    files = os.listdir(folder_path)
+    all_valid = True
+
+    # ── Required files ──────────────────────────────────────────────────────────
+    for fname in REQUIRED_FILES:
+        if fname not in files:
+            logger.error("Missing required file: %s", fname)
+            return False
+        logger.info("Found required file: %s", fname)
+
+    # ── dataset_description.json ───────────────────────────────────────────────
+    dd_path = os.path.join(folder_path, "dataset_description.json")
+    logger.info("Validating dataset_description.json...")
+    try:
+        with open(dd_path, encoding="utf-8") as f:
+            dd_data = json.load(f)
+        if validate_dataset_description(dd_data):
+            logger.success("dataset_description.json is valid")
+        else:
+            logger.error("dataset_description.json failed validation")
+            all_valid = False
+    except json.JSONDecodeError as e:
+        logger.error("dataset_description.json is not valid JSON: %s", e)
+        all_valid = False
+    except Exception as e:  # ← YENİ EKLENEN EXCEPTION HANDLER
+        logger.error("Error reading dataset_description.json: %s", e)
+        all_valid = False
+
+    for fname in files:
+        name_lower = fname.lower()
+        file_path = os.path.join(folder_path, fname)
+        _, ext = os.path.splitext(fname)
+        ext = ext.lower()
+
+        # readme
+        if name_lower.startswith("readme") and ext in ALLOWED_TEXT_EXTS:
+            logger.info("Validating %s...", fname)
+            try:
+                with open(file_path, encoding="utf-8") as f:
+                    content = f.read()
+
+                readme_data = {}
+                current_key = None
+                current_value = []
+
+                for line in content.split("\n"):
+                    stripped = line.strip()
+                    if stripped.startswith("#"):
+                        if current_key:
+                            readme_data[current_key] = "\n".join(current_value).strip()
+                        current_key = stripped.lstrip("#").strip()
+                        current_value = []
+                    elif current_key:
+                        current_value.append(stripped)
+
+                if current_key:
+                    readme_data[current_key] = "\n".join(current_value).strip()
+
+                if validate_readme(readme_data):
+                    logger.success("%s is valid", fname)
+                else:
+                    logger.error("%s failed validation", fname)
+                    all_valid = False
+            except Exception as e:
+                logger.error("Error reading %s: %s", fname, e)
+                all_valid = False
+
+        # study_description
+        elif name_lower.startswith("study_description") and ext in ALLOWED_TEXT_EXTS:
+            logger.info("Validating %s...", fname)
+            try:
+                with open(file_path, encoding="utf-8") as f:
+                    study_data = json.load(f)
+                if validate_study_description(study_data):
+                    logger.success("%s is valid", fname)
+                else:
+                    logger.error("%s failed validation", fname)
+                    all_valid = False
+            except json.JSONDecodeError as e:
+                logger.error("%s is not valid JSON: %s", fname, e)
+                all_valid = False
+            except Exception as e:  # ← YENİ EKLENEN EXCEPTION HANDLER
+                logger.error("Error reading %s: %s", fname, e)
+                all_valid = False
+
+        # changelog — no dedicated validator, just check extension
+        elif name_lower.startswith("changelog"):
+            if ext not in ALLOWED_TEXT_EXTS:
+                logger.error("Invalid extension for %s", fname)
+                all_valid = False
+            else:
+                logger.info("Found changelog file: %s (no schema validator)", fname)
+
+        # license
+        elif name_lower.startswith("license"):
+            logger.info("Validating license in %s...", fname)
+            try:
+                with open(file_path, encoding="utf-8") as f:
+                    license_text = f.read().strip()
+                if validate_license(license_text):
+                    logger.success("%s has a valid license identifier", fname)
+                else:
+                    logger.error("%s has an invalid license identifier: '%s'", fname, license_text)
+                    all_valid = False
+            except Exception as e:
+                logger.error("Error reading %s: %s", fname, e)
+                all_valid = False
+
+    # participants files (anywhere in the folder tree) ───────────────────────
+    for dirpath, _, filenames in os.walk(folder_path):
+        for fname in filenames:
+            if fname.lower().startswith("participants") and fname.lower().endswith(".tsv"):
+                file_path = os.path.join(dirpath, fname)
+                logger.info("Validating participants file: %s...", file_path)
+                try:
+                    with open(file_path, encoding="utf-8") as f:
+                        reader = csv.DictReader(f, delimiter="\t")
+                        participants_data = list(reader)
+                    if validate_participants(participants_data):
+                        logger.success("%s is valid", file_path)
+                    else:
+                        logger.error("%s failed validation", file_path)
+                        all_valid = False
+                except Exception as e:
+                    logger.error("Error reading %s: %s", file_path, e)
+                    all_valid = False
+    # ── DONE ───────────────────────────────────────────────────────────────────
+    if all_valid:
+        logger.success("All files fully validated")
+    else:
+        logger.error("Validation completed with errors")
+
+    return all_valid
+
+
+validate_folder_structure("tests")
