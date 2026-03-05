@@ -624,6 +624,3 @@ def validate_folder_structure(folder_path):
 
     logger.success("All files have successfully been validated")
     return True
-
-
-print(validate_folder_structure("tests"))
