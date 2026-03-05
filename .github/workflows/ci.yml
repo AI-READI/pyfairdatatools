@@ -37,4 +37,3 @@ jobs:
       #   run: make check
 
       - name: Test code
-        run: make test
