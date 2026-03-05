@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="FAIR Data Innovations Hub" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Release Notes - pyfairdatatools</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Release Notes";
+        var mkdocs_page_input_path = "about/changelog.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> pyfairdatatools
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Modules</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../../modules/validate/">Validate</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../../modules/generate/">Generate</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">About</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Release Notes</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#103-2025-11-26">1.0.3 (2025-11-26)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#bug-fixes">Bug Fixes</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#102-2023-11-16">1.0.2 (2023-11-16)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#bug-fixes_1">Bug Fixes</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#101-2023-11-16">1.0.1 (2023-11-16)</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#breaking-changes">⚠ BREAKING CHANGES</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#release">release</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#features">Features</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bug-fixes_2">Bug Fixes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#documentation">Documentation</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../contributing/">Contributor Guide</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../license/">License</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">pyfairdatatools</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">About</li>
+      <li class="breadcrumb-item active">Release Notes</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/AI-READI/pyfairdatatools/edit/main/docs/about/changelog.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="changelog">Changelog<a class="headerlink" href="#changelog" title="Permanent link"></a></h1>
+<h2 id="103-2025-11-26"><a href="https://github.com/AI-READI/pyfairdatatools/compare/v1.0.2...v1.0.3">1.0.3</a> (2025-11-26)<a class="headerlink" href="#103-2025-11-26" title="Permanent link"></a></h2>
+<h3 id="bug-fixes">Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permanent link"></a></h3>
+<ul>
+<li>remove matrix from ci workflow (<a href="https://github.com/AI-READI/pyfairdatatools/issues/23">#23</a>) (<a href="https://github.com/AI-READI/pyfairdatatools/commit/44df713f25add43cedfb3eba4e9f20b32d4823cf">44df713</a>)</li>
+</ul>
+<h2 id="102-2023-11-16"><a href="https://github.com/AI-READI/pyfairdatatools/compare/v1.0.1...v1.0.2">1.0.2</a> (2023-11-16)<a class="headerlink" href="#102-2023-11-16" title="Permanent link"></a></h2>
+<h3 id="bug-fixes_1">Bug Fixes<a class="headerlink" href="#bug-fixes_1" title="Permanent link"></a></h3>
+<ul>
+<li>add affiliationValue to datasetDescription (<a href="https://github.com/AI-READI/pyfairdatatools/commit/63b7946065dac6cf5984829bc5b02689049cb750">63b7946</a>)</li>
+</ul>
+<h2 id="101-2023-11-16">1.0.1 (2023-11-16)<a class="headerlink" href="#101-2023-11-16" title="Permanent link"></a></h2>
+<h3 id="breaking-changes">⚠ BREAKING CHANGES<a class="headerlink" href="#breaking-changes" title="Permanent link"></a></h3>
+<ul>
+<li>v1</li>
+<li>v1</li>
+<li>v1</li>
+<li>update package name to pyfairdatatools</li>
+</ul>
+<h3 id="release">release<a class="headerlink" href="#release" title="Permanent link"></a></h3>
+<ul>
+<li>v1 (<a href="https://github.com/AI-READI/pyfairdatatools/commit/386a2d3568a9be9a6be807d03666950f1f2b7ff3">386a2d3</a>)</li>
+<li>v1 (<a href="https://github.com/AI-READI/pyfairdatatools/commit/1dacdd17f36218285578b6109c39956c9aa1f2da">1dacdd1</a>)</li>
+<li>v1 (<a href="https://github.com/AI-READI/pyfairdatatools/commit/078c513eaaf7346e6eff1465bb0d8fa645e7b34f">078c513</a>)</li>
+</ul>
+<h3 id="features">Features<a class="headerlink" href="#features" title="Permanent link"></a></h3>
+<ul>
+<li>add additional data types (<a href="https://github.com/AI-READI/pyfairdatatools/commit/d3d4b21db3c6ef558935054e95986e1dc8b09cdf">d3d4b21</a>)</li>
+<li>add additional validation for dataset description (<a href="https://github.com/AI-READI/pyfairdatatools/commit/0830308b248310bd569e37d48147748eeadefebc">0830308</a>)</li>
+<li>add base study_description schema (<a href="https://github.com/AI-READI/pyfairdatatools/commit/8ca9a942a4c6aad77aabe87f2f3c3ec66c07c701">8ca9a94</a>)</li>
+<li>add changelog generate function (<a href="https://github.com/AI-READI/pyfairdatatools/commit/e448f41cee39fec4b8778549e8aadebe3bfc1100">e448f41</a>)</li>
+<li>add dataset_description validation schema (<a href="https://github.com/AI-READI/pyfairdatatools/commit/3f233817ff23f5172ee96ea65d9c9c25a1e0c8c2">3f23381</a>)</li>
+<li>add file path validation to generate functions (<a href="https://github.com/AI-READI/pyfairdatatools/commit/2e9c39a2d0960ef8de7d56aa42d85526768eb00f">2e9c39a</a>)</li>
+<li>add functions for study description.json (<a href="https://github.com/AI-READI/pyfairdatatools/commit/81693a92d5b78498bdeb065bcee938155d50609b">81693a9</a>)</li>
+<li>add generate function for dataset_description (<a href="https://github.com/AI-READI/pyfairdatatools/commit/decda23757b0c955812bb1d55c2b20c90d41bd1c">decda23</a>)</li>
+<li>add generate function for study_descripition (<a href="https://github.com/AI-READI/pyfairdatatools/commit/7759e0f9db0366f6ede6ea8a94eb10598dd630db">7759e0f</a>)</li>
+<li>add license generation (<a href="https://github.com/AI-READI/pyfairdatatools/commit/acf22df24afa6fde2b01f0f2f95167ffc68e3b98">acf22df</a>)</li>
+<li>add links to schema ids (<a href="https://github.com/AI-READI/pyfairdatatools/commit/bdc905e6bfebc4f32a8867670b9dc0901a262be3">bdc905e</a>)</li>
+<li>add more valid language codes (<a href="https://github.com/AI-READI/pyfairdatatools/commit/022fdee8e521704dc9fe8147000d1a7c5285c73c">022fdee</a>)</li>
+<li>add participants validate function (<a href="https://github.com/AI-READI/pyfairdatatools/commit/d7a1bc2d6008217f34cf76644eb786fb2a64adb2">d7a1bc2</a>)</li>
+<li>add readme generate and validate functions (<a href="https://github.com/AI-READI/pyfairdatatools/commit/4b4b0760ffac58577055ffafd3132b23f8d1e8ff">4b4b076</a>)</li>
+<li>add sample validate schema (<a href="https://github.com/AI-READI/pyfairdatatools/commit/34464fefe6b6597606228fa4cce1811f01ec6566">34464fe</a>)</li>
+<li>add support for folder level validation (<a href="https://github.com/AI-READI/pyfairdatatools/commit/8de70c44cb653310bd10ec0bb3334a35c4569ea3">8de70c4</a>)</li>
+<li>add validation for langauges (<a href="https://github.com/AI-READI/pyfairdatatools/commit/a882feeae6580743810764c3a853ed650b11f628">a882fee</a>)</li>
+<li>update dataset_description schema (<a href="https://github.com/AI-READI/pyfairdatatools/commit/20fd4d23741eb7c6810f67d5d6d9819a6fa8d233">20fd4d2</a>)</li>
+<li>update language list for BCP 47 (<a href="https://github.com/AI-READI/pyfairdatatools/commit/17ec74bfd78a611c1cec91092b0efca017ab5862">17ec74b</a>)</li>
+<li>update package name to pyfairdatatools (<a href="https://github.com/AI-READI/pyfairdatatools/commit/6b8fe0140f11692bca1c0c7fe2de3f096b4b245d">6b8fe01</a>)</li>
+</ul>
+<h3 id="bug-fixes_2">Bug Fixes<a class="headerlink" href="#bug-fixes_2" title="Permanent link"></a></h3>
+<ul>
+<li>add fields to validate study description (<a href="https://github.com/AI-READI/pyfairdatatools/commit/6834f55ac8dd5dc7e4396b59caed3d56c0c48f9d">6834f55</a>)</li>
+<li>add fix for urlllib3 (<a href="https://github.com/AI-READI/pyfairdatatools/commit/dbe21edbcf4aeeebc7345947376e5161aeb57133">dbe21ed</a>)</li>
+<li>add typing for empty collection (<a href="https://github.com/AI-READI/pyfairdatatools/commit/62a544497c52568786d87b480c57296e5f56bf05">62a5444</a>)</li>
+<li>update imports (<a href="https://github.com/AI-READI/pyfairdatatools/commit/4109423b749fb60df3510802dcba4e81100daa80">4109423</a>)</li>
+<li>update key name to lowercase (<a href="https://github.com/AI-READI/pyfairdatatools/commit/607e815710efac5b7aca2d3bc40e37ae5949358a">607e815</a>)</li>
+<li>update tests (<a href="https://github.com/AI-READI/pyfairdatatools/commit/2bec2887ddd4559f900f37b628e0f56811b8fbd5">2bec288</a>)</li>
+<li>update versions (<a href="https://github.com/AI-READI/pyfairdatatools/commit/49af7586de946476b8395e1d98470a0775654c4b">49af758</a>)</li>
+<li>update versions (<a href="https://github.com/AI-READI/pyfairdatatools/commit/127c98266fcc088ff3cc8334c8e0d901bac99d81">127c982</a>)</li>
+</ul>
+<h3 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link"></a></h3>
+<ul>
+<li>add base content (<a href="https://github.com/AI-READI/pyfairdatatools/commit/c9e9d9d2ea70d10b5255116876384af867f9b1dd">c9e9d9d</a>)</li>
+<li>add base text (<a href="https://github.com/AI-READI/pyfairdatatools/commit/aeca7b35cf7f4da5ebcc0b1b001c27efaabd2d98">aeca7b3</a>)</li>
+<li>add docs for dataset_description (<a href="https://github.com/AI-READI/pyfairdatatools/commit/8be3d275e23bb1e69944d6c4b2a52f12e1504b4d">8be3d27</a>)</li>
+<li>add docs for generate functions (<a href="https://github.com/AI-READI/pyfairdatatools/commit/0249d425e65787ea8c5ca32f0b1aaa5ccf49c3fb">0249d42</a>)</li>
+<li>add validate readme sections (<a href="https://github.com/AI-READI/pyfairdatatools/commit/6f2f773ec049f059a50adce5495ce08069de06ab">6f2f773</a>)</li>
+<li>fix build (<a href="https://github.com/AI-READI/pyfairdatatools/commit/22581c97869d0bbc065c8f84d8c6b231c0bf0acd">22581c9</a>)</li>
+<li>fix build (<a href="https://github.com/AI-READI/pyfairdatatools/commit/c2b9878edb3fb2c84389f3e4841a79cd3bd7cdbe">c2b9878</a>)</li>
+<li>fix links (<a href="https://github.com/AI-READI/pyfairdatatools/commit/cbdabfd95d14bf20c31379f5f781fb72e6dba4e1">cbdabfd</a>)</li>
+<li>update for study_description (<a href="https://github.com/AI-READI/pyfairdatatools/commit/e7e63b2e0314e4e5e49355e35390376ae4476a50">e7e63b2</a>)</li>
+<li>update publish instructions (<a href="https://github.com/AI-READI/pyfairdatatools/commit/dbd09696c94d35ebcfdaf60d12c77148b7acbf0d">dbd0969</a>)</li>
+<li>update readme with template (<a href="https://github.com/AI-READI/pyfairdatatools/commit/cf0d241c14ed913ba8fad90362134e39b3ffa603">cf0d241</a>)</li>
+<li>update text (<a href="https://github.com/AI-READI/pyfairdatatools/commit/84b5a1fab2f97de8732dee3275cf1d24b2a9f41b">84b5a1f</a>)</li>
+<li>update text (<a href="https://github.com/AI-READI/pyfairdatatools/commit/cc855094e612f182bcd67710b94055ab84b9511c">cc85509</a>)</li>
+<li>update wording (<a href="https://github.com/AI-READI/pyfairdatatools/commit/b5f5547cd5a0d1425fe7564fd32f678bda20e0d8">b5f5547</a>)</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../modules/generate/" class="btn btn-neutral float-left" title="Generate"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../contributing/" class="btn btn-neutral float-right" title="Contributor Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/AI-READI/pyfairdatatools" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../../modules/generate/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../contributing/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
