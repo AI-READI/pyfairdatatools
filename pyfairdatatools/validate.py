@@ -370,37 +370,23 @@ def validate_file_path(file_path, preexisting_file=False, writable=False):
     return True
 
 
-OPTIONAL_FILES = [
-    "readme.md",
-    "changelog.md",
-    "study_description.txt",
-    "license.txt",
-]
-
-NAME_PATTERN = re.compile(r'^[a-z0-9._-]+$')
-
-WINDOWS_RESERVED = {
-    "con", "prn", "aux", "nul",
-    "com1","com2","com3","com4","com5","com6","com7","com8","com9",
-    "lpt1","lpt2","lpt3","lpt4","lpt5","lpt6","lpt7","lpt8","lpt9"
-}
-
-ALLOWED_UPPERCASE_FILES = {
-    "readme.md", "readme.txt", "readme.rst",
-    "changelog.md", "changelog.txt", "changelog.rst",
-    "license.md", "license.txt", "license.rst", "license",
-}
-
-
 def validate_names(root):
-
+    """This function validates the names of the
+     files against the schema."""
+    windows_reserved = {
+        "con", "prn", "aux", "nul",
+        "lpt1","lpt2","lpt3","lpt4","lpt5","lpt6","lpt7","lpt8","lpt9",
+        "com1", "com2", "com3", "com4", "com5", "com6", "com7", "com8", "com9"
+    }
+    allowed_uppercase_files = {
+        "readme.md", "readme.txt", "readme.rst",
+        "changelog.md", "changelog.txt", "changelog.rst",
+        "license.md", "license.txt", "license.rst", "license",
+    }
     errors = []
     warnings = []
-
-    for dirpath, dirnames, filenames in os.walk(root):
-
-        for name in dirnames + filenames:
-
+    for dirpath, dir_names, file_names in os.walk(root):
+        for name in dir_names + file_names:
             full = os.path.join(dirpath, name)
             base = os.path.splitext(name)[0].lower()
             name_lower = name.lower()
@@ -409,14 +395,15 @@ def validate_names(root):
             if " " in name:
                 errors.append(f"Space in name: {full}")
 
-            # Allow certain conventional files
+            # Allow some conventional files
             if any(c.isupper() for c in name):
-                if name_lower not in ALLOWED_UPPERCASE_FILES:
+                if name_lower not in allowed_uppercase_files:
                     errors.append(f"Uppercase in name: {full}")
 
             # Invalid chars
-            if name_lower not in ALLOWED_UPPERCASE_FILES:  # ← YENİ SATIR
-                if not NAME_PATTERN.match(name):
+            name_pattern = re.compile(r'^[a-z0-9._-]+$')
+            if name_lower not in allowed_uppercase_files:
+                if not name_pattern.match(name):
                     errors.append(f"Invalid characters: {full}")
 
             # Hidden files
@@ -424,7 +411,7 @@ def validate_names(root):
                 warnings.append(f"Hidden file/folder: {full}")
 
             # Windows reserved
-            if base in WINDOWS_RESERVED:
+            if base in windows_reserved:
                 errors.append(f"Windows reserved name: {full}")
 
             if len(name) > 150:
@@ -445,16 +432,6 @@ def validate_folder_structure(folder_path):
         for e in name_errors:
             logger.error(e)
         return False
-    # schema check
-    def path_to_dict(path):
-        d = {}
-        for x in os.listdir(path):
-            p = os.path.join(path, x)
-            if os.path.isdir(p):
-                d[x] = path_to_dict(p)
-            else:
-                d[x] = "file"
-        return d
 
     required_files = []
     try:
@@ -463,9 +440,13 @@ def validate_folder_structure(folder_path):
             encoding="utf-8"
         ) as f:
             schema = json.load(f)
-        tree = path_to_dict(folder_path)
+        folder_tree = {
+            f: "file" if os.path.isfile(os.path.join(folder_path, f)) else "directory"
+            for f in os.listdir(folder_path)
+        }
+
         required_files.extend(schema["required"])
-        validate(instance=tree, schema=schema)
+        validate(instance=folder_tree, schema=schema)
         logger.info("Folder structure matches schema")
 
     except ValidationError as e:
@@ -484,15 +465,14 @@ def validate_folder_structure(folder_path):
             return False
         logger.info("Found required file: %s", f)
 
-    dd_path = os.path.join(folder_path, "dataset_description.json")
-
     # dataset_description.json
-    logger.info("Validating dataset_description.json...")
+    dd_path = os.path.join(folder_path, "dataset_description.json")
     try:
         with open(dd_path, encoding="utf-8") as f:
             dd_data = json.load(f)
+        logger.info("Validating dataset_description.json...")
         if validate_dataset_description(dd_data):
-            logger.success("dataset_description.json is valid")
+            logger.success("%s is valid", dd_path)
         else:
             logger.error("dataset_description.json failed validation")
             all_valid = False
@@ -505,21 +485,22 @@ def validate_folder_structure(folder_path):
 
     # study_description
     s_description_path = os.path.join(folder_path, "study_description.json")
-    logger.info("Validating %s...", s_description_path)
-    try:
-        with open(s_description_path, encoding="utf-8") as f:
-            study_data = json.load(f)
-        if validate_study_description(study_data):
-            logger.success("%s is valid", s_description_path)
-        else:
-            logger.error("%s failed validation", s_description_path)
+    if os.path.isfile(s_description_path):
+        logger.info("Validating %s...", s_description_path)
+        try:
+            with open(s_description_path, encoding="utf-8") as f:
+                study_data = json.load(f)
+            if validate_study_description(study_data):
+                logger.success("%s is valid", s_description_path)
+            else:
+                logger.error("%s failed validation", s_description_path)
+                all_valid = False
+        except json.JSONDecodeError as e:
+            logger.error("%s is not valid JSON: %s", s_description_path, e)
             all_valid = False
-    except json.JSONDecodeError as e:
-        logger.error("%s is not valid JSON: %s", s_description_path, e)
-        all_valid = False
-    except Exception as e:
-        logger.error("Error reading %s: %s", s_description_path, e)
-        all_valid = False
+        except Exception as e:
+            logger.error("Error reading %s: %s", s_description_path, e)
+            all_valid = False
 
     # readme
     readme_path = os.path.join(folder_path, "readme.md")
@@ -539,7 +520,6 @@ def validate_folder_structure(folder_path):
                 current_value = []
             elif current_key:
                 current_value.append(stripped)
-
         if current_key:
             readme_data[current_key] = "\n".join(current_value).strip()
 
@@ -552,52 +532,68 @@ def validate_folder_structure(folder_path):
         logger.error("Error reading %s: %s", readme_path, e)
         all_valid = False
 
-    # changelog — no dedicated validator, just check extension
-    if os.path.join(folder_path, "readme.md"):
-        logger.info("Found changelog file: %s", readme_path)
+    # changelog
+    all_changelog_paths = next((file for file in files if file.lower() == "changelog.md"), None)
+    logger.info("Validating %s...", all_changelog_paths)
+    changelog_path = os.path.join(folder_path, all_changelog_paths)
+    try:
+        if not changelog_path:
+            logger.error("Missing required file: changelog.md")
+            return False
+    except Exception as e:
+        logger.error("Error reading %s: %s", changelog_path, e)
+        all_valid = False
+    logger.success("%s is valid", changelog_path)
 
     # license
-    all_license_paths = next((f for f in files if f.lower() == "license.txt"), None)
+    all_license_paths = next((file for file in files if file.lower() == "license.txt"), None)
     license_path = os.path.join(folder_path, all_license_paths)
     try:
         if not license_path:
             logger.error("Missing required file: license.txt")
             return False
-        logger.info("Validating license in %s...", license_path)
-
+        logger.info("Validating %s...", license_path)
         with open(license_path, encoding="utf-8") as f:
             license_text = f.read().strip()
         if validate_license(license_text):
-            logger.success("%s has a valid license identifier", license_path)
+            logger.success("%s is valid", license_path)
         else:
             logger.error("%s has an invalid license identifier: '%s'", license_path, license_text)
             all_valid = False
     except Exception as e:
         logger.error("Error reading %s: %s", license_path, e)
         all_valid = False
+
     # participants files
-    for dirpath, _, filenames in os.walk(folder_path):
-        for f_name in filenames:
-            if f_name.lower().startswith("participants") and f_name.lower().endswith(".tsv"):
-                file_path = os.path.join(dirpath, f_name)
-                logger.info("Validating participants file: %s...", file_path)
-                try:
-                    with open(file_path, encoding="utf-8") as f:
-                        reader = csv.DictReader(f, delimiter="\t")
-                        participants_data = list(reader)
-                    if validate_participants(participants_data):
-                        logger.success("%s is valid", file_path)
-                    else:
-                        logger.error("%s failed validation", file_path)
-                        all_valid = False
-                except Exception as e:
-                    logger.error("Error reading %s: %s", file_path, e)
-                    all_valid = False
+    participant_path = os.path.join(folder_path, "participants.tsv")
+    logger.info("Validating participants file: %s...", participant_path)
+    try:
+        with open(participant_path, encoding="utf-8") as f:
+            reader = csv.DictReader(f, delimiter="\t")
+            participants_data = list(reader)
+        if validate_participants(participants_data):
+            logger.success("%s is valid", participant_path)
+        else:
+            logger.error("%s failed validation", participant_path)
+            all_valid = False
+    except Exception as e:
+        logger.error("Error reading %s: %s", participant_path, e)
+        all_valid = False
     if all_valid:
         logger.success("All files fully validated")
     else:
         logger.error("Validation completed with errors")
+
+    # participant.json
+    participant_json_path = os.path.join(folder_path, "participant.json")
+    logger.info("Validating %s...", participant_json_path)
+    try:
+        if not participant_json_path:
+            logger.error("Missing required file: participant.json")
+            return False
+        logger.success("%s is valid", participant_json_path)
+    except Exception as e:
+        logger.error("Error reading %s: %s", participant_json_path, e)
+        all_valid = False
+
     return all_valid
-
-
-validate_folder_structure("tests")

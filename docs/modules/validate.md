@@ -25,15 +25,15 @@ You can call the `validate_folder_structure` method to validate the data needed 
 Following files are required to have inside the directory path:
 
 -   `dataset_description.json`
--   `study_description.json`
--   `README\[.md\|.rst\|.txt\]`
--   `CITATION.cff`
--   `CHANGELOG\[.md\|.rst\|.txt\]`
--   `LICENSE\[.md\|.rst\|.txt\]`
+-   `participants.json`
+-   `participants.tsv`
+-   `README.md`
+-   `CHANGELOG.md`
+-   `LICENSE.md`
 
 ------------------------------------------------------------------------
 
-#### Returns-
+#### Returns
 
 | Field    | Type    | Description                                              |
 |----------|---------|----------------------------------------------------------|
