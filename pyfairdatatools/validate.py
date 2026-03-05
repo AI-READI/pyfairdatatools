@@ -276,16 +276,12 @@ def validate_participants(data):
 
     # Allow person_id as an alternative to participant_id
     if "items" in schema and "required" in schema["items"]:
-        if "participant_id" in schema["items"]["properties"]:
-            schema["items"]["properties"]["participant_id"].pop("pattern", None)
         if "person_id" not in schema["items"]["properties"]:
             schema["items"]["properties"]["person_id"] = schema["items"]["properties"]["participant_id"].copy()
 
         for participant in data:
             if "person_id" in participant and "participant_id" not in participant:
                 participant["participant_id"] = participant["person_id"]
-            if "age" in participant and participant["age"]:
-                participant["age"] = float(participant["age"])
 
     try:
         validate(instance=data, schema=schema)
@@ -564,36 +560,35 @@ def validate_folder_structure(folder_path):
         logger.error("Error reading %s: %s", license_path, e)
         all_valid = False
 
-    # participants files
-    participant_path = os.path.join(folder_path, "participants.tsv")
-    logger.info("Validating participants file: %s...", participant_path)
+    # participants json
+    participant_json_path = os.path.join(folder_path, "participants.json")
+    logger.info("Validating participants file: %s...", participant_json_path)
     try:
-        with open(participant_path, encoding="utf-8") as f:
-            reader = csv.DictReader(f, delimiter="\t")
-            participants_data = list(reader)
+        with open(participant_json_path, encoding="utf-8") as f:
+            participants_data = json.load(f)
         if validate_participants(participants_data):
-            logger.success("%s is valid", participant_path)
+            logger.success("%s is valid", participant_json_path)
         else:
-            logger.error("%s failed validation", participant_path)
+            logger.error("%s failed validation", participant_json_path)
             all_valid = False
-    except Exception as e:
-        logger.error("Error reading %s: %s", participant_path, e)
-        all_valid = False
-    if all_valid:
-        logger.success("All files fully validated")
-    else:
-        logger.error("Validation completed with errors")
-
-    # participant.json
-    participant_json_path = os.path.join(folder_path, "participant.json")
-    logger.info("Validating %s...", participant_json_path)
-    try:
-        if not participant_json_path:
-            logger.error("Missing required file: participant.json")
-            return False
-        logger.success("%s is valid", participant_json_path)
     except Exception as e:
         logger.error("Error reading %s: %s", participant_json_path, e)
         all_valid = False
 
+    # participant.tsv
+    participant_tsv_path = os.path.join(folder_path, "participants.tsv")
+    logger.info("Validating %s...", participant_tsv_path)
+    try:
+        if not participant_tsv_path:
+            logger.error("Missing required file: participant.tsv")
+            return False
+        logger.success("%s is valid", participant_tsv_path)
+    except Exception as e:
+        logger.error("Error reading %s: %s", participant_tsv_path, e)
+        all_valid = False
+
+    if all_valid:
+        logger.success("All files fully validated")
+    else:
+        logger.error("Validation completed with errors")
     return all_valid
