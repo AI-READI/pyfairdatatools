@@ -33,11 +33,6 @@ Following files are required to have inside the directory path:
 
 ------------------------------------------------------------------------
 
-## dataset_description.json Fields
-
-The file `dataset_description.json` is a JSON file describing the dataset.
-
-
 #### Returns-
 
 | Field    | Type    | Description                                              |
