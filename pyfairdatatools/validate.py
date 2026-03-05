@@ -417,10 +417,67 @@ def validate_names(root):
 
 
 def validate_folder_structure(folder_path):
+    """Validate that a folder structure is valid.
+
+    We do this by generating a json tree of the folder and file structure and
+    validating it against a schema.
+    This will allow us to expand the schema in the future to include more complex
+    folder structures.
+    Certain folder structures (ones inside of dynamic folders) will not be able to
+    be validated by this method.
+
+    Args:
+        folder_path (str): The path to the folder to validate
+    Returns:
+        bool: True if the folder structure is valid, False otherwise
+    """
     logger.info("Starting folder structure validation...")
-    if not os.path.isdir(folder_path):
-        logger.error(f"Folder not found: {folder_path}", )
+
+    def path_to_dict(path):
+        d = {}  # type: dict
+
+        if not os.path.exists(path):
+            logger.error(f"{folder_path} does not exist!", )
+            return d
+        if not os.path.isdir(path):
+            logger.error(f"{folder_path} is not a valid folder path, please provide a directory!", )
+            return d
+
+        for x in os.listdir(path):
+            key = os.path.basename(x)
+
+            if os.path.isdir(os.path.join(path, x)):
+                d[key] = path_to_dict(os.path.join(path, x))
+            else:
+                d[key] = "file"
+
+        return d
+
+    # Import the schema from the schemas folder
+    with open(
+        os.path.join(
+            os.path.dirname(__file__), "schemas", "folder_structure.schema.json"
+        ),
+        encoding="utf-8",
+    ) as f:
+        schema = json.load(f)
+    required_files = []
+
+    folder_structure_as_dict = path_to_dict(folder_path)
+    try:
+        logger.info("Checking the folder structure")
+        validate(instance=folder_structure_as_dict, schema=schema)
+        required_files.extend(schema["required"])
+
+        logger.success("Folder structure matches schema")
+    except ValidationError as e:
+        logger.error("Failed: Folder structure invalid (%s)", e.message)
         return False
+
+    except Exception as error:
+        logger.error("Schema error: %s", error)
+        raise error
+
     name_errors, name_warnings = validate_names(folder_path)
     for w in name_warnings:
         logger.warning(w)
@@ -429,28 +486,6 @@ def validate_folder_structure(folder_path):
             logger.error(e)
         return False
 
-    required_files = []
-    try:
-        with open(
-            os.path.join(os.path.dirname(__file__), "schemas", "folder_structure.schema.json"),
-            encoding="utf-8"
-        ) as f:
-            schema = json.load(f)
-        folder_tree = {
-            f: "file" if os.path.isfile(os.path.join(folder_path, f)) else "directory"
-            for f in os.listdir(folder_path)
-        }
-
-        required_files.extend(schema["required"])
-        validate(instance=folder_tree, schema=schema)
-        logger.info("Folder structure matches schema")
-
-    except ValidationError as e:
-        logger.error("FAILED: Folder structure invalid (%s)", e.message)
-        return False
-    except Exception as e:
-        logger.error("Schema error: %s", e)
-        return False
     files = os.listdir(folder_path)
     all_valid = True
 
@@ -471,13 +506,13 @@ def validate_folder_structure(folder_path):
             logger.success("%s is valid", dd_path)
         else:
             logger.error("dataset_description.json failed validation")
-            all_valid = False
+            return False
     except json.JSONDecodeError as e:
         logger.error("dataset_description.json is not valid JSON: %s", e)
-        all_valid = False
+        return False
     except Exception as e:
         logger.error("Error reading dataset_description.json: %s", e)
-        all_valid = False
+        return False
 
     # study_description
     s_description_path = os.path.join(folder_path, "study_description.json")
@@ -490,13 +525,13 @@ def validate_folder_structure(folder_path):
                 logger.success("%s is valid", s_description_path)
             else:
                 logger.error("%s failed validation", s_description_path)
-                all_valid = False
+                return False
         except json.JSONDecodeError as e:
             logger.error("%s is not valid JSON: %s", s_description_path, e)
-            all_valid = False
+            return False
         except Exception as e:
             logger.error("Error reading %s: %s", s_description_path, e)
-            all_valid = False
+            return False
 
     # readme
     readme_path = os.path.join(folder_path, "readme.md")
@@ -523,10 +558,10 @@ def validate_folder_structure(folder_path):
             logger.success("%s is valid", readme_path)
         else:
             logger.error("%s failed validation", readme_path)
-            all_valid = False
+            return False
     except Exception as e:
         logger.error("Error reading %s: %s", readme_path, e)
-        all_valid = False
+        return False
 
     # changelog
     all_changelog_paths = next((file for file in files if file.lower() == "changelog.md"), None)
@@ -538,7 +573,7 @@ def validate_folder_structure(folder_path):
             return False
     except Exception as e:
         logger.error("Error reading %s: %s", changelog_path, e)
-        all_valid = False
+        return False
     logger.success("%s is valid", changelog_path)
 
     # license
@@ -555,10 +590,10 @@ def validate_folder_structure(folder_path):
             logger.success("%s is valid", license_path)
         else:
             logger.error("%s has an invalid license identifier: '%s'", license_path, license_text)
-            all_valid = False
+            return False
     except Exception as e:
         logger.error("Error reading %s: %s", license_path, e)
-        all_valid = False
+        return False
 
     # participants json
     participant_json_path = os.path.join(folder_path, "participants.json")
@@ -570,10 +605,10 @@ def validate_folder_structure(folder_path):
             logger.success("%s is valid", participant_json_path)
         else:
             logger.error("%s failed validation", participant_json_path)
-            all_valid = False
+            return False
     except Exception as e:
         logger.error("Error reading %s: %s", participant_json_path, e)
-        all_valid = False
+        return False
 
     # participant.tsv
     participant_tsv_path = os.path.join(folder_path, "participants.tsv")
@@ -585,10 +620,10 @@ def validate_folder_structure(folder_path):
         logger.success("%s is valid", participant_tsv_path)
     except Exception as e:
         logger.error("Error reading %s: %s", participant_tsv_path, e)
-        all_valid = False
+        return False
 
-    if all_valid:
-        logger.success("All files fully validated")
-    else:
-        logger.error("Validation completed with errors")
-    return all_valid
+    logger.success("All files have successfully been validated")
+    return True
+
+
+print(validate_folder_structure("tests"))
