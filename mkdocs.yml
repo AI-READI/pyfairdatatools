@@ -13,7 +13,8 @@ markdown_extensions:
   - codehilite
   - admonition
   - toc:
-      permalink: '
+      permalink: 
+
 
 nav:
   - Home: index.md
